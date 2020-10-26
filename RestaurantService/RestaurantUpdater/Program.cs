@@ -13,6 +13,7 @@ namespace RestaurantUpdater
         //Code Snippet taken from DbUp documentation with alterations to EnsureDatabase find docs at: https://dbup.readthedocs.io/en/latest/
         static void Main(string[] args)
         {
+
             var connectionString =
                 args.FirstOrDefault()
                 ?? "Server=(local)\\SqlExpress; Database=Restaurant; Trusted_connection=true";
