@@ -58,6 +58,9 @@
     <Compile Include="Views\ReservationDetailsView.xaml.cs">
       <DependentUpon>ReservationDetailsView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\TablesDetailsView.xaml.cs">
+      <DependentUpon>TablesDetailsView.xaml</DependentUpon>
+    </Compile>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -71,6 +74,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="Views\ReservationDetailsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\TablesDetailsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
