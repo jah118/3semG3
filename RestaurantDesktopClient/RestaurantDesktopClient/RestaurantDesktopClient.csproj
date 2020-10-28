@@ -55,26 +55,12 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Page Include="Back.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="CUDCustomer.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="HeadLine.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Listpage.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="MainMenu.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
+    <Compile Include="Views\ReservationDetailsView.xaml.cs">
+      <DependentUpon>ReservationDetailsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\TablesDetailsView.xaml.cs">
+      <DependentUpon>TablesDetailsView.xaml</DependentUpon>
+    </Compile>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -83,62 +69,20 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Back.xaml.cs">
-      <DependentUpon>Back.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="CUDCustomer.xaml.cs">
-      <DependentUpon>CUDCustomer.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="HeadLine.xaml.cs">
-      <DependentUpon>HeadLine.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Listpage.xaml.cs">
-      <DependentUpon>Listpage.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="MainMenu.xaml.cs">
-      <DependentUpon>MainMenu.xaml</DependentUpon>
-    </Compile>
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="CUDEmployee.xaml">
+    <Page Include="Views\ReservationDetailsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="ManageCustomer.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="ManageEmployee.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="ManageReservation.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="ManageTable.xaml">
+    <Page Include="Views\TablesDetailsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CUDEmployee.xaml.cs">
-      <DependentUpon>CUDEmployee.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="ManageCustomer.xaml.cs">
-      <DependentUpon>ManageCustomer.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="ManageEmployee.xaml.cs">
-      <DependentUpon>ManageEmployee.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="ManageReservation.xaml.cs">
-      <DependentUpon>ManageReservation.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="ManageTable.xaml.cs">
-      <DependentUpon>ManageTable.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>

@@ -1,0 +1,55 @@
+﻿<Page x:Class="RestaurantDesktopClient.Views.ReservationDetailsView"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:RestaurantDesktopClient.Views"
+      mc:Ignorable="d" 
+      d:DesignHeight="297.242"
+      Title="ReservationDetailsView" Width="343.989">
+
+    <Grid Margin="0,0,0,10">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="0"/>
+            <ColumnDefinition Width="5*"/>
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="5*"/>
+            <ColumnDefinition Width="0"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="15*" />
+            <RowDefinition Height="15*" />
+            <RowDefinition Height="15*" />
+            <RowDefinition Height="15*" />
+            <RowDefinition Height="15*" />
+            <RowDefinition Height="15*" />
+            <RowDefinition Height="15*" />
+            <RowDefinition Height="15*" />
+            <RowDefinition Height="15*" />
+            <RowDefinition Height="15*" />
+
+        </Grid.RowDefinitions>
+        <Label Content="Table: " Grid.Column="1" HorizontalAlignment="Right"/>
+        <TextBox x:Name="txtTableName" Margin="0,0,0,2" Grid.Column="2" Grid.ColumnSpan="2"/>
+        <Label Content="Number of persons: " Grid.Row="1" Grid.Column="1" HorizontalAlignment="Right"/>
+        <TextBox x:Name="txtNumOfPersons" Grid.Row="1" Margin="0,2,0,2" Grid.Column="2" Grid.ColumnSpan="2"/>
+        <Label Content="Reservation date: " Grid.Row="2" Grid.Column="1" HorizontalAlignment="Right"/>
+        <DatePicker x:Name="dpReservationDate" Grid.Row="2" Margin="0,2,0,2" Grid.Column="2" Grid.ColumnSpan="2" />
+        <Label Content="Reservation time: " Grid.Row="3" Grid.Column="1" HorizontalAlignment="Right"/>
+        <DatePicker x:Name="dpReservationTime"  Margin="0,2,0,0" Grid.Row="3" Grid.Column="2" Grid.ColumnSpan="2" />
+        <Label Content="Comments: " HorizontalAlignment="Left" Grid.Row="4" Grid.Column="1" />
+        <Label Content="Wishes: " HorizontalAlignment="Left" Grid.Row="4" Grid.Column="3" />
+        <ListView x:Name="lvReservationComments" Grid.RowSpan="3" Grid.Column="1" Grid.Row="5" />
+        <ListView x:Name="lvReservationWishes" Grid.RowSpan="3" Grid.Column="3" Grid.Row="5" />
+        <Grid Grid.Row="9" Grid.Column="1" Grid.ColumnSpan="3">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="3*"/>
+                <ColumnDefinition Width="3*"/>
+                <ColumnDefinition Width="3*"/>
+            </Grid.ColumnDefinitions>
+            <Button x:Name="btnCreateNew" Margin="0,2,5,0" Content="Create new" />
+            <Button x:Name="btnDelete" Margin="5,2,5,0" Content="Delete" Grid.Column="1" />
+            <Button x:Name="btnUpdate" Margin="5,2,0,0" Content="Update" Grid.Column="2" />
+        </Grid>
+    </Grid>
+</Page>
