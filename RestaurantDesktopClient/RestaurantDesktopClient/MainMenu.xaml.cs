@@ -29,12 +29,12 @@ namespace RestaurantDesktopClient
 
         private void BtnManageEmployee_Click(object sender, RoutedEventArgs e)
         {
-            mainWindow.MainFrame.Navigate(new ManagePage());
+            mainWindow.MainFrame.Navigate(new ManageEmployee());
         }
 
         private void BtnManageCusomter_Click(object sender, RoutedEventArgs e)
         {
-           // mainWindow.MainFrame.Navigate(new ManagePage());
+            mainWindow.MainFrame.Navigate(new ManageCustomer());
         }
     }
 }

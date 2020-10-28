@@ -16,11 +16,11 @@ using System.Windows.Shapes;
 namespace RestaurantDesktopClient
 {
     /// <summary>
-    /// Interaction logic for ManagePage.xaml
+    /// Interaction logic for ManageReservation.xaml
     /// </summary>
-    public partial class ManagePage : Page
+    public partial class ManageReservation : Page
     {
-        public ManagePage()
+        public ManageReservation()
         {
             InitializeComponent();
         }

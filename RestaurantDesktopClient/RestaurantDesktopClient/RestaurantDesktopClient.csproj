@@ -106,7 +106,19 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="ManagePage.xaml">
+    <Page Include="ManageCustomer.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ManageEmployee.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ManageReservation.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ManageTable.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -115,8 +127,17 @@
     <Compile Include="CUDEmployee.xaml.cs">
       <DependentUpon>CUDEmployee.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ManagePage.xaml.cs">
-      <DependentUpon>ManagePage.xaml</DependentUpon>
+    <Compile Include="ManageCustomer.xaml.cs">
+      <DependentUpon>ManageCustomer.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ManageEmployee.xaml.cs">
+      <DependentUpon>ManageEmployee.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ManageReservation.xaml.cs">
+      <DependentUpon>ManageReservation.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ManageTable.xaml.cs">
+      <DependentUpon>ManageTable.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>

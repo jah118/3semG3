@@ -22,7 +22,7 @@
 
 
         </Grid.RowDefinitions>
-        <Button Name ="btnBack" Content="Back"  Margin="5,5,5,5" HorizontalAlignment="Right" VerticalAlignment="Bottom" FontSize="14" />
+        <Button Name ="btnBack" Content="Back" HorizontalAlignment="Right" VerticalAlignment="Bottom" FontSize="14" />
     </Grid>
 
 </Page>
