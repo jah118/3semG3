@@ -18,9 +18,9 @@ namespace RestaurantDesktopClient
     /// <summary>
     /// Interaction logic for ManageEmployeepage.xaml
     /// </summary>
-    public partial class ManageEmployeepage : Page
+    public partial class CUDEmployee : Page
     {
-        public ManageEmployeepage()
+        public CUDEmployee()
         {
             InitializeComponent();
         }
