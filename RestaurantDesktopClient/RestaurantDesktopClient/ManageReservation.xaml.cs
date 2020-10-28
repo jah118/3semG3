@@ -16,17 +16,13 @@ using System.Windows.Shapes;
 namespace RestaurantDesktopClient
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    /// Interaction logic for ManageReservation.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class ManageReservation : Page
     {
-        public MainWindow()
+        public ManageReservation()
         {
             InitializeComponent();
-            MainFrame.Navigate(new MainMenu(this)); //Source = new Uri("MainMenu.xaml", UriKind.Relative);
-           // MainFrame.Navigate(new MainMenu(this));
         }
-
-      
     }
 }
