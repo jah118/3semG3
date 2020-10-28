@@ -23,10 +23,6 @@ namespace RestaurantDesktopClient
         public MainWindow()
         {
             InitializeComponent();
-            MainFrame.Navigate(new MainMenu(this)); //Source = new Uri("MainMenu.xaml", UriKind.Relative);
-           // MainFrame.Navigate(new MainMenu(this));
         }
-
-      
     }
 }
