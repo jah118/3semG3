@@ -1,0 +1,28 @@
+﻿<Page x:Class="RestaurantDesktopClient.Views.TablesDetailsView"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:RestaurantDesktopClient.Views"
+      mc:Ignorable="d" 
+      d:DesignHeight="450"
+      Title="TablesDetailsView" Width="342.876">
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="2*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="5*"/>
+        </Grid.RowDefinitions>
+        <Label Content="Table name: " VerticalAlignment="Center" HorizontalAlignment="Right" />
+        <TextBox x:Name="txtTableName" VerticalAlignment="Center" HorizontalAlignment="Stretch" Grid.Column="1"/>
+        <Label Content="Numbers of chairs: " VerticalAlignment="Center" Grid.Row="1" HorizontalAlignment="Right" />
+        <TextBox x:Name="txtNumOfChairs" VerticalAlignment="Center" HorizontalAlignment="Stretch" Grid.Row="1" Grid.Column="1"/>
+        <ListView x:Name="lvTableFulfillmentOfDesire" Grid.Row="3" Grid.Column="1"/>
+    </Grid>
+</Page>
