@@ -55,11 +55,41 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Views\ReservationDetailsView.xaml.cs">
-      <DependentUpon>ReservationDetailsView.xaml</DependentUpon>
+    <Compile Include="Views\Controls\BackControl.xaml.cs">
+      <DependentUpon>BackControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\TablesDetailsView.xaml.cs">
-      <DependentUpon>TablesDetailsView.xaml</DependentUpon>
+    <Compile Include="Views\Controls\CUDCustomerControl.xaml.cs">
+      <DependentUpon>CUDCustomerControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Controls\CUDEmployeeControl.xaml.cs">
+      <DependentUpon>CUDEmployeeControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Controls\HeadLineControl.xaml.cs">
+      <DependentUpon>HeadLineControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Controls\ListPageControl.xaml.cs">
+      <DependentUpon>ListPageControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Controls\ReservationViewControl.xaml.cs">
+      <DependentUpon>ReservationViewControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Controls\TableViewControl.xaml.cs">
+      <DependentUpon>TableViewControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\MainMenu.xaml.cs">
+      <DependentUpon>MainMenu.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ManageCustomer.xaml.cs">
+      <DependentUpon>ManageCustomer.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ManageEmployee.xaml.cs">
+      <DependentUpon>ManageEmployee.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ManageReservation.xaml.cs">
+      <DependentUpon>ManageReservation.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ManageTable.xaml.cs">
+      <DependentUpon>ManageTable.xaml</DependentUpon>
     </Compile>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -73,11 +103,51 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="Views\ReservationDetailsView.xaml">
+    <Page Include="Views\Controls\BackControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\TablesDetailsView.xaml">
+    <Page Include="Views\Controls\CUDCustomerControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Controls\CUDEmployeeControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Controls\HeadLineControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Controls\ListPageControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Controls\ReservationViewControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Controls\TableViewControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\MainMenu.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ManageCustomer.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ManageEmployee.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ManageReservation.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ManageTable.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

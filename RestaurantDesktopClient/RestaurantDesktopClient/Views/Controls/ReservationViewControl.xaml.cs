@@ -1,5 +1,4 @@
-﻿using RestaurantDesktopClient.Views;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -14,17 +13,16 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace RestaurantDesktopClient
+namespace RestaurantDesktopClient.Views.Controls
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    /// Interaction logic for ReservationViewControl.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class ReservationViewControl : UserControl
     {
-        public MainWindow()
+        public ReservationViewControl()
         {
             InitializeComponent();
-            MainFrame.Navigate(new MainMenu(this));
         }
     }
 }

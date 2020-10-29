@@ -13,14 +13,14 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace RestaurantDesktopClient.Views
+namespace RestaurantDesktopClient.Views.Controls
 {
     /// <summary>
-    /// Interaction logic for TablesDetailsView.xaml
+    /// Interaction logic for TableViewControl.xaml
     /// </summary>
-    public partial class TablesDetailsView : Page
+    public partial class TableViewControl : UserControl
     {
-        public TablesDetailsView()
+        public TableViewControl()
         {
             InitializeComponent();
         }
