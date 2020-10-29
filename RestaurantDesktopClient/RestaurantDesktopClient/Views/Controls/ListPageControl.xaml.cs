@@ -13,14 +13,14 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace RestaurantDesktopClient.Views
+namespace RestaurantDesktopClient.Views.Controls
 {
     /// <summary>
-    /// Interaction logic for ReservationDetailsView.xaml
+    /// Interaction logic for ListPageControl.xaml
     /// </summary>
-    public partial class ReservationDetailsView : Page
+    public partial class ListPageControl : UserControl
     {
-        public ReservationDetailsView()
+        public ListPageControl()
         {
             InitializeComponent();
         }
