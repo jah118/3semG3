@@ -1,3 +1,4 @@
+using RestaurantService.App_Start;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,6 +13,7 @@ namespace RestaurantService
         protected void Application_Start()
         {
             GlobalConfiguration.Configure(WebApiConfig.Register);
+            ContainerConfig.RegisterContainers();
         }
     }
 }

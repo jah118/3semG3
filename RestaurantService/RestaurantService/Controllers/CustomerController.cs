@@ -12,8 +12,8 @@ namespace RestaurantService.Controllers
 {
     public class CustomerController : ApiController
     {
-        private readonly IRepository<Customer> _customerRepository;
-        public CustomerController(IRepository<Customer> customerRepository)
+        private readonly IRepository<Customer2> _customerRepository;
+        public CustomerController(IRepository<Customer2> customerRepository)
         {
             _customerRepository = customerRepository;
         }
@@ -25,9 +25,9 @@ namespace RestaurantService.Controllers
         }
 
         // GET: api/Customer/5
-        public CustomerModel CustomerModel(int id)
+        public int CustomerModel(int id)
         {
-            return null;
+            return 3;
         }
 
         // POST: api/Customer
