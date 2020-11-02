@@ -64,6 +64,9 @@
     <Compile Include="Views\Controls\CUDEmployeeControl.xaml.cs">
       <DependentUpon>CUDEmployeeControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\Controls\DateTimePicker.xaml.cs">
+      <DependentUpon>DateTimePicker.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Controls\HeadLineControl.xaml.cs">
       <DependentUpon>HeadLineControl.xaml</DependentUpon>
     </Compile>
@@ -114,6 +117,10 @@
     <Page Include="Views\Controls\CUDEmployeeControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Controls\DateTimePicker.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\Controls\HeadLineControl.xaml">
       <SubType>Designer</SubType>

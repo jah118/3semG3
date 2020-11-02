@@ -35,7 +35,7 @@
         <Label Content="Reservation date: " Grid.Row="2" Grid.Column="1" HorizontalAlignment="Right"/>
         <DatePicker x:Name="dpReservationDate" Grid.Row="2" Margin="0,2,0,2" Grid.Column="2" Grid.ColumnSpan="2" />
         <Label Content="Reservation time: " Grid.Row="3" Grid.Column="1" HorizontalAlignment="Right"/>
-        <DatePicker x:Name="dpReservationTime"  Margin="0,2,0,0" Grid.Row="3" Grid.Column="2" Grid.ColumnSpan="2" />
+        <local:DateTimePicker x:Name="dtpReservationTime" Margin="0,2,0,0" Grid.Row="3" Grid.Column="2" Grid.ColumnSpan="2"/>
         <Label Content="Comments: " HorizontalAlignment="Left" Grid.Row="4" Grid.Column="1" />
         <Label Content="Wishes: " HorizontalAlignment="Left" Grid.Row="4" Grid.Column="3" />
         <ListView x:Name="lvReservationComments" Grid.RowSpan="3" Grid.Column="1" Grid.Row="5" />
