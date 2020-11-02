@@ -57,35 +57,35 @@ CREATE TABLE Employee_Title (
 
 CREATE TABLE Employee (
 	id INT PRIMARY KEY identity(1, 1)
-	,person_id INT UNIQUE NOT NULL
+	,person_id INT 
 	,title_id INT NOT NULL
 	,salary DECIMAL DEFAULT 0
-	,FOREIGN KEY (title_id) REFERENCES Employee_Title(id)
-	,FOREIGN KEY (person_id) REFERENCES Person(id) ON DELETE no action ON UPDATE no action
+	,FOREIGN KEY (title_id) REFERENCES Employee_Title(id) ON DELETE NO ACTION
+	,FOREIGN KEY (person_id) REFERENCES Person(id) ON DELETE SET NULL ON UPDATE NO ACTION
 	);
 
 CREATE TABLE Customer (
 	id INT PRIMARY KEY identity(1, 1)
 	,person_id INT 
-	,FOREIGN KEY (person_id) REFERENCES Person(id) ON DELETE SET NULL ON UPDATE no action
+	,FOREIGN KEY (person_id) REFERENCES Person(id) ON DELETE SET NULL ON UPDATE NO ACTION
 	);
 
 CREATE TABLE Reservation (
 	id INT PRIMARY KEY identity(1, 1)
-	,reservation_date DATETIME NOT NULL
+	,reservation_date DATETIME NOT NULL		
 	,customer_id INT NOT NULL
 	,reservationTime DATETIME2 NOT NULL
 	,noOfPeople INT NOT NULL
 	,deposit BIT DEFAULT 0
 	,note NVARCHAR(200)
-	,FOREIGN KEY (customer_id) REFERENCES Customer(id)
+	,FOREIGN KEY (customer_id) REFERENCES Customer(id) ON DELETE NO ACTION
 	);
 
 CREATE TABLE Reservations_Tables (
 	reservation_id INT NOT NULL
-	,restaurant_tables_id INT NOT NULL
-	,FOREIGN KEY (reservation_id) REFERENCES Restaurant_Tables(id)
-	,FOREIGN KEY (restaurant_tables_id) REFERENCES Reservation(id)
+	,restaurant_tables_id INT 
+	,FOREIGN KEY (restaurant_tables_id) REFERENCES Restaurant_Tables(id)  ON DELETE CASCADE 
+	,FOREIGN KEY (reservation_id) REFERENCES Reservation(id)  ON DELETE CASCADE
 	,PRIMARY KEY (
 		reservation_id
 		,restaurant_tables_id
@@ -111,17 +111,17 @@ CREATE TABLE Restaurant_Order (
 	,employee_id INT NOT NULL
 	,orderDate DATETIME NOT NULL
 	,paymentCondition_id INT NOT NULL
-	,FOREIGN KEY (employee_id) REFERENCES Employee(id)
-	,FOREIGN KEY (reservation_id) REFERENCES Reservation(id)
-	,FOREIGN KEY (paymentCondition_id) REFERENCES PaymentCondition(id)
+	,FOREIGN KEY (employee_id) REFERENCES Employee(id) ON DELETE NO ACTION
+	,FOREIGN KEY (reservation_id) REFERENCES Reservation(id) ON DELETE NO ACTION
+	,FOREIGN KEY (paymentCondition_id) REFERENCES PaymentCondition(id) ON DELETE NO ACTION 
 	);
 
 CREATE TABLE OrderLine (
 	quantity INT NOT NULL
 	,food_id INT NOT NULL
 	,order_Number INT NOT NULL
-	,FOREIGN KEY (food_id) REFERENCES Food(id)
-	,FOREIGN KEY (order_Number) REFERENCES Restaurant_Order(orderNo)
+	,FOREIGN KEY (food_id) REFERENCES Food(id) ON DELETE NO ACTION
+	,FOREIGN KEY (order_Number) REFERENCES Restaurant_Order(orderNo) ON DELETE NO ACTION
 	,PRIMARY KEY (
 		food_id
 		,order_Number
