@@ -4,7 +4,7 @@ using System.Linq;
 using System.Web;
 
 namespace RestaurantWebApp.Models
-{
+{ 
 	public class Reservation
 	{
 		public int id { get; set; }
@@ -25,5 +25,9 @@ namespace RestaurantWebApp.Models
 			this.deposit = deposit_;
 			this.note = note_;
 		}
+        public Reservation()
+        {
+
+        }
 	}
 }
