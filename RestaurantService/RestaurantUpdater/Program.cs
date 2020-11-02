@@ -16,7 +16,8 @@ namespace RestaurantUpdater
 
             var connectionString =
                 args.FirstOrDefault()
-                ?? "Server=(local)\\SqlExpress; Database=Restaurant; Trusted_connection=true";
+                ?? @"Data Source=(localdb)\mssqllocaldb; Initial Catalog=Restaurant; Integrated Security=true";
+                //"Server=(local)\\SqlExpress; Database=Restaurant; Trusted_connection=true";
             UpdateDatabase(connectionString);
         }
 

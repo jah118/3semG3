@@ -10,7 +10,7 @@ namespace DataAccess
     {
         IEnumerable<TEntity> GetAll();
 
-        IEnumerable<TEntity> GetCountWithOffset(int count, int offset);
+        IEnumerable<TEntity> GetCountWithOffsetByOrdering(int count, int offset, string ordering);
 
         TEntity GetById(int id);
 

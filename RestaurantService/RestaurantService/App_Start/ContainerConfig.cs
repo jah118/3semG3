@@ -3,12 +3,8 @@ using Autofac.Integration.WebApi;
 using DataAccess;
 using DataAccess.Models;
 using DataAccess.Repositories;
-using System;
-using System.Collections.Generic;
 using System.Configuration;
-using System.Linq;
 using System.Reflection;
-using System.Web;
 using System.Web.Http;
 
 namespace RestaurantService.App_Start
@@ -22,12 +18,14 @@ namespace RestaurantService.App_Start
             var builder = new ContainerBuilder();
             var config = GlobalConfiguration.Configuration;
 
+            //pass connectionString, as SQLConnection will not create extra connectionpools if one with the same connectionString already exists
+            builder.Register(c => new CustomerRepository(_connectionString)).As<IRepository<Customer2>>();
             builder.RegisterApiControllers(Assembly.GetExecutingAssembly());
-            builder.Register(c => new CustomerRepository(_connectionString)).As<IRepository<Customer>>();
 
             var container = builder.Build();
-
-            config.DependencyResolver = new AutofacWebApiDependencyResolver(container);
+            var resolver = new AutofacWebApiDependencyResolver(container);
+            //config.DependencyResolver = resolver;
+            GlobalConfiguration.Configuration.DependencyResolver = resolver;
         }
     }
 }
