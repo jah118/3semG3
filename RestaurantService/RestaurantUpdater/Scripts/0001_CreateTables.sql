@@ -17,11 +17,14 @@ CREATE TABLE Food (
 	,FOREIGN KEY (food_category_id) REFERENCES food_category(id) ON DELETE NO ACTION
 );
 
+/* 
+** System versioned tables do nut support DELETE and CASCADE actions, so please don't break the script
+*/
 CREATE TABLE Price (
 	id INT PRIMARY KEY IDENTITY(1, 1) NOT NULL
 	,price_value DECIMAL(19, 4) NOT NULL
 	,food_id INT NOT NULL
-	,FOREIGN KEY (food_id) REFERENCES Food(id) ON DELETE CASCADE ON UPDATE CASCADE
+	,FOREIGN KEY (food_id) REFERENCES Food(id)
 	,SysStartTime DATETIME2 GENERATED ALWAYS AS ROW START NOT NULL
 	,SysEndTime DATETIME2 GENERATED ALWAYS AS ROW END NOT NULL
 	,PERIOD FOR SYSTEM_TIME(SysStartTime, SysEndTime)
