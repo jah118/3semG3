@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace DataAccess.DataAccess.Models
+namespace DataAccess.Models
 {
     public partial class RestaurantOrder
     {

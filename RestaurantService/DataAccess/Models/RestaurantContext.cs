@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 
-namespace DataAccess.DataAccess.Models
+namespace DataAccess.Models
 {
     public partial class RestaurantContext : DbContext
     {
