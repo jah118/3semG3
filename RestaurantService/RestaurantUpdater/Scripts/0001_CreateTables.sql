@@ -12,7 +12,7 @@ CREATE TABLE Food_Category (
 CREATE TABLE Food (
 	id INT PRIMARY KEY IDENTITY(1, 1) NOT NULL
 	,name NVARCHAR(32) NOT NULL
-	,description NVARCHAR(64)
+	,description NVARCHAR(500)
 	,food_category_id INT NOT NULL
 	,FOREIGN KEY (food_category_id) REFERENCES food_category(id) ON DELETE NO ACTION
 );
