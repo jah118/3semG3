@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace DataAccess.Repositories
 {
-    public class CustomerRepository : IRepository<DTOCustomer>
+    public class CustomerRepository : IRepository<CustomerDTO>
     {
         private readonly IDbConnection _connection;
 
@@ -20,34 +20,34 @@ namespace DataAccess.Repositories
 
         }
 
-        public DTOCustomer Create(DTOCustomer obj)
+        public CustomerDTO Create(CustomerDTO obj)
         {
             throw new NotImplementedException();
         }
 
-        public bool Delete(DTOCustomer obj)
+        public bool Delete(CustomerDTO obj)
         {
             throw new NotImplementedException();
         }
 
-        public IEnumerable<DTOCustomer> GetAll()
+        public IEnumerable<CustomerDTO> GetAll()
         {
             throw new NotImplementedException();
         }
 
-        public DTOCustomer GetById(int id)
+        public CustomerDTO GetById(int id)
         {
             throw new NotImplementedException();
         }
 
-        public IEnumerable<DTOCustomer> GetCountWithOffsetByOrdering(int count, int offset, string ordering)
+        public IEnumerable<CustomerDTO> GetCountWithOffsetByOrdering(int count, int offset, string ordering)
         {
             List<Customer2> res = null;
 
             throw new NotImplementedException();
         }
 
-        public DTOCustomer Update(DTOCustomer obj)
+        public CustomerDTO Update(CustomerDTO obj)
         {
             throw new NotImplementedException();
         }

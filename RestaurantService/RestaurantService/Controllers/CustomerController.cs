@@ -12,8 +12,8 @@ namespace RestaurantService.Controllers
 {
     public class CustomerController : ApiController
     {
-        private readonly IRepository<DTOCustomer> _customerRepository;
-        public CustomerController(IRepository<DTOCustomer> customerRepository)
+        private readonly IRepository<CustomerDTO> _customerRepository;
+        public CustomerController(IRepository<CustomerDTO> customerRepository)
         {
             _customerRepository = customerRepository;
         }

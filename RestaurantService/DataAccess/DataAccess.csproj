@@ -43,10 +43,11 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DataTransferObjects\DTOCustomer.cs" />
-    <Compile Include="DataTransferObjects\DTOEmployee.cs" />
-    <Compile Include="DataTransferObjects\DTOOrder.cs" />
-    <Compile Include="DataTransferObjects\DTOReservation.cs" />
+    <Compile Include="DataTransferObjects\CustomerDTO.cs" />
+    <Compile Include="DataTransferObjects\EmployeeDTO.cs" />
+    <Compile Include="DataTransferObjects\FoodDTO.cs" />
+    <Compile Include="DataTransferObjects\OrderDTO.cs" />
+    <Compile Include="DataTransferObjects\ReservationDTO.cs" />
     <Compile Include="IRepository.cs" />
     <Compile Include="Models\Customer.cs" />
     <Compile Include="Models\Customer2.cs" />

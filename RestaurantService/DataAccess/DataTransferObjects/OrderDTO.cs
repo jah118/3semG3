@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DataAccess.DataTransferObjects
 {
-    public class DTOCustomer
+    public class OrderDTO
     {
     }
 }
