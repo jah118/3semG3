@@ -12,37 +12,40 @@ namespace RestaurantService.Controllers
 {
     public class CustomerController : ApiController
     {
-        private readonly IRepository<Customer> _customerRepository;
-        public CustomerController(IRepository<Customer> customerRepository)
+        private readonly IRepository<Customer2> _customerRepository;
+        public CustomerController(IRepository<Customer2> customerRepository)
         {
             _customerRepository = customerRepository;
         }
 
         // GET: api/Customer
-        public IEnumerable<CustomerModel> Get()
+        public IHttpActionResult Get()
         {
             return null;
         }
 
         // GET: api/Customer/5
-        public CustomerModel CustomerModel(int id)
+        public IHttpActionResult CustomerModel(int id)
         {
             return null;
         }
 
         // POST: api/Customer
-        public void Post([FromBody] CustomerModel customer)
+        public IHttpActionResult Post([FromBody] CustomerModel customer)
         {
+            return null;
         }
 
         // PUT: api/Customer/5
-        public void Put(int id, [FromBody] CustomerModel customer)
+        public IHttpActionResult Put(int id, [FromBody] CustomerModel customer)
         {
+            return null;
         }
 
         // DELETE: api/Customer/5
-        public void Delete(int id)
+        public IHttpActionResult Delete(int id)
         {
+            return null;
         }
     }
 }
