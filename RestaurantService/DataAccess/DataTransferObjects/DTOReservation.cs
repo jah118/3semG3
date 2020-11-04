@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DataAccess.DataTransferObjects
 {
-    class DTOReservation
+    public class DTOReservation
     {
     }
 }

@@ -61,7 +61,7 @@
     <Compile Include="Models\Price.cs" />
     <Compile Include="Models\Reservation.cs" />
     <Compile Include="Models\ReservationsTables.cs" />
-    <Compile Include="Models\RestaurantContext.cs" />
+    <Compile Include="RestaurantContext.cs" />
     <Compile Include="Models\RestaurantOrder.cs" />
     <Compile Include="Models\RestaurantTables.cs" />
     <Compile Include="Models\SchemaVersions.cs" />

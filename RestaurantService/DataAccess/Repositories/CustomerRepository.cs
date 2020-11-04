@@ -1,4 +1,5 @@
-﻿using DataAccess.Models;
+﻿using DataAccess.DataTransferObjects;
+using DataAccess.Models;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -7,46 +8,46 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+
 namespace DataAccess.Repositories
 {
-    public class CustomerRepository : IRepository<Customer2>
+    public class CustomerRepository : IRepository<DTOCustomer>
     {
         private readonly IDbConnection _connection;
 
-        public CustomerRepository(DbContex)
+        public CustomerRepository(RestaurantContext context)
         {
-            _connection = new SqlConnection(connectionString);
-            //_connectionString = connectionString;
+
         }
 
-        public Customer2 Create(Customer2 obj)
-        {
-            throw new NotImplementedException();
-        }
-
-        public bool Delete(Customer2 obj)
+        public DTOCustomer Create(DTOCustomer obj)
         {
             throw new NotImplementedException();
         }
 
-        public IEnumerable<Customer2> GetAll()
+        public bool Delete(DTOCustomer obj)
         {
             throw new NotImplementedException();
         }
 
-        public Customer2 GetById(int id)
+        public IEnumerable<DTOCustomer> GetAll()
         {
             throw new NotImplementedException();
         }
 
-        public IEnumerable<Customer2> GetCountWithOffsetByOrdering(int count, int offset, string ordering)
+        public DTOCustomer GetById(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IEnumerable<DTOCustomer> GetCountWithOffsetByOrdering(int count, int offset, string ordering)
         {
             List<Customer2> res = null;
 
             throw new NotImplementedException();
         }
 
-        public Customer2 Update(Customer2 obj)
+        public DTOCustomer Update(DTOCustomer obj)
         {
             throw new NotImplementedException();
         }

@@ -1,14 +1,16 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using DataAccess.Models;
 
-namespace DataAccess.Models
+namespace DataAccess
 {
     public partial class RestaurantContext : DbContext
     {
-        public RestaurantContext()
+        string _connectionString;
+        public RestaurantContext(string connectionString)
         {
         }
 
-        public RestaurantContext(DbContextOptions<RestaurantContext> options)
+        public RestaurantContext(string connectionString, DbContextOptions<RestaurantContext> options)
             : base(options)
         {
         }
@@ -34,8 +36,7 @@ namespace DataAccess.Models
         {
             if (!optionsBuilder.IsConfigured)
             {
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
-                optionsBuilder.UseSqlServer("Data Source=(localdb)\\mssqllocaldb; Initial Catalog=Restaurant; Integrated Security=true");
+                optionsBuilder.UseSqlServer(_connectionString);
             }
         }
 

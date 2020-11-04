@@ -1,5 +1,5 @@
 ﻿using DataAccess;
-using DataAccess.Models;
+using DataAccess.DataTransferObjects;
 using RestaurantService.Models;
 using System;
 using System.Collections.Generic;
@@ -12,8 +12,8 @@ namespace RestaurantService.Controllers
 {
     public class CustomerController : ApiController
     {
-        private readonly IRepository<Customer2> _customerRepository;
-        public CustomerController(IRepository<Customer2> customerRepository)
+        private readonly IRepository<DTOCustomer> _customerRepository;
+        public CustomerController(IRepository<DTOCustomer> customerRepository)
         {
             _customerRepository = customerRepository;
         }
