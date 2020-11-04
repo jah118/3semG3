@@ -13,7 +13,7 @@ namespace DataAccess.Repositories
     {
         private readonly IDbConnection _connection;
 
-        public CustomerRepository(string connectionString)
+        public CustomerRepository(DbContex)
         {
             _connection = new SqlConnection(connectionString);
             //_connectionString = connectionString;

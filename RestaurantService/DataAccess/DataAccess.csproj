@@ -43,8 +43,29 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DataTransferObjects\DTOCustomer.cs" />
+    <Compile Include="DataTransferObjects\DTOEmployee.cs" />
+    <Compile Include="DataTransferObjects\DTOOrder.cs" />
+    <Compile Include="DataTransferObjects\DTOReservation.cs" />
     <Compile Include="IRepository.cs" />
+    <Compile Include="Models\Customer.cs" />
     <Compile Include="Models\Customer2.cs" />
+    <Compile Include="Models\Employee.cs" />
+    <Compile Include="Models\EmployeeTitle.cs" />
+    <Compile Include="Models\Food.cs" />
+    <Compile Include="Models\FoodCategory.cs" />
+    <Compile Include="Models\Location.cs" />
+    <Compile Include="Models\OrderLine.cs" />
+    <Compile Include="Models\PaymentCondition.cs" />
+    <Compile Include="Models\Person.cs" />
+    <Compile Include="Models\Price.cs" />
+    <Compile Include="Models\Reservation.cs" />
+    <Compile Include="Models\ReservationsTables.cs" />
+    <Compile Include="Models\RestaurantContext.cs" />
+    <Compile Include="Models\RestaurantOrder.cs" />
+    <Compile Include="Models\RestaurantTables.cs" />
+    <Compile Include="Models\SchemaVersions.cs" />
+    <Compile Include="Models\ZipId.cs" />
     <Compile Include="Repositories\CustomerRepository.cs" />
   </ItemGroup>
   <ItemGroup>

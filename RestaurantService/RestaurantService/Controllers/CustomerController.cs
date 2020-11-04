@@ -19,30 +19,33 @@ namespace RestaurantService.Controllers
         }
 
         // GET: api/Customer
-        public IEnumerable<CustomerModel> Get()
+        public IHttpActionResult Get()
         {
             return null;
         }
 
         // GET: api/Customer/5
-        public int CustomerModel(int id)
+        public IHttpActionResult CustomerModel(int id)
         {
-            return 3;
+            return null;
         }
 
         // POST: api/Customer
-        public void Post([FromBody] CustomerModel customer)
+        public IHttpActionResult Post([FromBody] CustomerModel customer)
         {
+            return null;
         }
 
         // PUT: api/Customer/5
-        public void Put(int id, [FromBody] CustomerModel customer)
+        public IHttpActionResult Put(int id, [FromBody] CustomerModel customer)
         {
+            return null;
         }
 
         // DELETE: api/Customer/5
-        public void Delete(int id)
+        public IHttpActionResult Delete(int id)
         {
+            return null;
         }
     }
 }
