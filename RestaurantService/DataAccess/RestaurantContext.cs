@@ -1,16 +1,16 @@
-﻿using Microsoft.EntityFrameworkCore;
-using DataAccess.Models;
+﻿using DataAccess.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace DataAccess
 {
     public partial class RestaurantContext : DbContext
     {
-        string _connectionString;
-        public RestaurantContext(string connectionString)
+
+        public RestaurantContext()
         {
         }
 
-        public RestaurantContext(string connectionString, DbContextOptions<RestaurantContext> options)
+        public RestaurantContext(DbContextOptions<RestaurantContext> options)
             : base(options)
         {
         }
@@ -36,7 +36,7 @@ namespace DataAccess
         {
             if (!optionsBuilder.IsConfigured)
             {
-                optionsBuilder.UseSqlServer(_connectionString);
+                System.Console.WriteLine("hej du");
             }
         }
 
