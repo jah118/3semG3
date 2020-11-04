@@ -1,11 +1,6 @@
 ﻿using DataAccess;
 using DataAccess.DataTransferObjects;
 using RestaurantService.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
 using System.Web.Http;
 
 namespace RestaurantService.Controllers
@@ -13,6 +8,7 @@ namespace RestaurantService.Controllers
     public class CustomerController : ApiController
     {
         private readonly IRepository<CustomerDTO> _customerRepository;
+
         public CustomerController(IRepository<CustomerDTO> customerRepository)
         {
             _customerRepository = customerRepository;
@@ -21,13 +17,13 @@ namespace RestaurantService.Controllers
         // GET: api/Customer
         public IHttpActionResult Get()
         {
-            return null;
+            return Ok(_customerRepository.GetAll());
         }
 
         // GET: api/Customer/5
-        public IHttpActionResult CustomerModel(int id)
+        public IHttpActionResult Customer(int id)
         {
-            return null;
+            return Ok(_customerRepository.GetById(id));
         }
 
         // POST: api/Customer
