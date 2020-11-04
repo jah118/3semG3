@@ -9,6 +9,6 @@ namespace DataAccess.DataTransferObjects
         public int RestaurantTablesId { get; set; }
 
         public ReservationDTO Reservation { get; set; }
-        public ICollection<ReservationsTablesDTO> ReservationsTables { get; set; }
+        public  RestaurantTablesDTO RestaurantTables { get; set; }
     }
 }
