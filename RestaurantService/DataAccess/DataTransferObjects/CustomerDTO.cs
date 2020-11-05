@@ -1,13 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace DataAccess.DataTransferObjects
 {
     public class CustomerDTO
     {
+        public CustomerDTO()
+        {
+        }
+
+        public CustomerDTO(int id)
+        {
+            Id = id;
+        }
+
         public int Id { get; }
         public string Phone { get; set; }
         public string Email { get; set; }

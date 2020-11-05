@@ -1,5 +1,6 @@
 ﻿using DataAccess.DataTransferObjects;
 using DataAccess.Models;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,13 +28,14 @@ namespace DataAccess.Repositories
 
         public IEnumerable<CustomerDTO> GetAll()
         {
-            var customers = _context.Customer.ToList();
+            var customers = _context.Customer.Include("Person");
             var res = new List<CustomerDTO>();
             foreach (Customer c in customers)
             {
-                res.Add(new CustomerDTO
+                res.Add(new CustomerDTO(c.Id)
                 {
-                    FirstName = c.Id.ToString()
+                    FirstName = c.Person.FirstName,
+                    LastName = c.Person.LastName
                 });
             }
 
