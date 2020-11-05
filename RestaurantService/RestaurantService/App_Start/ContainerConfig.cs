@@ -22,6 +22,7 @@ namespace RestaurantService.App_Start
             optionsBuilder.UseSqlServer(_connectionString);
             //pass connectionString, as SQLConnection will not create extra connectionpools if one with the same connectionString already exists
             builder.Register(c => new CustomerRepository(new RestaurantContext(optionsBuilder.Options))).As<IRepository<CustomerDTO>>();
+            builder.Register(c => new EmployeeRepository(new RestaurantContext(optionsBuilder.Options))).As<IRepository<EmployeeDTO>>();
             builder.RegisterApiControllers(Assembly.GetExecutingAssembly());
 
             var container = builder.Build();

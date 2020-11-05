@@ -15,7 +15,7 @@ namespace DataAccess.Repositories
             _context = context;
         }
 
-        public CustomerDTO Create(EmployeeDTO obj)
+        public EmployeeDTO Create(EmployeeDTO obj)
         {
             throw new NotImplementedException();
         }
