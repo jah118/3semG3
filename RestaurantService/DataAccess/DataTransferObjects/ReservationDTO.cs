@@ -16,5 +16,8 @@ namespace DataAccess.DataTransferObjects
         public bool Deposit { get; set; }
         public string Note { get; set; }
 
+        public ICollection<ReservationsTablesDTO> ReservationsTables { get; set; }
+
+
     }
 }
