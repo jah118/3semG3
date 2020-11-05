@@ -23,5 +23,7 @@ namespace RestaurantService.Controllers
         {
             return Ok(_tableRepository.GetAll());
         }
+
+
     }
 }
