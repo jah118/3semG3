@@ -43,13 +43,19 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DataTransferObjects\DTOCustomer.cs" />
-    <Compile Include="DataTransferObjects\DTOEmployee.cs" />
-    <Compile Include="DataTransferObjects\DTOOrder.cs" />
-    <Compile Include="DataTransferObjects\DTOReservation.cs" />
+    <Compile Include="DataTransferObjects\CustomerDTO.cs" />
+    <Compile Include="DataTransferObjects\EmployeeDTO.cs" />
+    <Compile Include="DataTransferObjects\FoodCategoryDTO.cs" />
+    <Compile Include="DataTransferObjects\FoodDTO.cs" />
+    <Compile Include="DataTransferObjects\OrderLineDTO.cs" />
+    <Compile Include="DataTransferObjects\PaymentConditionDTO.cs" />
+    <Compile Include="DataTransferObjects\PriceDTO.cs" />
+    <Compile Include="DataTransferObjects\ReservationDTO.cs" />
+    <Compile Include="DataTransferObjects\ReservationsTablesDTO.cs" />
+    <Compile Include="DataTransferObjects\RestaurantOrderDTO.cs" />
+    <Compile Include="DataTransferObjects\RestaurantTablesDTO.cs" />
     <Compile Include="IRepository.cs" />
     <Compile Include="Models\Customer.cs" />
-    <Compile Include="Models\Customer2.cs" />
     <Compile Include="Models\Employee.cs" />
     <Compile Include="Models\EmployeeTitle.cs" />
     <Compile Include="Models\Food.cs" />
@@ -61,7 +67,8 @@
     <Compile Include="Models\Price.cs" />
     <Compile Include="Models\Reservation.cs" />
     <Compile Include="Models\ReservationsTables.cs" />
-    <Compile Include="Models\RestaurantContext.cs" />
+    <Compile Include="Repositories\EmployeeRepository.cs" />
+    <Compile Include="RestaurantContext.cs" />
     <Compile Include="Models\RestaurantOrder.cs" />
     <Compile Include="Models\RestaurantTables.cs" />
     <Compile Include="Models\SchemaVersions.cs" />
