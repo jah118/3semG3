@@ -47,7 +47,7 @@ namespace DataAccess.Repositories
 
         public IEnumerable<CustomerDTO> GetCountWithOffsetByOrdering(int count, int offset, string ordering)
         {
-            List<Customer2> res = null;
+            List<Customer> res = null;
 
             throw new NotImplementedException();
         }
