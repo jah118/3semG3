@@ -29,8 +29,10 @@ namespace DataAccess.Repositories
         {
             var customers = _context.Customer
                 .Include(c => c.Person)
-                .ThenInclude(c => c.Location)
-                ;
+                    .ThenInclude(c => c.Location)
+                        .ThenInclude(c => c.ZipCodeNavigation)
+                    ;
+
             var res = new List<CustomerDTO>();
             foreach (Customer c in customers)
             {

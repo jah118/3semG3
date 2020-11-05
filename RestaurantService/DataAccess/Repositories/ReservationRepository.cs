@@ -20,8 +20,15 @@ namespace DataAccess.Repositories
         }
         public ReservationDTO Create(ReservationDTO obj)
         {
-            _context.Database.BeginTransaction(IsolationLevel.Serializable);
+            var transaction =_context.Database.BeginTransaction(IsolationLevel.Serializable);
+            try
+            {
 
+            }
+            catch(Exception)
+            {
+                transaction.Rollback();
+            }
 
 
                 throw new NotImplementedException();
