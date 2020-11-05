@@ -3,7 +3,6 @@ using DataAccess.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace DataAccess.Repositories
 {
@@ -28,14 +27,18 @@ namespace DataAccess.Repositories
 
         public IEnumerable<CustomerDTO> GetAll()
         {
-            var customers = _context.Customer.Include("Person");
+            var customers = _context.Customer
+                .Include(c => c.Person)
+                .ThenInclude(c => c.Location)
+                ;
             var res = new List<CustomerDTO>();
             foreach (Customer c in customers)
             {
                 res.Add(new CustomerDTO(c.Id)
                 {
                     FirstName = c.Person.FirstName,
-                    LastName = c.Person.LastName
+                    LastName = c.Person.LastName,
+                    Address = c.Person.Location.Address
                 });
             }
 

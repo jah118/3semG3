@@ -32,7 +32,8 @@ namespace DataAccess.Repositories
             var employees = _context.Employee
                 .Include(e => e.Person)
                 .ThenInclude(e => e.Location)
-                .ThenInclude(e => e.ZipCodeNavigation);
+                .ThenInclude(e => e.ZipCodeNavigation)
+                .Include(e => e.Title); //remember to include every time an additional . is added in the create part
             var res = new List<EmployeeDTO>();
             foreach (Employee e in employees)
             {
