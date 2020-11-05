@@ -48,12 +48,12 @@
     <Compile Include="DataTransferObjects\FoodCategoryDTO.cs" />
     <Compile Include="DataTransferObjects\FoodDTO.cs" />
     <Compile Include="DataTransferObjects\OrderLineDTO.cs" />
+    <Compile Include="DataTransferObjects\PaymentConditionDTO.cs" />
     <Compile Include="DataTransferObjects\PriceDTO.cs" />
     <Compile Include="DataTransferObjects\ReservationDTO.cs" />
     <Compile Include="DataTransferObjects\ReservationsTablesDTO.cs" />
     <Compile Include="DataTransferObjects\RestaurantOrderDTO.cs" />
     <Compile Include="DataTransferObjects\RestaurantTablesDTO.cs" />
-    <Compile Include="DataTransferObjects\TableDTO.cs" />
     <Compile Include="IRepository.cs" />
     <Compile Include="Models\Customer.cs" />
     <Compile Include="Models\Employee.cs" />
@@ -67,6 +67,7 @@
     <Compile Include="Models\Price.cs" />
     <Compile Include="Models\Reservation.cs" />
     <Compile Include="Models\ReservationsTables.cs" />
+    <Compile Include="Repositories\EmployeeRepository.cs" />
     <Compile Include="RestaurantContext.cs" />
     <Compile Include="Models\RestaurantOrder.cs" />
     <Compile Include="Models\RestaurantTables.cs" />
