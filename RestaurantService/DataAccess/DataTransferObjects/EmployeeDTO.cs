@@ -8,9 +8,16 @@ namespace DataAccess.DataTransferObjects
 {
     public class EmployeeDTO
     {
+        public EmployeeDTO()
+        {
 
+        }
+        public EmployeeDTO(int id)
+        {
+            Id = id;
+        }
         public int Id { get; }
-        public string Title { get; }
+        public string Title { get; set; }
         public string Phone { get; set; }
         public string Email { get; set; }
         public string FirstName { get; set; }
@@ -19,6 +26,7 @@ namespace DataAccess.DataTransferObjects
         public string ZipCode { get; set; }
         public string City { get; set; }
 
-        public virtual ICollection<RestaurantOrderDTO> RestaurantOrder { get; set; }
+        public ICollection<RestaurantOrderDTO> RestaurantOrder { get; set; }
+       
     }
 }
