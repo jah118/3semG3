@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DataAccess.Models
+namespace DataAccess.DataTransferObjects
 {
-    public class Customer2
+    public class OrderDTO
     {
     }
 }

@@ -6,7 +6,14 @@ using System.Threading.Tasks;
 
 namespace DataAccess.DataTransferObjects
 {
-    class DTOEmployee
+
+    public enum PaymentCondition
     {
+        Bestilt
+        , Begyndt
+        , Leveret
+        , Betalt
+        , Annulleret
     }
+
 }

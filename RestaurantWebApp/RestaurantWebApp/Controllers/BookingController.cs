@@ -1,13 +1,27 @@
-﻿using System;
+﻿using DataAccess.DataTransferObjects;
+using Newtonsoft.Json;
+using RestSharp;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Web.Helpers;
 using System.Web.Mvc;
 
 namespace RestaurantWebApp.Controllers
 {
     public class BookingController : Controller
     {
+        public void GetCustomer()
+        {
+            var client = new RestClient("https://localhost:44349/api/customer");
+
+            var request = new RestRequest("Customer/{CustomerId}", Method.GET);
+
+            request.AddUrlSegment("{CustomerId", 1);
+
+            var content = client.Execute(request).Content;
+        }
         // GET: Booking
         public ActionResult Index()
         {
@@ -23,21 +37,29 @@ namespace RestaurantWebApp.Controllers
         // GET: Booking/Create
         public ActionResult Create()
         {
-            return View();
+            ReservationDTO rv = new ReservationDTO();
+            return View(rv);
         }
 
         // POST: Booking/Create
         [HttpPost]
-        public ActionResult Create(FormCollection collection)
+        public ActionResult Create(FormCollection collection, ReservationDTO reservation)
         {
             try
             {
-                // TODO: Add insert logic here
+                //TODO Virker måske
+                var client = new RestClient("https://localhost:44349/api/Booking/Create");
+                string json = JsonConvert.SerializeObject(reservation);
+                var request = new RestRequest("Booking/Create", Method.POST);
+                request.RequestFormat = DataFormat.Json;
+                request.AddJsonBody(reservation);
+                var response = client.Execute(request).Content;
 
                 return RedirectToAction("Index");
             }
             catch
             {
+
                 return View();
             }
         }
@@ -85,8 +107,18 @@ namespace RestaurantWebApp.Controllers
                 return View();
             }
         }
-        public ActionResult _OrderFood()
+        //GET: Booking/Food
+        [HttpGet]
+        public ActionResult OrderFoods()
         {
+            //var client = new RestClient("https://localhost:44349/api/Food");
+
+            //var request = new RestRequest("Food/{FoodId}", Method.GET);
+
+            //request.AddUrlSegment("{FoodId", 1);
+
+            //var content = client.Execute(request).Content;
+            
             return View();
         }
 

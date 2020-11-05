@@ -18,7 +18,7 @@ CREATE TABLE Food (
 );
 
 /* 
-** System versioned tables do nut support DELETE and CASCADE actions, so please don't break the script
+** System versioned tables do not support DELETE and CASCADE actions, so please don't break the script
 */
 CREATE TABLE Price (
 	id INT PRIMARY KEY IDENTITY(1, 1) NOT NULL

@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DataAccess.DataTransferObjects
 {
-    class DTOReservation
+    public class FoodCategoryDTO
     {
+ 
+        public int Id { get; }
+        public string Name { get;  }
+
     }
 }

@@ -1,31 +1,36 @@
-﻿<table style="width: 100% !important; height: 100% !important">
+﻿@model DataAccess.DataTransferObjects.FoodDTO
+
+@{
+    <h2> Bestilling af mad</h2>
+}
+<table style="width: 100% !important; height: 100% !important">
     <tr style="width:100%; height:16%">
         <td rowspan="3">
             <table style="width: 100% !important; height: 100% !important;">
                 <tr>
                     <td align="center" style="width:50%">
+                        <div>
+                            <label>Retter</label>
+                        </div>
                         <div id="foodListDiv" style=" overflow: scroll; min-height: 100px; max-height: 300px; width: 90%">
                             <table id="foodTable" style="width:100%; height:100%"></table>
                         </div>
-                        <div>
-                            <button onclick="removeFoodFromSummaryList()">Fjern ret</button>
-                            <button onclick="addFoodToSummaryList()">Tilføj ret</button>
-                        </div>
                     </td>
                     <td align="center">
+                        <div>
+                            <label>Drikkevare</label>
+                        </div>
                         <div style="overflow: scroll; min-height:100px; max-height: 300px; width:90%">
                             <table id="drinkTable" style="width:100%; height:100%"></table>
                         </div>
                         <div>
-                            <button onclick="removeDrinkFromSummaryList()">Fjern drikkevare</button>
-                            <button onclick="addDrinkToSummaryList()">Tilføj drikkevare</button>
                         </div>
                     </td>
                 </tr>
             </table>
         </td>
         <td>
-            <div><button>Se menu</button></div>
+            <div><button disabled="disabled">Se menu</button></div>
         </td>
     </tr>
     <tr></tr>
@@ -39,6 +44,9 @@
         margin-top: 20px;
         border:medium
 ">
+                <div>
+                    <label>Ordre:</label>
+                </div>
                 <table id="summaryTable" border="1" style="width:100%">
                 </table>
             </div>
@@ -48,7 +56,7 @@
     <tr></tr>
     <tr id="FooterCol" style="width:100%; height:16%">
         <td align="right" colspan="2">
-            <div><button>Tilbage..</button></div>
+            <div><a href="/Booking/Create" onclick="btnBackClick()" class="btn btn-info" role="button"> Back..</a></div>
         </td>
     </tr>
 </table>
@@ -57,6 +65,10 @@
     var summary = [];
     var dataFood = ["Some food 1", "Some food 2", "Some food 3", "Some food 4", "Some food 5", "Some food 6"];
     var dataDrink = ["Some drink 1", "Some drink 2", "Some drink 3", "Some drink 4", "Some drink 5", "Some drink 6",];
+
+    function btnBackClick() {
+
+    }
 
     function updateFoodViewTable() {
         var table = document.getElementById("foodTable");
@@ -139,6 +151,18 @@
                     var c2 = row.insertCell(1);
                     c1.innerHTML = x + "";
                     c2.innerHTML = countItems(x) + " stk.";
+
+                    row.onclick = function () {
+                        var item = this.cells[0].innerHTML;
+                        for (i = 0; i < summary.length; i++) {
+                            x = summary[i];
+                            if (x == item) {
+                                delete summary[i];
+                                break;
+                            }
+                        }
+                        updateSummaryTable();
+                    }
                 }
 
             });
@@ -146,22 +170,6 @@
 
     updateFoodViewTable();
     updateDrinkViewTable();
-
-    var table = document.getElementById('summaryTable');
-
-    for (var i = 0; i < table.rows.length; i++) {
-        table.rows[i].onclick = function () {
-            var food = this.cells[0].innerHTML;
-            for (i = 0; i < summary.length; i++) {
-                x = summary[i];
-                if (x == food) {
-                    delete summary[i];
-                    break;
-                }
-            }
-            updateSummaryTable();
-        };
-    }
 
     var table = document.getElementById('drinkTable');
 
@@ -181,3 +189,6 @@
         };
     }
 </script>
+
+
+
