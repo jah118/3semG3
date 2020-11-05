@@ -9,6 +9,5 @@ namespace DataAccess.DataTransferObjects
         public int Id { get; }
         public string Name { get; set; }
 
-        
     }
 }
