@@ -17,7 +17,7 @@
     <MvcBuildViews>false</MvcBuildViews>
     <UseIISExpress>true</UseIISExpress>
     <Use64BitIISExpress />
-    <IISExpressSSLPort>44343</IISExpressSSLPort>
+    <IISExpressSSLPort>44325</IISExpressSSLPort>
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
     <IISExpressUseClassicPipelineMode />
@@ -49,6 +49,9 @@
       <HintPath>..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.3.6.0\lib\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="RestSharp, Version=106.11.7.0, Culture=neutral, PublicKeyToken=598062e77f915f75, processorArchitecture=MSIL">
+      <HintPath>..\packages\RestSharp.106.11.7\lib\net452\RestSharp.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -119,10 +122,21 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\BookingController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="DataTranfserObject\CustomerDTO.cs" />
+    <Compile Include="DataTranfserObject\EmployeeDTO.cs" />
+    <Compile Include="DataTranfserObject\FoodCategoryDTO.cs" />
+    <Compile Include="DataTranfserObject\FoodDTO.cs" />
+    <Compile Include="DataTranfserObject\OrderDTO.cs" />
+    <Compile Include="DataTranfserObject\OrderLineDTO.cs" />
+    <Compile Include="DataTranfserObject\PaymentConditionDTO.cs" />
+    <Compile Include="DataTranfserObject\PriceDTO.cs" />
+    <Compile Include="DataTranfserObject\ReservationDTO.cs" />
+    <Compile Include="DataTranfserObject\ReservationsTablesDTO.cs" />
+    <Compile Include="DataTranfserObject\RestaurantOrderDTO.cs" />
+    <Compile Include="DataTranfserObject\RestaurantTablesDTO.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Models\Reservation.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -163,7 +177,7 @@
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Booking\Index.cshtml" />
     <Content Include="Views\Booking\Create.cshtml" />
-    <Content Include="Views\Booking\_OrderFood.cshtml" />
+    <Content Include="Views\Booking\OrderFoods.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
