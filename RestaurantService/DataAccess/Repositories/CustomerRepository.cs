@@ -1,52 +1,58 @@
-﻿using DataAccess.Models;
+﻿using DataAccess.DataTransferObjects;
+using DataAccess.Models;
 using System;
 using System.Collections.Generic;
-using System.Data;
-using System.Data.SqlClient;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DataAccess.Repositories
 {
-    public class CustomerRepository : IRepository<Customer2>
+    public class CustomerRepository : IRepository<CustomerDTO>
     {
-        private readonly IDbConnection _connection;
+        private readonly RestaurantContext _context;
 
-        public CustomerRepository(DbContex)
+        public CustomerRepository(RestaurantContext context)
         {
-            _connection = new SqlConnection(connectionString);
-            //_connectionString = connectionString;
+            _context = context;
         }
 
-        public Customer2 Create(Customer2 obj)
-        {
-            throw new NotImplementedException();
-        }
-
-        public bool Delete(Customer2 obj)
+        public CustomerDTO Create(CustomerDTO obj)
         {
             throw new NotImplementedException();
         }
 
-        public IEnumerable<Customer2> GetAll()
+        public bool Delete(CustomerDTO obj)
         {
             throw new NotImplementedException();
         }
 
-        public Customer2 GetById(int id)
+        public IEnumerable<CustomerDTO> GetAll()
         {
+            var customers = _context.Customer.ToList();
+            var res = new List<CustomerDTO>();
+            foreach (Customer c in customers)
+            {
+                res.Add(new CustomerDTO
+                {
+                    FirstName = c.Id.ToString()
+                });
+            }
+
+            return res;
+        }
+
+        public CustomerDTO GetById(int id)
+        {
+            return new CustomerDTO { FirstName = "Lars", LastName = "Nysom", Address = "vej vej 8", City = "Ållern", Email = "la@nysom.dk", Phone = "22222222", ZipCode = "9000" };
+        }
+
+        public IEnumerable<CustomerDTO> GetCountWithOffsetByOrdering(int count, int offset, string ordering)
+        {
+            List<Customer> res = null;
+
             throw new NotImplementedException();
         }
 
-        public IEnumerable<Customer2> GetCountWithOffsetByOrdering(int count, int offset, string ordering)
-        {
-            List<Customer2> res = null;
-
-            throw new NotImplementedException();
-        }
-
-        public Customer2 Update(Customer2 obj)
+        public CustomerDTO Update(CustomerDTO obj)
         {
             throw new NotImplementedException();
         }

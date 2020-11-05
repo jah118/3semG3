@@ -5,35 +5,35 @@ using System.Web.Http;
 
 namespace RestaurantService.Controllers
 {
-    public class CustomerController : ApiController
+    public class EmployeeController : ApiController
     {
-        private readonly IRepository<CustomerDTO> _customerRepository;
+        private readonly IRepository<EmployeeDTO> _employeeRepository;
 
-        public CustomerController(IRepository<CustomerDTO> customerRepository)
+        public EmployeeController(IRepository<EmployeeDTO> employeeRepository)
         {
-            _customerRepository = customerRepository;
+            _employeeRepository = employeeRepository;
         }
 
         // GET: api/Customer
         public IHttpActionResult Get()
         {
-            return Ok(_customerRepository.GetAll());
+            return Ok(_employeeRepository.GetAll());
         }
 
         // GET: api/Customer/5
-        public IHttpActionResult Customer(int id)
+        public IHttpActionResult Employee(int id)
         {
-            return Ok(_customerRepository.GetById(id));
+            return Ok(_employeeRepository.GetById(id));
         }
 
         // POST: api/Customer
-        public IHttpActionResult Post([FromBody] CustomerDTO customer)
+        public IHttpActionResult Post([FromBody] EmployeeDTO employee)
         {
             return null;
         }
 
         // PUT: api/Customer/5
-        public IHttpActionResult Put(int id, [FromBody] CustomerDTO customer)
+        public IHttpActionResult Put(int id, [FromBody] EmployeeDTO customer)
         {
             return null;
         }
