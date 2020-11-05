@@ -52,10 +52,10 @@
     <Compile Include="DataTransferObjects\ReservationDTO.cs" />
     <Compile Include="DataTransferObjects\ReservationsTablesDTO.cs" />
     <Compile Include="DataTransferObjects\RestaurantOrderDTO.cs" />
+    <Compile Include="DataTransferObjects\RestaurantTablesDTO.cs" />
     <Compile Include="DataTransferObjects\TableDTO.cs" />
     <Compile Include="IRepository.cs" />
     <Compile Include="Models\Customer.cs" />
-    <Compile Include="Models\Customer2.cs" />
     <Compile Include="Models\Employee.cs" />
     <Compile Include="Models\EmployeeTitle.cs" />
     <Compile Include="Models\Food.cs" />
