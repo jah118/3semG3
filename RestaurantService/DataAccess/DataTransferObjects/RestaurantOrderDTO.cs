@@ -9,7 +9,7 @@ namespace DataAccess.DataTransferObjects
         public  ReservationDTO reservation { get; set; }
         public EmployeeDTO employee { get; set; }
         public DateTime OrderDate { get; set; }
-        public int PaymentConditionId { get; set; }
+        public PaymentCondition paymentCondition { get; set; }
 
         //public virtual Employee Employee { get; set; }
         //public virtual PaymentCondition PaymentCondition { get; set; }
