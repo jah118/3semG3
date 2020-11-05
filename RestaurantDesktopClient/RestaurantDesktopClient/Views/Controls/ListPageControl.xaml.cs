@@ -24,5 +24,6 @@ namespace RestaurantDesktopClient.Views.Controls
         {
             InitializeComponent();
         }
+       
     }
 }

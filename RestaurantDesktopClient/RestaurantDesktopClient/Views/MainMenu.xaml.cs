@@ -1,4 +1,5 @@
-﻿using System;
+﻿using RestaurantDesktopClient.Views;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -36,7 +37,7 @@ namespace RestaurantDesktopClient.Views
 
         private void BtnReservatons_Click(object sender, RoutedEventArgs e)
         {
-            mainWindow.MainFrame.Navigate(new ManageReservation());
+            mainWindow.MainFrame.Navigate( new ManageReservationView());
         }
 
         private void BtnManageTables_Click(object sender, RoutedEventArgs e)

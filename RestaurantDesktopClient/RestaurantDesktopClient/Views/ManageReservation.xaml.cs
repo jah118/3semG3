@@ -18,9 +18,9 @@ namespace RestaurantDesktopClient.Views
     /// <summary>
     /// Interaction logic for ManageReservation.xaml
     /// </summary>
-    public partial class ManageReservation : Page
+    public partial class ManageReservationView : Page
     {
-        public ManageReservation()
+        public ManageReservationView()
         {
             InitializeComponent();
         }
