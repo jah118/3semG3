@@ -45,9 +45,14 @@
   <ItemGroup>
     <Compile Include="DataTransferObjects\CustomerDTO.cs" />
     <Compile Include="DataTransferObjects\EmployeeDTO.cs" />
+    <Compile Include="DataTransferObjects\FoodCategoryDTO.cs" />
     <Compile Include="DataTransferObjects\FoodDTO.cs" />
-    <Compile Include="DataTransferObjects\OrderDTO.cs" />
+    <Compile Include="DataTransferObjects\OrderLineDTO.cs" />
+    <Compile Include="DataTransferObjects\PriceDTO.cs" />
     <Compile Include="DataTransferObjects\ReservationDTO.cs" />
+    <Compile Include="DataTransferObjects\ReservationsTablesDTO.cs" />
+    <Compile Include="DataTransferObjects\RestaurantOrderDTO.cs" />
+    <Compile Include="DataTransferObjects\TableDTO.cs" />
     <Compile Include="IRepository.cs" />
     <Compile Include="Models\Customer.cs" />
     <Compile Include="Models\Customer2.cs" />
