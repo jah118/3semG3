@@ -28,7 +28,6 @@ namespace DataAccess.Repositories
 
         public IEnumerable<EmployeeDTO> GetAll()
         {
-
             var employees = _context.Employee
                 .Include(e => e.Person)
                 .ThenInclude(e => e.Location)
