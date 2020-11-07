@@ -46,6 +46,12 @@ namespace RestaurantDesktopClient.Views.Controls
             time = temp;
         }
 
+        internal void setDateTime(DateTime reservationTime)
+        {
+            time = reservationTime;
+            dpDate.SelectedDate = reservationTime;
+        }
+
         private void btnPlusHours_Click(object sender, RoutedEventArgs e)
         {
             if(time.Hour <= 22)
