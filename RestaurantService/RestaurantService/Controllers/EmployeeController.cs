@@ -21,7 +21,7 @@ namespace RestaurantService.Controllers
         }
 
         // GET: api/Customer/5
-        public IHttpActionResult Employee(int id)
+        public IHttpActionResult Get(int id)
         {
             return Ok(_employeeRepository.GetById(id));
         }

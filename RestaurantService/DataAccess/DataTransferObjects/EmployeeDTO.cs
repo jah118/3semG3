@@ -1,8 +1,5 @@
-﻿using System;
+﻿using DataAccess.Models;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DataAccess.DataTransferObjects
 {
@@ -10,12 +7,26 @@ namespace DataAccess.DataTransferObjects
     {
         public EmployeeDTO()
         {
-
         }
+
         public EmployeeDTO(int id)
         {
             Id = id;
         }
+
+        public EmployeeDTO(Employee employee) : this(employee.Id)
+        {
+            Title = employee.Person.e;
+            Phone = phone;
+            Email = email;
+            FirstName = firstName;
+            LastName = lastName;
+            Address = address;
+            ZipCode = zipCode;
+            City = city;
+            //RestaurantOrder = restaurantOrder;
+        }
+
         public int Id { get; }
         public string Title { get; set; }
         public string Phone { get; set; }
@@ -27,6 +38,5 @@ namespace DataAccess.DataTransferObjects
         public string City { get; set; }
 
         public ICollection<RestaurantOrderDTO> RestaurantOrder { get; set; }
-       
     }
 }

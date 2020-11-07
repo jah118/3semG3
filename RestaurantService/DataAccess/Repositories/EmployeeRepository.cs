@@ -54,12 +54,22 @@ namespace DataAccess.Repositories
 
         public EmployeeDTO GetById(int id)
         {
-            return new EmployeeDTO { FirstName = "Lars", LastName = "Nysom", Address = "vej vej 8", City = "Ållern", Email = "la@nysom.dk", Phone = "22222222", ZipCode = "9000" };
+            Employee employee = _context.Employee
+                .Where(c => c.Id == id)
+                .Include(c => c.Person)
+                .ThenInclude(c => c.Location)
+                .ThenInclude(c => c.ZipCodeNavigation)
+                .Include(e => e.Title)
+                .FirstOrDefault();
+
+
+            var res = new EmployeeDTO(employee);
+            return res;
         }
 
         public IEnumerable<EmployeeDTO> GetCountWithOffsetByOrdering(int count, int offset, string ordering)
         {
-            List<Employee> res = null;
+            //List<Employee> res = null;
 
             throw new NotImplementedException();
         }

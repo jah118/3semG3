@@ -33,17 +33,19 @@ namespace RestaurantService.Controllers
         public IHttpActionResult Post([FromBody]string value)
         {
 
-            
+            return null;
         }
         
         // PUT: api/Reservation/5
         public IHttpActionResult Put(int id, [FromBody]string value)
         {
+            return null;
         }
 
         // DELETE: api/Reservation/5
         public IHttpActionResult Delete(int id)
         {
+            return null;
         }
     }
 }

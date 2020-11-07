@@ -3,6 +3,7 @@ using DataAccess.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace DataAccess.Repositories
 {
@@ -53,12 +54,19 @@ namespace DataAccess.Repositories
 
         public CustomerDTO GetById(int id)
         {
-            return new CustomerDTO { FirstName = "Lars", LastName = "Nysom", Address = "vej vej 8", City = "Ållern", Email = "la@nysom.dk", Phone = "22222222", ZipCode = "9000" };
+            Customer customer = _context.Customer
+                            .Where(c => c.Id == id)
+                            .Include(c => c.Person)
+                            .ThenInclude(c => c.Location)
+                            .ThenInclude(c => c.ZipCodeNavigation).FirstOrDefault();
+
+            var res = new CustomerDTO(customer);
+            return res;
         }
 
         public IEnumerable<CustomerDTO> GetCountWithOffsetByOrdering(int count, int offset, string ordering)
         {
-            List<Customer> res = null;
+            //  List<Customer> res = null;
 
             throw new NotImplementedException();
         }
