@@ -1,5 +1,4 @@
 ﻿using DataAccess.Models;
-using System.Collections.Generic;
 
 namespace DataAccess.DataTransferObjects
 {
@@ -24,7 +23,6 @@ namespace DataAccess.DataTransferObjects
             Address = employee.Person.Location.Address;
             ZipCode = employee.Person.Location.ZipCodeNavigation.ZipCode;
             City = employee.Person.Location.ZipCodeNavigation.City;
-            //RestaurantOrder = restaurantOrder;
         }
 
         public int Id { get; }
@@ -36,7 +34,5 @@ namespace DataAccess.DataTransferObjects
         public string Address { get; set; }
         public string ZipCode { get; set; }
         public string City { get; set; }
-
-        public ICollection<RestaurantOrderDTO> RestaurantOrder { get; set; }
     }
 }

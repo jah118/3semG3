@@ -34,9 +34,6 @@ namespace DataAccess.Repositories
                         .ThenInclude(c => c.ZipCodeNavigation)
                     ;
 
-                .ThenInclude(c => c.Location)
-                .ThenInclude(c => c.ZipCodeNavigation)
-                ;
             var res = new List<CustomerDTO>();
             foreach (Customer c in customers)
             {
@@ -49,7 +46,6 @@ namespace DataAccess.Repositories
                     Address = c.Person.Location.Address,
                     City = c.Person.Location.ZipCodeNavigation.City,
                     ZipCode = c.Person.Location.ZipCodeNavigation.ZipCode
-
                 });
             }
 

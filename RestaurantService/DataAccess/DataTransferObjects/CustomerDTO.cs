@@ -1,5 +1,4 @@
 ﻿using DataAccess.Models;
-using System.Collections.Generic;
 
 namespace DataAccess.DataTransferObjects
 {
@@ -16,7 +15,6 @@ namespace DataAccess.DataTransferObjects
 
         public CustomerDTO(Customer c) : this(c.Id)
         {
-
             Phone = c.Person.Phone;
             Email = c.Person.Email;
             FirstName = c.Person.FirstName;
@@ -34,7 +32,5 @@ namespace DataAccess.DataTransferObjects
         public string Address { get; set; }
         public string ZipCode { get; set; }
         public string City { get; set; }
-
-        //public virtual ICollection<ReservationDTO> Reservation { get; set; }
     }
 }
