@@ -16,14 +16,14 @@ namespace DataAccess.DataTransferObjects
 
         public EmployeeDTO(Employee employee) : this(employee.Id)
         {
-            Title = employee.Person.e;
-            Phone = phone;
-            Email = email;
-            FirstName = firstName;
-            LastName = lastName;
-            Address = address;
-            ZipCode = zipCode;
-            City = city;
+            Title = employee.Title.Title;
+            Phone = employee.Person.Phone;
+            Email = employee.Person.Email;
+            FirstName = employee.Person.FirstName;
+            LastName = employee.Person.LastName;
+            Address = employee.Person.Location.Address;
+            ZipCode = employee.Person.Location.ZipCodeNavigation.ZipCode;
+            City = employee.Person.Location.ZipCodeNavigation.City;
             //RestaurantOrder = restaurantOrder;
         }
 
