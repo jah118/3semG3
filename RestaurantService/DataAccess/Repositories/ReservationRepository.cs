@@ -1,37 +1,39 @@
 ﻿using DataAccess.DataTransferObjects;
+using DataAccess.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DataAccess.Repositories
 {
-    class ReservationRepository : IRepository<ReservationDTO>
+    internal class ReservationRepository : IRepository<ReservationDTO>
     {
-
         private readonly RestaurantContext _context;
 
         public ReservationRepository(RestaurantContext context)
         {
             _context = context;
         }
+
         public ReservationDTO Create(ReservationDTO obj)
         {
-            var transaction =_context.Database.BeginTransaction(IsolationLevel.Serializable);
+            var transaction = _context.Database.BeginTransaction(IsolationLevel.Serializable);
             try
             {
+                //_context.ReservationsTables.Include(r => r.Reservation).Where(r => r.RestaurantTables.Id == obj.)
 
+                //_context.Reservation.Where(r =>
+                //r.ReservationTime <= obj.ReservationTime.AddHours(1).AddMinutes(30) &&
+                //r.ReservationTime.AddHours(1).AddMinutes(30) > obj.ReservationTime).Count();
             }
-            catch(Exception)
+            catch (Exception)
             {
                 transaction.Rollback();
             }
 
-
-                throw new NotImplementedException();
+            throw new NotImplementedException();
         }
 
         public bool Delete(ReservationDTO obj)
