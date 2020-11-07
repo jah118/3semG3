@@ -21,7 +21,7 @@ namespace RestaurantService.Controllers
         }
 
         // GET: api/Customer/5
-        public IHttpActionResult Employee(int id)
+        public IHttpActionResult Get(int id)
         {
             return Ok(_employeeRepository.GetById(id));
         }
@@ -29,19 +29,19 @@ namespace RestaurantService.Controllers
         // POST: api/Customer
         public IHttpActionResult Post([FromBody] EmployeeDTO employee)
         {
-            return null;
+            return Ok(_employeeRepository.Create(employee));
         }
 
         // PUT: api/Customer/5
-        public IHttpActionResult Put(int id, [FromBody] EmployeeDTO customer)
+        public IHttpActionResult Put(int id, [FromBody] EmployeeDTO employee)
         {
-            return null;
+            return Ok(_employeeRepository.Update(employee));
         }
 
         // DELETE: api/Customer/5
         public IHttpActionResult Delete(int id)
         {
-            return null;
+            return Ok(); //TODO_employeeRepository.Delete(employee) //TODO
         }
     }
 }

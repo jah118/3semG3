@@ -19,5 +19,6 @@ namespace DataAccess
         TEntity Update(TEntity obj);
 
         bool Delete(TEntity obj);
+
     }
 }
