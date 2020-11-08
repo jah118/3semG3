@@ -54,13 +54,18 @@ namespace DataAccess.Repositories
 
         public CustomerDTO GetById(int id)
         {
+            CustomerDTO res = null;
             Customer customer = _context.Customer
                             .Where(c => c.Id == id)
                             .Include(c => c.Person)
                             .ThenInclude(c => c.Location)
-                            .ThenInclude(c => c.ZipCodeNavigation).FirstOrDefault();
+                            .ThenInclude(c => c.ZipCodeNavigation)
+                            .FirstOrDefault();
+            if (customer != null)
+            {
+                res = new CustomerDTO(customer);
+            }
 
-            var res = new CustomerDTO(customer);
             return res;
         }
 

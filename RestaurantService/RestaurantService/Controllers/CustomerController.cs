@@ -23,7 +23,12 @@ namespace RestaurantService.Controllers
         // GET: api/Customer/5
         public IHttpActionResult Get(int id)   //Customer --> Get
         {
-            return Ok(_customerRepository.GetById(id));
+            var customer =_customerRepository.GetById(id);
+            if (customer == null)
+            {
+                return NotFound();
+            }
+            return Ok();
         }
 
         // POST: api/Customer
