@@ -54,16 +54,19 @@ namespace DataAccess.Repositories
 
         public EmployeeDTO GetById(int id)
         {
+            EmployeeDTO res = null;
             Employee employee = _context.Employee
-                .Where(c => c.Id == id)
-                .Include(c => c.Person)
-                .ThenInclude(c => c.Location)
-                .ThenInclude(c => c.ZipCodeNavigation)
-                .Include(e => e.Title)
-                .FirstOrDefault();
+                 .Where(c => c.Id == id)
+                 .Include(c => c.Person)
+                 .ThenInclude(c => c.Location)
+                 .ThenInclude(c => c.ZipCodeNavigation)
+                 .Include(e => e.Title)
+                 .FirstOrDefault();
 
-
-            var res = new EmployeeDTO(employee);
+            if (employee != null)
+            {
+                res = new EmployeeDTO(employee);
+            }
             return res;
         }
 
