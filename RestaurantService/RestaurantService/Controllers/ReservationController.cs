@@ -26,18 +26,20 @@ namespace RestaurantService.Controllers
         // GET: api/Reservation/5
         public IHttpActionResult Get(int id)
         {
-            return Ok(_reservationRepository.GetById(id));
+            var res = _reservationRepository.GetById(id);
+            return res != null ? (IHttpActionResult)Ok(res) : Content(HttpStatusCode.Conflict, id);
         }
 
         // POST: api/Reservation
-        public IHttpActionResult Post([FromBody]string value)
+        public IHttpActionResult Post([FromBody]ReservationDTO value)
         {
+            var res = _reservationRepository.Create(value);
 
-            return null;
+            return res == null ? (IHttpActionResult)Ok(res) : Content(HttpStatusCode.Conflict, value);
         }
         
         // PUT: api/Reservation/5
-        public IHttpActionResult Put(int id, [FromBody]string value)
+        public IHttpActionResult Put(int id, [FromBody]ReservationDTO value)
         {
             return null;
         }

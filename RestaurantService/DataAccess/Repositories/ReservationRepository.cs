@@ -1,4 +1,5 @@
 ﻿using DataAccess.DataTransferObjects;
+using DataAccess.DataTransferObjects.Converters;
 using DataAccess.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -17,27 +18,61 @@ namespace DataAccess.Repositories
             _context = context;
         }
 
-        public ReservationDTO Create(ReservationDTO obj)
+        public ReservationDTO Create(ReservationDTO obj, bool transactionEndpoint = true)
         {
-            var transaction = _context.Database.BeginTransaction(IsolationLevel.Serializable);
+            if (transactionEndpoint) _context.Database.BeginTransaction(IsolationLevel.Serializable);
+            //Sanity check here, ensure unique tables etc.
             try
             {
-                //_context.ReservationsTables.Include(r => r.Reservation).Where(r => r.RestaurantTables.Id == obj.)
-
-                //_context.Reservation.Where(r =>
-                //r.ReservationTime <= obj.ReservationTime.AddHours(1).AddMinutes(30) &&
-                //r.ReservationTime.AddHours(1).AddMinutes(30) > obj.ReservationTime).Count();
+                var tableIds = obj.Tables.Select(t => t.Id);
+                //Caution O(n^2) or greater, this performs badly, it currently only checks if ANY table intersects
+                //Change to focus on tables, return list of the ones that intersect and give it back to the the caller,
+                //to tell which ones need rebooking or don't and handle failure in another way.
+                var compareList = _context.Reservation
+                    .Include(r => r.ReservationsTables)
+                    .ThenInclude(r => r.RestaurantTables)
+                    .Where(r =>
+                        r.ReservationTime <= obj.ReservationTime.AddMinutes(90) &&
+                        r.ReservationTime.AddMinutes(90) >= obj.ReservationTime)
+                    .Where(r => r.ReservationsTables
+                        .Select(rt => rt.RestaurantTablesId)
+                        .Intersect(obj.Tables.Select(table => table.Id)).ToList().Count() > 0)
+                    .Count()
+                    ;
+                if (compareList > 0)
+                {
+                    var toAdd = Converter.Convert(obj);
+                    _context.Add<Reservation>(toAdd).GetDatabaseValues();
+                    _context.Entry(toAdd).GetDatabaseValues();
+                    var id = toAdd.Id;
+                    foreach (RestaurantTablesDTO rt in obj.Tables)
+                    {
+                        _context.Add<ReservationsTables>(new ReservationsTables
+                        {
+                            ReservationId = id,
+                            RestaurantTablesId = rt.Id
+                        });
+                    }
+                    if (transactionEndpoint) _context.SaveChanges();
+                    return GetById(id);
+                }
+                else
+                {
+                    if (transactionEndpoint) _context.Database.RollbackTransaction();
+                }
             }
             catch (Exception)
             {
-                transaction.Rollback();
+                _context.Database.RollbackTransaction();
             }
-
-            throw new NotImplementedException();
+            return null;
         }
 
-        public bool Delete(ReservationDTO obj)
+        public bool Delete(ReservationDTO obj, bool transactionEndpoint = true)
         {
+            if (transactionEndpoint) _context.Database.BeginTransaction(IsolationLevel.Serializable);
+            //insert logic here
+            if (transactionEndpoint) _context.SaveChanges();
             throw new NotImplementedException();
         }
 
@@ -56,8 +91,11 @@ namespace DataAccess.Repositories
             throw new NotImplementedException();
         }
 
-        public ReservationDTO Update(ReservationDTO obj)
+        public ReservationDTO Update(ReservationDTO obj, bool transactionEndpoint = true)
         {
+            if (transactionEndpoint) _context.Database.BeginTransaction(IsolationLevel.Serializable);
+            //insert logic here
+            if (transactionEndpoint) _context.SaveChanges();
             throw new NotImplementedException();
         }
     }

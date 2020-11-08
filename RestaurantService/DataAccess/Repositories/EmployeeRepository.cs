@@ -3,6 +3,7 @@ using DataAccess.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 
 namespace DataAccess.Repositories
@@ -16,13 +17,19 @@ namespace DataAccess.Repositories
             _context = context;
         }
 
-        public EmployeeDTO Create(EmployeeDTO obj)
+        public EmployeeDTO Create(EmployeeDTO obj, bool transactionEndpoint = true)
         {
+            if (transactionEndpoint) _context.Database.BeginTransaction(IsolationLevel.Serializable);
+            //insert logic here
+            if (transactionEndpoint) _context.SaveChanges();
             throw new NotImplementedException();
         }
 
-        public bool Delete(EmployeeDTO obj)
+        public bool Delete(EmployeeDTO obj, bool transactionEndpoint = true)
         {
+            if (transactionEndpoint) _context.Database.BeginTransaction(IsolationLevel.Serializable);
+            //insert logic here
+            if (transactionEndpoint) _context.SaveChanges();
             throw new NotImplementedException();
         }
 
@@ -77,8 +84,11 @@ namespace DataAccess.Repositories
             throw new NotImplementedException();
         }
 
-        public EmployeeDTO Update(EmployeeDTO obj)
+        public EmployeeDTO Update(EmployeeDTO obj, bool transactionEndpoint = true)
         {
+            if (transactionEndpoint) _context.Database.BeginTransaction(IsolationLevel.Serializable);
+            //insert logic here
+            if (transactionEndpoint) _context.SaveChanges();
             throw new NotImplementedException();
         }
     }
