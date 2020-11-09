@@ -36,7 +36,6 @@ namespace DataAccess
         {
             if (!optionsBuilder.IsConfigured)
             {
-                System.Console.WriteLine("hej du");
             }
         }
 

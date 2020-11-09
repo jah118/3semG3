@@ -1,16 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace DataAccess.DataTransferObjects
+﻿namespace DataAccess.DataTransferObjects
 {
-    public partial class RestaurantTablesDTO
+    public class RestaurantTablesDTO
     {
+        public RestaurantTablesDTO()
+        {
+        }
 
+        public RestaurantTablesDTO(int id)
+        {
+            Id = id;
+        }
 
         public int Id { get; }
         public int NoOfSeats { get; set; }
         public int TableNumber { get; set; }
-
-       
     }
 }

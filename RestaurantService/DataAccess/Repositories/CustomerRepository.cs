@@ -1,7 +1,9 @@
 ﻿using DataAccess.DataTransferObjects;
 using DataAccess.Models;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 
 namespace DataAccess.Repositories
@@ -15,25 +17,42 @@ namespace DataAccess.Repositories
             _context = context;
         }
 
-        public CustomerDTO Create(CustomerDTO obj)
+        public CustomerDTO Create(CustomerDTO obj, bool transactionEndpoint = true)
         {
+            if (transactionEndpoint) _context.Database.BeginTransaction(IsolationLevel.Serializable);
+            //insert logic here
+            if (transactionEndpoint) _context.SaveChanges();
             throw new NotImplementedException();
         }
 
-        public bool Delete(CustomerDTO obj)
+        public bool Delete(CustomerDTO obj, bool transactionEndpoint = true)
         {
+            if (transactionEndpoint) _context.Database.BeginTransaction(IsolationLevel.Serializable);
+            //insert logic here
+            if (transactionEndpoint) _context.SaveChanges();
             throw new NotImplementedException();
         }
 
         public IEnumerable<CustomerDTO> GetAll()
         {
-            var customers = _context.Customer.ToList();
+            var customers = _context.Customer
+                .Include(c => c.Person)
+                    .ThenInclude(c => c.Location)
+                        .ThenInclude(c => c.ZipCodeNavigation)
+                    ;
+
             var res = new List<CustomerDTO>();
             foreach (Customer c in customers)
             {
-                res.Add(new CustomerDTO
+                res.Add(new CustomerDTO(c.Id)
                 {
-                    FirstName = c.Id.ToString()
+                    FirstName = c.Person.FirstName,
+                    LastName = c.Person.LastName,
+                    Email = c.Person.Email,
+                    Phone = c.Person.Phone,
+                    Address = c.Person.Location.Address,
+                    City = c.Person.Location.ZipCodeNavigation.City,
+                    ZipCode = c.Person.Location.ZipCodeNavigation.ZipCode
                 });
             }
 
@@ -42,18 +61,33 @@ namespace DataAccess.Repositories
 
         public CustomerDTO GetById(int id)
         {
-            return new CustomerDTO { FirstName = "Lars", LastName = "Nysom", Address = "vej vej 8", City = "Ållern", Email = "la@nysom.dk", Phone = "22222222", ZipCode = "9000" };
+            CustomerDTO res = null;
+            Customer customer = _context.Customer
+                            .Where(c => c.Id == id)
+                            .Include(c => c.Person)
+                            .ThenInclude(c => c.Location)
+                            .ThenInclude(c => c.ZipCodeNavigation)
+                            .FirstOrDefault();
+            if (customer != null)
+            {
+                res = new CustomerDTO(customer);
+            }
+
+            return res;
         }
 
         public IEnumerable<CustomerDTO> GetCountWithOffsetByOrdering(int count, int offset, string ordering)
         {
-            List<Customer> res = null;
+            //  List<Customer> res = null;
 
             throw new NotImplementedException();
         }
 
-        public CustomerDTO Update(CustomerDTO obj)
+        public CustomerDTO Update(CustomerDTO obj, bool transactionEndpoint = true)
         {
+            if (transactionEndpoint) _context.Database.BeginTransaction(IsolationLevel.Serializable);
+            //insert logic here
+            if (transactionEndpoint) _context.SaveChanges();
             throw new NotImplementedException();
         }
     }
