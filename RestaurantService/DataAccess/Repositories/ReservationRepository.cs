@@ -9,7 +9,7 @@ using System.Linq;
 
 namespace DataAccess.Repositories
 {
-    internal class ReservationRepository : IRepository<ReservationDTO>
+    public class ReservationRepository : IRepository<ReservationDTO>
     {
         private readonly RestaurantContext _context;
 
@@ -83,7 +83,23 @@ namespace DataAccess.Repositories
 
         public ReservationDTO GetById(int id)
         {
-            throw new NotImplementedException();
+            ReservationDTO res = null;
+            var reservation = _context.Reservation
+                            .Where(r => r.Id == id)
+                            .Include(c => c.Customer)
+                                .ThenInclude(c => c.Person)
+                                    .ThenInclude(c => c.Location)
+                                        .ThenInclude(c => c.ZipCodeNavigation)
+                            .Include(rt => rt.ReservationsTables)
+                                .ThenInclude(t => t.RestaurantTables)
+                            .FirstOrDefault();
+
+            if (reservation != null)
+            {
+                res = Converter.Convert(reservation);
+            }
+
+            return res;
         }
 
         public IEnumerable<ReservationDTO> GetCountWithOffsetByOrdering(int count, int offset, string ordering)

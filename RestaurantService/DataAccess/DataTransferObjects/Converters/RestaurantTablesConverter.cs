@@ -12,12 +12,30 @@ namespace DataAccess.DataTransferObjects.Converters
         //Unsure if this makes more sense than disretely handling dto -> Model mapping, and having a secondary constructor
         public static RestaurantTables Convert(RestaurantTablesDTO obj)
         {
-            throw new NotImplementedException();
+            return new RestaurantTables()
+            {
+                NoOfSeats = obj.NoOfSeats,
+                TableNumber = obj.TableNumber
+            };
         }
 
         public static RestaurantTablesDTO Convert(RestaurantTables obj)
         {
-            throw new NotImplementedException();
+            return new RestaurantTablesDTO(obj.Id)
+            {
+                NoOfSeats = obj.NoOfSeats,
+                TableNumber = obj.TableNumber
+            };
+        }
+
+        public static IEnumerable<RestaurantTablesDTO> Convert(IEnumerable<RestaurantTables> obj)
+        {
+            var list = new List<RestaurantTablesDTO>();
+            foreach(var t in obj)
+            {
+                list.Add(Convert(t));
+            }
+            return list;
         }
     }
 }

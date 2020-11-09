@@ -19,8 +19,8 @@ namespace DataAccess.DataTransferObjects
         public CustomerDTO Customer { get; set; }
         public DateTime ReservationTime { get; set; }
         public int NoOfPeople { get; set; }
-        public bool Deposit { get; set; }
+        public bool? Deposit { get; set; }
         public string Note { get; set; }
-        public ICollection<RestaurantTablesDTO> Tables { get; set; }
+        public IEnumerable<RestaurantTablesDTO> Tables { get; set; }
     }
 }
