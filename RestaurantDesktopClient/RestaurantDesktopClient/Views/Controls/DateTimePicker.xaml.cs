@@ -34,6 +34,39 @@ namespace RestaurantDesktopClient.Views.Controls
             return time;
         }
 
+        private DateTime trimDateTime(DateTime dt)
+        {
+            if (dt.Minute > 0 && dt.Minute < 15)
+            {
+                while(dt.Minute < 15)
+                {
+                    dt = dt.AddMinutes(1);
+                }
+            }
+            else if (dt.Minute > 15 && dt.Minute < 30)
+            {
+                while (dt.Minute < 30)
+                {
+                    dt = dt.AddMinutes(1);
+                }
+            }
+            else if (dt.Minute > 30 && dt.Minute < 45)
+            {
+                while (dt.Minute < 45)
+                {
+                    dt = dt.AddMinutes(1);
+                }
+            }
+            else if (dt.Minute > 45 && dt.Minute <= 59)
+            {
+                while (dt.Minute >1)
+                {
+                    dt = dt.AddMinutes(-1);
+                }
+            }
+            return dt;
+        }
+
         private void DpDate_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
         {
             DateTime temp = new DateTime();
@@ -48,8 +81,10 @@ namespace RestaurantDesktopClient.Views.Controls
 
         internal void setDateTime(DateTime reservationTime)
         {
-            time = reservationTime;
-            dpDate.SelectedDate = reservationTime;
+            time = trimDateTime(reservationTime);
+            dpDate.SelectedDate = time;
+            updateTbHoursText();
+            updateTbMinText();
         }
 
         private void btnPlusHours_Click(object sender, RoutedEventArgs e)

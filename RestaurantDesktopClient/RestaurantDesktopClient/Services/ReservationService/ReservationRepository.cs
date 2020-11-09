@@ -16,9 +16,10 @@ namespace RestaurantDesktopClient.Reservation
         {
             try
             {
-                var client = new RestClient("https://localhost:44349/api/Booking/Create");
+                var client = new RestClient("https://ptsv2.com/t/ptsTempApiHost");
+                //var client = new RestClient("https://localhost:44349/api/");
                 string json = JsonConvert.SerializeObject(reservation);
-                var request = new RestRequest("Booking/Create", Method.POST);
+                var request = new RestRequest("/post", Method.POST);
                 request.RequestFormat = DataFormat.Json;
                 request.AddJsonBody(reservation);
                 var response = client.Execute(request).Content;
@@ -33,7 +34,7 @@ namespace RestaurantDesktopClient.Reservation
             ReservationDTO res = null;
             try
             {
-                var client = new RestClient("https://localhost:44349/api/Booking/Create");
+                var client = new RestClient("https://localhost:44349/api/");
                 var request = new RestRequest("Booking/Get/Id", Method.POST);
                 request.RequestFormat = DataFormat.Json;
                 request.AddUrlSegment("Id", id);
