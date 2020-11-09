@@ -15,6 +15,7 @@
     <Deterministic>true</Deterministic>
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -25,6 +26,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <LangVersion>8.0</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -34,6 +36,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <LangVersion>8.0</LangVersion>
   </PropertyGroup>
   <PropertyGroup>
     <StartupObject />
@@ -43,6 +46,8 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DataTransferObjects\Converters\ReservationConverter.cs" />
+    <Compile Include="DataTransferObjects\Converters\RestaurantTablesConverter.cs" />
     <Compile Include="DataTransferObjects\CustomerDTO.cs" />
     <Compile Include="DataTransferObjects\EmployeeDTO.cs" />
     <Compile Include="DataTransferObjects\FoodCategoryDTO.cs" />
@@ -68,6 +73,7 @@
     <Compile Include="Models\Reservation.cs" />
     <Compile Include="Models\ReservationsTables.cs" />
     <Compile Include="Repositories\EmployeeRepository.cs" />
+    <Compile Include="Repositories\ReservationRepository.cs" />
     <Compile Include="RestaurantContext.cs" />
     <Compile Include="Models\RestaurantOrder.cs" />
     <Compile Include="Models\RestaurantTables.cs" />

@@ -21,27 +21,32 @@ namespace RestaurantService.Controllers
         }
 
         // GET: api/Customer/5
-        public IHttpActionResult Customer(int id)
+        public IHttpActionResult Get(int id)   //Customer --> Get
         {
-            return Ok(_customerRepository.GetById(id));
+            var customer =_customerRepository.GetById(id);
+            if (customer == null)
+            {
+                return NotFound();
+            }
+            return Ok(customer);
         }
 
         // POST: api/Customer
         public IHttpActionResult Post([FromBody] CustomerDTO customer)
         {
-            return null;
+            return Ok(_customerRepository.Create(customer));
         }
 
         // PUT: api/Customer/5
         public IHttpActionResult Put(int id, [FromBody] CustomerDTO customer)
         {
-            return null;
+            return Ok(_customerRepository.Update(customer));
         }
 
         // DELETE: api/Customer/5
         public IHttpActionResult Delete(int id)
         {
-            return null;
+            return Ok("not implemnete´t");
         }
     }
 }

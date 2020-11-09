@@ -1,12 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace DataAccess.DataTransferObjects
+﻿namespace DataAccess.DataTransferObjects
 {
-
     public enum PaymentCondition
     {
         Bestilt
@@ -15,5 +8,4 @@ namespace DataAccess.DataTransferObjects
         , Betalt
         , Annulleret
     }
-
 }

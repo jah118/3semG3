@@ -1,7 +1,9 @@
 ﻿using DataAccess.DataTransferObjects;
 using DataAccess.Models;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 
 namespace DataAccess.Repositories
@@ -15,26 +17,43 @@ namespace DataAccess.Repositories
             _context = context;
         }
 
-        public EmployeeDTO Create(EmployeeDTO obj)
+        public EmployeeDTO Create(EmployeeDTO obj, bool transactionEndpoint = true)
         {
+            if (transactionEndpoint) _context.Database.BeginTransaction(IsolationLevel.Serializable);
+            //insert logic here
+            if (transactionEndpoint) _context.SaveChanges();
             throw new NotImplementedException();
         }
 
-        public bool Delete(EmployeeDTO obj)
+        public bool Delete(EmployeeDTO obj, bool transactionEndpoint = true)
         {
+            if (transactionEndpoint) _context.Database.BeginTransaction(IsolationLevel.Serializable);
+            //insert logic here
+            if (transactionEndpoint) _context.SaveChanges();
             throw new NotImplementedException();
         }
 
         public IEnumerable<EmployeeDTO> GetAll()
         {
-            var employees = _context.Employee.ToList();
+            var employees = _context.Employee
+                .Include(e => e.Person)
+                .ThenInclude(e => e.Location)
+                .ThenInclude(e => e.ZipCodeNavigation)
+                .Include(e => e.Title); //remember to include every time an additional . is added in the create part
             var res = new List<EmployeeDTO>();
             foreach (Employee e in employees)
             {
-                res.Add(new EmployeeDTO
+                res.Add(new EmployeeDTO(e.Id)
                 {
-                    FirstName = e.Id.ToString()
-                });
+                    Title = e.Title.Title,
+                    FirstName = e.Person.FirstName,
+                    LastName = e.Person.LastName,
+                    Email = e.Person.Email,
+                    Phone = e.Person.Phone,
+                    Address = e.Person.Location.Address,
+                    City = e.Person.Location.ZipCodeNavigation.City,
+                    ZipCode = e.Person.Location.ZipCodeNavigation.ZipCode
+                }); ;
             }
 
             return res;
@@ -42,18 +61,34 @@ namespace DataAccess.Repositories
 
         public EmployeeDTO GetById(int id)
         {
-            return new EmployeeDTO { FirstName = "Lars", LastName = "Nysom", Address = "vej vej 8", City = "Ållern", Email = "la@nysom.dk", Phone = "22222222", ZipCode = "9000" };
+            EmployeeDTO res = null;
+            Employee employee = _context.Employee
+                 .Where(c => c.Id == id)
+                 .Include(c => c.Person)
+                 .ThenInclude(c => c.Location)
+                 .ThenInclude(c => c.ZipCodeNavigation)
+                 .Include(e => e.Title)
+                 .FirstOrDefault();
+
+            if (employee != null)
+            {
+                res = new EmployeeDTO(employee);
+            }
+            return res;
         }
 
         public IEnumerable<EmployeeDTO> GetCountWithOffsetByOrdering(int count, int offset, string ordering)
         {
-            List<Employee> res = null;
+            //List<Employee> res = null;
 
             throw new NotImplementedException();
         }
 
-        public EmployeeDTO Update(EmployeeDTO obj)
+        public EmployeeDTO Update(EmployeeDTO obj, bool transactionEndpoint = true)
         {
+            if (transactionEndpoint) _context.Database.BeginTransaction(IsolationLevel.Serializable);
+            //insert logic here
+            if (transactionEndpoint) _context.SaveChanges();
             throw new NotImplementedException();
         }
     }
