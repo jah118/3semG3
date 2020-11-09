@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace DataAccess
 {
@@ -14,10 +10,11 @@ namespace DataAccess
 
         TEntity GetById(int id);
 
-        TEntity Create(TEntity obj);
+        // if (transactionEndpoint) _context.Database.BeginTransaction(IsolationLevel.Serializable); for all transaction purposes
+        TEntity Create(TEntity obj, bool transactionEndpoint = true);
 
-        TEntity Update(TEntity obj);
+        TEntity Update(TEntity obj, bool transactionEndpoint = true);
 
-        bool Delete(TEntity obj);
+        bool Delete(TEntity obj, bool transactionEndpoint = true);
     }
 }

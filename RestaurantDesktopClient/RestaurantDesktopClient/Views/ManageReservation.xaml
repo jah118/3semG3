@@ -36,8 +36,8 @@
         </Grid.RowDefinitions>
 
         <controls:HeadLineControl Grid.ColumnSpan="10" Grid.RowSpan="2"/>
-        <controls:ListPageControl Grid.Column="0" Grid.ColumnSpan="4" Grid.Row="2" Grid.RowSpan="6"  Margin="15,0,0,0" />
-        <controls:ReservationViewControl Grid.Column="5" Grid.ColumnSpan="4" Grid.Row="3" Grid.RowSpan="6" />
+        <controls:ListPageControl x:Name="ListPageControl" Grid.Column="0" Grid.ColumnSpan="4" Grid.Row="2" Grid.RowSpan="6"  Margin="15,0,0,0" />
+        <controls:ReservationViewControl x:Name="ReservationViewControl" Grid.Column="5" Grid.ColumnSpan="4" Grid.Row="3" Grid.RowSpan="6" />
         <controls:BackControl Grid.Column="7" Grid.Row="9" Grid.ColumnSpan="2" VerticalAlignment="Top"/>
 
     </Grid>

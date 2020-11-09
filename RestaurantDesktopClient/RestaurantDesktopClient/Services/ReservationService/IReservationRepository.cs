@@ -12,5 +12,7 @@ namespace RestaurantDesktopClient.Reservation
     interface IReservationRepository
     {
         List<ReservationDTO> GetAllReservations();
+        void CreateReservation(ReservationDTO reservation);
+        ReservationDTO GetReservation(int id);
     }
 }

@@ -22,7 +22,8 @@ namespace RestaurantService.App_Start
             optionsBuilder.UseSqlServer(_connectionString);
             builder.Register(c => new CustomerRepository(new RestaurantContext(optionsBuilder.Options))).As<IRepository<CustomerDTO>>();
             builder.Register(c => new EmployeeRepository(new RestaurantContext(optionsBuilder.Options))).As<IRepository<EmployeeDTO>>();
-            builder.RegisterApiControllers(Assembly.GetExecutingAssembly());
+            builder.Register(c => new ReservationRepository(new RestaurantContext(optionsBuilder.Options))).As<IRepository<ReservationDTO>>();
+            builder.RegisterApiControllers(Assembly.GetExecutingAssembly()).InstancePerRequest();
 
             var container = builder.Build();
             var resolver = new AutofacWebApiDependencyResolver(container);

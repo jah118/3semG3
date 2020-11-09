@@ -36,12 +36,14 @@ namespace RestaurantDesktopClient.Views.ManageReservation
         private DataTable ConvertReservationObjToDataTable(List<ReservationDTO> input)
         {
             DataTable res = new DataTable();
-            foreach (PropertyInfo info in typeof(ReservationDTO).GetProperties())
-            {
-                res.Columns.Add(new DataColumn(info.Name));
-            }
+            res.Columns.Add(new DataColumn("Reservation Number"));
+            res.Columns.Add(new DataColumn("Customer"));
+            res.Columns.Add(new DataColumn("ReservationDate"));
+            res.Columns.Add(new DataColumn("ReservationTime"));
+            res.Columns.Add(new DataColumn("NoOfPeople"));
             input.ForEach((x) => {
                 DataRow dr = res.NewRow();
+                dr["Reservation Number"] = x.Id;
                 dr["Customer"] = x.Customer.FirstName + " " + x.Customer.LastName;
                 dr["ReservationDate"] = x.ReservationDate.ToString();
                 dr["ReservationTime"] = x.ReservationTime.ToString();
