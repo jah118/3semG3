@@ -3,7 +3,9 @@ using Newtonsoft.Json;
 using RestSharp;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Helpers;
 using System.Web.Mvc;
@@ -43,17 +45,19 @@ namespace RestaurantWebApp.Controllers
 
         // POST: Booking/Create
         [HttpPost]
-        public ActionResult Create(FormCollection collection, ReservationDTO reservation)
+        public async Task <ActionResult> Create(FormCollection collection, ReservationDTO reservation)
         {
             try
-            {
-                //TODO Virker måske
-                var client = new RestClient("https://localhost:44349/api/Booking/Create");
+            { 
+               
+
+                var client = new RestClient(ConfigurationManager.AppSettings["ToiletApiPost"]);
+                //var client = new RestClient("https://localhost:44349/api/Booking/Create");
                 string json = JsonConvert.SerializeObject(reservation);
-                var request = new RestRequest("Booking/Create", Method.POST);
-                request.RequestFormat = DataFormat.Json;
+                var request = new RestRequest("/post", Method.POST);
+               // var request = new RestRequest("/Booking/Create", Method.POST);
                 request.AddJsonBody(reservation);
-                var response = client.Execute(request).Content;
+                var response = await client.ExecuteAsync(request);
 
                 return RedirectToAction("Index");
             }
