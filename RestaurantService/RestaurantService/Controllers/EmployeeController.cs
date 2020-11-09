@@ -28,7 +28,7 @@ namespace RestaurantService.Controllers
             {
                 return NotFound();
             }
-            return Ok();
+            return Ok(employee);
         }
 
         // POST: api/Customer
