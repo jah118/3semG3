@@ -35,7 +35,7 @@ namespace RestaurantService.Controllers
         {
             var res = _reservationRepository.Create(value);
 
-            return res == null ? (IHttpActionResult)Ok(res) : Content(HttpStatusCode.Conflict, value);
+            return res != null ? (IHttpActionResult)Ok(res) : Content(HttpStatusCode.Conflict, value);
         }
         
         // PUT: api/Reservation/5
