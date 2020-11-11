@@ -74,6 +74,7 @@
     <Compile Include="Models\ReservationsTables.cs" />
     <Compile Include="Repositories\EmployeeRepository.cs" />
     <Compile Include="Repositories\ReservationRepository.cs" />
+    <Compile Include="Repositories\TableRepository.cs" />
     <Compile Include="RestaurantContext.cs" />
     <Compile Include="Models\RestaurantOrder.cs" />
     <Compile Include="Models\RestaurantTables.cs" />
