@@ -53,7 +53,7 @@ namespace RestaurantWebApp.Controllers
 
                 var client = new RestClient(ConfigurationManager.AppSettings["ToiletApiPost"]);
                 //var client = new RestClient("https://localhost:44349/api/Booking/Create");
-                string json = JsonConvert.SerializeObject(reservation);
+                //string json = JsonConvert.SerializeObject(reservation);
                 var request = new RestRequest("/post", Method.POST);
                // var request = new RestRequest("/Booking/Create", Method.POST);
                 request.AddJsonBody(reservation);
