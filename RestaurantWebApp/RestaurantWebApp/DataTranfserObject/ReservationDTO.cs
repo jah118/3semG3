@@ -26,6 +26,15 @@ namespace DataAccess.DataTransferObjects
 
         public ICollection<ReservationsTablesDTO> ReservationsTables { get;}
 
-
+        public ReservationDTO(DateTime reservationDate, CustomerDTO customer, DateTime reservationTime, int noOfPeople, bool deposit, string note, ICollection<ReservationsTablesDTO> reservationsTables)
+        {
+            ReservationDate = reservationDate;
+            Customer = customer;
+            ReservationTime = reservationTime;
+            NoOfPeople = noOfPeople;
+            Deposit = deposit;
+            Note = note;
+            ReservationsTables = reservationsTables;
+        }
     }
 }
