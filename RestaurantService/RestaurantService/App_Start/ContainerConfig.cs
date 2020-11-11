@@ -23,6 +23,7 @@ namespace RestaurantService.App_Start
             builder.Register(c => new CustomerRepository(new RestaurantContext(optionsBuilder.Options))).As<IRepository<CustomerDTO>>();
             builder.Register(c => new EmployeeRepository(new RestaurantContext(optionsBuilder.Options))).As<IRepository<EmployeeDTO>>();
             builder.Register(c => new ReservationRepository(new RestaurantContext(optionsBuilder.Options))).As<IRepository<ReservationDTO>>();
+            builder.Register(c => new TableRepository(new RestaurantContext(optionsBuilder.Options))).As<IRepository<RestaurantTablesDTO>>();
             builder.RegisterApiControllers(Assembly.GetExecutingAssembly()).InstancePerRequest();
 
             var container = builder.Build();
