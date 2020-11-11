@@ -15,7 +15,7 @@ namespace RestaurantDesktopClient.Services.Table_Service
         {
             var client = new RestClient("https://localhost:44349/api");
 
-            var request = new RestRequest("/table", Method.GET);
+            var request = new RestRequest("/Table", Method.GET);
 
             var content = client.Execute(request).Content;
 
