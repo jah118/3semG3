@@ -48,20 +48,14 @@ namespace RestaurantDesktopClient.Reservation
 
         List<ReservationDTO> IReservationRepository.GetAllReservations()
         {
-            List<ReservationDTO> res = null;
-            try
-            {
+
             var client = new RestClient("https://localhost:44349/api");
-            var request = new RestRequest("/Reservation", Method.GET);
+            var request = new RestRequest("/reservation", Method.GET);
             var content = client.Execute(request).Content;
-            res = (List<ReservationDTO>) JsonConvert.DeserializeObject(content);
-            }
-            catch
-            {
+            var res = JsonConvert.DeserializeObject<List<ReservationDTO>>(content);
 
-            }
 
-            return res;
+            return (List<ReservationDTO>)res;
         }
 
     }

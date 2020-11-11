@@ -13,17 +13,13 @@ namespace RestaurantDesktopClient.Services.Table_Service
     {
         public List<RestaurantTablesDTO> GetAllTables()
         {
-            var client = new RestClient("https://localhost:44349/api/tables");
+            var client = new RestClient("https://localhost:44349/api");
 
-            var request = new RestRequest("Tables", Method.GET);
+            var request = new RestRequest("/table", Method.GET);
 
             var content = client.Execute(request).Content;
 
-            //TODO: convert from json to Reservation
-
-            List<RestaurantTablesDTO> res = (List<RestaurantTablesDTO>)JsonConvert.DeserializeObject(content);
-
-            res = new List<RestaurantTablesDTO> { new RestaurantTablesDTO { NoOfSeats = 4, TableNumber = 1 } }; // TODO: remove when service running
+            List<RestaurantTablesDTO> res = JsonConvert.DeserializeObject<List<RestaurantTablesDTO>>(content);
 
             return res;
         }

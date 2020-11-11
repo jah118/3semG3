@@ -57,7 +57,11 @@ namespace RestaurantDesktopClient.Views.ManageReservation
 
         public void updateSearchTable()
         {
-            SearchTable = ConvertReservationObjToDataTable(repository.GetAllReservations());
+            var reservations = repository.GetAllReservations();
+            if(reservations!= null)
+            {
+            SearchTable = ConvertReservationObjToDataTable(reservations);
+            }
         }
 
     }

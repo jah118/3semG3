@@ -5,7 +5,10 @@ namespace DataAccess.DataTransferObjects
 {
     public partial class RestaurantTablesDTO
     {
+        public RestaurantTablesDTO()
+        {
 
+        }
 
         public int Id { get; }
         public int NoOfSeats { get; set; }
