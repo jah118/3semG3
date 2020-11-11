@@ -1,6 +1,8 @@
 ﻿using DataAccess.DataTransferObjects;
+using RestaurantDesktopClient.Controllers;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -25,6 +27,12 @@ namespace RestaurantDesktopClient.Views.Controls
         public ReservationViewControl()
         {
             InitializeComponent();
+            InsertReservationTables();
+        }
+
+        private void InsertReservationTables()
+        {
+            lvTableNames.ItemsSource = new TableController().getAllTables();
         }
 
         public void SetReservationInformation(ReservationDTO reservation)
@@ -38,6 +46,17 @@ namespace RestaurantDesktopClient.Views.Controls
             txtNumOfPersons.Text = reservation.NoOfPeople + "";
             txtReservationComments.Text = reservation.Note;
             reservation.Note = txtReservationComments.Text;
+            MarkBookedTables(_reservation.RestaurantTable);
+        }
+
+        private void MarkBookedTables(List<RestaurantTablesDTO> restaurantTables)
+        {
+            restaurantTables.ForEach((x) =>
+            {
+                DataRowView drv = (DataRowView)lvTableNames.Items[lvTableNames.Items.IndexOf(x)];
+                lvTableNames.SelectedItems.Add(drv);
+
+            });
         }
     }
 }
