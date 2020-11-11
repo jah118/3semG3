@@ -10,23 +10,21 @@ namespace DataAccess.DataTransferObjects
     {
         public ReservationDTO()
         {
-           
-
-            ReservationDate = DateTime.Now;
-            ReservationTime = DateTime.Now;
-
+                      
         }
         public int Id { get; }
         public DateTime ReservationDate { get; set; }
-        public CustomerDTO Customer { get; set; } //TODO tjeck om dette er virtuel eller ej
+        public CustomerDTO Customer { get; set; } 
         public DateTime ReservationTime { get; set; }
         public int NoOfPeople { get; set; }
         public bool Deposit { get; }
         public string Note { get; set; }
 
-        public ICollection<ReservationsTablesDTO> ReservationsTables { get;}
+        public IEnumerable<ReservationsTablesDTO> ReservationsTables { get;}
 
-        public ReservationDTO(DateTime reservationDate, CustomerDTO customer, DateTime reservationTime, int noOfPeople, bool deposit, string note, ICollection<ReservationsTablesDTO> reservationsTables)
+
+        //for testing
+        public ReservationDTO(DateTime reservationDate, CustomerDTO customer, DateTime reservationTime, int noOfPeople, bool deposit, string note, IEnumerable<ReservationsTablesDTO> reservationsTables)
         {
             ReservationDate = reservationDate;
             Customer = customer;
