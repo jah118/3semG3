@@ -20,7 +20,8 @@ namespace RestaurantService.Controllers
         // GET: api/Reservation
         public IHttpActionResult Get()
         {
-            return Ok(_reservationRepository.GetAll());
+            var res = _reservationRepository.GetAll();
+            return res != null ? (IHttpActionResult)Ok(res) : NotFound();
         }
 
         // GET: api/Reservation/5
