@@ -78,7 +78,22 @@ namespace DataAccess.Repositories
 
         public IEnumerable<ReservationDTO> GetAll()
         {
-            throw new NotImplementedException();
+            IEnumerable<ReservationDTO> res = null;
+
+            var reservations = _context.Reservation
+                            .Include(c => c.Customer)
+                                .ThenInclude(c => c.Person)
+                                    .ThenInclude(c => c.Location)
+                                        .ThenInclude(c => c.ZipCodeNavigation)
+                            .Include(rt => rt.ReservationsTables)
+                                .ThenInclude(t => t.RestaurantTables).ToList();
+
+            if (reservations != null)
+            {
+                res = Converter.Convert(reservations);
+            }
+
+            return res;
         }
 
         public ReservationDTO GetById(int id)
