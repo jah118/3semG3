@@ -16,11 +16,10 @@ namespace RestaurantDesktopClient.Reservation
         {
             try
             {
-                var client = new RestClient("https://localhost:44349/api/");
+                var client = new RestClient("https://localhost:44349/api");
                 string json = JsonConvert.SerializeObject(reservation);
-                var request = new RestRequest("/post", Method.POST);
-                request.RequestFormat = DataFormat.Json;
-                request.AddJsonBody(reservation);
+                var request = new RestRequest("/reservation", Method.POST);
+                request.AddJsonBody(json);
                 var response = client.Execute(request).Content;
             }
             catch
@@ -34,11 +33,10 @@ namespace RestaurantDesktopClient.Reservation
             try
             {
                 var client = new RestClient("https://localhost:44349/api");
-                var request = new RestRequest("/Id", Method.POST);
-                request.RequestFormat = DataFormat.Json;
+                var request = new RestRequest("/reservation/{Id}", Method.GET);
                 request.AddUrlSegment("Id", id);
                 var response = client.Execute(request).Content;
-                res = (ReservationDTO)JsonConvert.DeserializeObject(response);
+                res = JsonConvert.DeserializeObject<ReservationDTO>(response);
             }
             catch
             {

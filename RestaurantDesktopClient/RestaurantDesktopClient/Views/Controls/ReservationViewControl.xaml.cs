@@ -33,6 +33,7 @@ namespace RestaurantDesktopClient.Views.Controls
         private void InsertReservationTables()
         {
             lvTableNames.ItemsSource = new TableController().getAllTables();
+            lvTableNames.DisplayMemberPath = "TableNumber";
         }
 
         public void SetReservationInformation(ReservationDTO reservation)
@@ -40,9 +41,9 @@ namespace RestaurantDesktopClient.Views.Controls
             _reservation = reservation;
             cbDepositPayed.IsChecked = reservation.Deposit;
             txtCustomerNumber.Text = reservation.Customer.Id + "";
-            lvTableNames.ItemsSource = reservation.ReservationsTables;
+            lvTableNames.ItemsSource = reservation.RestaurantTable;
             dtpReservationTime.setDateTime(reservation.ReservationTime);
-            dpReservationDate.DisplayDate = reservation.ReservationDate;
+            dpReservationDate.SelectedDate = reservation.ReservationDate;
             txtNumOfPersons.Text = reservation.NoOfPeople + "";
             txtReservationComments.Text = reservation.Note;
             reservation.Note = txtReservationComments.Text;
@@ -51,12 +52,16 @@ namespace RestaurantDesktopClient.Views.Controls
 
         private void MarkBookedTables(List<RestaurantTablesDTO> restaurantTables)
         {
-            restaurantTables.ForEach((x) =>
+            if(restaurantTables != null)
             {
-                DataRowView drv = (DataRowView)lvTableNames.Items[lvTableNames.Items.IndexOf(x)];
-                lvTableNames.SelectedItems.Add(drv);
+                restaurantTables.ForEach((x) =>
+                {
+                    DataRowView drv = (DataRowView)lvTableNames.Items[lvTableNames.Items.IndexOf(x)];
+                    lvTableNames.SelectedItems.Add(drv);
 
-            });
+                });
+            }
+
         }
     }
 }

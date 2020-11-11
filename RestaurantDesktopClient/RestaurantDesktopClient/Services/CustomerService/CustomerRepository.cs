@@ -13,14 +13,13 @@ namespace RestaurantDesktopClient.Services.CustomerService
     {
         public CustomerDTO GetCustomerById(int customerId)
         {
-            var client = new RestClient("https://localhost:44349/api/reservation");
+            var client = new RestClient("https://localhost:44349/api");
 
-            var request = new RestRequest("Reservation", Method.GET);
-
+            var request = new RestRequest("/customer/{Id}", Method.GET);
+            request.AddUrlSegment("Id", customerId);
             var content = client.Execute(request).Content;
 
-            CustomerDTO res = (CustomerDTO)JsonConvert.DeserializeObject(content);
-            res = new CustomerDTO { FirstName="jonna", LastName="jonnasen", Address="jonnavej", ZipCode="2131", City="Jonnaby", Email="JonnaMain" , Phone="12457896"}; //TODO remove when service is running
+            CustomerDTO res = JsonConvert.DeserializeObject<CustomerDTO>(content);
 
             return res;
         }

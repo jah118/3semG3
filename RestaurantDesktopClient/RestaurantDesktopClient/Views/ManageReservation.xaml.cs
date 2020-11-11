@@ -36,8 +36,7 @@ namespace RestaurantDesktopClient.Views
         {
             DataRowView dr = (DataRowView)ListPageControl.dgResult.SelectedItem;
             int id = int.Parse(dr["Reservation number"].ToString());
-            ReservationController rc = new ReservationController();
-            ReservationDTO reservation = rc.GetReservationById(id);
+            ReservationDTO reservation = new ReservationController().GetReservationById(id);
             ReservationViewControl.SetReservationInformation(reservation);
         }
 
@@ -58,9 +57,9 @@ namespace RestaurantDesktopClient.Views
         {
             List<RestaurantTablesDTO> res = new List<RestaurantTablesDTO>();
             TableController tc = new TableController();
-            foreach(string s in ReservationViewControl.lvTableNames.Items)
+            foreach(RestaurantTablesDTO item in ReservationViewControl.lvTableNames.SelectedItems)
             {
-                res.Add(tc.getTableByNumber(int.Parse(s)));
+                res.Add(item);
             }
             return res;
         }

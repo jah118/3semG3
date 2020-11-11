@@ -24,9 +24,8 @@ namespace RestaurantDesktopClient.Views.Controls
         public DateTimePicker()
         {
             InitializeComponent();
-            time = new DateTime();
             dpDate.SelectedDateChanged += DpDate_SelectedDateChanged;
-            dpDate.SelectedDate = DateTime.Now;
+            setDateTime(DateTime.Now);
         }
 
         internal DateTime getDateTime()
@@ -59,7 +58,7 @@ namespace RestaurantDesktopClient.Views.Controls
             }
             else if (dt.Minute > 45 && dt.Minute <= 59)
             {
-                while (dt.Minute >1)
+                while (dt.Minute >0)
                 {
                     dt = dt.AddMinutes(-1);
                 }
