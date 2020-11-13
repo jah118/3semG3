@@ -39,7 +39,7 @@ namespace DataAccess
         {
             modelBuilder.Entity<Customer>(entity =>
             {
-                entity.Property(e => e.Id).HasColumnName("id");
+                entity.Property(e => e.Id).HasColumnName("id").ValueGeneratedOnAdd();
 
                 entity.Property(e => e.PersonId).HasColumnName("person_id");
 
@@ -52,7 +52,7 @@ namespace DataAccess
 
             modelBuilder.Entity<Employee>(entity =>
             {
-                entity.Property(e => e.Id).HasColumnName("id");
+                entity.Property(e => e.Id).HasColumnName("id").ValueGeneratedOnAdd();
 
                 entity.Property(e => e.PersonId).HasColumnName("person_id");
 
@@ -84,7 +84,7 @@ namespace DataAccess
                     .HasDatabaseName("UQ__Employee__E52A1BB3DF9A1243")
                     .IsUnique();
 
-                entity.Property(e => e.Id).HasColumnName("id");
+                entity.Property(e => e.Id).HasColumnName("id").ValueGeneratedOnAdd();
 
                 entity.Property(e => e.Title)
                     .IsRequired()
@@ -94,7 +94,7 @@ namespace DataAccess
 
             modelBuilder.Entity<Food>(entity =>
             {
-                entity.Property(e => e.Id).HasColumnName("id");
+                entity.Property(e => e.Id).HasColumnName("id").ValueGeneratedOnAdd();
 
                 entity.Property(e => e.Description)
                     .HasColumnName("description")
@@ -118,7 +118,7 @@ namespace DataAccess
             {
                 entity.ToTable("Food_Category");
 
-                entity.Property(e => e.Id).HasColumnName("id");
+                entity.Property(e => e.Id).HasColumnName("id").ValueGeneratedOnAdd();
 
                 entity.Property(e => e.Name)
                     .IsRequired()
@@ -128,7 +128,7 @@ namespace DataAccess
 
             modelBuilder.Entity<Location>(entity =>
             {
-                entity.Property(e => e.Id).HasColumnName("id");
+                entity.Property(e => e.Id).HasColumnName("id").ValueGeneratedOnAdd();
 
                 entity.Property(e => e.Address)
                     .IsRequired()
@@ -172,7 +172,7 @@ namespace DataAccess
 
             modelBuilder.Entity<PaymentCondition>(entity =>
             {
-                entity.Property(e => e.Id).HasColumnName("id");
+                entity.Property(e => e.Id).HasColumnName("id").ValueGeneratedOnAdd();
 
                 entity.Property(e => e.Condition)
                     .IsRequired()
@@ -186,7 +186,7 @@ namespace DataAccess
                     .HasDatabaseName("UQ__Person__B43B145F3298A2D0")
                     .IsUnique();
 
-                entity.Property(e => e.Id).HasColumnName("id");
+                entity.Property(e => e.Id).HasColumnName("id").ValueGeneratedOnAdd();
 
                 entity.Property(e => e.Email)
                     .HasColumnName("email")
@@ -218,7 +218,7 @@ namespace DataAccess
 
             modelBuilder.Entity<Price>(entity =>
             {
-                entity.Property(e => e.Id).HasColumnName("id");
+                entity.Property(e => e.Id).HasColumnName("id").ValueGeneratedOnAdd();
 
                 entity.Property(e => e.FoodId).HasColumnName("food_id");
 
@@ -235,7 +235,7 @@ namespace DataAccess
 
             modelBuilder.Entity<Reservation>(entity =>
             {
-                entity.Property(e => e.Id).HasColumnName("id");
+                entity.Property(e => e.Id).HasColumnName("id").ValueGeneratedOnAdd();
 
                 entity.Property(e => e.CustomerId).HasColumnName("customer_id");
 
@@ -326,7 +326,7 @@ namespace DataAccess
             {
                 entity.ToTable("Restaurant_Tables");
 
-                entity.Property(e => e.Id).HasColumnName("id");
+                entity.Property(e => e.Id).HasColumnName("id").ValueGeneratedOnAdd();
 
                 entity.Property(e => e.NoOfSeats).HasColumnName("noOfSeats");
 

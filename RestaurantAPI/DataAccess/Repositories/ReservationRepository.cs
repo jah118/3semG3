@@ -34,36 +34,42 @@ namespace DataAccess.Repositories
                     .Where(r =>
                         r.ReservationTime <= obj.ReservationTime.AddMinutes(90) &&
                         r.ReservationTime.AddMinutes(90) >= obj.ReservationTime)
-                    .Where(r => r.ReservationsTables
-                        .Select(rt => rt.RestaurantTablesId)
-                        .Intersect(obj.Tables.Select(table => table.Id)).ToList().Count() > 0)
-                    .Count()
-                    ;
-                if (compareList > 0)
+                    .Select(r => r.ReservationsTables.Where(t => t.RestaurantTablesId.Equals(obj.Tables.Select(table => table.Id).Any()))).Count();
+
+
+
+
+                    //    .Select(rt => rt.RestaurantTablesId)
+                    //    .Intersect(obj.Tables.Select(table => table.Id)).Count() > 0)
+                    //.Count()
+                    //;
+
+                if (compareList == 0)
                 {
                     var toAdd = Converter.Convert(obj);
                     _context.Add<Reservation>(toAdd).GetDatabaseValues();
                     _context.Entry(toAdd).GetDatabaseValues();
-                    var id = toAdd.Id;
                     foreach (RestaurantTablesDTO rt in obj.Tables)
                     {
                         _context.Add<ReservationsTables>(new ReservationsTables
                         {
-                            ReservationId = id,
+                            Reservation = toAdd,
                             RestaurantTablesId = rt.Id
                         });
                     }
                     if (transactionEndpoint) _context.SaveChanges();
-                    return GetById(id);
+                    _context.Entry(toAdd).GetDatabaseValues();
+                    return GetById(toAdd.Id);
                 }
                 else
                 {
                     if (transactionEndpoint) _context.Database.RollbackTransaction();
                 }
             }
-            catch (Exception)
+            catch (Exception e)
             {
                 _context.Database.RollbackTransaction();
+                throw;
             }
             return null;
         }

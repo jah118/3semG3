@@ -24,7 +24,7 @@ namespace DataAccess.DataTransferObjects
             City = c.Person.Location.ZipCodeNavigation.City;
         }
 
-        public int Id { get; }
+        public int Id { get; init; }
         public string Phone { get; set; }
         public string Email { get; set; }
         public string FirstName { get; set; }
