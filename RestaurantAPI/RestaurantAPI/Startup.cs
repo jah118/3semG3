@@ -1,16 +1,13 @@
+using DataAccess;
+using DataAccess.DataTransferObjects;
+using DataAccess.Repositories;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace RestaurantAPI
 {
@@ -26,8 +23,17 @@ namespace RestaurantAPI
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddDbContext<RestaurantContext>(options =>
+                options.UseSqlServer(Configuration["Data:DefaultConnection:ConnectionString"]));
 
+            services.AddScoped<IRepository<RestaurantTablesDTO>, TableRepository>();
+            services.AddScoped<IRepository<CustomerDTO>, CustomerRepository>();
+            services.AddScoped<IRepository<EmployeeDTO>, EmployeeRepository>();
+            services.AddScoped<IRepository<ReservationDTO>, ReservationRepository>();
+            services.AddScoped<IRepository<UserDTO>, UserRepository>();
+            //Danger after this
             services.AddControllers();
+
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "RestaurantAPI", Version = "v1" });
