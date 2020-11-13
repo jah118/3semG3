@@ -42,22 +42,23 @@ namespace RestaurantDesktopClient.Views
 
         private void BtnCreateNew_Click(object sender, RoutedEventArgs e)
         {
-            ReservationDTO reservation = new ReservationDTO();
-            reservation.Deposit = (bool)ReservationViewControl.cbDepositPayed.IsChecked;
-            reservation.Customer = new CustomerController().getCustomerByid(int.Parse(ReservationViewControl.txtCustomerNumber.Text));
-            reservation.RestaurantTable = GetTablesFromlvTableNames();
-            reservation.ReservationTime = ReservationViewControl.dtpReservationTime.getDateTime();
-            reservation.ReservationDate = ReservationViewControl.dpReservationDate.DisplayDate;
-            reservation.NoOfPeople = int.Parse(ReservationViewControl.txtNumOfPersons.Text);
-            reservation.Note = ReservationViewControl.txtReservationComments.Text;
+            ReservationDTO reservation = new ReservationDTO
+            {
+                Deposit = (bool)ReservationViewControl.cbDepositPayed.IsChecked,
+                Customer = new CustomerController().getCustomerByid(int.Parse(ReservationViewControl.txtCustomerNumber.Text)),
+                Tables = GetTablesFromlvTableNames(),
+                ReservationTime = ReservationViewControl.dtpReservationTime.getDateTime(),
+                ReservationDate = ReservationViewControl.dpReservationDate.DisplayDate,
+                NoOfPeople = int.Parse(ReservationViewControl.txtNumOfPersons.Text),
+                Note = ReservationViewControl.txtReservationComments.Text
+            };
             IReservationRepository repository = new ReservationRepository();
             repository.CreateReservation(reservation);
         }
-        private List<RestaurantTablesDTO> GetTablesFromlvTableNames()
+        private List<TablesDTO> GetTablesFromlvTableNames()
         {
-            List<RestaurantTablesDTO> res = new List<RestaurantTablesDTO>();
-            TableController tc = new TableController();
-            foreach(RestaurantTablesDTO item in ReservationViewControl.lvTableNames.SelectedItems)
+            List<TablesDTO> res = new List<TablesDTO>();
+            foreach(TablesDTO item in ReservationViewControl.lvTableNames.SelectedItems)
             {
                 res.Add(item);
             }

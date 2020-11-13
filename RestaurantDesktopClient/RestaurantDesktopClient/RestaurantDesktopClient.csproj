@@ -42,6 +42,7 @@
       <HintPath>..\packages\RestSharp.106.11.7\lib\net452\RestSharp.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Data" />
     <Reference Include="System.Web" />
     <Reference Include="System.Xml" />
@@ -74,9 +75,8 @@
     <Compile Include="DataTransferObject\PaymentConditionDTO.cs" />
     <Compile Include="DataTransferObject\PriceDTO.cs" />
     <Compile Include="DataTransferObject\ReservationDTO.cs" />
-    <Compile Include="DataTransferObject\ReservationsTablesDTO.cs" />
     <Compile Include="DataTransferObject\RestaurantOrderDTO.cs" />
-    <Compile Include="DataTransferObject\RestaurantTablesDTO.cs" />
+    <Compile Include="DataTransferObject\TablesDTO.cs" />
     <Compile Include="Services\CustomerService\CustomerRepository.cs" />
     <Compile Include="Services\CustomerService\ICustomerRepository.cs" />
     <Compile Include="Services\ReservationService\IReservationRepository.cs" />

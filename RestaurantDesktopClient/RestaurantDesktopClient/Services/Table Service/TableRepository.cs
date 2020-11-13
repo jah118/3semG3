@@ -3,6 +3,7 @@ using Newtonsoft.Json;
 using RestSharp;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,32 +12,31 @@ namespace RestaurantDesktopClient.Services.Table_Service
 {
     class TableRepository : ITableRepository
     {
-        public List<RestaurantTablesDTO> GetAllTables()
+        public List<TablesDTO> GetAllTables()
         {
-            var client = new RestClient("https://localhost:44349/api");
+            string constring = ConfigurationManager.ConnectionStrings["ServiceConString"].ConnectionString;
+            var client = new RestClient(constring);
 
             var request = new RestRequest("/Table", Method.GET);
 
             var content = client.Execute(request).Content;
 
-            List<RestaurantTablesDTO> res = JsonConvert.DeserializeObject<List<RestaurantTablesDTO>>(content);
+            List<TablesDTO> res = JsonConvert.DeserializeObject<List<TablesDTO>>(content);
 
             return res;
         }
 
-        public RestaurantTablesDTO getTableByNumber(int number)
+        public TablesDTO GetTableByNumber(int number)
         {
-            var client = new RestClient("https://localhost:44349/api/tables");
+            string constring = ConfigurationManager.ConnectionStrings["ServiceConString"].ConnectionString;
+            var client = new RestClient(constring);
 
-            var request = new RestRequest("Tables/" + number, Method.GET);
+            var request = new RestRequest("Tables/{Id}", Method.GET);
+            request.AddUrlSegment("Id", number);
 
             var content = client.Execute(request).Content;
 
-
-
-            RestaurantTablesDTO res = (RestaurantTablesDTO)JsonConvert.DeserializeObject(content);
-
-            res = new RestaurantTablesDTO { NoOfSeats = 4, TableNumber = 1 }; // TODO: remove when service running
+            TablesDTO res = (TablesDTO)JsonConvert.DeserializeObject(content);
 
             return res;
         }

@@ -3,6 +3,7 @@ using Newtonsoft.Json;
 using RestSharp;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,7 +14,8 @@ namespace RestaurantDesktopClient.Services.CustomerService
     {
         public CustomerDTO GetCustomerById(int customerId)
         {
-            var client = new RestClient("https://localhost:44349/api");
+            string constring = ConfigurationManager.ConnectionStrings["ServiceConString"].ConnectionString;
+            var client = new RestClient(constring);
 
             var request = new RestRequest("/customer/{Id}", Method.GET);
             request.AddUrlSegment("Id", customerId);

@@ -17,15 +17,15 @@ namespace RestaurantDesktopClient.Controllers
             repository = new TableRepository();
         }
 
-        public List<RestaurantTablesDTO> getAllTables()
+        public List<TablesDTO> getAllTables()
         {
-            List<RestaurantTablesDTO> res = repository.GetAllTables();
+            List<TablesDTO> res = repository.GetAllTables();
             return res;
         }
 
-        public RestaurantTablesDTO getTableByNumber(int number)
+        public TablesDTO getTableByNumber(int number)
         {
-            RestaurantTablesDTO res = repository.getTableByNumber(number);
+            TablesDTO res = repository.GetTableByNumber(number);
             return res;
         }
     }

@@ -9,10 +9,10 @@ using System.Threading.Tasks;
 
 namespace RestaurantDesktopClient.Reservation
 {
-    interface IReservationRepository
+    public interface IReservationRepository
     {
         List<ReservationDTO> GetAllReservations();
-        void CreateReservation(ReservationDTO reservation);
+        System.Net.HttpStatusCode CreateReservation(ReservationDTO reservation);
         ReservationDTO GetReservation(int id);
     }
 }

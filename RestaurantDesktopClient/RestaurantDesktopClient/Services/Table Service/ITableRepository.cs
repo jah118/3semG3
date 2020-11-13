@@ -9,7 +9,7 @@ namespace RestaurantDesktopClient.Services.Table_Service
 {
     interface ITableRepository
     {
-        RestaurantTablesDTO getTableByNumber(int number);
-        List<RestaurantTablesDTO> GetAllTables();
+        TablesDTO GetTableByNumber(int number);
+        List<TablesDTO> GetAllTables();
     }
 }

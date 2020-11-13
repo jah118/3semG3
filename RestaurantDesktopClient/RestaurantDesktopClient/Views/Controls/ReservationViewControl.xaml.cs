@@ -39,29 +39,38 @@ namespace RestaurantDesktopClient.Views.Controls
         public void SetReservationInformation(ReservationDTO reservation)
         {
             _reservation = reservation;
-            cbDepositPayed.IsChecked = reservation.Deposit;
-            txtCustomerNumber.Text = reservation.Customer.Id + "";
-            lvTableNames.ItemsSource = reservation.RestaurantTable;
-            dtpReservationTime.setDateTime(reservation.ReservationTime);
-            dpReservationDate.SelectedDate = reservation.ReservationDate;
-            txtNumOfPersons.Text = reservation.NoOfPeople + "";
-            txtReservationComments.Text = reservation.Note;
-            reservation.Note = txtReservationComments.Text;
-            MarkBookedTables(_reservation.RestaurantTable);
+            cbDepositPayed.IsChecked = _reservation.Deposit;
+            txtCustomerNumber.Text = _reservation.Customer.Id + "";
+            lvTableNames.ItemsSource = _reservation.Tables;
+            dtpReservationTime.setDateTime(_reservation.ReservationTime);
+            dpReservationDate.SelectedDate = _reservation.ReservationDate;
+            txtNumOfPersons.Text = _reservation.NoOfPeople + "";
+            txtReservationComments.Text = _reservation.Note;
+            MarkBookedTables(_reservation.Tables);
         }
 
-        private void MarkBookedTables(List<RestaurantTablesDTO> restaurantTables)
+        private void MarkBookedTables(List<TablesDTO> Tables)
         {
-            if(restaurantTables != null)
+            if(Tables != null)
             {
-                restaurantTables.ForEach((x) =>
+                Tables.ForEach((x) =>
                 {
-                    DataRowView drv = (DataRowView)lvTableNames.Items[lvTableNames.Items.IndexOf(x)];
-                    lvTableNames.SelectedItems.Add(drv);
-
+                    var item = lvTableNames.Items[lvTableNames.Items.IndexOf(x)];
+                    lvTableNames.SelectedItems.Add(item);
                 });
             }
 
+        }
+
+        private void BtnClearForms_Click(object sender, RoutedEventArgs e)
+        {
+            cbDepositPayed.IsChecked = false;
+            txtCustomerNumber.Text = "";
+            InsertReservationTables();
+            dtpReservationTime.setDateTime(DateTime.Now);
+            dpReservationDate.SelectedDate = DateTime.Now;
+            txtNumOfPersons.Text = "";
+            txtReservationComments.Text = "";
         }
     }
 }

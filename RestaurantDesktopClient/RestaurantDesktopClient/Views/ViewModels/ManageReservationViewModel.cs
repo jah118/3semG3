@@ -24,7 +24,7 @@ namespace RestaurantDesktopClient.Views.ManageReservation
         public DataTable SearchTable
         {
             get {
-                updateSearchTable();
+                UpdateSearchTable();
                 return _reservationTable; }
             set
             {
@@ -55,7 +55,7 @@ namespace RestaurantDesktopClient.Views.ManageReservation
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public void updateSearchTable()
+        public void UpdateSearchTable()
         {
             var reservations = repository.GetAllReservations();
             if(reservations!= null)

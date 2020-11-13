@@ -3,9 +3,9 @@ using System.Collections.Generic;
 
 namespace DataAccess.DataTransferObjects
 {
-    public partial class RestaurantTablesDTO
+    public partial class TablesDTO
     {
-        public RestaurantTablesDTO()
+        public TablesDTO()
         {
 
         }

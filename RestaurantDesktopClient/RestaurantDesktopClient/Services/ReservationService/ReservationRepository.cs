@@ -4,27 +4,36 @@ using RestSharp;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace RestaurantDesktopClient.Reservation
 {
-    class ReservationRepository : IReservationRepository
+    public class ReservationRepository : IReservationRepository
     {
-        public void CreateReservation(ReservationDTO reservation)
+        public ReservationRepository()
         {
+
+        }
+        public System.Net.HttpStatusCode CreateReservation(ReservationDTO reservation)
+        {
+            System.Net.HttpStatusCode res = System.Net.HttpStatusCode.Unused;
             try
             {
-                var client = new RestClient("https://localhost:44349/api");
+                string constring = ConfigurationManager.ConnectionStrings["ServiceConString"].ConnectionString;
+                var client = new RestClient(constring);
                 string json = JsonConvert.SerializeObject(reservation);
                 var request = new RestRequest("/reservation", Method.POST);
                 request.AddJsonBody(json);
-                var response = client.Execute(request).Content;
+                res = client.Execute(request).StatusCode;
+                
             }
             catch
             {
             }
+            return res;
         }
 
         public ReservationDTO GetReservation(int id)
@@ -32,7 +41,8 @@ namespace RestaurantDesktopClient.Reservation
             ReservationDTO res = null;
             try
             {
-                var client = new RestClient("https://localhost:44349/api");
+                string constring = ConfigurationManager.ConnectionStrings["ServiceConString"].ConnectionString;
+                var client = new RestClient(constring);
                 var request = new RestRequest("/reservation/{Id}", Method.GET);
                 request.AddUrlSegment("Id", id);
                 var response = client.Execute(request).Content;
@@ -47,7 +57,8 @@ namespace RestaurantDesktopClient.Reservation
         List<ReservationDTO> IReservationRepository.GetAllReservations()
         {
 
-            var client = new RestClient("https://localhost:44349/api");
+            string constring = ConfigurationManager.ConnectionStrings["ServiceConString"].ConnectionString;
+            var client = new RestClient(constring);
             var request = new RestRequest("/reservation", Method.GET);
             var content = client.Execute(request).Content;
             var res = JsonConvert.DeserializeObject<List<ReservationDTO>>(content);

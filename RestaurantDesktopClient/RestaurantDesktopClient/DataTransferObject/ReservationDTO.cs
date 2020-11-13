@@ -15,8 +15,6 @@ namespace DataAccess.DataTransferObjects
         public int NoOfPeople { get; set; }
         public bool Deposit { get; set; }
         public string Note { get; set; }
-
-        public ICollection<ReservationsTablesDTO> ReservationsTables { get; set; }
-        public List<RestaurantTablesDTO> RestaurantTable { get; internal set; }
+        public List<TablesDTO> Tables { get; set; }
     }
 }
