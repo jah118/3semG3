@@ -30,6 +30,7 @@ namespace RestaurantDesktopClient.Views
             InitializeComponent();
             ReservationViewControl.btnCreateNew.Click += BtnCreateNew_Click;
             ListPageControl.dgResult.SelectedCellsChanged += DgResult_SelectedCellsChanged;
+            Headline.SetHeadline("Manage Reservation");
         }
 
         private void DgResult_SelectedCellsChanged(object sender, SelectedCellsChangedEventArgs e)

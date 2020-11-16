@@ -40,7 +40,7 @@ namespace RestaurantDesktopClient.Tests
             {
                 Customer = new CustomerDTO
                 {
-                    Id = 1,
+                    Id = 99,
                     Address = "TestAddress 99",
                     City = "TestCity",
                     Email = "TestEmail@Test.com",
@@ -61,6 +61,11 @@ namespace RestaurantDesktopClient.Tests
             System.Net.HttpStatusCode res = _reservationRepository.CreateReservation(_reservation);
 
             Assert.AreEqual(res, System.Net.HttpStatusCode.OK);
+        }
+        [TestMethod]
+        public void PostReservationPositiv()
+        {
+
         }
     }
 }
