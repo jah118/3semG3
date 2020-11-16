@@ -10,21 +10,26 @@ namespace DataAccess.DataTransferObjects
     {
         public ReservationDTO()
         {
-                      
+            
+        }
+
+        public ReservationDTO(int id)
+        {
+            Id = id;
         }
         public int Id { get; }
         public DateTime ReservationDate { get; set; }
         public CustomerDTO Customer { get; set; } 
         public DateTime ReservationTime { get; set; }
         public int NoOfPeople { get; set; }
-        public bool Deposit { get; }
+        public bool? Deposit { get; }
         public string Note { get; set; }
 
-        public IEnumerable<ReservationsTablesDTO> ReservationsTables { get;}
+        public IEnumerable<RestaurantTablesDTO> Tables { get; set; }
 
 
         //for testing
-        public ReservationDTO(DateTime reservationDate, CustomerDTO customer, DateTime reservationTime, int noOfPeople, bool deposit, string note, IEnumerable<ReservationsTablesDTO> reservationsTables)
+        public ReservationDTO(DateTime reservationDate, CustomerDTO customer, DateTime reservationTime, int noOfPeople, bool deposit, string note, IEnumerable<RestaurantTablesDTO> restaurantTables)
         {
             ReservationDate = reservationDate;
             Customer = customer;
@@ -32,7 +37,7 @@ namespace DataAccess.DataTransferObjects
             NoOfPeople = noOfPeople;
             Deposit = deposit;
             Note = note;
-            ReservationsTables = reservationsTables;
+            Tables = restaurantTables;
         }
     }
 }

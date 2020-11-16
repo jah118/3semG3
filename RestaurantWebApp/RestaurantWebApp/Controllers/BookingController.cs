@@ -1,5 +1,6 @@
 ﻿using DataAccess.DataTransferObjects;
 using Newtonsoft.Json;
+using RestaurantWebApp.Service;
 using RestSharp;
 using System;
 using System.Collections.Generic;
@@ -14,6 +15,10 @@ namespace RestaurantWebApp.Controllers
 {
     public class BookingController : Controller
     {
+        private string _constr = ConfigurationManager.AppSettings["ServiceApi"];
+        
+        private BokingServices bs = new BokingServices();
+
         public void GetCustomer()
         {
             var client = new RestClient("https://localhost:44349/api/customer");
@@ -39,31 +44,43 @@ namespace RestaurantWebApp.Controllers
         // GET: Booking/Create
         public ActionResult Create()
         {
+            
             ReservationDTO rv = new ReservationDTO();
+
+            IEnumerable<SelectListItem> items = bs.GetBookingTables(_constr).Select(c => new SelectListItem
+            {
+                Value = c.Id + "",
+                Text = c.TableNumber + ""
+
+            });
+            ViewBag.Tables2 = items;
+
+            rv.Tables =  bs.GetBookingTables(_constr);
             return View(rv);
         }
 
         // POST: Booking/Create
         [HttpPost]
-        public async Task <ActionResult> Create(FormCollection collection, ReservationDTO reservation)
+        public async Task<ActionResult> Create(FormCollection collection, ReservationDTO reservation)
         {
+             string _constr2 = ConfigurationManager.AppSettings["ToiletApiPost"];
             try
-            { 
-               
+            {
 
-                var client = new RestClient(ConfigurationManager.AppSettings["ToiletApiPost"]);
-                //var client = new RestClient("https://localhost:44349/api/Booking/Create");
-                //string json = JsonConvert.SerializeObject(reservation);
-                var request = new RestRequest("/post", Method.POST);
-               // var request = new RestRequest("/Booking/Create", Method.POST);
-                request.AddJsonBody(reservation);
-                var response = await client.ExecuteAsync(request);
+                var response =  await bs.PostBookingAsync(reservation, _constr2);
 
-                return RedirectToAction("Index");
+                if (response.StatusCode == System.Net.HttpStatusCode.OK)
+                {
+                    return RedirectToAction("Index");
+                }else
+                {
+                    return View();
+                }
+                
             }
             catch
             {
-
+                //TODO make popup or make use of something to show what the user is missing to enter.
                 return View();
             }
         }
@@ -104,10 +121,12 @@ namespace RestaurantWebApp.Controllers
             {
                 // TODO: Add delete logic here
 
+
                 return RedirectToAction("Index");
             }
             catch
             {
+                
                 return View();
             }
         }
@@ -122,10 +141,10 @@ namespace RestaurantWebApp.Controllers
             //request.AddUrlSegment("{FoodId", 1);
 
             //var content = client.Execute(request).Content;
-            
+
             return View();
         }
 
-       
+      
     }
 }

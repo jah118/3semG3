@@ -7,7 +7,8 @@ using System.Configuration;
 using Newtonsoft.Json;
 using System.Net;
 using DataAccess.DataTransferObjects;
-using System.Runtime.CompilerServices;
+using RestaurantWebApp.Controllers;
+using System.Threading.Tasks;
 
 namespace RestaurantWebApp.Test.UnitTest
 {
@@ -25,30 +26,39 @@ namespace RestaurantWebApp.Test.UnitTest
             //
         }
         string constring = "https://ptsv2.com/t/axmts-1604922634";
+        
         [TestMethod]
-        public void TestPostBookTable()
+        public void TestPostBookTableAsync()
         {
             //Arrange
             //var client = new RestClient("https://localhost:44349/api/Booking/Create");
-            var client = new RestClient(constring); 
-            
-                var reservation = new ReservationDTO(
-                    DateTime.Now,
-                    new CustomerDTO(),
-                    DateTime.Now,
-                    4,
-                    false,
-                    "TEST",
-                    new List<ReservationsTablesDTO>());
+            // var client = new RestClient(constring);
 
-            string json = JsonConvert.SerializeObject(reservation);
-            //ACT
-            var request = new RestRequest("/post", Method.POST);
-            // var request = new RestRequest("/Booking/Create", Method.POST);
-            // request.AddJsonBody(reservation);
-            request.AddJsonBody(json);
-            var response = client.Execute(request);
 
+            //string json = JsonConvert.SerializeObject(reservation);
+            ////ACT
+            //var request = new RestRequest("/post", Method.POST);
+            //// var request = new RestRequest("/Booking/Create", Method.POST);
+            //// request.AddJsonBody(reservation);
+            //request.AddJsonBody(json);
+            //var response = client.Execute(request);
+
+
+
+
+            //Arrange
+            BookingController _bc = new BookingController();
+            var reservation = new ReservationDTO(
+                DateTime.Now,
+                new CustomerDTO(),
+                DateTime.Now,
+                4,
+                false,
+                "TEST",
+                new List<RestaurantTablesDTO>());
+
+            //Act
+            var response = _bc.PostBooking(reservation, constring).Result;
 
             //Assert
             Assert.AreEqual(response.StatusCode, HttpStatusCode.OK);
@@ -83,12 +93,5 @@ namespace RestaurantWebApp.Test.UnitTest
         //
         #endregion
 
-        [TestMethod]
-        public void TestMethod1()
-        {
-            //
-            // TODO: Add test logic here
-            //
-        }
     }
 }

@@ -3,13 +3,18 @@ using System.Collections.Generic;
 
 namespace DataAccess.DataTransferObjects
 {
-    public partial class RestaurantTablesDTO
+    public class RestaurantTablesDTO
     {
+        public RestaurantTablesDTO(int id, int noOfSeats, int tableNumber)
+        {
+            Id = id;
+            NoOfSeats = noOfSeats;
+            TableNumber = tableNumber;
+        }
 
-
-        public int Id { get; }
-        public int NoOfSeats { get; set; }
-        public int TableNumber { get;  }
+        public int Id { get; set; }
+        public int NoOfSeats { get; }
+        public int TableNumber { get; }
 
        
     }
