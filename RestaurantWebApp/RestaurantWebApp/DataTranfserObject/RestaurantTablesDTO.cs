@@ -13,8 +13,8 @@ namespace DataAccess.DataTransferObjects
         }
 
         public int Id { get; set; }
-        public int NoOfSeats { get; }
-        public int TableNumber { get; }
+        public int NoOfSeats { get; set; }
+        public int TableNumber { get; set; }
 
        
     }

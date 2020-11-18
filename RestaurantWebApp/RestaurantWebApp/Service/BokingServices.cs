@@ -14,10 +14,11 @@ namespace RestaurantWebApp.Service
             var request = new RestRequest("/Table", Method.GET);
             var content =  client.Execute(request).Content;
 
-            var res = JsonConvert.DeserializeObject<IEnumerable<RestaurantTablesDTO>>(content, new JsonSerializerSettings
-            {
-                ConstructorHandling = ConstructorHandling.AllowNonPublicDefaultConstructor
-            });
+            var res = JsonConvert.DeserializeObject<IEnumerable<RestaurantTablesDTO>>(content); 
+            //var res = JsonConvert.DeserializeObject<IEnumerable<RestaurantTablesDTO>>(content, new JsonSerializerSettings
+            //{
+            //    ConstructorHandling = ConstructorHandling.AllowNonPublicDefaultConstructor
+            //});
             return res;
         }
 
@@ -27,8 +28,8 @@ namespace RestaurantWebApp.Service
             var client = new RestClient(constr);
             //var client = new RestClient("https://localhost:44349/api/Booking/Create");
             //string json = JsonConvert.SerializeObject(reservation);
-            var request = new RestRequest("/post", Method.POST);
-           //  var request = new RestRequest("/Reservation", Method.POST);
+           // var request = new RestRequest("/post", Method.POST);
+             var request = new RestRequest("/Reservation", Method.POST);
             request.AddJsonBody(reservation);
             var response = await client.ExecuteAsync(request);
 
