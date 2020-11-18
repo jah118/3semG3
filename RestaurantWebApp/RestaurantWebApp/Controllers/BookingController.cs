@@ -30,14 +30,6 @@ namespace RestaurantWebApp.Controllers
         public ActionResult Create()
         {
             ReservationDTO rv = new ReservationDTO();
-
-            IEnumerable<SelectListItem> items = bs.GetBookingTables(ConfigurationManager.AppSettings["ServiceApi"]).Select(c => new SelectListItem
-            {
-                Value = c.Id + "",
-                Text = c.TableNumber + ""
-            });
-            ViewBag.Tables2 = items;
-
             rv.Tables = bs.GetBookingTables(ConfigurationManager.AppSettings["ServiceApi"]);
             return View(rv);
         }
@@ -51,8 +43,8 @@ namespace RestaurantWebApp.Controllers
             {
                 var datetime = Request.Form["ReservationTime"];
                 datetime = datetime.Replace(',', ' ');
-               
-                
+              // bool succes = datetime.TryParse()
+                           
                 //reservation.ReservationTime = 
 
                 //dette tager tables som kommer som en lang string og laver dem om til en liste
@@ -91,6 +83,7 @@ namespace RestaurantWebApp.Controllers
                 else
                 {
                     //TODO need a return message of what failed
+                    //TODO skal vise alle bordene ikke dem der valgt før<
                     return View(reservation);
                 }
             }
