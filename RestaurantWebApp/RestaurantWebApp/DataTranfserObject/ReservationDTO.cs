@@ -16,13 +16,16 @@ namespace DataAccess.DataTransferObjects
 
         public int Id { get; }
         public DateTime ReservationDate { get; set; }
+        [Required]
         public CustomerDTO Customer { get; set; }
-        [DisplayFormat(DataFormatString = "{dd-MM-yyyy HH:mm:ss}", ApplyFormatInEditMode = true)]
+        [Required,Display(Name = "Reservationstidspunkt"), DisplayFormat(DataFormatString = "{dd-MM-yyyy HH:mm:ss}", ApplyFormatInEditMode = true)]
         public DateTime ReservationTime { get; set; }
+        [Required,Range(1,25), Display(Name = "Antal Personer")]
         public int NoOfPeople { get; set; }
         public bool? Deposit { get; }
+        [Display(Name = "Evt Notat")]
         public string Note { get; set; }
-
+        [Required,Display(Name ="Borde ")]
         public IEnumerable<RestaurantTablesDTO> Tables { get; set; }
 
 
