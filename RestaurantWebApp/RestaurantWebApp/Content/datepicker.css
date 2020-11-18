@@ -13,10 +13,13 @@
     background-color: #999;
     width: 100%
 }
-
-
-
-
-
-
 */
+
+
+.popover {
+    left: 40% !important;
+}
+
+.btn {
+    margin: 1%;
+}
