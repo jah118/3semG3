@@ -1,4 +1,5 @@
 ﻿using DataAccess.DataTransferObjects;
+using DataAccess.DataTransferObjects.Converters;
 using DataAccess.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -20,9 +21,9 @@ namespace DataAccess.Repositories
         public CustomerDTO Create(CustomerDTO obj, bool transactionEndpoint = true)
         {
             if (transactionEndpoint) _context.Database.BeginTransaction(IsolationLevel.Serializable);
-            //insert logic here
+            var added = _context.Add(Converter.Convert(obj));
             if (transactionEndpoint) _context.SaveChanges();
-            throw new NotImplementedException();
+            return Converter.Convert(added.Entity);
         }
 
         public bool Delete(CustomerDTO obj, bool transactionEndpoint = true)
@@ -44,16 +45,7 @@ namespace DataAccess.Repositories
             var res = new List<CustomerDTO>();
             foreach (Customer c in customers)
             {
-                res.Add(new CustomerDTO(c.Id)
-                {
-                    FirstName = c.Person.FirstName,
-                    LastName = c.Person.LastName,
-                    Email = c.Person.Email,
-                    Phone = c.Person.Phone,
-                    Address = c.Person.Location.Address,
-                    City = c.Person.Location.ZipCodeNavigation.City,
-                    ZipCode = c.Person.Location.ZipCodeNavigation.ZipCode
-                });
+                res.Add(Converter.Convert(c));
             }
 
             return res;
@@ -70,7 +62,7 @@ namespace DataAccess.Repositories
                             .FirstOrDefault();
             if (customer != null)
             {
-                res = new CustomerDTO(customer);
+                res = Converter.Convert(customer);
             }
 
             return res;
