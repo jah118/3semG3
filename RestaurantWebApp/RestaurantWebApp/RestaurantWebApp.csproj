@@ -133,7 +133,7 @@
     <Compile Include="DataTranfserObject\PriceDTO.cs" />
     <Compile Include="DataTranfserObject\ReservationDTO.cs" />
     <Compile Include="DataTranfserObject\ReservationsTablesDTO.cs" />
-    <Compile Include="DataTranfserObject\ReservationTimeeDTO.cs" />
+    <Compile Include="DataTranfserObject\ReservationTimesDTO.cs" />
     <Compile Include="DataTranfserObject\RestaurantOrderDTO.cs" />
     <Compile Include="DataTranfserObject\RestaurantTablesDTO.cs" />
     <Compile Include="Global.asax.cs">
