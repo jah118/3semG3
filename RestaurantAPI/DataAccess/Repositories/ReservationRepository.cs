@@ -20,15 +20,14 @@ namespace DataAccess.Repositories
 
         public ReservationDTO Create(ReservationDTO obj, bool transactionEndpoint = true)
         {
-            if (transactionEndpoint) _context.Database.BeginTransaction(IsolationLevel.Serializable);
             //Sanity check here, ensure unique tables etc.
+            if (transactionEndpoint) _context.Database.BeginTransaction(IsolationLevel.Serializable);
             try
             {
-                var tableIds = obj.Tables.Select(t => t.Id);
                 //Caution O(n^2) or greater, this performs badly, it currently only checks if ANY table intersects
                 //Change to focus on tables, return list of the ones that intersect and give it back to the the caller,
                 //to tell which ones need rebooking or don't and handle failure in another way.
-                var compareList = _context.Reservation
+                var compareCount = _context.Reservation
                     .Include(r => r.ReservationsTables)
                     .ThenInclude(r => r.RestaurantTables)
                     .Where(r =>
@@ -36,16 +35,12 @@ namespace DataAccess.Repositories
                         r.ReservationTime.AddMinutes(90) >= obj.ReservationTime)
                     .Select(r => r.ReservationsTables.Where(t => t.RestaurantTablesId.Equals(obj.Tables.Select(table => table.Id).Any()))).Count();
 
-
-
-
-                    //    .Select(rt => rt.RestaurantTablesId)
-                    //    .Intersect(obj.Tables.Select(table => table.Id)).Count() > 0)
-                    //.Count()
-                    //;
-
-                if (compareList == 0)
+                if (compareCount == 0)
                 {
+                    if (obj.Customer.Id == 0)
+                    {
+                        obj.Customer = new CustomerRepository(_context).Create(obj.Customer, false);
+                    }
                     var toAdd = Converter.Convert(obj);
                     _context.Add<Reservation>(toAdd).GetDatabaseValues();
                     _context.Entry(toAdd).GetDatabaseValues();
@@ -66,7 +61,7 @@ namespace DataAccess.Repositories
                     if (transactionEndpoint) _context.Database.RollbackTransaction();
                 }
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 _context.Database.RollbackTransaction();
                 throw;
