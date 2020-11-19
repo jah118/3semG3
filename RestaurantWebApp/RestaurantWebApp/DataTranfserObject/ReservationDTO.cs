@@ -28,6 +28,8 @@ namespace DataAccess.DataTransferObjects
         [Required,Display(Name ="Borde ")]
         public IEnumerable<RestaurantTablesDTO> Tables { get; set; }
 
+        public IEnumerable<ReservationTimesDTO> TimeSlots { get; set; }
+
 
         //for testing
         public ReservationDTO(DateTime reservationDate, CustomerDTO customer, DateTime reservationTime, int noOfPeople, bool deposit, string note, IEnumerable<RestaurantTablesDTO> restaurantTables)

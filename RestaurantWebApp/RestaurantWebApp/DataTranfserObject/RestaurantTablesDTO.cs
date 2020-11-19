@@ -15,6 +15,8 @@ namespace DataAccess.DataTransferObjects
         public int Id { get; set; }
         public int NoOfSeats { get; set; }
         public int TableNumber { get; set; }
+         
+
 
        
     }

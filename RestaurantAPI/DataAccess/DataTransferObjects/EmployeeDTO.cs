@@ -1,8 +1,31 @@
-﻿namespace DataAccess.DataTransferObjects
+﻿using DataAccess.Models;
+
+namespace DataAccess.DataTransferObjects
 {
     public class EmployeeDTO
     {
-        public int Id { get; init; }
+        public EmployeeDTO()
+        {
+        }
+
+        public EmployeeDTO(int id)
+        {
+            Id = id;
+        }
+
+        public EmployeeDTO(Employee employee) : this(employee.Id)
+        {
+            Title = employee.Title.Title;
+            Phone = employee.Person.Phone;
+            Email = employee.Person.Email;
+            FirstName = employee.Person.FirstName;
+            LastName = employee.Person.LastName;
+            Address = employee.Person.Location.Address;
+            ZipCode = employee.Person.Location.ZipCodeNavigation.ZipCode;
+            City = employee.Person.Location.ZipCodeNavigation.City;
+        }
+
+        public int Id { get; }
         public string Title { get; set; }
         public string Phone { get; set; }
         public string Email { get; set; }

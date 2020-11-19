@@ -13,15 +13,14 @@ namespace DataAccess.DataTransferObjects
         {
         }
 
-        public int Id { get; }
+        public int Id { get;}
 
         [Display(Name = "Tlf")]
         //TODO lav bedre regex[RegularExpression("^([+](\\d{1,3})\\s?)?((\\(\\d{3,5}\\)|\\d{3,5})(\\s)?)\\d{3,8}$", ErrorMessage = "Tast")]
-
         public string Phone { get; set; }
-        [Display(Name = "Email")]
+        [EmailAddress, Display(Name = "Email")]
         public string Email { get; set; }
-        [EmailAddress, Display(Name = "Navn")]
+        [Display(Name = "Navn")]
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string Address { get; set; }

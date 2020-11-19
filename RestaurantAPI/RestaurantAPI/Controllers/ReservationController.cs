@@ -1,6 +1,12 @@
 ﻿using DataAccess;
 using DataAccess.DataTransferObjects;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Net;
+using System.Threading.Tasks;
 
 namespace RestaurantAPI.Controllers
 {
@@ -15,13 +21,14 @@ namespace RestaurantAPI.Controllers
         {
             _reservationRepository = reservationRepository;
         }
-
+        
         [HttpGet]
         public IActionResult Get()
         {
             var res = _reservationRepository.GetAll();
             return res != null ? Ok(res) : NotFound();
         }
+
 
         [HttpGet("{id}")]
         public IActionResult Get(int id)
