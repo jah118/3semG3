@@ -24,8 +24,9 @@ namespace RestaurantAPI.Controllers
         }
 
         [HttpPost]
-        public IActionResult Post([FromBody] UserDTO value)
+        public IActionResult Post([FromBody] UserDTO value, [FromHeader] string pass)
         {
+            var pw = pass;
             var res = _userRepository.Create(value);
             return res != null ? Ok(res) : Conflict(value);
         }
