@@ -3,50 +3,34 @@
 @{
     ViewBag.Title = "Bordbestilling";
 }
-
-
-
-
 <h2>Bordbestilling</h2>
 <hr />
 
+
+
+
 <div class="container">
-    @Scripts.Render("~/bundles/datepicker")
-    @Styles.Render("~/Content/datepicker")
     @using (Html.BeginForm())
     {
         @Html.AntiForgeryToken()
 
         <div class="form-horizontal">
 
-            @*@Html.ValidationSummary(true, "", new { @class = "text-danger" })*@
-
-            @*<div class="form-group">
-                    @Html.LabelFor(model => model.ReservationTime, htmlAttributes: new { @class = "control-label col-md-2" })
-                    <div class="col-md-10">
-                        <fieldset>
-                            @Html.TextBoxFor(model => model.ReservationTime, new { @type = "date", @class = "form-control datepicker", @id = "txtDate", @name = "date" })
-                            @Html.ValidationMessageFor(model => model.ReservationTime, "", new { @class = "text-danger" })
-
-                            @Html.TextBoxFor(model => model.ReservationTime, new { @type = "time", @class = "form-control datepicker", @id = "txtTime", @name = "time" })
-                            @Html.ValidationMessageFor(model => model.ReservationTime, "", new { @class = "text-danger" })
-                        </fieldset>
-                    </div>
-                </div>*@
-
-            @* https://stackoverflow.com/questions/38995183/jquery-calendar-with-time-slots-selection/39244979 *@
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
             <div class="form-group">
-                <div class="date-picker-2" placeholder="Recipient's username" id="ttry" aria-describedby="basic-addon2"></div>
-                <span class="" id="example-popover-2"></span>
+                @Html.LabelFor(model => model.ReservationTime, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    <fieldset>
+                        @Html.TextBoxFor(model => model.ReservationTime, new { @type = "date", @class = "form-control datepicker", @id = "txtDate", @name = "date" })
+                        @Html.ValidationMessageFor(model => model.ReservationTime, "", new { @class = "text-danger" })
+
+                        @Html.DropDownListFor(m => m.TimeSlots, new SelectList(Model.TimeSlots, "_date","_time"),"Vælg tidspunkt", new { @class = "form-control" })
+                    </fieldset>
+                </div>
             </div>
-           @* <div id="example-popover-2-content" class="hidden"> </div>*@
-           @* <div id="example-popover-2-title" class="hidden"> </div>*@
 
-            @*<input type="text" id="datep" />
-                <div id="datepicker">
-
-                </div>*@
+            @* https://stackoverflow.com/questions/38995183/jquery-calendar-with-time-slots-selection/39244979 *@
 
 
             <div class="form-group">
@@ -142,3 +126,4 @@
 @*@section Scripts {
         @Scripts.Render("~/bundles/jqueryval")
     }*@
+

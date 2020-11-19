@@ -24,15 +24,6 @@ textarea {
 }
 
 
-.popover {
-    left: 40% !important;
-}
-
-.btn {
-    margin: 1%;
-}
-
-
 
 /*li {
     display: list-item;
@@ -59,10 +50,6 @@ textarea {
 .nav-link {
     display: block;
     padding: .5rem 1rem;
-}
-
-*, ::after, ::before {
-    box-sizing: border-box;
 }
 
 .sidenav a {

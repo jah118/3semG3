@@ -1,0 +1,55 @@
+﻿
+<h2>Bordbestilling</h2>
+<hr />
+<link rel="stylesheet" type="text/css" href="//code.jquery.com/ui/1.9.2/themes/base/jquery-ui.css">
+<style>
+
+    #datep {
+        display: none;
+    }
+
+    .ui-datepicker-calendar tbody td > a.hover-calendar-cell {
+        border: 1px solid #074e91;
+        background: #5bacf7 url(images/ui-bg_glass_15_5bacf7_1x400.png) 50% 50% repeat-x;
+        font-weight: normal;
+        color: #1a1a1a;
+    }
+
+    #addon {
+        background-color: #999;
+        width: 100%
+    }
+</style>
+
+<input type="text" id="datepicker" />
+<div id="datepicker"></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.9.1/jquery.min.js" 
+            integrity="sha512-jGR1T3dQerLCSm/IGEGbndPwzszJBlKQ5Br9vuB0Pw2iyxOy+7AK+lJcCC8eaXyz/9du+bkCy4HXxByhxkHf+w==" 
+            crossorigin="anonymous">
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.9.2/jquery-ui.min.js" 
+        integrity="sha512-cViKBZswH231Ui53apFnPzem4pvG8mlCDrSyZskDE9OK2gyUd/L08e1AC0wjJodXYZ1wmXEuNimN1d3MWG7jaQ==" 
+        crossorigin="anonymous">
+
+    </script>
+
+<script>
+    var $datePicker = $("div#datepicker");
+
+    var $datePicker = $("div");
+
+    $datePicker.datepicker({
+        changeMonth: true,
+        changeYear: true,
+        inline: true,
+        altField: "#datep",
+    }).change(function (e) {
+        setTimeout(function () {
+            $datePicker
+                .find('.ui-datepicker-current-day').parent().after('<tr><td colspan="8"><div><button>8:00 am – 9:00 am</button></div><button>9:00 am – 10:00 am</button></div><button>10:00 am – 11:00 am</button></div></td></tr>')
+
+        });
+    });
+
+</script>
