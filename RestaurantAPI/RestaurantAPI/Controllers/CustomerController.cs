@@ -53,7 +53,7 @@ namespace RestaurantAPI.Controllers
         [HttpDelete]
         public IActionResult Delete(int id)
         {
-            return Ok("not implemented");
+            return Ok("not implemnete´t");
         }
     }
 }
