@@ -37,6 +37,7 @@ namespace RestaurantWebApp.Controllers
             rv.Tables = bs.GetBookingTables(ConfigurationManager.AppSettings["ServiceApi"]);
             
             //TODO  dette er temp  her skal være 
+            //d
             var ls = new List<ReservationTimesDTO>();
             DateTime _dateToDay = DateTime.Now;
             TimeSpan ts = new TimeSpan(17, 30, 0);
@@ -63,7 +64,7 @@ namespace RestaurantWebApp.Controllers
             var date = Request.Form["ReservationTime"];
             var time = Request.Form["Timeslots"];
 
-            if (time.Length > 1)
+            if (time.Length > 0)
             {
                 string[] timesplit = time.Split(' ');
 
