@@ -1,7 +1,29 @@
-﻿namespace DataAccess.DataTransferObjects
+﻿using DataAccess.Models;
+
+namespace DataAccess.DataTransferObjects
 {
     public class CustomerDTO
     {
+        public CustomerDTO()
+        {
+        }
+
+        public CustomerDTO(int id)
+        {
+            Id = id;
+        }
+
+        public CustomerDTO(Customer c) : this(c.Id)
+        {
+            Phone = c.Person.Phone;
+            Email = c.Person.Email;
+            FirstName = c.Person.FirstName;
+            LastName = c.Person.LastName;
+            Address = c.Person.Location.Address;
+            ZipCode = c.Person.Location.ZipCodeNavigation.ZipCode;
+            City = c.Person.Location.ZipCodeNavigation.City;
+        }
+
         public int Id { get; init; }
         public string Phone { get; set; }
         public string Email { get; set; }
