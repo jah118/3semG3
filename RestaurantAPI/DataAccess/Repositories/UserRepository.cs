@@ -1,5 +1,4 @@
 ﻿using DataAccess.DataTransferObjects;
-using DataAccess.Utility;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,10 +11,6 @@ namespace DataAccess.Repositories
     {
         public UserDTO Create(UserDTO obj, bool transactionEndpoint = true)
         {
-            var passRes = PasswordHashing.CreateHash(""); // insert obj.pass
-            var hash = passRes.hash;
-            var salt = passRes.salt;
-
             throw new NotImplementedException();
         }
 

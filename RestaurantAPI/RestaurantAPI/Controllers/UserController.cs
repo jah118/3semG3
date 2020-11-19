@@ -16,21 +16,10 @@ namespace RestaurantAPI.Controllers
             _userRepository = userRepository;
         }
 
-        [HttpGet("{id}")]
-        public IActionResult Get(int id)
+        [HttpGet]
+        public IActionResult Get()
         {
-            var res = _userRepository.GetById(id);
-            return res != null ? Ok(res) : NotFound(id);
+            return NotFound();
         }
-
-        [HttpPost]
-        public IActionResult Post([FromBody] UserDTO value, [FromHeader] string pass)
-        {
-            var pw = pass;
-            var res = _userRepository.Create(value);
-            return res != null ? Ok(res) : Conflict(value);
-        }
-
-
     }
 }
