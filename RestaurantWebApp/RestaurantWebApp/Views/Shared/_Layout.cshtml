@@ -8,8 +8,8 @@
     @Scripts.Render("~/bundles/modernizr")
 </head>
 <body>
-   
-        <div class="sidebar-sticky pt-3">
+
+    @*<div class="sidebar-sticky pt-3">
             <ul class="nav flex-column">
                 <li class="nav-item">
                     <a class="nav-link active" href="/Home/Index">
@@ -38,16 +38,37 @@
                 </li>
 
             </ul>
+        </div>*@
+    <div class="container-fluid">
+        <div class="row">
+            <div class="sidenav pt-3">
+                <ul>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/Booking/Index">Hjem</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/Booking/Create">Bestil bord</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/Booking/Index">Om os</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/Booking/Index">Kontakt</a>
+                    </li>
+                </ul>
+
+            </div>
+
+            <!-- Page content -->
+            <div class="main">
+                @RenderBody()
+            </div>
+            
+
+            @Scripts.Render("~/bundles/jquery")
+            @Scripts.Render("~/bundles/bootstrap")
+            @RenderSection("scripts", required: false)
         </div>
-   
-    <div class="container body-content">
-        @RenderBody()
-        <hr />
-
     </div>
-
-    @Scripts.Render("~/bundles/jquery")
-    @Scripts.Render("~/bundles/bootstrap")
-    @RenderSection("scripts", required: false)
 </body>
 </html>
