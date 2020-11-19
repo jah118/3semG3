@@ -1,4 +1,5 @@
 ﻿using DataAccess.DataTransferObjects;
+using DataAccess.DataTransferObjects.Converters;
 using DataAccess.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -43,17 +44,7 @@ namespace DataAccess.Repositories
             var res = new List<EmployeeDTO>();
             foreach (Employee e in employees)
             {
-                res.Add(new EmployeeDTO(e.Id)
-                {
-                    Title = e.Title.Title,
-                    FirstName = e.Person.FirstName,
-                    LastName = e.Person.LastName,
-                    Email = e.Person.Email,
-                    Phone = e.Person.Phone,
-                    Address = e.Person.Location.Address,
-                    City = e.Person.Location.ZipCodeNavigation.City,
-                    ZipCode = e.Person.Location.ZipCodeNavigation.ZipCode
-                }); ;
+                res.Add(Converter.Convert(e));
             }
 
             return res;
@@ -72,7 +63,7 @@ namespace DataAccess.Repositories
 
             if (employee != null)
             {
-                res = new EmployeeDTO(employee);
+                res = Converter.Convert(employee);
             }
             return res;
         }
