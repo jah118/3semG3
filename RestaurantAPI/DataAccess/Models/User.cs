@@ -9,28 +9,31 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DataAccess.Models
 {
-    public partial class Location
+    [Index(nameof(Username), Name = "UQ__User__F3DBC572E36DAB18", IsUnique = true)]
+    public partial class User
     {
-        public Location()
+        public User()
         {
             Person = new HashSet<Person>();
         }
 
         [Key]
-        [Column("id"), DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [Column("id")]
         public int Id { get; set; }
         [Required]
-        [Column("address")]
-        [StringLength(50)]
-        public string Address { get; set; }
-        [Column("zip_code")]
-        [StringLength(6)]
-        public string ZipCode { get; set; }
+        [Column("username")]
+        [StringLength(64)]
+        public string Username { get; set; }
+        [Required]
+        [Column("passwordHash")]
+        [MaxLength(64)]
+        public byte[] PasswordHash { get; set; }
+        [Required]
+        [Column("salt")]
+        [MaxLength(64)]
+        public byte[] Salt { get; set; }
 
-        [ForeignKey(nameof(ZipCode))]
-        [InverseProperty(nameof(ZipId.Location))]
-        public virtual ZipId ZipCodeNavigation { get; set; }
-        [InverseProperty("Location")]
+        [InverseProperty("User")]
         public virtual ICollection<Person> Person { get; set; }
     }
 }

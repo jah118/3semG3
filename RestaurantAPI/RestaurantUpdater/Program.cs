@@ -19,6 +19,7 @@ namespace RestaurantUpdater
 
         public static void UpdateDatabase(string connectionString)
         {
+            DropDatabase.For.SqlDatabase(connectionString);
             EnsureDatabase.For.SqlDatabase(connectionString);
 
             var upgrader =
