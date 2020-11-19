@@ -43,6 +43,7 @@ namespace RestaurantDesktopClient.Views
 
         private void BtnCreateNew_Click(object sender, RoutedEventArgs e)
         {
+            //TODO: relay command
             ReservationDTO reservation = new ReservationDTO
             {
                 Deposit = (bool)ReservationViewControl.cbDepositPayed.IsChecked,

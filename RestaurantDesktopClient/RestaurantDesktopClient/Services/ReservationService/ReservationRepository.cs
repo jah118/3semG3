@@ -56,14 +56,19 @@ namespace RestaurantDesktopClient.Reservation
 
         List<ReservationDTO> IReservationRepository.GetAllReservations()
         {
-
-            string constring = ConfigurationManager.ConnectionStrings["ServiceConString"].ConnectionString;
-            var client = new RestClient(constring);
-            var request = new RestRequest("/reservation", Method.GET);
-            var content = client.Execute(request).Content;
-            var res = JsonConvert.DeserializeObject<List<ReservationDTO>>(content);
-
-
+            List<ReservationDTO> res = new List<ReservationDTO>();
+            try
+            {
+                //TODO: autofac readup and write..
+                string constring = ConfigurationManager.ConnectionStrings["ServiceConString"].ConnectionString;
+                var client = new RestClient(constring);
+                var request = new RestRequest("/reservation", Method.GET);
+                var content = client.Execute(request).Content;
+                res = JsonConvert.DeserializeObject<List<ReservationDTO>>(content);
+            }
+            catch
+            {
+            }
             return (List<ReservationDTO>)res;
         }
 

@@ -19,10 +19,7 @@ namespace DataAccess.Repositories
         }
 
         public ReservationDTO Create(ReservationDTO obj, bool transactionEndpoint = true)
-<<<<<<< HEAD
-
         {
->>>>>>> dev
             //Sanity check here, ensure unique tables etc.
             if (transactionEndpoint) _context.Database.BeginTransaction(IsolationLevel.Serializable);
             try
