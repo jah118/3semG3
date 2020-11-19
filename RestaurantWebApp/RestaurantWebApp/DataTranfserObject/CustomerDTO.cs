@@ -19,13 +19,23 @@ namespace DataAccess.DataTransferObjects
         //TODO lav bedre regex[RegularExpression("^([+](\\d{1,3})\\s?)?((\\(\\d{3,5}\\)|\\d{3,5})(\\s)?)\\d{3,8}$", ErrorMessage = "Tast")]
 
         public string Phone { get; set; }
-        [Display(Name = "Email")]
+        [EmailAddress, Display(Name = "Email")]
         public string Email { get; set; }
-        [EmailAddress, Display(Name = "Navn")]
+        [Required]
+        [Display(Name = "Navn")]
+        [StringLength(50, MinimumLength = 3)]
         public string FirstName { get; set; }
+        [Required]
+        [StringLength(50, MinimumLength = 3)]
         public string LastName { get; set; }
+        [Required]
+        [StringLength(50, MinimumLength = 3)]
         public string Address { get; set; }
+        [Required]
+        [StringLength(50, MinimumLength = 3)]
         public string ZipCode { get; set; }
+        [Required]
+        [StringLength(50, MinimumLength = 3)]
         public string City { get; set; }
 
     }

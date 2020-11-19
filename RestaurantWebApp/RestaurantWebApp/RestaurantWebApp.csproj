@@ -135,6 +135,7 @@
     <Compile Include="DataTranfserObject\ReservationsTablesDTO.cs" />
     <Compile Include="DataTranfserObject\RestaurantOrderDTO.cs" />
     <Compile Include="DataTranfserObject\RestaurantTablesDTO.cs" />
+    <Compile Include="DataTranfserObject\UserDTO.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -285,6 +286,8 @@
     <Content Include="Scripts\popper.js.map" />
     <Content Include="Scripts\popper-utils.min.js.map" />
     <Content Include="Scripts\popper-utils.js.map" />
+    <Content Include="Views\Booking\Login.cshtml" />
+    <Content Include="Views\Booking\Register.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
