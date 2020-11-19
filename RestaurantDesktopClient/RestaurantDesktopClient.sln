@@ -6,6 +6,9 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RestaurantDesktopClient", "RestaurantDesktopClient\RestaurantDesktopClient.csproj", "{7BB9CC6D-8D83-4082-8316-0EB1BFBBFF4B}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RestaurantDesktopClient.Tests", "RestaurantDesktopClient.Tests\RestaurantDesktopClient.Tests.csproj", "{05730733-B6C3-4999-8B4C-D04B2A09E17A}"
+	ProjectSection(ProjectDependencies) = postProject
+		{7BB9CC6D-8D83-4082-8316-0EB1BFBBFF4B} = {7BB9CC6D-8D83-4082-8316-0EB1BFBBFF4B}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

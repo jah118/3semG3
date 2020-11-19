@@ -35,8 +35,16 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.12.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="RestSharp, Version=106.11.7.0, Culture=neutral, PublicKeyToken=598062e77f915f75, processorArchitecture=MSIL">
+      <HintPath>..\packages\RestSharp.106.11.7\lib\net452\RestSharp.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Web" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -55,6 +63,26 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Controllers\CustomerController.cs" />
+    <Compile Include="Controllers\ReservationController.cs" />
+    <Compile Include="Controllers\TableController.cs" />
+    <Compile Include="DataTransferObject\CustomerDTO.cs" />
+    <Compile Include="DataTransferObject\EmployeeDTO.cs" />
+    <Compile Include="DataTransferObject\FoodCategoryDTO.cs" />
+    <Compile Include="DataTransferObject\FoodDTO.cs" />
+    <Compile Include="DataTransferObject\OrderDTO.cs" />
+    <Compile Include="DataTransferObject\OrderLineDTO.cs" />
+    <Compile Include="DataTransferObject\PaymentConditionDTO.cs" />
+    <Compile Include="DataTransferObject\PriceDTO.cs" />
+    <Compile Include="DataTransferObject\ReservationDTO.cs" />
+    <Compile Include="DataTransferObject\RestaurantOrderDTO.cs" />
+    <Compile Include="DataTransferObject\TablesDTO.cs" />
+    <Compile Include="Services\CustomerService\CustomerRepository.cs" />
+    <Compile Include="Services\CustomerService\ICustomerRepository.cs" />
+    <Compile Include="Services\ReservationService\IReservationRepository.cs" />
+    <Compile Include="Services\ReservationService\ReservationRepository.cs" />
+    <Compile Include="Services\Table Service\ITableRepository.cs" />
+    <Compile Include="Services\Table Service\TableRepository.cs" />
     <Compile Include="Views\Controls\BackControl.xaml.cs">
       <DependentUpon>BackControl.xaml</DependentUpon>
     </Compile>
@@ -94,6 +122,7 @@
     <Compile Include="Views\ManageTable.xaml.cs">
       <DependentUpon>ManageTable.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\ViewModels\ManageReservationViewModel.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -177,13 +206,17 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
+    <None Include="App.config">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

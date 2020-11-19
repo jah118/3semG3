@@ -1,13 +1,17 @@
-﻿using System;
+﻿using DataAccess.DataTransferObjects;
+using RestaurantWebApp.Service;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
-using System.Web;
+using System.Threading.Tasks;
 using System.Web.Mvc;
 
 namespace RestaurantWebApp.Controllers
 {
     public class BookingController : Controller
     {
+        private BokingServices bs = new BokingServices();
+
         // GET: Booking
         public ActionResult Index()
         {
@@ -23,24 +27,68 @@ namespace RestaurantWebApp.Controllers
         // GET: Booking/Create
         public ActionResult Create()
         {
-            return View();
+            ReservationDTO rv = new ReservationDTO();
+            rv.Tables = bs.GetBookingTables(ConfigurationManager.AppSettings["ServiceApi"]);
+            return View(rv);
         }
 
         // POST: Booking/Create
         [HttpPost]
-        public ActionResult Create(FormCollection collection)
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> Create(ReservationDTO reservation)
         {
-            try
-            {
-                // TODO: Add insert logic here
+            var datetime = Request.Form["ReservationTime"];
+            datetime = datetime.Replace(',', ' ');
+            // bool succes = datetime.TryParse()
 
-                return RedirectToAction("Index");
-            }
-            catch
+            //reservation.ReservationTime =
+
+            //dette tager tables som kommer som en lang string og laver dem om til en liste
+            //af strings, som splites ved ','
+            //og laves til RestaurantTablesDTO objekt spm puttes i en liste
+            var r = Request.Form["Tables"];
+            if (r!=null)
             {
-                return View();
+
+
+                List<string> listStrLineElements = r.Split(',').ToList();
+                var tables = new List<RestaurantTablesDTO>();
+                int tempId;
+                foreach (string item in listStrLineElements)
+                {
+                    //tables.Add(new RestaurantTablesDTO(Int32.Parse(item), 0, 0));     //old way
+                    tempId = 0;
+                    if (int.TryParse(item, out tempId))
+                    {
+                        tables.Add(new RestaurantTablesDTO(tempId, 0, 0));
+                    }
+                    else
+                    {
+                        //TODO need a return message of what failed eks: dette er ikke et valid valg bord
+                        return View(reservation);
+                    }
+                }
+                reservation.Tables = tables;
             }
+            
+
+
+            if (ModelState.IsValid)
+            {
+                var response = await bs.PostBookingAsync(reservation, ConfigurationManager.AppSettings["ServiceApi"]);
+                if (response.StatusCode == System.Net.HttpStatusCode.OK)
+                {
+                    return RedirectToAction("Index");
+                }
+            }
+            //TODO need a return message of what failed
+            //TODO skal vise alle bordene ikke dem der valgt før<
+            return View(reservation);
+            //return View();
+
         }
+
+
 
         // GET: Booking/Edit/5
         public ActionResult Edit(int id)
@@ -85,11 +133,20 @@ namespace RestaurantWebApp.Controllers
                 return View();
             }
         }
-        public ActionResult _OrderFood()
+
+        //GET: Booking/Food
+        [HttpGet]
+        public ActionResult OrderFoods()
         {
+            //var client = new RestClient("https://localhost:44349/api/Food");
+
+            //var request = new RestRequest("Food/{FoodId}", Method.GET);
+
+            //request.AddUrlSegment("{FoodId", 1);
+
+            //var content = client.Execute(request).Content;
+
             return View();
         }
-
-       
     }
 }
