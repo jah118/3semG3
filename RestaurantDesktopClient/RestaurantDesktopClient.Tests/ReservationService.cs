@@ -9,7 +9,7 @@ namespace RestaurantDesktopClient.Tests
     [TestClass]
     public class ReservationService
     {
-        [TestMethod]
+        [TestMethod, TestCategory("Integration")]
         public void GetAllReservationPositiv()
         {
             IReservationRepository _reservationRepository = new ReservationRepository();
@@ -17,7 +17,7 @@ namespace RestaurantDesktopClient.Tests
 
             Assert.IsNotNull(_result);
         }
-        [TestMethod]
+        [TestMethod, TestCategory("Integration")]
         public void GetReservationByIdPositiv()
         {
             int id = 1;
@@ -25,7 +25,7 @@ namespace RestaurantDesktopClient.Tests
             ReservationDTO _result = _reservationRepository.GetReservation(id);
             Assert.IsTrue(_result.Id == id);
         }
-        [TestMethod]
+        [TestMethod, TestCategory("Integration")]
         public void GetReservationByIdNegativ()
         {
             int id = 1;
@@ -33,7 +33,7 @@ namespace RestaurantDesktopClient.Tests
             ReservationDTO _result = _reservationRepository.GetReservation(id);
             Assert.IsFalse(_result.Id != id);
         }
-        [TestMethod]
+        [TestMethod, TestCategory("Integration")]
         public void PostReservation()
         {
             ReservationDTO _reservation = new ReservationDTO

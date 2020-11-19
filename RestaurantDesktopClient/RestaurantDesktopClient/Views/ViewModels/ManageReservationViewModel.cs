@@ -35,6 +35,8 @@ namespace RestaurantDesktopClient.Views.ManageReservation
 
         private DataTable ConvertReservationObjToDataTable(List<ReservationDTO> input)
         {
+
+            //TODO: create columns ones... maybee linq
             DataTable res = new DataTable();
             res.Columns.Add(new DataColumn("Reservation Number"));
             res.Columns.Add(new DataColumn("Customer"));
