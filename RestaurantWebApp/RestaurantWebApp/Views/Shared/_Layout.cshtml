@@ -12,8 +12,9 @@
     <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 
     <!-- Custom styles for this template -->
-    @*<link href="css/simple-sidebar.css" rel="stylesheet">*@
     @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+
 
 </head>
 <body>
@@ -78,7 +79,6 @@
     </script>
 
     @Scripts.Render("~/bundles/jquery")
-    @Scripts.Render("~/bundles/modernizr")
     @Scripts.Render("~/bundles/bootstrap")
     @RenderSection("scripts", required: false)
 

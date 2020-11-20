@@ -25,7 +25,7 @@
                     </div>
                     <div class="form-group">
                         @* //TODO mangler bedre implemtions *@
-                        <a href="/Booking/Register" class="btn btn-primary" >Opret login</a>
+                        <a href="/Booking/Register" class="btn btn-primary">Opret login</a>
                         <input type="submit" name="submit" class="btn btn-primary" value="Login" />
                     </div>
                 }
@@ -34,3 +34,7 @@
     </div>
 </div>
 
+@* used for clientside validation through jquery validation and jquery validation unobtrusive libs  *@
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

@@ -25,7 +25,7 @@
                         @Html.TextBoxFor(model => model.ReservationTime, new { @type = "date", @class = "form-control datepicker", @id = "txtDate", @name = "date" })
                         @Html.ValidationMessageFor(model => model.ReservationTime, "", new { @class = "text-danger" })
 
-                        @Html.DropDownListFor(m => m.TimeSlots, new SelectList(Model.TimeSlots, "_date","_time"),"Vælg tidspunkt", new { @class = "form-control" })
+                        @Html.DropDownListFor(m => m.TimeSlots, new SelectList(Model.TimeSlots, "_date", "_time"), "Vælg tidspunkt", new { @class = "form-control" })
                     </fieldset>
                 </div>
             </div>
@@ -117,8 +117,8 @@
 <div>
     @Html.ActionLink("Gå til forside", "Index")
 </div>
-
-@*@section Scripts {
-        @Scripts.Render("~/bundles/jqueryval")
-    }*@
+@* used for clientside validation through jquery validation and jquery validation unobtrusive libs  *@
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
 
