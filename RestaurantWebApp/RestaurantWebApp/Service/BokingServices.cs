@@ -36,5 +36,9 @@ namespace RestaurantWebApp.Service
             return response;
         }
 
+        public UserDTO GetUser(string v)
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }
