@@ -58,9 +58,9 @@ namespace RestaurantDesktopClient.Tests
                 Tables = new List<TablesDTO> { new TablesDTO { NoOfSeats = 4, TableNumber = 2 }, new TablesDTO { NoOfSeats = 4, TableNumber = 3 } },
             };
             IReservationRepository _reservationRepository = new ReservationRepository();
-            System.Net.HttpStatusCode res = _reservationRepository.CreateReservation(_reservation);
+            ReservationDTO res = _reservationRepository.CreateReservation(_reservation);
 
-            Assert.AreEqual(res, System.Net.HttpStatusCode.OK);
+            Assert.IsNotNull(res);
         }
         [TestMethod]
         public void PostReservationPositiv()

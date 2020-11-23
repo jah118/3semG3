@@ -21,10 +21,16 @@ namespace RestaurantDesktopClient
     /// </summary>
     public partial class MainWindow : Window
     {
+        private static Frame mainFrame;
         public MainWindow()
         {
             InitializeComponent();
-            MainFrame.Navigate(new MainMenu(this));
+            mainFrame = MainFrame;
+            ChangeFrame(new MainMenu());
+        }
+        public static void ChangeFrame(Page page)
+        {
+            mainFrame.Navigate(page);
         }
     }
 }

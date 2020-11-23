@@ -15,54 +15,58 @@ namespace RestaurantDesktopClient.Views.ManageReservation
     class ManageReservationViewModel : INotifyPropertyChanged
     {
         private DataTable _reservationTable;
-        private IReservationRepository repository = new ReservationRepository();
+        private DataRowView _selectedItem;
+        private readonly IReservationRepository repository = new ReservationRepository();
+        public event PropertyChangedEventHandler PropertyChanged;
 
         public ManageReservationViewModel()
         {
         }
+        private void CreateSearchTable()
+        {
+            _reservationTable = new DataTable();
+            _reservationTable.Columns.Add(new DataColumn("Reservation Number"));
+            _reservationTable.Columns.Add(new DataColumn("Customer"));
+            _reservationTable.Columns.Add(new DataColumn("ReservationDate"));
+            _reservationTable.Columns.Add(new DataColumn("ReservationTime"));
+            _reservationTable.Columns.Add(new DataColumn("NoOfPeople"));
+        }
+        public DataRowView SelectedItem
+        {
+            get
+            {
+                return _selectedItem;
+            }
+            set
+            {
+                _selectedItem = value;
+                var v = _selectedItem.Row.ItemArray[0];
+                PropertyChanged(this, new PropertyChangedEventArgs("SelectedItem"));
+            }
+        }
 
         public DataTable SearchTable
         {
-            get {
-                UpdateSearchTable();
-                return _reservationTable; }
+            get
+            {
+                List<ReservationDTO> _reservations = repository.GetAllReservations();
+                if (_reservations != null)
+                {
+                    if (_reservationTable == null) CreateSearchTable();
+
+                    _reservations.ForEach(x =>
+                    {
+                        DataRow dr = _reservationTable.NewRow();
+                        _reservationTable.Rows.Add(dr.ItemArray = new[] { x.Id+"", x.Customer.FirstName + " " + x.Customer.LastName,
+                            x.ReservationDate+"", x.ReservationTime+"", x.NoOfPeople +"" });
+                    });
+                }
+                return _reservationTable;
+            }
             set
             {
                 _reservationTable = value;
                 PropertyChanged(this, new PropertyChangedEventArgs("ReservationTable"));
-            }                
-        }
-
-        private DataTable ConvertReservationObjToDataTable(List<ReservationDTO> input)
-        {
-
-            //TODO: create columns ones... maybee linq
-            DataTable res = new DataTable();
-            res.Columns.Add(new DataColumn("Reservation Number"));
-            res.Columns.Add(new DataColumn("Customer"));
-            res.Columns.Add(new DataColumn("ReservationDate"));
-            res.Columns.Add(new DataColumn("ReservationTime"));
-            res.Columns.Add(new DataColumn("NoOfPeople"));
-            input.ForEach((x) => {
-                DataRow dr = res.NewRow();
-                dr["Reservation Number"] = x.Id;
-                dr["Customer"] = x.Customer.FirstName + " " + x.Customer.LastName;
-                dr["ReservationDate"] = x.ReservationDate.ToString();
-                dr["ReservationTime"] = x.ReservationTime.ToString();
-                dr["NoOfPeople"] = x.NoOfPeople;
-                res.Rows.Add(dr);
-            });
-            return res;
-        }
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        public void UpdateSearchTable()
-        {
-            var reservations = repository.GetAllReservations();
-            if(reservations!= null)
-            {
-            SearchTable = ConvertReservationObjToDataTable(reservations);
             }
         }
 
