@@ -20,9 +20,16 @@ namespace DataAccess.Utility
             byte[] salt = new byte[SALT_SIZE];
             provider.GetBytes(salt);
 
-            // Generate the hash
-            Rfc2898DeriveBytes pbkdf2 = new Rfc2898DeriveBytes(input, salt, ITERATIONS, HashAlgorithmName.SHA512);
-            return (pbkdf2.GetBytes(HASH_SIZE), salt);
+            // Generate and return the hash
+            return (Hash(input, salt), salt);
         }
+
+        public static byte[] Hash(string input, byte[] salt)
+        {
+            // SHA512 is chosen along with a sizeable amount of iterations to ensure protection against brute force attacks
+            Rfc2898DeriveBytes pbkdf2 = new Rfc2898DeriveBytes(input, salt, ITERATIONS, HashAlgorithmName.SHA512);
+            return pbkdf2.GetBytes(HASH_SIZE);
+        }
+
     }
 }

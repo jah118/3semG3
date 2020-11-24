@@ -9,7 +9,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataAccess", "DataAccess\Da
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RestaurantUpdater", "RestaurantUpdater\RestaurantUpdater.csproj", "{0C7A9DB2-CD27-4BD4-9205-C7274EA913FA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests.DataAccess", "Tests.DataAccess\Tests.DataAccess.csproj", "{DF06CF02-5882-4694-956A-7CCBB909F22F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tests.DataAccess", "Tests.DataAccess\Tests.DataAccess.csproj", "{DF06CF02-5882-4694-956A-7CCBB909F22F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
