@@ -69,7 +69,6 @@ namespace RestaurantDesktopClient.Views.ManageReservation
                     var found = SelectedReservation.Tables.Find(x => x.TableNumber == value.TableNumber);
                 if(found != null)
                 {
-                    SelectedReservation.Tables.Remove(value);
                 }
                 else
                 {
@@ -343,8 +342,7 @@ namespace RestaurantDesktopClient.Views.ManageReservation
         }
         public ReservationDTO CreateReservation()
         {
-            ReservationDTO res = SelectedReservation;
-
+            var res = repository.Create(SelectedReservation);
             return res;
         }
     }
