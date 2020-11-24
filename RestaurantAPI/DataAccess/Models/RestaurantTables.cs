@@ -18,7 +18,7 @@ namespace DataAccess.Models
         }
 
         [Key]
-        [Column("id"), DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [Column("id")]
         public int Id { get; set; }
         [Column("noOfSeats")]
         public int NoOfSeats { get; set; }

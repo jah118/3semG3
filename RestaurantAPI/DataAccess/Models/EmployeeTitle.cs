@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore;
 namespace DataAccess.Models
 {
     [Table("Employee_Title")]
-    [Index(nameof(Title), Name = "UQ__Employee__E52A1BB32EF0FD0A", IsUnique = true)]
+    [Index(nameof(Title), Name = "UQ__Employee__E52A1BB382A63A04", IsUnique = true)]
     public partial class EmployeeTitle
     {
         public EmployeeTitle()
@@ -19,7 +19,7 @@ namespace DataAccess.Models
         }
 
         [Key]
-        [Column("id"), DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [Column("id")]
         public int Id { get; set; }
         [Required]
         [Column("title")]

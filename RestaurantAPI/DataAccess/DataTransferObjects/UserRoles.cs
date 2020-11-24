@@ -16,18 +16,22 @@ namespace DataAccess.DataTransferObjects
     {
         public static string Describe(UserRoles role)
         {
-            switch(role)
+            return role switch
             {
-                case UserRoles.Customer:
-                    {
-                        return "Customer";
-                    }
-                case UserRoles.Employee:
-                    {
-                        return "Employee";
-                    }
-                default: return null;
-            }
+                UserRoles.Customer => "Customer",
+                UserRoles.Employee => "Employee",
+                _ => null,
+            };
+        }
+
+        public static UserRoles Parse(String roleText)
+        {
+            return roleText switch
+            {
+                "Customer" => UserRoles.Customer,
+                "Employee" => UserRoles.Employee,
+                _ => UserRoles.Customer,
+            };
         }
     }
 }

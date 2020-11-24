@@ -17,7 +17,7 @@ namespace DataAccess.Models
         }
 
         [Key]
-        [Column("id"), DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [Column("id")]
         public int Id { get; set; }
         [Column("person_id")]
         public int? PersonId { get; set; }

@@ -11,6 +11,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using RestaurantAPI.Authentication;
+using System.Text.Json.Serialization;
 
 namespace RestaurantAPI
 {
@@ -36,9 +37,13 @@ namespace RestaurantAPI
             services.AddScoped<IRepository<CustomerDTO>, CustomerRepository>();
             services.AddScoped<IRepository<EmployeeDTO>, EmployeeRepository>();
             services.AddScoped<IRepository<ReservationDTO>, ReservationRepository>();
-            services.AddScoped<IRepository<UserDTO>, UserRepository>();
+            services.AddScoped<IAccountRepository, UserRepository>();
             //Danger after this
-            services.AddControllers();
+            services.AddControllers().AddJsonOptions(opt =>
+            {
+                //[FromBody] does not support enum by default
+                opt.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+            });
 
             services.AddSwaggerGen(c =>
             {

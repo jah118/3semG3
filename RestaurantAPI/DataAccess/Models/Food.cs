@@ -18,7 +18,7 @@ namespace DataAccess.Models
         }
 
         [Key]
-        [Column("id"), DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [Column("id")]
         public int Id { get; set; }
         [Required]
         [Column("name")]
@@ -29,7 +29,6 @@ namespace DataAccess.Models
         public string Description { get; set; }
         [Column("food_category_id")]
         public int FoodCategoryId { get; set; }
-
         [ForeignKey(nameof(FoodCategoryId))]
         [InverseProperty("Food")]
         public virtual FoodCategory FoodCategory { get; set; }

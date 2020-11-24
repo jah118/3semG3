@@ -9,14 +9,10 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DataAccess.Models
 {
-    [Index(nameof(Username), Name = "UQ__User__F3DBC572E36DAB18", IsUnique = true)]
+    [Index(nameof(PersonId), Name = "UQ__User__AA2FFBE40BF2DC7E", IsUnique = true)]
+    [Index(nameof(Username), Name = "UQ__User__F3DBC572498F7A30", IsUnique = true)]
     public partial class User
     {
-        public User()
-        {
-            Person = new HashSet<Person>();
-        }
-
         [Key]
         [Column("id")]
         public int Id { get; set; }
@@ -32,8 +28,10 @@ namespace DataAccess.Models
         [Column("salt")]
         [MaxLength(64)]
         public byte[] Salt { get; set; }
+        public int? PersonId { get; set; }
 
+        [ForeignKey(nameof(PersonId))]
         [InverseProperty("User")]
-        public virtual ICollection<Person> Person { get; set; }
+        public virtual Person Person { get; set; }
     }
 }

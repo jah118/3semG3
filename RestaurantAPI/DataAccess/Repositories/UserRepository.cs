@@ -1,4 +1,5 @@
 ﻿using DataAccess.DataTransferObjects;
+using DataAccess.Repositories.Interfaces;
 using DataAccess.Utility;
 using System;
 using System.Collections.Generic;
@@ -8,14 +9,17 @@ using System.Threading.Tasks;
 
 namespace DataAccess.Repositories
 {
-    public class UserRepository : IRepository<UserDTO>
+    public class UserRepository : IAccountRepository
     {
         public UserDTO Create(UserDTO obj, bool transactionEndpoint = true)
         {
-            var passRes = PasswordHashing.CreateHash(""); // insert obj.pass
-            var hash = passRes.hash;
-            var salt = passRes.salt;
+            //Create User with option of adding password later
+            throw new NotImplementedException();
+        }
 
+        public UserDTO Create(UserDTO obj, string password, bool transactionEndpoint = true)
+        {
+            var result = PasswordHashing.CreateHash(password);
             throw new NotImplementedException();
         }
 
