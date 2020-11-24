@@ -1,0 +1,82 @@
+﻿@model RestaurantWebApp.Model.FoodViewModel
+@using (Html.BeginForm())
+{
+    ViewBag.Title = "Madbestilling";
+}
+
+<h2>Madbestilling</h2>
+
+<div class="form-horizontal">
+    <div class="form-group" style="width: 100%; float: left;">
+
+         @Html.LabelFor(model => model.Food.Name, htmlAttributes: new { @class = "control - label col - md - 2" })
+        <label>Retter</label>
+        <div class="col-md-10">
+
+            @Html.ListBoxFor(model => model.Foods, new SelectList(Model.Foods, "Id", "Name"))
+            <br />
+            <input type="button" value="Vælg ret/retter" />
+
+        </div>
+    </div>
+</div>
+<div class="form-horizontal">
+    <div class="form-group" style="margin-left: 100%; ">
+
+        @Html.LabelFor(model => model.Drink.Name, htmlAttributes: new { @class = "control - label col - md - 2" })
+        <label> Drikkevarer</label>
+        <div class="col-md-10">
+            @Html.ListBoxFor(model => model.Drinks, new SelectList(Model.Drinks, "Id", "Name"))
+            <br />
+            <input type="button"  value="Vælg drikkevarer" />
+        </div>
+    </div>
+</div>
+
+    <div class="form-horizontal">
+        <div class="form-group" style="width: 100%; float: left; ">
+            <div class="col-md-10">
+                @Html.ListBoxFor(model => model.Foods, new List<SelectListItem>(), new { @class = "control - label col - md - 2" })
+                <br />
+                <input type="button" value="Fjern ret/retter" />
+            </div>
+        </div>
+        </div>
+
+    <div class="form-horizontal">
+        <div class="form-group" style="margin-left: 100%;">
+      <div class="col-md-10">
+                    @Html.ListBoxFor(model => model.Drinks, new List<SelectListItem>(), new { @class = "control - label col - md - 2" })
+            
+                <br />
+                <input type="button" value="Fjern drikkevarer" />
+                
+            </div>
+        </div>
+        </div>
+
+@*<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+<script>
+    $('#moveLeft').click(function () {
+        var leftselected = $('#Drinks').val();
+        $.each(leftselected, function (key, value) {
+            $('#Drinks').append($("<option></option>").attr("value", value).text(value));
+        });
+    })
+
+</script>
+
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+<script>
+    $('#moveLeft').click(function () {
+        var leftselected = $('#Foods').val();
+        $.each(leftselected, function (key, value) {
+            $('#Foods').append($("<option></option>").attr("value", value).text(value));
+        });
+    })
+
+</script>*@
+
+<div>
+    <input type="submit" value="Gem mad og drikke " class="btn btn-primary" />
+</div>

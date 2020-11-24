@@ -1,4 +1,4 @@
-﻿@model DataAccess.DataTransferObjects.ReservationDTO
+﻿@model DataTransferObjects.ReservationDTO
 
 @{ 
     ViewBag.Title = "Bordbestilling";
@@ -99,13 +99,13 @@
                 </div>
             </div>
 
-            <div class="form-group">
+            <div class="form-group"> 
                 <div class="col-md-offset-2 col-md-10">
-                    <a href="/Booking/OrderFoods" class="btn btn-primary">
+                    <a href="/Booking/OrderFood" class="btn btn-primary">
                         Bestil Mad
-                        @* //TODO Mangler implmentation *@
+                        
                     </a>
-                    <input type="submit" value="Gem og afslut" class="btn btn-primary" />
+                    <input type="submit" value="Gem bestilling" class="btn btn-primary" />
                 </div>
             </div>
         </div>

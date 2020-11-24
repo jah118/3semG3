@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace DataAccess.DataTransferObjects
+namespace DataTransferObjects
 {
-    public partial class Price
+    public partial class PriceDTO
     {
         public int Id { get; }
         public decimal PriceValue { get;  }
-        public FoodDTO Food { get;  }
+        
     }
 }

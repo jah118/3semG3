@@ -31,6 +31,7 @@ namespace RestaurantAPI
             services.AddScoped<IRepository<EmployeeDTO>, EmployeeRepository>();
             services.AddScoped<IRepository<ReservationDTO>, ReservationRepository>();
             services.AddScoped<IRepository<UserDTO>, UserRepository>();
+            services.AddScoped<IRepository<FoodDTO>, FoodRepository>();
             //Danger after this
             services.AddControllers();
 
