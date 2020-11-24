@@ -1,4 +1,4 @@
-﻿using DataAccess.DataTransferObjects;
+﻿using DataTransferObjects;
 using Newtonsoft.Json;
 using RestSharp;
 using System.Collections.Generic;
@@ -19,6 +19,17 @@ namespace RestaurantWebApp.Service
             //{
             //    ConstructorHandling = ConstructorHandling.AllowNonPublicDefaultConstructor
             //});
+            return res;
+        }
+        public IEnumerable<FoodDTO> GetAllFoods(string constring)
+        {
+            var client = new RestClient(constring);
+            var request = new RestRequest("/Food", Method.GET);
+            var content = client.Execute(request).Content;
+
+            var res = JsonConvert.DeserializeObject<IEnumerable<FoodDTO>>(content);
+
+
             return res;
         }
 

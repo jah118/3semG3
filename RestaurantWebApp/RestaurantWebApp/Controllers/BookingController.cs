@@ -1,4 +1,5 @@
-﻿using DataAccess.DataTransferObjects;
+﻿using DataTransferObjects;
+using RestaurantWebApp.Model;
 using RestaurantWebApp.Service;
 using System.Collections.Generic;
 using System.Configuration;
@@ -43,11 +44,12 @@ namespace RestaurantWebApp.Controllers
 
             //reservation.ReservationTime =
 
+
             //dette tager tables som kommer som en lang string og laver dem om til en liste
             //af strings, som splites ved ','
             //og laves til RestaurantTablesDTO objekt spm puttes i en liste
             var r = Request.Form["Tables"];
-            if (r!=null)
+            if (r != null)
             {
 
 
@@ -70,7 +72,7 @@ namespace RestaurantWebApp.Controllers
                 }
                 reservation.Tables = tables;
             }
-            
+
 
 
             if (ModelState.IsValid)
@@ -134,19 +136,60 @@ namespace RestaurantWebApp.Controllers
             }
         }
 
-        //GET: Booking/Food
+        //POST: Booking/OrderFoods
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        // public async ActionResult OrderFoods(FoodDTO food)
+        // {
+        //var client = new RestClient("https://localhost:44349/api/Food");
+
+        //var request = new RestRequest("Food/{FoodId}", Method.GET);
+
+        //request.AddUrlSegment("{FoodId", 1);
+
+        //var content = client.Execute(request).Content;
+
+        //    return View();
+        // }
+
+        // GET: Booking/OrderFoods
         [HttpGet]
         public ActionResult OrderFoods()
         {
-            //var client = new RestClient("https://localhost:44349/api/Food");
+            IEnumerable<FoodDTO> fdto = bs.GetAllFoods(ConfigurationManager.AppSettings["ServiceApi"]);
 
-            //var request = new RestRequest("Food/{FoodId}", Method.GET);
+            return View(fdto);
 
-            //request.AddUrlSegment("{FoodId", 1);
+        }
+        [HttpGet]
+        public ActionResult OrderFood()
+        {
+            var f = new FoodViewModel();
+            IEnumerable<FoodDTO> fdto = bs.GetAllFoods(ConfigurationManager.AppSettings["ServiceApi"]);
 
-            //var content = client.Execute(request).Content;
+            var Foods = new List<FoodDTO>();
+            var Drinks = new List<FoodDTO>();
+            foreach (var item in fdto)
+            {
+                if (item.FoodCategoryName.Name.Equals("Mad"))
 
-            return View();
+                {
+                    Foods.Add(item);
+                }
+                else if(item.FoodCategoryName.Name.Equals("Drikkevare"))
+                {
+                    Drinks.Add(item);
+                } 
+                
+                       
+            }
+
+            
+            f.Foods = Foods;
+            f.Drinks = Drinks;
+            
+            return View(f);
         }
     }
 }
+
