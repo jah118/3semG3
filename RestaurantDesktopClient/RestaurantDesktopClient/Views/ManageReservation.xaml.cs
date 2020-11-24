@@ -1,7 +1,9 @@
 ﻿using DataAccess.DataTransferObjects;
-using RestaurantDesktopClient.Controllers;
 using RestaurantDesktopClient.Reservation;
+using RestaurantDesktopClient.Services.CustomerService;
 using RestaurantDesktopClient.Views.Controls;
+using RestaurantDesktopClient.Views.ManageReservation;
+using RestaurantDesktopClient.Views.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -28,64 +30,12 @@ namespace RestaurantDesktopClient.Views
         public ManageReservationView()
         {
             InitializeComponent();
-            ReservationViewControl.btnOrderFood.Click += BtnOrderFood_Click;
-            ReservationViewControl.btnCreateNew.Click += BtnCreateNew_Click;
-            ListPageControl.dgResult.SelectedCellsChanged += DgResult_SelectedCellsChanged;
-            Headline.SetHeadline("Manage Reservation");
+            ManageReservationViewModel mrvm = new ManageReservationViewModel();
+            Headline.DataContext = mrvm;
+            ListPageControl.DataContext = mrvm;
+            ReservationViewControl.dtpReservationTime.DataContext = mrvm;
+            ReservationViewControl.DataContext = mrvm;
         }
 
-        private void BtnOrderFood_Click(object sender, RoutedEventArgs e)
-        {
-            bool _check = int.TryParse(ReservationViewControl.txtReservationNumber.Text, out int id);
-            if (_check && id > 0)
-            {
-                MainWindow.ChangeFrame(new OrderFood(id));
-            }
-            else
-            {
-                ReservationDTO _reservation = CreateReservation();
-                ReservationViewControl.SetReservationInformation(_reservation);
-                MainWindow.ChangeFrame(new OrderFood(_reservation.Id));
-            }
-        }
-
-        private void DgResult_SelectedCellsChanged(object sender, SelectedCellsChangedEventArgs e)
-        {
-            DataRowView dr = (DataRowView)ListPageControl.dgResult.SelectedItem;
-            int id = int.Parse(dr["Reservation number"].ToString());
-            ReservationDTO _reservation = new ReservationController().GetReservationById(id);
-            ReservationViewControl.SetReservationInformation(_reservation);
-        }
-
-        public ReservationDTO CreateReservation()
-        {
-            ReservationDTO reservation = new ReservationDTO
-            {
-                Deposit = (bool)ReservationViewControl.cbDepositPayed.IsChecked,
-                Customer = new CustomerController().getCustomerByid(int.Parse(ReservationViewControl.txtCustomerNumber.Text)),
-                Tables = GetTablesFromlvTableNames(),
-                ReservationTime = ReservationViewControl.dtpReservationTime.getDateTime(),
-                ReservationDate = ReservationViewControl.dpReservationDate.DisplayDate,
-                NoOfPeople = int.Parse(ReservationViewControl.txtNumOfPersons.Text),
-                Note = ReservationViewControl.txtReservationComments.Text
-            };
-            IReservationRepository repository = new ReservationRepository();
-            ReservationDTO res = repository.CreateReservation(reservation);
-            return res;
-        }
-        private void BtnCreateNew_Click(object sender, RoutedEventArgs e)
-        {
-            //TODO: relay command
-            CreateReservation();
-        }
-        private List<TablesDTO> GetTablesFromlvTableNames()
-        {
-            List<TablesDTO> res = new List<TablesDTO>();
-            foreach (TablesDTO item in ReservationViewControl.lvTableNames.SelectedItems)
-            {
-                res.Add(item);
-            }
-            return res;
-        }
     }
 }

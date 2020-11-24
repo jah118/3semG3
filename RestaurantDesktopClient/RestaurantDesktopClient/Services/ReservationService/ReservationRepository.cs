@@ -1,5 +1,6 @@
 ﻿using DataAccess.DataTransferObjects;
 using Newtonsoft.Json;
+using RestaurantDesktopClient.Views.ViewModels;
 using RestSharp;
 using System;
 using System.Collections;
@@ -11,13 +12,13 @@ using System.Threading.Tasks;
 
 namespace RestaurantDesktopClient.Reservation
 {
-    public class ReservationRepository : IReservationRepository
+    public class ReservationRepository : IRepository<ReservationDTO>
     {
         public ReservationRepository()
         {
 
         }
-        public ReservationDTO CreateReservation(ReservationDTO reservation)
+        public ReservationDTO Create(ReservationDTO reservation)
         {
             ReservationDTO res = null;
             try
@@ -38,7 +39,7 @@ namespace RestaurantDesktopClient.Reservation
             return res;
         }
 
-        public ReservationDTO GetReservation(int id)
+        public ReservationDTO Get(int id)
         {
             ReservationDTO res = null;
             try
@@ -56,12 +57,11 @@ namespace RestaurantDesktopClient.Reservation
             return res;
         }
 
-        List<ReservationDTO> IReservationRepository.GetAllReservations()
+        public IEnumerable<ReservationDTO> GetAll()
         {
             List<ReservationDTO> res = new List<ReservationDTO>();
             try
             {
-                //TODO: autofac readup and write..
                 string constring = ConfigurationManager.ConnectionStrings["ServiceConString"].ConnectionString;
                 var client = new RestClient(constring);
                 var request = new RestRequest("/reservation", Method.GET);
@@ -71,8 +71,7 @@ namespace RestaurantDesktopClient.Reservation
             catch
             {
             }
-            return (List<ReservationDTO>)res;
+            return res;
         }
-
     }
 }

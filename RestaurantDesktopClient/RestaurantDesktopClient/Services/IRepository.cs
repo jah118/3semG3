@@ -3,8 +3,10 @@ using System.Collections.Generic;
 
 namespace RestaurantDesktopClient.Views.ViewModels
 {
-    internal interface IFoodRepository
+    internal interface IRepository<T>
     {
-        List<FoodDTO> GetAllFoods();
+        IEnumerable<T> GetAll();
+        T Get(int id);
+        T Create(T t);
     }
 }

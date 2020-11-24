@@ -12,10 +12,11 @@ namespace RestaurantDesktopClient.Views.ViewModels
     class SearchDriksViewModel
     {
         private DataTable _foodTable;
-        private readonly IFoodRepository repository = new FoodRepository();
+        private readonly IRepository<FoodDTO> repository;
 
-        public SearchDriksViewModel()
+        public SearchDriksViewModel(IRepository<FoodDTO> rep)
         {
+            repository = rep;
         }
 
         private void CreateSearchTable()
@@ -31,7 +32,7 @@ namespace RestaurantDesktopClient.Views.ViewModels
         {
             get
             {
-                List<FoodDTO> foods = repository.GetAllFoods();
+                IEnumerable<FoodDTO> foods = repository.GetAll();
                 if (foods != null)
                 {
                     if (_foodTable == null) CreateSearchTable();

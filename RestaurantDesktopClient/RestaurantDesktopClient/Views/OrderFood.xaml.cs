@@ -1,4 +1,5 @@
-﻿using RestaurantDesktopClient.Views.ViewModels;
+﻿using RestaurantDesktopClient.Services.OrderService;
+using RestaurantDesktopClient.Views.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,9 +25,9 @@ namespace RestaurantDesktopClient.Views
         public OrderFood(int id)
         {
             InitializeComponent();
-            SummaryFoodsViewModel summaryFoodsViewModel = new SummaryFoodsViewModel(id);
-            SearchFoodsViewModel searchFoodsViewModel = new SearchFoodsViewModel();
-            SearchDriksViewModel searchDriksViewModel = new SearchDriksViewModel();
+            SummaryFoodsViewModel summaryFoodsViewModel = new SummaryFoodsViewModel(id, new OrderRepository());
+            SearchFoodsViewModel searchFoodsViewModel = new SearchFoodsViewModel(new FoodRepository());
+            SearchDriksViewModel searchDriksViewModel = new SearchDriksViewModel(new FoodRepository());
             OrderFoodModelView OrderFoodModelView = new OrderFoodModelView(summaryFoodsViewModel, searchFoodsViewModel, searchDriksViewModel);
 
 

@@ -4,7 +4,8 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
-       Title="Main" MinHeight="550" MinWidth="700">
+       Title="Main" MinHeight="550" MinWidth="700"
+        DataContext="{Binding Main, Source={StaticResource Locator}}">
     <Grid>
         <Frame Name="MainFrame"/>
     </Grid>

@@ -15,19 +15,22 @@ namespace RestaurantDesktopClient.Views.ViewModels
     class SummaryFoodsViewModel
     {
         private DataTable _summaryTable;
-        private readonly IOrderRepository repository = new OrderRepository();
+        private readonly IRepository<OrderDTO> repository;
         private int _reservationId { get; set; }
         public event PropertyChangedEventHandler PropertyChanged;
         public event PropertyChangedEventHandler SelectedPropertyChanged;
-        public SummaryFoodsViewModel(int id)
+        public SummaryFoodsViewModel(int id, IRepository<OrderDTO> rep)
         {
+            repository = rep;
             _reservationId = id;
         }
         public DataTable SearchTable
         {
             get
             {
-                List<FoodDTO> foods = (from OrderDTO in repository.GetAllOrders() where OrderDTO.Reservation.Id == _reservationId select OrderDTO).FirstOrDefault().Foods;
+                var orders = repository.GetAll();
+                if (orders == null) return new DataTable();
+                var foods = (from OrderDTO in orders where OrderDTO.Reservation.Id == _reservationId select OrderDTO).FirstOrDefault().Foods;                
                 if (foods != null)
                 {
                     if (_summaryTable == null) CreateSearchTable();

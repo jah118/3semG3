@@ -6,13 +6,24 @@ using System.Configuration;
 
 namespace RestaurantDesktopClient.Views.ViewModels
 {
-    internal class FoodRepository : IFoodRepository
+    internal class FoodRepository : IRepository<FoodDTO>
     {
         public FoodRepository()
         {
 
         }
-        public List<FoodDTO> GetAllFoods()
+
+        public FoodDTO Create(FoodDTO t)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public FoodDTO Get(int id)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public IEnumerable<FoodDTO> GetAll()
         {
             List<FoodDTO> res = new List<FoodDTO>();
             try
@@ -27,9 +38,7 @@ namespace RestaurantDesktopClient.Views.ViewModels
             catch
             {
             }
-            return (List<FoodDTO>)res;
+            return res;
         }
-
-
     }
 }

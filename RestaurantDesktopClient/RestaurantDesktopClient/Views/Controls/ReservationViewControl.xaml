@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
              xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
              xmlns:local="clr-namespace:RestaurantDesktopClient.Views.Controls"
              mc:Ignorable="d" 
@@ -30,22 +31,37 @@
 
         </Grid.RowDefinitions>
         <Label Content="Reservations nummer" Grid.Column="1" HorizontalAlignment="Right"/>
-        <TextBlock x:Name="txtReservationNumber" VerticalAlignment="Center" Margin="0,2,0,2" Grid.Column="2"/>
+        <TextBlock x:Name="txtReservationNumber" Text="{Binding ReservationNumber, Mode=TwoWay}" VerticalAlignment="Center" Margin="0,2,0,2" Grid.Column="2"/>
         <Label Content="Borde: " Grid.Column="1" HorizontalAlignment="Right" Grid.Row="1"/>
-        <ListView x:Name="lvTableNames" SelectionMode="Multiple" Margin="0,0,0,2" Grid.Column="2" Grid.ColumnSpan="2" Grid.Row="1"/>
+        <ListView x:Name="lvTableNames" SelectionMode="Multiple" ItemsSource="{Binding ReservationTables, Mode=TwoWay}" SelectedItem="{Binding SetSelectedTables, Mode=TwoWay}" Margin="0,0,0,2" Grid.Column="2" Grid.ColumnSpan="2" Grid.Row="1">
+            <i:Interaction.Triggers>
+                <i:EventTrigger EventName="SelectionChanged">
+                    <i:InvokeCommandAction Command="{Binding SetSelectedTables}" CommandParameter="{Binding ElementName=lvTableNames}">
+                    </i:InvokeCommandAction>
+                </i:EventTrigger>
+            </i:Interaction.Triggers>
+            <ListView.View>
+                <GridView>
+                    <GridView.Columns>
+                        <GridViewColumn Header="Num" Width="Auto" DisplayMemberBinding="{Binding TableNumber}"/>
+                        <GridViewColumn Header="Chairs" Width="Auto" DisplayMemberBinding="{Binding NoOfSeats}"/>
+                    </GridView.Columns>
+                </GridView>
+            </ListView.View>
+        </ListView>
         <Label Content="Antal personer: " Grid.Row="2" Grid.Column="1" HorizontalAlignment="Right"/>
-        <TextBox x:Name="txtNumOfPersons" Grid.Row="2" Margin="0,2,0,2" Grid.Column="2" Grid.ColumnSpan="2"/>
+        <TextBox x:Name="txtNumOfPersons" Text="{Binding ReservationNumOfPersons}" Grid.Row="2" Margin="0,2,0,2" Grid.Column="2" Grid.ColumnSpan="2"/>
         <Label Content="Reservations dato: " Grid.Row="3" Grid.Column="1" HorizontalAlignment="Right"/>
-        <DatePicker x:Name="dpReservationDate"  Grid.Row="3" Margin="0,2,0,2" Grid.Column="2" Grid.ColumnSpan="2"  IsEnabled="False" />
+        <DatePicker x:Name="dpReservationDate"  Grid.Row="3" SelectedDate="{Binding ReservationDate, Mode=TwoWay}" Margin="0,2,0,2" Grid.Column="2" Grid.ColumnSpan="2"  IsEnabled="False" />
         <Label Content="Reservations tidspunkt: " Grid.Row="4" Grid.Column="1" HorizontalAlignment="Right"/>
         <Label Content="Depositum betalt: " HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="5" Grid.Column="1"/>
-        <local:DateTimePicker x:Name="dtpReservationTime" Margin="0,2,0,0" Grid.Row="4" Grid.Column="2" Grid.ColumnSpan="2"/>
-        <CheckBox x:Name="cbDepositPayed" Grid.Row="5" Grid.Column="2" VerticalAlignment="Center" />
+        <local:DateTimePicker x:Name="dtpReservationTime"  Margin="0,2,0,0" Grid.Row="4" Grid.Column="2" Grid.ColumnSpan="2"/>
+        <CheckBox x:Name="cbDepositPayed" IsChecked="{Binding ReservationDeposit, Mode=TwoWay}"  Grid.Row="5" Grid.Column="2" VerticalAlignment="Center" />
         <Label Content="Kunde nummer: " VerticalAlignment="Center" Grid.Row="6" Grid.Column="1" HorizontalAlignment="Right"/>
-        <TextBox x:Name="txtCustomerNumber"  Grid.Row="6" Grid.Column="2" Grid.ColumnSpan="2"/>
+        <TextBox x:Name="txtCustomerNumber" Text="{Binding ReservationCustomer, Mode=TwoWay}" Grid.Row="6" Grid.Column="2" Grid.ColumnSpan="2"/>
         <Label Content="Kommentar: " HorizontalAlignment="Right" Grid.Row="7" Grid.Column="1" />
-        <TextBox x:Name="txtReservationComments" Grid.RowSpan="2" Grid.Column="2" Grid.ColumnSpan="2" Grid.Row="7" />
-        <Button x:Name="btnOrderFood" Content="Bestil mad" Grid.Row="9" Grid.Column="3" VerticalAlignment="Top" HorizontalAlignment="Left" Width="75"/>
+        <TextBox x:Name="txtReservationComments" Text="{Binding ReservationComment, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Grid.RowSpan="2" Grid.Column="2" Grid.ColumnSpan="2" Grid.Row="7" />
+        <Button x:Name="btnOrderFood" Content="Bestil mad" Command="{Binding OrderFoodCommand}" Grid.Row="9" Grid.Column="3" VerticalAlignment="Top" HorizontalAlignment="Left" Width="75"/>
         <Button x:Name="btnClearForms" Content="Nulstil" Grid.Row="9" Grid.Column="3"  VerticalAlignment="Top" HorizontalAlignment="Right" Width="75" Click="BtnClearForms_Click" />
         <Grid Grid.Row="10" Grid.Column="1" Grid.ColumnSpan="3">
             <Grid.ColumnDefinitions>
@@ -53,9 +69,9 @@
                 <ColumnDefinition Width="3*"/>
                 <ColumnDefinition Width="3*"/>
             </Grid.ColumnDefinitions>
-            <Button x:Name="btnCreateNew" Margin="0,2,5,0" Content="Opret" />
-            <Button x:Name="btnDelete" Margin="5,2,5,0" Content="Slet" Grid.Column="1" />
-            <Button x:Name="btnUpdate" Margin="5,2,0,0" Content="Updater" Grid.Column="2" />
+            <Button x:Name="btnCreateNew" Margin="0,2,5,0" Content="Opret" Command="{Binding CreateReservationCommand}"/>
+            <Button x:Name="btnDelete" Margin="5,2,5,0" Content="Slet" Grid.Column="1" Command="{Binding RemoveReservationCommand}"/>
+            <Button x:Name="btnUpdate" Margin="5,2,0,0" Content="Updater" Grid.Column="2" Command="{Binding UpdateReservationCommand}"/>
         </Grid>
     </Grid>
 </UserControl>

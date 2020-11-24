@@ -1,5 +1,6 @@
 ﻿using DataAccess.DataTransferObjects;
 using Newtonsoft.Json;
+using RestaurantDesktopClient.Views.ViewModels;
 using RestSharp;
 using System;
 using System.Collections.Generic;
@@ -10,13 +11,13 @@ using System.Threading.Tasks;
 
 namespace RestaurantDesktopClient.Services.OrderService
 {
-    class OrderRepository : IOrderRepository
+    class OrderRepository : IRepository<OrderDTO>
     {
         public OrderRepository()
         {
 
         }
-        public OrderDTO CreateOrder(OrderDTO order)
+        public OrderDTO Create(OrderDTO order)
         {
             OrderDTO res = null;
             try
@@ -38,12 +39,24 @@ namespace RestaurantDesktopClient.Services.OrderService
             return res;
         }
 
-        public List<OrderDTO> GetAllOrders()
+        public IEnumerable<OrderDTO> GetAll()
         {
-            throw new NotImplementedException();
+            IEnumerable<OrderDTO> res = new List<OrderDTO>();
+            try
+            {
+                string constring = ConfigurationManager.ConnectionStrings["ServiceConString"].ConnectionString;
+                var client = new RestClient(constring);
+                var request = new RestRequest("/order", Method.GET);
+                var response = client.Execute(request).Content;
+                res = JsonConvert.DeserializeObject<IEnumerable<OrderDTO>>(response);
+            }
+            catch
+            {
+            }
+            return res;
         }
 
-        public OrderDTO GetOrder(int id)
+        public OrderDTO Get(int id)
         {
             OrderDTO res = null;
             try
