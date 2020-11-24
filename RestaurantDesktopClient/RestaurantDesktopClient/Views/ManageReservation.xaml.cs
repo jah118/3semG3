@@ -28,22 +28,37 @@ namespace RestaurantDesktopClient.Views
         public ManageReservationView()
         {
             InitializeComponent();
+            ReservationViewControl.btnOrderFood.Click += BtnOrderFood_Click;
             ReservationViewControl.btnCreateNew.Click += BtnCreateNew_Click;
             ListPageControl.dgResult.SelectedCellsChanged += DgResult_SelectedCellsChanged;
             Headline.SetHeadline("Manage Reservation");
+        }
+
+        private void BtnOrderFood_Click(object sender, RoutedEventArgs e)
+        {
+            bool _check = int.TryParse(ReservationViewControl.txtReservationNumber.Text, out int id);
+            if (_check && id > 0)
+            {
+                MainWindow.ChangeFrame(new OrderFood(id));
+            }
+            else
+            {
+                ReservationDTO _reservation = CreateReservation();
+                ReservationViewControl.SetReservationInformation(_reservation);
+                MainWindow.ChangeFrame(new OrderFood(_reservation.Id));
+            }
         }
 
         private void DgResult_SelectedCellsChanged(object sender, SelectedCellsChangedEventArgs e)
         {
             DataRowView dr = (DataRowView)ListPageControl.dgResult.SelectedItem;
             int id = int.Parse(dr["Reservation number"].ToString());
-            ReservationDTO reservation = new ReservationController().GetReservationById(id);
-            ReservationViewControl.SetReservationInformation(reservation);
+            ReservationDTO _reservation = new ReservationController().GetReservationById(id);
+            ReservationViewControl.SetReservationInformation(_reservation);
         }
 
-        private void BtnCreateNew_Click(object sender, RoutedEventArgs e)
+        public ReservationDTO CreateReservation()
         {
-            //TODO: relay command
             ReservationDTO reservation = new ReservationDTO
             {
                 Deposit = (bool)ReservationViewControl.cbDepositPayed.IsChecked,
@@ -55,12 +70,18 @@ namespace RestaurantDesktopClient.Views
                 Note = ReservationViewControl.txtReservationComments.Text
             };
             IReservationRepository repository = new ReservationRepository();
-            repository.CreateReservation(reservation);
+            ReservationDTO res = repository.CreateReservation(reservation);
+            return res;
+        }
+        private void BtnCreateNew_Click(object sender, RoutedEventArgs e)
+        {
+            //TODO: relay command
+            CreateReservation();
         }
         private List<TablesDTO> GetTablesFromlvTableNames()
         {
             List<TablesDTO> res = new List<TablesDTO>();
-            foreach(TablesDTO item in ReservationViewControl.lvTableNames.SelectedItems)
+            foreach (TablesDTO item in ReservationViewControl.lvTableNames.SelectedItems)
             {
                 res.Add(item);
             }

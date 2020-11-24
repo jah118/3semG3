@@ -17,9 +17,9 @@ namespace RestaurantDesktopClient.Reservation
         {
 
         }
-        public System.Net.HttpStatusCode CreateReservation(ReservationDTO reservation)
+        public ReservationDTO CreateReservation(ReservationDTO reservation)
         {
-            System.Net.HttpStatusCode res = System.Net.HttpStatusCode.Unused;
+            ReservationDTO res = null;
             try
             {
                 string constring = ConfigurationManager.ConnectionStrings["ServiceConString"].ConnectionString;
@@ -27,8 +27,10 @@ namespace RestaurantDesktopClient.Reservation
                 string json = JsonConvert.SerializeObject(reservation);
                 var request = new RestRequest("/reservation", Method.POST);
                 request.AddJsonBody(json);
-                res = client.Execute(request).StatusCode;
-                
+                var response = client.Execute(request).Content;
+                res = JsonConvert.DeserializeObject<ReservationDTO>(response);
+
+
             }
             catch
             {

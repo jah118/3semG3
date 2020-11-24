@@ -8,7 +8,5 @@ namespace DataAccess.DataTransferObjects
 {
     public class OrderDTO
     {
-        public List<FoodDTO> Foods { get; set; }
-        public ReservationDTO Reservation { get; internal set; }
     }
 }

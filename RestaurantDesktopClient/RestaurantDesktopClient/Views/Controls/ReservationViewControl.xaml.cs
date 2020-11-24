@@ -39,6 +39,7 @@ namespace RestaurantDesktopClient.Views.Controls
         public void SetReservationInformation(ReservationDTO reservation)
         {
             _reservation = reservation;
+            txtReservationNumber.Text = _reservation.Id + "";
             cbDepositPayed.IsChecked = _reservation.Deposit;
             txtCustomerNumber.Text = _reservation.Customer.Id + "";
             lvTableNames.ItemsSource = _reservation.Tables;
@@ -71,6 +72,7 @@ namespace RestaurantDesktopClient.Views.Controls
             dpReservationDate.SelectedDate = DateTime.Now;
             txtNumOfPersons.Text = "";
             txtReservationComments.Text = "";
+            txtReservationNumber.Text = "";
         }
     }
 }
