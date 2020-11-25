@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace DataAccess.DataTransferObjects
+namespace DataTransferObjects
 {
     public partial class Price
     {

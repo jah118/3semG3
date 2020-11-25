@@ -6,9 +6,10 @@ using RestSharp;
 using System.Configuration;
 using Newtonsoft.Json;
 using System.Net;
-using DataAccess.DataTransferObjects;
+using DataTransferObjects;
 using RestaurantWebApp.Controllers;
 using System.Threading.Tasks;
+using RestaurantWebApp.Service;
 
 namespace RestaurantWebApp.Test.UnitTest
 {
@@ -47,7 +48,7 @@ namespace RestaurantWebApp.Test.UnitTest
 
 
             //Arrange
-            BookingController _bc = new BookingController();
+            BokingServices _bc = new BokingServices();
             var reservation = new ReservationDTO(
                 DateTime.Now,
                 new CustomerDTO(),
@@ -58,7 +59,7 @@ namespace RestaurantWebApp.Test.UnitTest
                 new List<RestaurantTablesDTO>());
 
             //Act
-            var response = _bc.PostBooking(reservation, constring).Result;
+            var response = _bc.PostBookingAsync(reservation, constring).Result;
 
             //Assert
             Assert.AreEqual(response.StatusCode, HttpStatusCode.OK);

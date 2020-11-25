@@ -1,4 +1,4 @@
-﻿using DataAccess.DataTransferObjects;
+﻿using DataTransferObjects;
 using Newtonsoft.Json;
 using RestSharp;
 using System.Collections.Generic;
