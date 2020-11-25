@@ -36,16 +36,14 @@
 
         </Grid.RowDefinitions>
 
-        <controls:HeadLineControl x:Name="Headline" Grid.ColumnSpan="10" Grid.RowSpan="2"/>
-        <controls:ListPageControl x:Name="ListPageControl" Grid.Column="0" Grid.ColumnSpan="4" Grid.Row="2" Grid.RowSpan="6"  Margin="15,0,0,0">
-            <!--<UserControl.DataContext>
+        <controls:HeadLineControl x:Name="Headline" Grid.ColumnSpan="10" Grid.RowSpan="2">
+            <UserControl.DataContext>
                 <local:ManageReservationViewModel/>
-            </UserControl.DataContext>-->
+            </UserControl.DataContext>
+        </controls:HeadLineControl>
+        <controls:ListPageControl x:Name="ListPageControl" Grid.Column="0" Grid.ColumnSpan="4" Grid.Row="2" Grid.RowSpan="6"  Margin="15,0,0,0">
         </controls:ListPageControl>
         <controls:ReservationViewControl x:Name="ReservationViewControl" Grid.Column="5" Grid.ColumnSpan="4" Grid.Row="3" Grid.RowSpan="6">
-            <!--<UserControl.DataContext>
-                <local:ManageReservationViewModel/>
-            </UserControl.DataContext>-->
         </controls:ReservationViewControl>
         
         <controls:BackControl Grid.Column="7" Grid.Row="9" Grid.ColumnSpan="2" VerticalAlignment="Top"/>

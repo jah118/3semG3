@@ -31,7 +31,6 @@ namespace RestaurantDesktopClient.Views
         {
             InitializeComponent();
             ManageReservationViewModel mrvm = new ManageReservationViewModel();
-            Headline.DataContext = mrvm;
             ListPageControl.DataContext = mrvm;
             ReservationViewControl.dtpReservationTime.DataContext = mrvm;
             ReservationViewControl.DataContext = mrvm;

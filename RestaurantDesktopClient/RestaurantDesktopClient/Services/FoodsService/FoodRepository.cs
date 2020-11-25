@@ -31,7 +31,7 @@ namespace RestaurantDesktopClient.Views.ViewModels
                 //TODO: autofac readup and write..
                 string constring = ConfigurationManager.ConnectionStrings["ServiceConString"].ConnectionString;
                 var client = new RestClient(constring);
-                var request = new RestRequest("/foods", Method.GET);
+                var request = new RestRequest("/Food", Method.GET);
                 var content = client.Execute(request).Content;
                 res = JsonConvert.DeserializeObject<List<FoodDTO>>(content);
             }
