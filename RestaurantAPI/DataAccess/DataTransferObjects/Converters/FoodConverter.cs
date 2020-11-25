@@ -35,8 +35,8 @@ namespace DataAccess.DataTransferObjects.Converters
                 Id = obj.Id,
                 Name = obj.Name,
                 Description = obj.Description,
-                Price = Convert(obj.Price.Where(p => p.FoodId == obj.Id).FirstOrDefault()),
-                FoodCategoryName = Convert(obj.FoodCategory),
+                Price = Convert(obj.Price.Where(p => p.FoodId == obj.Id).FirstOrDefault()).PriceValue,
+                FoodCategoryName = Convert(obj.FoodCategory).Name,
             };
         }
 
