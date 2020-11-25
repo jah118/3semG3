@@ -39,7 +39,7 @@ namespace RestaurantDesktopClient.Views.ManageReservation
             get => SelectedReservation != null ? SelectedReservation.ReservationTime : DateTime.Now;
             set { if (SelectedReservation != null) { SelectedReservation.ReservationTime = value; }; }
         }
-        public string GetReservationTimeMinuts { get => SelectedReservation != null ? SelectedReservation.ReservationTime.Minute + "" : "0"; set { } }
+        public string GetReservationTimeMinuts { get => SelectedReservation != null ? trimDateTime(SelectedReservation.ReservationTime).Minute + "" : "0"; set { } }
         public string GetReservationTimeHours { get => SelectedReservation != null ? SelectedReservation.ReservationTime.Hour + "" : "0"; set { } }
         public string Headline { get { return "Reservationer"; } }
         public ManageReservationViewModel()
@@ -276,16 +276,8 @@ namespace RestaurantDesktopClient.Views.ManageReservation
             {
                 _selectedRowView = value;
                 int.TryParse(_selectedRowView.Row.ItemArray[0].ToString(), out int id);
-                SelectedReservation = repository.Get(id);
+                UpdateSelectedReservation(repository.Get(id));
 
-                this.OnPropertyChanged("ReservationComment");
-                this.OnPropertyChanged("ReservationNumber");
-                this.OnPropertyChanged("ReservationTables");
-                this.OnPropertyChanged("ReservationNumOfPersons");
-                this.OnPropertyChanged("ReservationDate");
-                this.OnPropertyChanged("ReservationTime");
-                this.OnPropertyChanged("ReservationDeposit");
-                this.OnPropertyChanged("ReservationCustomer");
             }
         }
         public DataTable SearchTable
@@ -324,17 +316,31 @@ namespace RestaurantDesktopClient.Views.ManageReservation
         }
         public void OrderFood()
         {
-            //bool _check = int.TryParse(ReservationViewControl.txtReservationNumber.Text, out int id);
-            //if (_check && id > 0)
-            //{
-            //    MainWindow.ChangeFrame(new OrderFood(id));
-            //}
-            //else
-            //{
-            //    ReservationDTO _reservation = CreateReservation();
-            //    ReservationViewControl.SetReservationInformation(_reservation);
-            //    MainWindow.ChangeFrame(new OrderFood(_reservation.Id));
-            //}
+            if (SelectedReservation.Id > 0)
+            {
+                MainWindow.ChangeFrame(new OrderFood(SelectedReservation.Id));
+            }
+            else
+            {
+                ReservationDTO _reservation = CreateReservation();
+                UpdateSelectedReservation(_reservation);
+                MainWindow.ChangeFrame(new OrderFood(_reservation.Id));
+            }
+        }
+        private void UpdateSelectedReservation(ReservationDTO reservation)
+        {
+            SelectedReservation = reservation;
+            this.OnPropertyChanged("ReservationComment");
+            this.OnPropertyChanged("ReservationNumber");
+            this.OnPropertyChanged("ReservationTables");
+            this.OnPropertyChanged("ReservationNumOfPersons");
+            this.OnPropertyChanged("ReservationDate");
+            this.OnPropertyChanged("ReservationTime");
+            this.OnPropertyChanged("GetReservationTimeDate");
+            this.OnPropertyChanged("ReservationDeposit");
+            this.OnPropertyChanged("ReservationCustomer");
+            this.OnPropertyChanged("GetReservationTimeMinuts");
+            this.OnPropertyChanged("GetReservationTimeHours");
         }
         public void CreateAndExitReservation()
         {
