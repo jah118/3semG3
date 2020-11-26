@@ -6,7 +6,7 @@ namespace DataAccess.Models
     {
         public Employee()
         {
-            RestaurantOrder = new HashSet<RestaurantOrder>();
+            RestaurantOrder = new HashSet<Order>();
         }
 
         public int Id { get; set; }
@@ -16,6 +16,6 @@ namespace DataAccess.Models
 
         public virtual Person Person { get; set; }
         public virtual EmployeeTitle Title { get; set; }
-        public virtual ICollection<RestaurantOrder> RestaurantOrder { get; set; }
+        public virtual ICollection<Order> RestaurantOrder { get; set; }
     }
 }

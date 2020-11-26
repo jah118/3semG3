@@ -8,7 +8,7 @@ namespace DataAccess.Models
         public Reservation()
         {
             ReservationsTables = new HashSet<ReservationsTables>();
-            RestaurantOrder = new HashSet<RestaurantOrder>();
+            RestaurantOrder = new HashSet<Order>();
         }
 
         public int Id { get; set; }
@@ -21,6 +21,6 @@ namespace DataAccess.Models
 
         public virtual Customer Customer { get; set; }
         public virtual ICollection<ReservationsTables> ReservationsTables { get; set; }
-        public virtual ICollection<RestaurantOrder> RestaurantOrder { get; set; }
+        public virtual ICollection<Order> RestaurantOrder { get; set; }
     }
 }

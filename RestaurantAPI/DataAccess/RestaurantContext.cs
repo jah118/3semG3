@@ -23,7 +23,7 @@ namespace DataAccess
         public virtual DbSet<Price> Price { get; set; }
         public virtual DbSet<Reservation> Reservation { get; set; }
         public virtual DbSet<ReservationsTables> ReservationsTables { get; set; }
-        public virtual DbSet<RestaurantOrder> RestaurantOrder { get; set; }
+        public virtual DbSet<Order> Order { get; set; }
         public virtual DbSet<RestaurantTables> RestaurantTables { get; set; }
         public virtual DbSet<SchemaVersions> SchemaVersions { get; set; }
         public virtual DbSet<ZipId> ZipId { get; set; }
@@ -284,7 +284,7 @@ namespace DataAccess
                     .HasConstraintName("FK__Reservati__resta__46E78A0C");
             });
 
-            modelBuilder.Entity<RestaurantOrder>(entity =>
+            modelBuilder.Entity<Order>(entity =>
             {
                 entity.HasKey(e => e.OrderNo)
                     .HasName("PK__Restaura__0809CA86AFE0E0E1");

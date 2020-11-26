@@ -35,7 +35,7 @@ namespace DataAccess.DataTransferObjects.Converters
                 Id = obj.Id,
                 Name = obj.Name,
                 Description = obj.Description,
-                Price = Convert(obj.Price.Where(p => p.FoodId == obj.Id).FirstOrDefault()).PriceValue,
+                Price = decimal.ToDouble(Convert(obj.Price.Where(p => p.FoodId == obj.Id).FirstOrDefault()).PriceValue),
                 FoodCategoryName = Convert(obj.FoodCategory).Name,
             };
         }

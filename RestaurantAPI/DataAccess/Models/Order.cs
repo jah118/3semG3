@@ -3,9 +3,9 @@ using System.Collections.Generic;
 
 namespace DataAccess.Models
 {
-    public partial class RestaurantOrder
+    public partial class Order
     {
-        public RestaurantOrder()
+        public Order()
         {
             OrderLine = new HashSet<OrderLine>();
         }

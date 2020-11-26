@@ -7,6 +7,6 @@
         public int OrderNumber { get; set; }
 
         public virtual Food Food { get; set; }
-        public virtual RestaurantOrder OrderNumberNavigation { get; set; }
+        public virtual Order OrderNumberNavigation { get; set; }
     }
 }

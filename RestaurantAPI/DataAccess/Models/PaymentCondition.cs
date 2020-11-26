@@ -6,12 +6,12 @@ namespace DataAccess.Models
     {
         public PaymentCondition()
         {
-            RestaurantOrder = new HashSet<RestaurantOrder>();
+            RestaurantOrder = new HashSet<Order>();
         }
 
         public int Id { get; set; }
         public string Condition { get; set; }
 
-        public virtual ICollection<RestaurantOrder> RestaurantOrder { get; set; }
+        public virtual ICollection<Order> RestaurantOrder { get; set; }
     }
 }
