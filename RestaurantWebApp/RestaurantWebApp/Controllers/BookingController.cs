@@ -1,5 +1,4 @@
-﻿using DataTransferObjects;
-using RestaurantWebApp.Service;
+﻿using RestaurantWebApp.Service;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -8,6 +7,8 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web.Mvc;
+using RestaurantWebApp.DataTransferObject;
+using RestaurantWebApp.Service.Interfaces;
 
 namespace RestaurantWebApp.Controllers
 {
@@ -15,8 +16,15 @@ namespace RestaurantWebApp.Controllers
     public class BookingController : Controller
     {
         private ControllerContext _context = new ControllerContext();
-       
-        private readonly BokingServices _bs = new BokingServices();
+
+        private readonly IBookingService _bookingService;
+        private readonly ITableService _tableService;
+
+        public BookingController(IBookingService bookingService, ITableService tableService)
+        {
+            _bookingService = bookingService;
+            _tableService = tableService;
+        }
 
         // GET: Booking
         [AllowAnonymous]
@@ -32,7 +40,7 @@ namespace RestaurantWebApp.Controllers
             //if (Session["Username"] != null)
             //{
             ReservationDTO rv = new ReservationDTO();
-            rv.Tables = _bs.GetBookingTables(ConfigurationManager.AppSettings["ServiceApi"]);
+            rv.Tables = _tableService.GetAll();
 
             //TODO  dette er temp  her skal være 
             //d
@@ -113,8 +121,8 @@ namespace RestaurantWebApp.Controllers
 
             if (ModelState.IsValid)
             {
-                var response = await _bs.PostBookingAsync(reservation, ConfigurationManager.AppSettings["ServiceApi"]);
-                if (response.StatusCode == System.Net.HttpStatusCode.OK)
+                var response = await _bookingService.CreateAsync(reservation);
+                if (response)
                 {
                     return RedirectToAction("Index");
                 }

@@ -6,10 +6,11 @@ using RestSharp;
 using System.Configuration;
 using Newtonsoft.Json;
 using System.Net;
-using DataTransferObjects;
 using RestaurantWebApp.Controllers;
 using System.Threading.Tasks;
+using RestaurantWebApp.DataTransferObject;
 using RestaurantWebApp.Service;
+using RestaurantWebApp.Service.Interfaces;
 
 namespace RestaurantWebApp.Test.UnitTest
 {
@@ -20,12 +21,16 @@ namespace RestaurantWebApp.Test.UnitTest
     public class UnitTest1
 
     {
-        public UnitTest1()
+
+        private readonly IBookingService _bookingService;
+        private readonly ITableService _tableService;
+
+        public UnitTest1(IBookingService bookingService, ITableService tableService)
         {
-            //
-            // TODO: Add constructor logic here
-            //
+            _bookingService = bookingService;
+            _tableService = tableService;
         }
+
         string constring = "https://ptsv2.com/t/axmts-1604922634";
         
         [TestMethod]
@@ -48,7 +53,7 @@ namespace RestaurantWebApp.Test.UnitTest
 
 
             //Arrange
-            BokingServices _bc = new BokingServices();
+        
             var reservation = new ReservationDTO(
                 DateTime.Now,
                 new CustomerDTO(),
@@ -59,10 +64,11 @@ namespace RestaurantWebApp.Test.UnitTest
                 new List<RestaurantTablesDTO>());
 
             //Act
-            var response = _bc.PostBookingAsync(reservation, constring).Result;
+            var response = _bookingService.CreateAsync(reservation).Result;
 
             //Assert
-            Assert.AreEqual(response.StatusCode, HttpStatusCode.OK);
+            //Assert.AreEqual(response.StatusCode, HttpStatusCode.OK);
+            Assert.IsTrue(response);
         }
 
 
