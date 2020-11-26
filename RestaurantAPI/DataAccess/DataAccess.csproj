@@ -18,6 +18,7 @@
 
   <ItemGroup>
     <Folder Include="Models\" />
+    <Folder Include="Utility\Validation\" />
   </ItemGroup>
 
 </Project>
