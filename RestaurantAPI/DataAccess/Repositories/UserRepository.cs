@@ -11,6 +11,11 @@ namespace DataAccess.Repositories
 {
     public class UserRepository : IAccountRepository
     {
+        RestaurantContext _context;
+        public UserRepository(RestaurantContext context)
+        {
+            _context = context;
+        }
         public UserDTO Create(UserDTO obj, bool transactionEndpoint = true)
         {
             //Create User with option of adding password later
@@ -20,7 +25,11 @@ namespace DataAccess.Repositories
         public UserDTO Create(UserDTO obj, string password, bool transactionEndpoint = true)
         {
             var result = PasswordHashing.CreateHash(password);
-            throw new NotImplementedException();
+            //Validate
+            
+
+
+            return null;
         }
 
         public bool Delete(UserDTO obj, bool transactionEndpoint = true)

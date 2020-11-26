@@ -11,7 +11,7 @@ namespace RestaurantAPI.Controllers
     [ApiController]
     public class TokenController : ControllerBase
     {
-        [HttpPost("ValidateToken")]
+        [HttpPost]
         public IActionResult ValidateToken()
         {
             return NotFound();
