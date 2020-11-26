@@ -15,16 +15,6 @@ namespace RestaurantWebApp.Service
             _constring = constring;
         }
 
-        public async Task<IRestResponse> PostBookingAsync(ReservationDTO reservation)
-        {
-            var client = new RestClient(_constring);
-            var request = new RestRequest("/Reservation", Method.POST);
-            request.AddJsonBody(reservation);
-            var response = await client.ExecuteAsync(request);
-
-            return response;
-        }
-
         public UserDTO GetUser(string v)
         {
             throw new System.NotImplementedException();
@@ -40,9 +30,14 @@ namespace RestaurantWebApp.Service
             throw new System.NotImplementedException();
         }
 
-        public ReservationDTO Create(ReservationDTO obj)
+        public bool Create(ReservationDTO obj)
         {
-            throw new System.NotImplementedException();
+            var client = new RestClient(_constring);
+            var request = new RestRequest("/Reservation", Method.POST);
+            request.AddJsonBody(obj);
+            var response = client.Execute(request).IsSuccessful;
+
+            return response;
         }
 
         public ReservationDTO Update(ReservationDTO obj)
