@@ -1,13 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using RestSharp;
 
 namespace RestaurantWebApp.Service.Interfaces
 {
     public interface IService<TEntity>
     {
         IEnumerable<TEntity> GetAll();
-        
 
         TEntity GetById(int id);
 

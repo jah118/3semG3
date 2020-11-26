@@ -8,7 +8,7 @@ using System.Web.Mvc;
 
 namespace RestaurantWebApp.Controllers
 {
-    [Authorize]
+    //[Authorize]
     public class BookingController : Controller
     {
         private ControllerContext _context = new ControllerContext();

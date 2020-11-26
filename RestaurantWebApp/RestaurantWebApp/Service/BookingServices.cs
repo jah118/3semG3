@@ -1,9 +1,8 @@
-﻿using Newtonsoft.Json;
+﻿using RestaurantWebApp.DataTransferObject;
+using RestaurantWebApp.Service.Interfaces;
 using RestSharp;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using RestaurantWebApp.DataTransferObject;
-using RestaurantWebApp.Service.Interfaces;
 
 namespace RestaurantWebApp.Service
 {
@@ -30,7 +29,7 @@ namespace RestaurantWebApp.Service
         {
             throw new System.NotImplementedException();
         }
-        
+
         public IEnumerable<ReservationDTO> GetAll()
         {
             throw new System.NotImplementedException();
@@ -60,7 +59,7 @@ namespace RestaurantWebApp.Service
         {
             throw new System.NotImplementedException();
         }
-        
+
         public Task<ReservationDTO> GetByIdAsync(int id)
         {
             throw new System.NotImplementedException();
@@ -71,7 +70,7 @@ namespace RestaurantWebApp.Service
             var client = new RestClient(_constring);
             var request = new RestRequest("/Reservation", Method.POST);
             request.AddJsonBody(obj);
-            var response =  (await client.ExecuteAsync(request)).IsSuccessful;
+            var response = (await client.ExecuteAsync(request)).IsSuccessful;
 
             return response;
         }

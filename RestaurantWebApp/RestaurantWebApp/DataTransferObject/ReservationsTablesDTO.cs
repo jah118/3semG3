@@ -6,6 +6,6 @@
         public int RestaurantTablesId { get; }
 
         public ReservationDTO Reservation { get; }
-        public  RestaurantTablesDTO RestaurantTables { get;  }
+        public RestaurantTablesDTO RestaurantTables { get; }
     }
 }

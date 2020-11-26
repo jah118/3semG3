@@ -1,13 +1,11 @@
 ﻿namespace RestaurantWebApp.DataTransferObject
 {
-
     public enum PaymentCondition
     {
-        Bestilt
-        , Begyndt
-        , Leveret
-        , Betalt
-        , Annulleret
+        Bestilt,
+        Begyndt,
+        Leveret,
+        Betalt,
+        Annulleret
     }
-
 }

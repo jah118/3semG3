@@ -1,14 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using RestaurantWebApp.DataTransferObject;
+﻿using RestaurantWebApp.DataTransferObject;
 
 namespace RestaurantWebApp.Service.Interfaces
 {
     public interface ITableService : IService<RestaurantTablesDTO>
     {
-
     }
 }

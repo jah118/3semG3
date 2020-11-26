@@ -10,11 +10,11 @@ namespace RestaurantWebApp.DataTransferObject
 
         public ReservationTimesDTO(DateTime date, TimeSpan time)
         {
-            _time = time;
-            _date = date.Date + time; ;
+            Time = time;
+            Date = date.Date + time;
         }
 
-        public DateTime _date { get; set; }
-        public TimeSpan _time { get; set; }
+        public DateTime Date { get; set; }
+        public TimeSpan Time { get; set; }
     }
 }
