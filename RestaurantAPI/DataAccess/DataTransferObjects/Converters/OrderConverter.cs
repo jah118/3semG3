@@ -14,20 +14,23 @@ namespace DataAccess.DataTransferObjects.Converters
             List<OrderDTO> res = new List<OrderDTO>();
             obj.ForEach((x) =>
             {
-                res.Add(Convert(x)) ;
+                res.Add(Convert(x));
             });
             return res;
         }
         public static OrderDTO Convert(Order obj)
         {
-            return new OrderDTO()
+            OrderDTO orderDTO = new OrderDTO()
             {
                 Employee = Converter.Convert(obj.Employee),
                 OrderDate = obj.OrderDate,
                 OrderNo = obj.OrderNo,
                 PaymentCondition = obj.PaymentCondition.Condition,
-                ReservationID = obj.Reservation.Id
+                ReservationID = obj.Reservation.Id,
+                Foods = new List<FoodDTO>()
             };
+            obj.OrderLine.ToList().ForEach(x => orderDTO.Foods.Add(Converter.Convert(x.Food)));
+            return orderDTO;
         }
     }
 }

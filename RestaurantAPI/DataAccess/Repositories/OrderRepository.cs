@@ -31,6 +31,12 @@ namespace DataAccess.Repositories
             IEnumerable<OrderDTO> res = null;
 
             var orders = _context.Order
+                .Include(f=>f.OrderLine)
+                    .ThenInclude(f=>f.Food)
+                    .ThenInclude(f=>f.Price)
+                .Include(f=>f.OrderLine)
+                    .ThenInclude(f=>f.Food)
+                        .ThenInclude(f => f.FoodCategory) 
                 .Include(e => e.Employee)
                     .ThenInclude(e => e.Person)
                         .ThenInclude(e => e.Location)
@@ -38,6 +44,8 @@ namespace DataAccess.Repositories
                     .Include(e=>e.Employee.Title)
                 .Include(r => r.Reservation)
                 .Include(pc => pc.PaymentCondition).ToList();
+            
+               
             if (orders != null) res = Converter.Convert(orders);
             return res;
 
@@ -49,6 +57,9 @@ namespace DataAccess.Repositories
 
             var order = _context.Order
                 .Where(o=>o.OrderNo == id)
+                .Include(f => f.OrderLine)
+                    .ThenInclude(f => f.Food)
+                        .ThenInclude(f => f.FoodCategory)
                 .Include(e => e.Employee)
                     .ThenInclude(e => e.Person)
                         .ThenInclude(e => e.Location)

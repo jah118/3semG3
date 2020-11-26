@@ -30,7 +30,7 @@ namespace RestaurantDesktopClient.Views.ViewModels
             {
                 var orders = repository.GetAll();
                 if (orders == null) return new DataTable();
-                var order = (from OrderDTO in orders where OrderDTO.Reservation.Id == _reservationId select OrderDTO).FirstOrDefault() ?? new OrderDTO();
+                var order = (from OrderDTO in orders where OrderDTO.ReservationID == _reservationId select OrderDTO).FirstOrDefault() ?? new OrderDTO();
                 var foods = order.Foods;                
                 if (foods != null)
                 {
@@ -39,7 +39,7 @@ namespace RestaurantDesktopClient.Views.ViewModels
                     foods.ToList<FoodDTO>().ForEach(x =>
                     {
                         DataRow dr = _summaryTable.NewRow();
-                        _summaryTable.Rows.Add(dr.ItemArray = new[] { x.Name, x.Price.ToString("#.00"), x.Description});
+                        _summaryTable.Rows.Add(dr.ItemArray = new[] { x.Name, x.Quantity.ToString(), x.Price.ToString("0.00"), (x.Price*x.Quantity).ToString("0.00"), x.Description});
                     });
                 }
                 return _summaryTable;
@@ -53,9 +53,11 @@ namespace RestaurantDesktopClient.Views.ViewModels
         private void CreateSearchTable()
         {
             _summaryTable = new DataTable();
-            _summaryTable.Columns.Add("Name", typeof(String));
-            _summaryTable.Columns.Add("Description", typeof(String));
-            _summaryTable.Columns.Add("Price", typeof(String));
+            _summaryTable.Columns.Add("Navn", typeof(String));
+            _summaryTable.Columns.Add("Antal", typeof(String));
+            _summaryTable.Columns.Add("Pris", typeof(String));
+            _summaryTable.Columns.Add("Total", typeof(String));
+            _summaryTable.Columns.Add("Beskrivelse", typeof(String));
         }
     }
 }

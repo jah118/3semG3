@@ -13,6 +13,7 @@ namespace DataAccess.DataTransferObjects
         public EmployeeDTO Employee { get; set; }
         public DateTime OrderDate { get; set; }
         public string PaymentCondition { get; set; }
+        public List<FoodDTO> Foods { get; set; }
 
     }
 }

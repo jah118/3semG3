@@ -43,8 +43,8 @@
             <ListView.View>
                 <GridView>
                     <GridView.Columns>
-                        <GridViewColumn Header="Num" Width="Auto" DisplayMemberBinding="{Binding TableNumber}"/>
-                        <GridViewColumn Header="Chairs" Width="Auto" DisplayMemberBinding="{Binding NoOfSeats}"/>
+                        <GridViewColumn Header="Nummer" Width="Auto" DisplayMemberBinding="{Binding TableNumber}"/>
+                        <GridViewColumn Header="Stole" Width="Auto" DisplayMemberBinding="{Binding NoOfSeats}"/>
                     </GridView.Columns>
                 </GridView>
             </ListView.View>

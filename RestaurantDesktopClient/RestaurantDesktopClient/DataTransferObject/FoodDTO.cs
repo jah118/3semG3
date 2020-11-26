@@ -13,5 +13,6 @@ namespace DataAccess.DataTransferObjects
         public string Description { get; set; }
         public string foodCategoryName { get; set; }
         public double Price { get; internal set; }
+        public int Quantity { get; set; }
     }
 }

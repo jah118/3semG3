@@ -30,13 +30,16 @@ namespace DataAccess.DataTransferObjects.Converters
 
         public static FoodDTO  Convert(Food obj)
         {
+            var priceobj = obj.Price.Where(p => p.FoodId == obj.Id).FirstOrDefault();
+            var orderLineobj = obj.OrderLine.FirstOrDefault();
             return new FoodDTO()
             {
                 Id = obj.Id,
                 Name = obj.Name,
                 Description = obj.Description,
-                Price = decimal.ToDouble(Convert(obj.Price.Where(p => p.FoodId == obj.Id).FirstOrDefault()).PriceValue),
+                Price = priceobj != null ? Decimal.ToDouble(Convert(priceobj).PriceValue) : 0,
                 FoodCategoryName = Convert(obj.FoodCategory).Name,
+                Quantity = orderLineobj != null ? orderLineobj.Quantity : 0
             };
         }
 
