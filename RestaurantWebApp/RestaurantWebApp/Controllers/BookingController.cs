@@ -1,14 +1,10 @@
-﻿using RestaurantWebApp.Service;
+﻿using RestaurantWebApp.DataTransferObject;
+using RestaurantWebApp.Service.Interfaces;
 using System;
 using System.Collections.Generic;
-using System.Configuration;
 using System.Linq;
-using System.Security.Cryptography;
-using System.Text;
 using System.Threading.Tasks;
 using System.Web.Mvc;
-using RestaurantWebApp.DataTransferObject;
-using RestaurantWebApp.Service.Interfaces;
 
 namespace RestaurantWebApp.Controllers
 {
@@ -42,7 +38,7 @@ namespace RestaurantWebApp.Controllers
             ReservationDTO rv = new ReservationDTO();
             rv.Tables = _tableService.GetAll();
 
-            //TODO  dette er temp  her skal være 
+            //TODO  dette er temp  her skal være
             //d
             var ls = new List<ReservationTimesDTO>();
             DateTime _dateToDay = DateTime.Now;
@@ -69,7 +65,7 @@ namespace RestaurantWebApp.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Create(ReservationDTO reservation)
         {
-            //TODO senere når api virker ville der bar kunne bruge 
+            //TODO senere når api virker ville der bar kunne bruge
             //bruge timeslot
             var date = Request.Form["ReservationTime"];
             var time = Request.Form["Timeslots"];
@@ -87,16 +83,12 @@ namespace RestaurantWebApp.Controllers
                 }
             }
 
-
-
             //dette tager tables som kommer som en lang string og laver dem om til en liste
             //af strings, som splites ved ','
             //og laves til RestaurantTablesDTO objekt spm puttes i en liste
             var r = Request.Form["Tables"];
             if (r != null)
             {
-
-
                 List<string> listStrLineElements = r.Split(',').ToList();
                 var tables = new List<RestaurantTablesDTO>();
                 int tempId;
@@ -117,8 +109,6 @@ namespace RestaurantWebApp.Controllers
                 reservation.Tables = tables;
             }
 
-
-
             if (ModelState.IsValid)
             {
                 var response = await _bookingService.CreateAsync(reservation);
@@ -131,7 +121,6 @@ namespace RestaurantWebApp.Controllers
             //TODO skal vise alle bordene ikke dem der valgt før<
             return View(reservation);
             //return View();
-
         }
 
         // POST: Booking/Edit/5
@@ -172,14 +161,13 @@ namespace RestaurantWebApp.Controllers
             }
         }
 
-
-
         //GET: Login
         [AllowAnonymous]
         public ActionResult Login()
         {
             return View();
         }
+
         [AllowAnonymous]
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -187,8 +175,6 @@ namespace RestaurantWebApp.Controllers
         {
             //if (ModelState.IsValid)
             //{
-
-
             //    var f_password = GetMD5(password);
 
             //    //var data = _db.Users.Where(s => s.Email.Equals(email) && s.Password.Equals(f_password)).ToList();
@@ -209,7 +195,6 @@ namespace RestaurantWebApp.Controllers
             //}
             return View();
         }
-
 
         //Logout
         public ActionResult Logout()
@@ -233,13 +218,11 @@ namespace RestaurantWebApp.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Register(UserDTO _user)
         {
-
             //if (ModelState.IsValid)
             //{
             //    var check = _db.Users.FirstOrDefault(s => s.Email == _user.Email);
             //    if (check == null)
             //    {
-
             //        return RedirectToAction("Index");
             //    }
             //    else
@@ -248,11 +231,9 @@ namespace RestaurantWebApp.Controllers
             //        return View();
             //    }
 
-
             //}
 
             return View();
-
         }
 
         ////GET: Booking/Food

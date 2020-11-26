@@ -1,16 +1,8 @@
-﻿using System;
-using System.Text;
-using System.Collections.Generic;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using RestSharp;
-using System.Configuration;
-using Newtonsoft.Json;
-using System.Net;
-using RestaurantWebApp.Controllers;
-using System.Threading.Tasks;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using RestaurantWebApp.DataTransferObject;
-using RestaurantWebApp.Service;
 using RestaurantWebApp.Service.Interfaces;
+using System;
+using System.Collections.Generic;
 
 namespace RestaurantWebApp.Test.UnitTest
 {
@@ -21,7 +13,6 @@ namespace RestaurantWebApp.Test.UnitTest
     public class UnitTest1
 
     {
-
         private readonly IBookingService _bookingService;
         private readonly ITableService _tableService;
 
@@ -31,15 +22,14 @@ namespace RestaurantWebApp.Test.UnitTest
             _tableService = tableService;
         }
 
-        string constring = "https://ptsv2.com/t/axmts-1604922634";
-        
+        private string constring = "https://ptsv2.com/t/axmts-1604922634";
+
         [TestMethod]
         public void TestPostBookTableAsync()
         {
             //Arrange
             //var client = new RestClient("https://localhost:44349/api/Booking/Create");
             // var client = new RestClient(constring);
-
 
             //string json = JsonConvert.SerializeObject(reservation);
             ////ACT
@@ -49,11 +39,8 @@ namespace RestaurantWebApp.Test.UnitTest
             //request.AddJsonBody(json);
             //var response = client.Execute(request);
 
-
-
-
             //Arrange
-        
+
             var reservation = new ReservationDTO(
                 DateTime.Now,
                 new CustomerDTO(),
@@ -71,14 +58,13 @@ namespace RestaurantWebApp.Test.UnitTest
             Assert.IsTrue(response);
         }
 
-
         /// <summary>
         ///Gets or sets the test context which provides
         ///information about and functionality for the current test run.
         ///</summary>
 
-
         #region Additional test attributes
+
         //
         // You can use the following additional attributes as you write your tests:
         //
@@ -90,7 +76,7 @@ namespace RestaurantWebApp.Test.UnitTest
         // [ClassCleanup()]
         // public static void MyClassCleanup() { }
         //
-        // Use TestInitialize to run code before running each test 
+        // Use TestInitialize to run code before running each test
         // [TestInitialize()]
         // public void MyTestInitialize() { }
         //
@@ -98,7 +84,7 @@ namespace RestaurantWebApp.Test.UnitTest
         // [TestCleanup()]
         // public void MyTestCleanup() { }
         //
-        #endregion
 
+        #endregion Additional test attributes
     }
 }
