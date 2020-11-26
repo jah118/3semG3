@@ -14,18 +14,32 @@ namespace RestaurantDesktopClient.Views.ViewModels
     {
         private DataTable _foodTable;
         private readonly IRepository<FoodDTO> repository;
-
-        public SearchFoodsViewModel(IRepository<FoodDTO> rep)
+        private DataRowView _selectedRowView;
+        public DataRowView SelectedItem
         {
-            repository = rep;
+            get
+            {
+                return _selectedRowView;
+            }
+            set
+            {
+                _selectedRowView = value;
+                int.TryParse(_selectedRowView.Row.ItemArray[0].ToString(), out int id);
+            }
+        }
+
+
+        public SearchFoodsViewModel()
+        {
+            repository = new FoodRepository();
         }
 
         private void CreateSearchTable()
         {
             _foodTable = new DataTable();
             _foodTable.Columns.Add("Name", typeof(String));
-            _foodTable.Columns.Add("Description", typeof(String));
             _foodTable.Columns.Add("Price", typeof(String));
+            _foodTable.Columns.Add("Description", typeof(String));
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -38,11 +52,11 @@ namespace RestaurantDesktopClient.Views.ViewModels
                 {
                     if (_foodTable == null) CreateSearchTable();
 
-                    var sorted = from FoodDTO in foods.AsEnumerable() where FoodDTO.FoodCategory.Equals("Food") select FoodDTO;
+                    var sorted = from FoodDTO in foods.AsEnumerable() where FoodDTO.foodCategoryName.Equals("Mad") select FoodDTO;
                     sorted.ToList<FoodDTO>().ForEach(x =>
                     {
                         DataRow dr = _foodTable.NewRow();
-                        _foodTable.Rows.Add(dr.ItemArray = new[] { x.Name, x.Description, x.Price });
+                        _foodTable.Rows.Add(dr.ItemArray = new[]{ x.Name, x.Price.ToString("#.##"), x.Description});
                     });
                 }
                 return _foodTable;

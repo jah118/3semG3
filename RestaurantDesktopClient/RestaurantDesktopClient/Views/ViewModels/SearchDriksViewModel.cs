@@ -14,17 +14,17 @@ namespace RestaurantDesktopClient.Views.ViewModels
         private DataTable _foodTable;
         private readonly IRepository<FoodDTO> repository;
 
-        public SearchDriksViewModel(IRepository<FoodDTO> rep)
+        public SearchDriksViewModel()
         {
-            repository = rep;
+            repository = new FoodRepository();
         }
 
         private void CreateSearchTable()
         {
             _foodTable = new DataTable();
             _foodTable.Columns.Add("Name", typeof(String));
-            _foodTable.Columns.Add("Description", typeof(String));
             _foodTable.Columns.Add("Price", typeof(String));
+            _foodTable.Columns.Add("Description", typeof(String));
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -37,11 +37,11 @@ namespace RestaurantDesktopClient.Views.ViewModels
                 {
                     if (_foodTable == null) CreateSearchTable();
 
-                    var sorted = from FoodDTO in foods.AsEnumerable() where FoodDTO.FoodCategory.Equals("Drink") select FoodDTO;
+                    var sorted = from FoodDTO in foods.AsEnumerable() where FoodDTO.foodCategoryName.Equals("Drikkevare") select FoodDTO;
                     sorted.ToList<FoodDTO>().ForEach(x =>
                     {
                         DataRow dr = _foodTable.NewRow();
-                        _foodTable.Rows.Add(dr.ItemArray = new[] { x.Name, x.Description, x.Price });
+                        _foodTable.Rows.Add(dr.ItemArray = new[] { x.Name, x.Price.ToString("#.##"), x.Description});
                     });
                 }
                 return _foodTable;

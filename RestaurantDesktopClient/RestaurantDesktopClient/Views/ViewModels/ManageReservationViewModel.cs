@@ -266,7 +266,7 @@ namespace RestaurantDesktopClient.Views.ManageReservation
             _reservationTable.Columns.Add(new DataColumn("ReservationTime"));
             _reservationTable.Columns.Add(new DataColumn("NoOfPeople"));
         }
-        public DataRowView SelectedItem
+        public DataRowView SelectedRowView
         {
             get
             {

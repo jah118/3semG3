@@ -18,19 +18,20 @@ namespace RestaurantDesktopClient.Views.ViewModels
         private readonly IRepository<OrderDTO> repository;
         private int _reservationId { get; set; }
         public event PropertyChangedEventHandler PropertyChanged;
-        public event PropertyChangedEventHandler SelectedPropertyChanged;
-        public SummaryFoodsViewModel(int id, IRepository<OrderDTO> rep)
+        public SummaryFoodsViewModel(int id)
         {
-            repository = rep;
+            repository = new OrderRepository();
             _reservationId = id;
         }
+
         public DataTable SearchTable
         {
             get
             {
                 var orders = repository.GetAll();
                 if (orders == null) return new DataTable();
-                var foods = (from OrderDTO in orders where OrderDTO.Reservation.Id == _reservationId select OrderDTO).FirstOrDefault().Foods;                
+                var order = (from OrderDTO in orders where OrderDTO.Reservation.Id == _reservationId select OrderDTO).FirstOrDefault() ?? new OrderDTO();
+                var foods = order.Foods;                
                 if (foods != null)
                 {
                     if (_summaryTable == null) CreateSearchTable();
@@ -38,7 +39,7 @@ namespace RestaurantDesktopClient.Views.ViewModels
                     foods.ToList<FoodDTO>().ForEach(x =>
                     {
                         DataRow dr = _summaryTable.NewRow();
-                        _summaryTable.Rows.Add(dr.ItemArray = new[] { x.Name, x.Description, x.Price });
+                        _summaryTable.Rows.Add(dr.ItemArray = new[] { x.Name, x.Price.ToString("#.00"), x.Description});
                     });
                 }
                 return _summaryTable;
@@ -46,7 +47,7 @@ namespace RestaurantDesktopClient.Views.ViewModels
             set
             {
                 _summaryTable = value;
-                PropertyChanged(this, new PropertyChangedEventArgs("_foodTable"));
+                PropertyChanged(this, new PropertyChangedEventArgs("SearchTable"));
             }
         }
         private void CreateSearchTable()

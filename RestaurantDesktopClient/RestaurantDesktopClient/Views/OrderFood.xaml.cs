@@ -25,9 +25,9 @@ namespace RestaurantDesktopClient.Views
         public OrderFood(int id)
         {
             InitializeComponent();
-            SummaryFoodsViewModel summaryFoodsViewModel = new SummaryFoodsViewModel(id, new OrderRepository());
-            SearchFoodsViewModel searchFoodsViewModel = new SearchFoodsViewModel(new FoodRepository());
-            SearchDriksViewModel searchDriksViewModel = new SearchDriksViewModel(new FoodRepository());
+            SummaryFoodsViewModel summaryFoodsViewModel = new SummaryFoodsViewModel(id);
+            SearchFoodsViewModel searchFoodsViewModel = new SearchFoodsViewModel();
+            SearchDriksViewModel searchDriksViewModel = new SearchDriksViewModel();
             OrderFoodModelView OrderFoodModelView = new OrderFoodModelView(summaryFoodsViewModel, searchFoodsViewModel, searchDriksViewModel);
 
 
@@ -35,14 +35,14 @@ namespace RestaurantDesktopClient.Views
             FoodListPage.DataContext = searchFoodsViewModel;
             DrinkListPage.DataContext = searchDriksViewModel;
 
-            Binding bindingSummary = new Binding() { Mode = BindingMode.TwoWay, Source = OrderFoodModelView.SelectedSummaryFood, Path = new PropertyPath(".") };
-            BindingOperations.SetBinding(SummaryListPage.dgResult, DataGrid.SelectedItemProperty, bindingSummary);
+            //Binding bindingSummary = new Binding() { Mode = BindingMode.TwoWay, Source = OrderFoodModelView.SelectedSummaryFood, Path = new PropertyPath(".") };
+            //BindingOperations.SetBinding(SummaryListPage.dgResult, DataGrid.SelectedItemProperty, bindingSummary);
 
-            Binding bindingDrink = new Binding() { Mode = BindingMode.TwoWay, Source = OrderFoodModelView.SelectedDrink, Path = new PropertyPath(".") };
-            BindingOperations.SetBinding(DrinkListPage.dgResult, DataGrid.SelectedItemProperty, bindingDrink);
+            //Binding bindingDrink = new Binding() { Mode = BindingMode.TwoWay, Source = OrderFoodModelView.SelectedDrink, Path = new PropertyPath(".") };
+            //BindingOperations.SetBinding(DrinkListPage.dgResult, DataGrid.SelectedItemProperty, bindingDrink);
 
-            Binding bindingFood = new Binding() { Mode = BindingMode.TwoWay, Source = OrderFoodModelView.SelectedFood, Path = new PropertyPath(".") };
-            BindingOperations.SetBinding(FoodListPage.dgResult, DataGrid.SelectedItemProperty, bindingFood);
+            //Binding bindingFood = new Binding() { Mode = BindingMode.TwoWay, Source = OrderFoodModelView.SelectedFood, Path = new PropertyPath(".") };
+            //BindingOperations.SetBinding(FoodListPage.dgResult, DataGrid.SelectedItemProperty, bindingFood);
         }
 
     }

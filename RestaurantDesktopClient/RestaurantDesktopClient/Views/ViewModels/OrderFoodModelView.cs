@@ -55,13 +55,11 @@ namespace RestaurantDesktopClient.Views.ViewModels
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
-        public ObservableCollection<FoodDTO> Summary { get; set; }
         public OrderFoodModelView(SummaryFoodsViewModel summaryFoodsViewModel, SearchFoodsViewModel searchFoodsViewModel, SearchDriksViewModel searchDriksViewModel)
         {
-            Summary = new ObservableCollection<FoodDTO>();
             AddFoodCommand = new RelayCommand(AddFoodToSummary);
             AddDrinkCommand = new RelayCommand(AddDringToSummary);
-            RemoveSummary = new RelayCommand(RemoveFromSummary);//, () => { return SelectedSummaryFood != null; });
+            RemoveSummary = new RelayCommand(RemoveFromSummary);
         }
         private void AddDringToSummary()
         {
