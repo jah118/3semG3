@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DataAccess.Models
 {
-    [Index(nameof(Phone), Name = "UQ__Person__B43B145F13083A2B", IsUnique = true)]
+    [Index(nameof(Phone), Name = "UQ__Person__B43B145F70DD9270", IsUnique = true)]
     public partial class Person
     {
         public Person()
@@ -19,7 +19,7 @@ namespace DataAccess.Models
         }
 
         [Key]
-        [Column("id"), DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [Column("id")]
         public int Id { get; set; }
         [Required]
         [Column("phone")]
@@ -38,13 +38,10 @@ namespace DataAccess.Models
         public string LastName { get; set; }
         [Column("location_id")]
         public int LocationId { get; set; }
-        [Column("UserID")]
-        public int? UserId { get; set; }
 
         [ForeignKey(nameof(LocationId))]
         [InverseProperty("Person")]
         public virtual Location Location { get; set; }
-        [ForeignKey(nameof(UserId))]
         [InverseProperty("Person")]
         public virtual User User { get; set; }
         [InverseProperty("Person")]

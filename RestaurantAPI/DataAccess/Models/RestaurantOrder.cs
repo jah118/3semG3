@@ -18,7 +18,7 @@ namespace DataAccess.Models
         }
 
         [Key]
-        [Column("orderNo"), DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [Column("orderNo")]
         public int OrderNo { get; set; }
         [Column("reservation_id")]
         public int ReservationId { get; set; }

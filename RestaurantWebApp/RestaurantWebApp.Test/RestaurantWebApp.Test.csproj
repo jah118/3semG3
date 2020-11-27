@@ -83,7 +83,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="UnitTest\UnitTest1.cs" />
+    <Compile Include="Service\BookingServicesTests.cs" />
+    <Compile Include="Service\TableServicesTests.cs" />
+    <Compile Include="Util\FormatStringToTablesTests.cs" />
+    <Compile Include="Util\FormatTimeTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

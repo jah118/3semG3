@@ -1,0 +1,39 @@
+﻿@model DataTransferObjects.UserDTO
+
+@{
+    ViewBag.Title = "Login";
+}
+
+<div class="row justify-content-md-center">
+    <div class="col-md-10">
+        <div class="card">
+            <div class="card-header">
+                Login
+            </div>
+            <div class="card-body">
+                @using (Html.BeginForm())
+                {
+                    @Html.AntiForgeryToken()
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.customer.Email)
+                        @Html.TextBoxFor(m => m.customer.Email, "", new { @class = "form-control", @placeholder = "Email" })
+
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.Password)
+                        @Html.PasswordFor(m => m.Password, new { @class = "form-control", @placeholder = "Password" })
+                    </div>
+                    <div class="form-group">
+                        @* //TODO mangler bedre implemtions *@
+                        <a href="/Booking/Register" class="btn btn-primary">Opret login</a>
+                        <input type="submit" name="submit" class="btn btn-primary" value="Login" />
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+@* used for clientside validation through jquery validation and jquery validation unobtrusive libs  *@
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.2/jquery.validate.min.js" integrity="sha512-UdIMMlVx0HEynClOIFSyOrPggomfhBKJE28LKl8yR3ghkgugPnG6iLfRfHwushZl1MOPSY6TsuBDGPK2X4zYKg==" crossorigin="anonymous"></script>

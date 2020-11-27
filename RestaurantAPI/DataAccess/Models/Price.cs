@@ -12,7 +12,7 @@ namespace DataAccess.Models
     public partial class Price
     {
         [Key]
-        [Column("id"), DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [Column("id")]
         public int Id { get; set; }
         [Column("price_value", TypeName = "decimal(19, 4)")]
         public decimal PriceValue { get; set; }

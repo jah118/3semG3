@@ -3,8 +3,6 @@
 	,[username] nvarchar(64) unique not null
 	,[passwordHash] binary(64) NOT NULL
 	,[salt] binary(64) not null
+	,[PersonId] int unique
+	, FOREIGN KEY (personId) references [Person](id)
 )
-
-ALTER TABLE Person 
-	ADD UserID int
-	,FOREIGN KEY (UserID) references [User](id)
