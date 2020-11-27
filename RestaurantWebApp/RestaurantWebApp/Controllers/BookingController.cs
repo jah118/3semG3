@@ -3,6 +3,7 @@ using RestaurantWebApp.Service.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 
@@ -37,18 +38,21 @@ namespace RestaurantWebApp.Controllers
             //{
             ReservationDTO rv = new ReservationDTO();
             rv.Tables = _tableService.GetAll();
+            if (rv.Tables == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.ServiceUnavailable);
+            }
 
             //TODO  dette er temp  her skal være
-            //d
             var ls = new List<ReservationTimesDTO>();
-            DateTime _dateToDay = DateTime.Now;
-            TimeSpan ts = new TimeSpan(17, 30, 0);
-            _dateToDay = _dateToDay.Date + ts;
+            var dateToDay = DateTime.Now;
+            var ts = new TimeSpan(17, 30, 0);
+            dateToDay = dateToDay.Date + ts;
             for (int i = 0; i < 5; i++)
             {
                 ts += TimeSpan.FromHours(1);
-                _dateToDay.AddHours(1);
-                ls.Add(new ReservationTimesDTO(_dateToDay, ts));
+                dateToDay.AddHours(1);
+                ls.Add(new ReservationTimesDTO(dateToDay, ts));
             }
 
             rv.TimeSlots = ls;
@@ -72,12 +76,10 @@ namespace RestaurantWebApp.Controllers
 
             if (time.Length > 0)
             {
-                string[] timesplit = time.Split(' ');
+                var timeSplit = time.Split(' ');
+                var temp = date + " " + timeSplit[1];
 
-                var temp = date + " " + timesplit[1];
-
-                DateTime datetime;
-                if (DateTime.TryParse(temp, out datetime))
+                if (DateTime.TryParse(temp, out var datetime))
                 {
                     reservation.ReservationTime = datetime;
                 }
@@ -89,14 +91,12 @@ namespace RestaurantWebApp.Controllers
             var r = Request.Form["Tables"];
             if (r != null)
             {
-                List<string> listStrLineElements = r.Split(',').ToList();
+                var listStrLineElements = r.Split(',').ToList();
                 var tables = new List<RestaurantTablesDTO>();
-                int tempId;
-                foreach (string item in listStrLineElements)
+
+                foreach (var item in listStrLineElements)
                 {
-                    //tables.Add(new RestaurantTablesDTO(Int32.Parse(item), 0, 0));     //old way
-                    tempId = 0;
-                    if (int.TryParse(item, out tempId))
+                    if (int.TryParse(item, out var tempId))
                     {
                         tables.Add(new RestaurantTablesDTO(tempId, 0, 0));
                     }
@@ -109,18 +109,18 @@ namespace RestaurantWebApp.Controllers
                 reservation.Tables = tables;
             }
 
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                var response = await _bookingService.CreateAsync(reservation);
-                if (response)
-                {
-                    return RedirectToAction("Index");
-                }
+                return View(reservation);
             }
-            //TODO need a return message of what failed
-            //TODO skal vise alle bordene ikke dem der valgt før<
+            var response = await _bookingService.CreateAsync(reservation);
+
+            if (response)
+            {
+                return RedirectToAction("Index");
+            }
+
             return View(reservation);
-            //return View();
         }
 
         // POST: Booking/Edit/5
@@ -130,7 +130,6 @@ namespace RestaurantWebApp.Controllers
             try
             {
                 // TODO: Add update logic here
-
                 return RedirectToAction("Index");
             }
             catch
@@ -152,7 +151,6 @@ namespace RestaurantWebApp.Controllers
             try
             {
                 // TODO: Add delete logic here
-
                 return RedirectToAction("Index");
             }
             catch
@@ -218,20 +216,23 @@ namespace RestaurantWebApp.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Register(UserDTO _user)
         {
-            //if (ModelState.IsValid)
-            //{
-            //    var check = _db.Users.FirstOrDefault(s => s.Email == _user.Email);
-            //    if (check == null)
-            //    {
-            //        return RedirectToAction("Index");
-            //    }
-            //    else
-            //    {
-            //        ViewBag.error = "Email already exists";
-            //        return View();
-            //    }
+            if (ModelState.IsValid)
+            {
+                return RedirectToAction("Index");
+            }
 
+            //var response = ControllerContext.RequestContext.HttpContext.
+            //if (check == null)
+            //{
+            //    return RedirectToAction("Index");
             //}
+            //else
+            //{
+            //    ViewBag.error = "Email already exists";
+            //    return View();
+            //}
+
+
 
             return View();
         }

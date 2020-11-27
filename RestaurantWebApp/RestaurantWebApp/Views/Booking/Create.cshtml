@@ -25,7 +25,7 @@
                         @Html.TextBoxFor(model => model.ReservationTime, new { @type = "date", @class = "form-control datepicker", @id = "txtDate", @name = "date" })
                         @Html.ValidationMessageFor(model => model.ReservationTime, "", new { @class = "text-danger" })
 
-                        @Html.DropDownListFor(m => m.TimeSlots, new SelectList(Model.TimeSlots, "_date", "_time"), "Vælg tidspunkt", new { @class = "form-control" })
+                        @Html.DropDownListFor(m => m.TimeSlots, new SelectList(Model.TimeSlots, "Date", "Time"), "Vælg tidspunkt", new { @class = "form-control" })
                     </fieldset>
                 </div>
             </div>
@@ -52,6 +52,7 @@
                                 <option value="@x.Id">Bord:  @x.TableNumber </option>
                             }
                         }
+               
                     </select>
                 </div>
             </div>
