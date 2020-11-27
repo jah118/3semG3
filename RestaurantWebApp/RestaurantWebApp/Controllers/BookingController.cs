@@ -2,10 +2,12 @@
 using RestaurantWebApp.Service.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using System.Web.Mvc;
+using RestaurantWebApp.Util;
 
 namespace RestaurantWebApp.Controllers
 {
@@ -40,7 +42,7 @@ namespace RestaurantWebApp.Controllers
             rv.Tables = _tableService.GetAll();
             if (rv.Tables == null)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.ServiceUnavailable);
+                //return new HttpStatusCodeResult(HttpStatusCode.ServiceUnavailable);
             }
 
             //TODO  dette er temp  her skal være
@@ -69,44 +71,31 @@ namespace RestaurantWebApp.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Create(ReservationDTO reservation)
         {
-            //TODO senere når api virker ville der bar kunne bruge
+            //TODO senere når api virker ville der bar kunne bruges uden at kunne konverter 
             //bruge timeslot
             var date = Request.Form["ReservationTime"];
             var time = Request.Form["Timeslots"];
 
             if (time.Length > 0)
             {
-                var timeSplit = time.Split(' ');
-                var temp = date + " " + timeSplit[1];
-
-                if (DateTime.TryParse(temp, out var datetime))
-                {
-                    reservation.ReservationTime = datetime;
-                }
+                var datetime = FormatTime.FormatterForReservationTimeFromString(date, time);
+                if (datetime != null) reservation.ReservationTime = datetime;
             }
-
-            //dette tager tables som kommer som en lang string og laver dem om til en liste
-            //af strings, som splites ved ','
-            //og laves til RestaurantTablesDTO objekt spm puttes i en liste
+         
             var r = Request.Form["Tables"];
-            if (r != null)
+            if (!string.IsNullOrEmpty(r))
             {
-                var listStrLineElements = r.Split(',').ToList();
-                var tables = new List<RestaurantTablesDTO>();
-
-                foreach (var item in listStrLineElements)
+                //dette tager tables som kommer som en lang string og laver dem om til en liste
+                try
                 {
-                    if (int.TryParse(item, out var tempId))
-                    {
-                        tables.Add(new RestaurantTablesDTO(tempId, 0, 0));
-                    }
-                    else
-                    {
-                        //TODO need a return message of what failed eks: dette er ikke et valid valg bord
-                        return View(reservation);
-                    }
+                    var tables = FormatStringToTables.StringOfIdToTables(r);
+                    reservation.Tables = tables;
                 }
-                reservation.Tables = tables;
+                catch (FormatException e)
+                {
+                    Debug.WriteLine(e);
+                    return View(reservation);
+                }
             }
 
             if (!ModelState.IsValid)
@@ -115,7 +104,7 @@ namespace RestaurantWebApp.Controllers
             }
             var response = await _bookingService.CreateAsync(reservation);
 
-            if (response)
+            if (response == HttpStatusCode.OK)
             {
                 return RedirectToAction("Index");
             }

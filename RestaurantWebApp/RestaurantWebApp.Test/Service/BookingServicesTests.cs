@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Net;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using RestaurantWebApp.DataTransferObject;
 using RestaurantWebApp.Service.Interfaces;
@@ -22,7 +23,6 @@ namespace RestaurantWebApp.Test.Service
         public void CreateAsyncTest()
         {
             var reservation = new ReservationDTO(
-                DateTime.Now,
                 new CustomerDTO(),
                 DateTime.Now,
                 4,
@@ -35,7 +35,7 @@ namespace RestaurantWebApp.Test.Service
 
             //Assert
             //Assert.AreEqual(response.StatusCode, HttpStatusCode.OK);
-            Assert.IsTrue(response);
+            Assert.IsTrue(response == HttpStatusCode.OK);
         }
     }
 }

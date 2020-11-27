@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
+using System.Net;
 using System.Threading.Tasks;
+using RestSharp;
 
 namespace RestaurantWebApp.Service.Interfaces
 {
@@ -18,7 +20,7 @@ namespace RestaurantWebApp.Service.Interfaces
 
         Task<TEntity> GetByIdAsync(int id);
 
-        Task<bool> CreateAsync(TEntity obj);
+        Task<HttpStatusCode> CreateAsync(TEntity obj);
 
         Task<TEntity> UpdateAsync(TEntity obj);
 

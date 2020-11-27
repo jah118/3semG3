@@ -2,17 +2,19 @@
 using RestaurantWebApp.Service.Interfaces;
 using RestSharp;
 using System.Collections.Generic;
+using System.Net;
 using System.Threading.Tasks;
+using RestSharp.Extensions;
 
 namespace RestaurantWebApp.Service
 {
     public class BookingServices : IBookingService
     {
-        private readonly string _constring;
+        private readonly string _connectionString;
 
         public BookingServices(string constring)
         {
-            _constring = constring;
+            _connectionString = constring;
         }
 
         public UserDTO GetUser(string v)
@@ -32,7 +34,7 @@ namespace RestaurantWebApp.Service
 
         public bool Create(ReservationDTO obj)
         {
-            var client = new RestClient(_constring);
+            var client = new RestClient(_connectionString);
             var request = new RestRequest("/Reservation", Method.POST);
             request.AddJsonBody(obj);
             var response = client.Execute(request).IsSuccessful;
@@ -60,12 +62,12 @@ namespace RestaurantWebApp.Service
             throw new System.NotImplementedException();
         }
 
-        public async Task<bool> CreateAsync(ReservationDTO obj)
+        public async Task<HttpStatusCode> CreateAsync(ReservationDTO obj)
         {
-            var client = new RestClient(_constring);
+            var client = new RestClient(_connectionString);
             var request = new RestRequest("/Reservation", Method.POST);
             request.AddJsonBody(obj);
-            var response = (await client.ExecuteAsync(request)).IsSuccessful;
+            var response = (await client.ExecuteAsync(request)).StatusCode;
 
             return response;
         }

@@ -8,15 +8,13 @@ namespace RestaurantWebApp.DataTransferObject
     {
         public ReservationDTO()
         {
-            ReservationDate = DateTime.Now;
+            _reservationDate = DateTime.Now;
         }
 
-
         //for testing
-        public ReservationDTO(DateTime reservationDate, CustomerDTO customer, DateTime reservationTime, int noOfPeople,
-            bool deposit, string note, IEnumerable<RestaurantTablesDTO> restaurantTables)
+        public ReservationDTO(CustomerDTO customer, DateTime reservationTime, int noOfPeople,
+            bool deposit, string note, IEnumerable<RestaurantTablesDTO> restaurantTables) :this()
         {
-            ReservationDate = reservationDate;
             Customer = customer;
             ReservationTime = reservationTime;
             NoOfPeople = noOfPeople;
@@ -26,14 +24,14 @@ namespace RestaurantWebApp.DataTransferObject
         }
 
         public int Id { get; }
-        public DateTime ReservationDate { get; set; }
+        private DateTime _reservationDate;
 
         [Required] public CustomerDTO Customer { get; set; }
 
         [Required]
         [Display(Name = "Reservationstidspunkt")]
         [DisplayFormat(DataFormatString = "{dd-MM-yyyy HH:mm:ss}", ApplyFormatInEditMode = true)]
-        public DateTime ReservationTime { get; set; }
+        public DateTime? ReservationTime { get; set; }
 
         [Required]
         [Range(1, 25)]

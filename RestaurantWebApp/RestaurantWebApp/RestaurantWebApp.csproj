@@ -170,6 +170,8 @@
     <Compile Include="Service\Interfaces\IBookingService.cs" />
     <Compile Include="Service\Interfaces\IService.cs" />
     <Compile Include="Service\Interfaces\ITableService.cs" />
+    <Compile Include="Util\FormatStringToTables.cs" />
+    <Compile Include="Util\FormatTime.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap-grid.css" />
