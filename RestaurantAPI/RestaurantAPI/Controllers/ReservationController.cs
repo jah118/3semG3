@@ -20,23 +20,22 @@ namespace RestaurantAPI.Controllers
         public IActionResult Get()
         {
             var res = _reservationRepository.GetAll();
-            return res != null ? Ok(res) : NotFound();
+            return res != null ? (IActionResult) Ok(res) : NotFound();
         }
 
         [HttpGet("{id}")]
         public IActionResult Get(int id)
         {
             var res = _reservationRepository.GetById(id);
-            return res != null ? Ok(res) : NotFound(id);
+            return res != null ? (IActionResult) Ok(res) : NotFound(id);
         }
 
         [HttpPost]
         public IActionResult Post([FromBody] ReservationDTO value)
         {
             var res = _reservationRepository.Create(value);
-
-            return res != null ? Ok(res) : Conflict(value);
-        }
+            return res != null ? (IActionResult) Ok(res) : Conflict(value);
+        }   
 
         [HttpPut]
         public IActionResult Put(int id, [FromBody] ReservationDTO value)

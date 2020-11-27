@@ -1,0 +1,59 @@
+﻿@model RestaurantWebApp.DataTransferObject.UserDTO
+
+@{
+    ViewBag.Title = "Login";
+}
+
+<div class="row justify-content-md-center">
+    <div class="col-md-10">
+        <div class="card">
+            <div class="card-header">
+                Login
+            </div>
+            <div class="card-body">
+                @using (Html.BeginForm())
+                {
+                    @Html.AntiForgeryToken()
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.Customer.Email)
+                        @Html.TextBoxFor(m => m.Customer.Email, "", new { @class = "form-control", @id = "Email", @placeholder = "Email" })
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.Password)
+                        @Html.PasswordFor(m => m.Password, new { @class = "form-control", @id = "Password", @placeholder = "Password" })
+                    </div>
+                    <div class="form-group">
+                        @* //TODO mangler bedre implemtions *@
+                        <a href="/Booking/Register" class="btn btn-primary">Opret login</a>
+                        <input type="submit" name="submit" class="btn btn-primary" value="Login" />
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+@* used for clientside validation through jquery validation and jquery validation unobtrusive libs  *@
+@section Scripts {
+
+    @Scripts.Render("~/bundles/jqueryval")
+
+    <script>
+        var loginData = {
+            grant_type: 'password',
+            username: self.Email(),
+            password: self.Password()
+        };
+
+        $.ajax({
+            type: 'POST',
+            url: 'https://localhost:44386/api',
+            data: loginData
+        }).done(function (data) {
+            self.user(data.userName);
+            // Cache the access token in session storage.
+            sessionStorage.setItem(tokenKey, data.access_token);
+        }).fail(showError);
+    </script>
+
+}

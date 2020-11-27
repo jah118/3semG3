@@ -1,13 +1,19 @@
 using DataAccess;
 using DataAccess.DataTransferObjects;
 using DataAccess.Repositories;
+using DataAccess.Repositories.Interfaces;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using RestaurantAPI.Authentication;
+using System.Text;
+using System.Text.Json.Serialization;
 
 namespace RestaurantAPI
 {
@@ -25,7 +31,24 @@ namespace RestaurantAPI
         {
             services.AddDbContext<RestaurantContext>(options =>
                 options.UseSqlServer(Configuration["Data:DefaultConnection:ConnectionString"]));
-
+            services.AddAuthentication(auth =>
+            {
+                auth.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                auth.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            }).AddJwtBearer(auth =>
+            {
+                auth.RequireHttpsMetadata = false;
+                auth.SaveToken = true;
+                auth.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(Configuration["SigningKey"])),
+                    ValidateIssuer = false,
+                    ValidateAudience = false
+                };
+            });
+            //Dependency inject repositories, so Controller constructors can be called from the web.
+            services.AddScoped<IAuthRepository, AuthRepository>();
             services.AddScoped<IRepository<RestaurantTablesDTO>, TableRepository>();
             services.AddScoped<IRepository<CustomerDTO>, CustomerRepository>();
             services.AddScoped<IRepository<EmployeeDTO>, EmployeeRepository>();
@@ -33,8 +56,16 @@ namespace RestaurantAPI
             services.AddScoped<IRepository<UserDTO>, UserRepository>();
             services.AddScoped<IRepository<FoodDTO>, FoodRepository>();
             services.AddScoped<IRepository<OrderDTO>, OrderRepository>();
+            services.AddScoped<IAccountRepository, UserRepository>();
+            services.AddScoped<IAuthManager>(am =>
+                new AuthManager(am.GetRequiredService<IAuthRepository>(),
+                    Configuration["SigningKey"]));
             //Danger after this
-            services.AddControllers();
+            services.AddControllers().AddJsonOptions(opt =>
+            {
+                //[FromBody] does not support enum by default
+                opt.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+            });
 
             services.AddSwaggerGen(c =>
             {
@@ -56,6 +87,7 @@ namespace RestaurantAPI
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
