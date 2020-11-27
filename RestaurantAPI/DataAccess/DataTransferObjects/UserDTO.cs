@@ -11,8 +11,8 @@ namespace DataAccess.DataTransferObjects
     {
         public int Id { get; init; }
         public string Username { get; init; }
-        public CustomerDTO Customer { get; set; }
-        public EmployeeDTO Employee { get; set; }
+        public CustomerDTO Customer { get; init; }
+        public EmployeeDTO Employee { get; init; }
         public UserRoles AccountType {get; init;}
     }
 }

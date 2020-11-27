@@ -1,13 +1,16 @@
-﻿using DataAccess.DataTransferObjects;
+﻿using System.Net;
+using DataAccess.DataTransferObjects;
 using DataAccess.Repositories.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using RestaurantAPI.Authentication;
+using RestaurantAPI.Filters;
 using RestaurantAPI.Models;
 
 namespace RestaurantAPI.Controllers
 {
     [Route("api/[controller]")]
+    [Authorize]
     [ApiController]
     [ApiConventionType(typeof(DefaultApiConventions))]
     public class UserController : ControllerBase
@@ -21,27 +24,36 @@ namespace RestaurantAPI.Controllers
             _authManager = authManager;
         }
 
-        [HttpGet("{id}"), Authorize]
-        public IActionResult Get([FromHeader] string token, int id)
+        [HttpGet("{id}")]
+        public IActionResult Get(int id)
         {
             var res = _accountRepository.GetById(id);
             return res != null ? Ok(res) : NotFound(id);
         }
 
-        [HttpPost()]
+        [HttpGet("Testbearer"), Authorize(Roles = "Employee")]
+        public IActionResult test()
+        {
+            return Ok("cool");
+        }
+
+        [AllowAnonymous]
+        [HttpPost("Post")]
         public IActionResult Post([FromBody] LoginInfo user)
         {
             string res = null;
             var resulting = _accountRepository.Create(user.User);
             _authManager.Authenticate(resulting.Username, user.Password, resulting.AccountType);
-            return res != null ? Ok(res) : Conflict(user.Username);
+            return resulting != null ? Ok(resulting) : Conflict();
         }
 
-        [HttpPost()]
+        [AllowAnonymous]
+        [RestrictHttps]
+        [HttpPost("Authenticate")]
         public IActionResult Authenticate([FromBody] LoginInfo login)
         {
             var token = _authManager.Authenticate(login.Username, login.Password, login.Role);
-            return token != null ? Unauthorized() : Ok(token);
+            return token == null ? Unauthorized() : Ok(token);
         }
 
     }

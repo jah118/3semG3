@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
 namespace DataAccess.Repositories
 {
@@ -19,11 +20,17 @@ namespace DataAccess.Repositories
         public bool AuthenticateUser(string username, string password, UserRoles role)
         {
             return true;
+            var user =_context.User.Include(u => u.Person).FirstOrDefault(user => user.Username == username);
+
+            bool accurateRole = role switch
+            {
+                UserRoles.Customer => _context.Customer.Any(customer => customer.PersonId == user.PersonId),
+                UserRoles.Employee => _context.Employee.Any(employee => employee.PersonId == user.PersonId),
+                _ => false
+            };
+
+            return true;
         }
 
-        public byte[] GetSigningKey()
-        {
-            throw new NotImplementedException();
-        }
     }
 }
