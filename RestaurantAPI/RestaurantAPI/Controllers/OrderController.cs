@@ -30,5 +30,13 @@ namespace RestaurantAPI.Controllers
         {
             return Ok(_repository.GetById(id));
         }
+
+        [HttpPost]
+        public IActionResult Post([FromBody] OrderDTO value)
+        {
+            var res = _repository.Create(value);
+
+            return res != null ? Ok(res) : Conflict(value);
+        }
     }
 }

@@ -1,8 +1,10 @@
 ﻿using DataAccess.DataTransferObjects;
 using DataAccess.DataTransferObjects.Converters;
+using DataAccess.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -18,7 +20,23 @@ namespace DataAccess.Repositories
         }
         public OrderDTO Create(OrderDTO obj, bool transactionEndpoint = true)
         {
-            throw new NotImplementedException();
+            try
+            {
+                if (transactionEndpoint) _context.Database.BeginTransaction(IsolationLevel.Serializable);
+                var order = Converter.Convert(obj);
+                order.PaymentConditionId = _context.PaymentCondition.Where(x => x.Condition.Equals(obj.PaymentCondition)).FirstOrDefault().Id;
+                
+                var added = _context.Order.Add(order);
+                _context.SaveChanges();
+                _context.Entry(order).GetDatabaseValues();
+                _context.Database.CommitTransaction();
+                return GetById(order.OrderNo);
+            }
+            catch (Exception e)
+            {
+                _context.Database.RollbackTransaction();
+                throw;
+            }
         }
 
         public bool Delete(OrderDTO obj, bool transactionEndpoint = true)
@@ -31,21 +49,21 @@ namespace DataAccess.Repositories
             IEnumerable<OrderDTO> res = null;
 
             var orders = _context.Order
-                .Include(f=>f.OrderLine)
-                    .ThenInclude(f=>f.Food)
-                    .ThenInclude(f=>f.Price)
-                .Include(f=>f.OrderLine)
-                    .ThenInclude(f=>f.Food)
-                        .ThenInclude(f => f.FoodCategory) 
+                .Include(f => f.OrderLine)
+                    .ThenInclude(f => f.Food)
+                    .ThenInclude(f => f.Price)
+                .Include(f => f.OrderLine)
+                    .ThenInclude(f => f.Food)
+                        .ThenInclude(f => f.FoodCategory)
                 .Include(e => e.Employee)
                     .ThenInclude(e => e.Person)
                         .ThenInclude(e => e.Location)
                             .ThenInclude(e => e.ZipCodeNavigation)
-                    .Include(e=>e.Employee.Title)
+                    .Include(e => e.Employee.Title)
                 .Include(r => r.Reservation)
                 .Include(pc => pc.PaymentCondition).ToList();
-            
-               
+
+
             if (orders != null) res = Converter.Convert(orders);
             return res;
 
@@ -56,7 +74,7 @@ namespace DataAccess.Repositories
             OrderDTO res = null;
 
             var order = _context.Order
-                .Where(o=>o.OrderNo == id)
+                .Where(o => o.OrderNo == id)
                 .Include(f => f.OrderLine)
                     .ThenInclude(f => f.Food)
                         .ThenInclude(f => f.FoodCategory)
@@ -66,7 +84,7 @@ namespace DataAccess.Repositories
                             .ThenInclude(e => e.ZipCodeNavigation)
                     .Include(e => e.Employee.Title)
                 .Include(r => r.Reservation)
-                .Include(pc => pc.PaymentCondition).FirstOrDefault();
+                .Include(pc => pc.PaymentCondition).OrderBy(x => x.OrderDate).FirstOrDefault();
             if (order != null) res = Converter.Convert(order);
             return res;
         }

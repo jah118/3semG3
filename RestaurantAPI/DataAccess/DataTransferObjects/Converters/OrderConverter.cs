@@ -22,7 +22,7 @@ namespace DataAccess.DataTransferObjects.Converters
         {
             OrderDTO orderDTO = new OrderDTO()
             {
-                Employee = Converter.Convert(obj.Employee),
+                EmployeeID = obj.EmployeeId,
                 OrderDate = obj.OrderDate,
                 OrderNo = obj.OrderNo,
                 PaymentCondition = obj.PaymentCondition.Condition,
@@ -31,6 +31,24 @@ namespace DataAccess.DataTransferObjects.Converters
             };
             obj.OrderLine.ToList().ForEach(x => orderDTO.Foods.Add(Converter.Convert(x.Food)));
             return orderDTO;
+        }
+        public static Order Convert(OrderDTO obj)
+        {
+            Order order = new Order()
+            {
+                EmployeeId = obj.EmployeeID,
+                OrderDate = obj.OrderDate,
+                OrderNo = obj.OrderNo,
+                ReservationId = obj.ReservationID
+            };
+            order.OrderLine = obj.Foods.Select(x => new OrderLine()
+            {
+                FoodId = x.Id,
+                Quantity = x.Quantity,
+                OrderNumber = obj.OrderNo,
+                OrderNumberNavigation = order
+            }).ToHashSet();
+            return order;
         }
     }
 }
