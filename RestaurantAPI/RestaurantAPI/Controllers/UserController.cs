@@ -4,7 +4,7 @@ using DataAccess.Repositories.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using RestaurantAPI.Authentication;
-using RestaurantAPI.Filters;
+//using RestaurantAPI.Filters;
 using RestaurantAPI.Models;
 
 namespace RestaurantAPI.Controllers
@@ -48,7 +48,7 @@ namespace RestaurantAPI.Controllers
         }
 
         [AllowAnonymous]
-        [RestrictHttps]
+        //[RestrictHttps]
         [HttpPost("Authenticate")]
         public IActionResult Authenticate([FromBody] LoginInfo login)
         {
