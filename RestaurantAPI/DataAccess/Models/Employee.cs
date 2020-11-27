@@ -13,7 +13,7 @@ namespace DataAccess.Models
     {
         public Employee()
         {
-            RestaurantOrder = new HashSet<Order>();
+            RestaurantOrder = new HashSet<RestaurantOrder>();
         }
 
         [Key]

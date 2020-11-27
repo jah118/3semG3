@@ -12,7 +12,7 @@ namespace DataAccess.Models
     [Table("Restaurant_Order")]
     public partial class RestaurantOrder
     {
-        public Order()
+        public RestaurantOrder()
         {
             OrderLine = new HashSet<OrderLine>();
         }
