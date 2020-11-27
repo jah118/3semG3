@@ -10,6 +10,5 @@ namespace DataAccess.Repositories.Interfaces
     public interface IAuthRepository
     {
         bool AuthenticateUser(string username, string password, UserRoles role);
-        Byte[] GetSigningKey();
     }
 }

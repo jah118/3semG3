@@ -9,8 +9,10 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using RestaurantAPI.Authentication;
+using System.Text;
 using System.Text.Json.Serialization;
 
 namespace RestaurantAPI
@@ -23,13 +25,28 @@ namespace RestaurantAPI
         }
 
         public IConfiguration Configuration { get; }
+
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<RestaurantContext>(options =>
                 options.UseSqlServer(Configuration["Data:DefaultConnection:ConnectionString"]));
-            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-                .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, options => Configuration.Bind("JwtSettings", options));
+            services.AddAuthentication(auth =>
+            {
+                auth.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                auth.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            }).AddJwtBearer(auth =>
+            {
+                auth.RequireHttpsMetadata = false;
+                auth.SaveToken = true;
+                auth.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(Configuration["SigningKey"])),
+                    ValidateIssuer = false,
+                    ValidateAudience = false
+                };
+            });
             //Dependency inject repositories, so Controller constructors can be called from the web.
             services.AddScoped<IAuthRepository, AuthRepository>();
             services.AddScoped<IRepository<RestaurantTablesDTO>, TableRepository>();
@@ -67,6 +84,7 @@ namespace RestaurantAPI
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

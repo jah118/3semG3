@@ -11,25 +11,30 @@ namespace DataAccess.DataTransferObjects.Converters
     {
         public static UserDTO Convert(User u)
         {
-            Customer customer = null;
-            Employee employee = null;
-            if (u.Person.Customer.SingleOrDefault(c => c.PersonId == u.PersonId) != null)
+            Customer customer = u.Person.Customer.SingleOrDefault(c => c.PersonId == u.PersonId);
+            Employee employee = u.Person.Employee.SingleOrDefault(c => c.PersonId == u.PersonId);
+            UserRoles role = UserRoles.Customer;
+            if (employee != null)
             {
-
-            }
-            if (u.Person.Employee.SingleOrDefault(c => c.PersonId == u.PersonId) != null)
-            {
-
+                role = UserRoles.Employee;
             }
             return new UserDTO
             {
-                
+                Customer = Convert(customer),
+                Employee= Convert(employee),
+                AccountType = role,
+                Id = u.Id,
+                Username = u.Username
+
             };
         }
 
         public static User Convert(UserDTO u)
         {
-            return new User();
+            return new User()
+            {
+                
+            };
         }
     }
 }
