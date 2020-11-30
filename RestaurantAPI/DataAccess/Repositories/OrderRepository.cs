@@ -26,8 +26,9 @@ namespace DataAccess.Repositories
                 var order = Converter.Convert(obj);
                 order.PaymentConditionId = _context.PaymentCondition.Where(x => x.Condition.Equals(obj.PaymentCondition)).FirstOrDefault().Id;
                 
-                var added = _context.RestaurantOrder.Add(order);
+                var added = _context.Order.Add(order);
                 _context.SaveChanges();
+                _context.Entry(order).GetDatabaseValues();
                 _context.Database.CommitTransaction();
                 return GetById(order.OrderNo);
             }
@@ -47,7 +48,7 @@ namespace DataAccess.Repositories
         {
             IEnumerable<OrderDTO> res = null;
 
-            var orders = _context.RestaurantOrder
+            var orders = _context.Order
                 .Include(f => f.OrderLine)
                     .ThenInclude(f => f.Food)
                     .ThenInclude(f => f.Price)
@@ -72,7 +73,7 @@ namespace DataAccess.Repositories
         {
             OrderDTO res = null;
 
-            var order = _context.RestaurantOrder
+            var order = _context.Order
                 .Where(o => o.OrderNo == id)
                 .Include(f => f.OrderLine)
                     .ThenInclude(f => f.Food)

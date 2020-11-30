@@ -167,8 +167,6 @@
     <Compile Include="Model\FoodViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Service\BookingServices.cs" />
-    <Compile Include="Service\FoodService.cs" />
-    <Compile Include="Service\Interfaces\IFoodService.cs" />
     <Compile Include="Service\TableServices.cs" />
     <Compile Include="Service\Interfaces\IBookingService.cs" />
     <Compile Include="Service\Interfaces\IService.cs" />

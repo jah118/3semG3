@@ -16,10 +16,8 @@ namespace RestaurantWebApp
             builder.RegisterControllers(typeof(MvcApplication).Assembly);
             builder.RegisterType<BookingServices>().As<IBookingService>().SingleInstance();
             builder.RegisterType<TableServices>().As<ITableService>().SingleInstance();
-            builder.RegisterType<FoodService>().As<IFoodService>().SingleInstance();
             builder.Register(c => new BookingServices(ConfigurationManager.AppSettings["ServiceApi"])).As<IBookingService>();
             builder.Register(c => new TableServices(ConfigurationManager.AppSettings["ServiceApi"])).As<ITableService>();
-            builder.Register(c => new FoodService(ConfigurationManager.AppSettings["ServiceApi"])).As<IFoodService>();
 
             var container = builder.Build();
             DependencyResolver.SetResolver(new AutofacDependencyResolver(container));

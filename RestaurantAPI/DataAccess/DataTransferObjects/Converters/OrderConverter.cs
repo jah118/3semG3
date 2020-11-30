@@ -9,7 +9,7 @@ namespace DataAccess.DataTransferObjects.Converters
 {
     public partial class Converter
     {
-        public static IEnumerable<OrderDTO> Convert(List<RestaurantOrder> obj)
+        public static IEnumerable<OrderDTO> Convert(List<Order> obj)
         {
             List<OrderDTO> res = new List<OrderDTO>();
             obj.ForEach((x) =>
@@ -18,7 +18,7 @@ namespace DataAccess.DataTransferObjects.Converters
             });
             return res;
         }
-        public static OrderDTO Convert(RestaurantOrder obj)
+        public static OrderDTO Convert(Order obj)
         {
             OrderDTO orderDTO = new OrderDTO()
             {
@@ -32,9 +32,9 @@ namespace DataAccess.DataTransferObjects.Converters
             obj.OrderLine.ToList().ForEach(x => orderDTO.Foods.Add(Converter.Convert(x.Food)));
             return orderDTO;
         }
-        public static RestaurantOrder Convert(OrderDTO obj)
+        public static Order Convert(OrderDTO obj)
         {
-            RestaurantOrder order = new RestaurantOrder()
+            Order order = new Order()
             {
                 EmployeeId = obj.EmployeeID,
                 OrderDate = obj.OrderDate,

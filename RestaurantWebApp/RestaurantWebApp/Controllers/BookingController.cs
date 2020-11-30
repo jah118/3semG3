@@ -1,6 +1,6 @@
 using RestaurantWebApp.Model;
 using RestaurantWebApp.Service;
-using RestaurantWebApp.DataTransferObject;
+﻿using RestaurantWebApp.DataTransferObject;
 using RestaurantWebApp.Service.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -10,7 +10,6 @@ using System.Net;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 using RestaurantWebApp.Util;
-using System.Configuration;
 
 namespace RestaurantWebApp.Controllers
 {
@@ -21,13 +20,11 @@ namespace RestaurantWebApp.Controllers
 
         private readonly IBookingService _bookingService;
         private readonly ITableService _tableService;
-        private readonly IFoodService _foodService;
 
-        public BookingController(IBookingService bookingService, ITableService tableService, IFoodService foodService)
+        public BookingController(IBookingService bookingService, ITableService tableService)
         {
             _bookingService = bookingService;
             _tableService = tableService;
-            _foodService = foodService;
         }
 
         // GET: Booking
@@ -86,7 +83,7 @@ namespace RestaurantWebApp.Controllers
                 var datetime = FormatTime.FormatterForReservationTimeFromString(date, time);
                 if (datetime != null) reservation.ReservationTime = datetime;
             }
-
+         
             var r = Request.Form["Tables"];
             if (!string.IsNullOrEmpty(r))
 
@@ -96,12 +93,12 @@ namespace RestaurantWebApp.Controllers
                 {
                     var tables = FormatStringToTables.StringOfIdToTables(r);
                     reservation.Tables = tables;
-                }
-                catch (FormatException e)
+                }catch (FormatException e)
                 {
                     Debug.WriteLine(e);
                     return View(reservation);
                 }
+                reservation.Tables = tables;
             }
 
             if (!ModelState.IsValid)
@@ -171,44 +168,25 @@ namespace RestaurantWebApp.Controllers
         // }
 
         // GET: Booking/OrderFoods
-        //[HttpGet]
-        //public ActionResult OrderFoods()
-        //{
-        //    IEnumerable<FoodDTO> fdto = _foodService.GetAll();
+        [HttpGet]
+        public ActionResult OrderFoods()
+        {
+            IEnumerable<FoodDTO> fdto = bs.GetAllFoods(ConfigurationManager.AppSettings["ServiceApi"]);
 
-        //    return View(fdto);
+            return View(fdto);
 
-        //}
+        }
         [HttpGet]
         public ActionResult OrderFood()
         {
             var f = new FoodViewModel();
-            IEnumerable<FoodDTO> fdto = _foodService.GetAll();
+            IEnumerable<FoodDTO> fdto = bs.GetAllFoods(ConfigurationManager.AppSettings["ServiceApi"]);
 
             var Foods = new List<FoodDTO>();
             var Drinks = new List<FoodDTO>();
             foreach (var item in fdto)
             {
                 if (item.FoodCategoryName.Name.Equals("Mad"))
-
-                {
-                    Foods.Add(item);
-                }
-                else if (item.FoodCategoryName.Name.Equals("Drikkevare"))
-                {
-                    Drinks.Add(item);
-                }
-
-
-            }
-
-
-            f.Foods = Foods;
-            f.Drinks = Drinks;
-
-            return View(f);
-        }
-
         //GET: Login
         [AllowAnonymous]
         public ActionResult Login()
@@ -282,9 +260,25 @@ namespace RestaurantWebApp.Controllers
             //    return View();
             //}
 
-            return View();
-        }
 
+
+                {
+                    Foods.Add(item);
+                }
+                else if(item.FoodCategoryName.Name.Equals("Drikkevare"))
+                {
+                    Drinks.Add(item);
+                } 
+                
+                       
+            }
+
+            
+            f.Foods = Foods;
+            f.Drinks = Drinks;
+            
+            return View(f);
+        }
     }
 }
 

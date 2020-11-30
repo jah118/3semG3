@@ -14,7 +14,7 @@ namespace DataAccess.Models
         public Reservation()
         {
             ReservationsTables = new HashSet<ReservationsTables>();
-            RestaurantOrder = new HashSet<RestaurantOrder>();
+            RestaurantOrder = new HashSet<Order>();
         }
 
         [Key]
