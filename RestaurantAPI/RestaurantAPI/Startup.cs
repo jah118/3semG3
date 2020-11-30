@@ -47,7 +47,14 @@ namespace RestaurantAPI
                     ValidateAudience = false
                 };
             });
-            //Dependency inject repositories, so Controller constructors can be called from the web.
+            var allowedOrigins = Configuration.GetValue<string>("AllowedOrigins")?.Split(",") ?? new string[0];
+            services.AddCors(options =>
+            {
+                options.AddPolicy("mvcLoginPolicy", builder => builder.WithOrigins(allowedOrigins).AllowAnyHeader().AllowAnyMethod());
+                options.AddPolicy("PublicApi", builder => builder.AllowAnyOrigin().WithMethods("Post").WithExposedHeaders("Content-Type"));
+            });
+
+        //Dependency inject repositories, so Controller constructors can be called from the web.
             services.AddScoped<IAuthRepository, AuthRepository>();
             services.AddScoped<IRepository<RestaurantTablesDTO>, TableRepository>();
             services.AddScoped<IRepository<CustomerDTO>, CustomerRepository>();
@@ -81,8 +88,9 @@ namespace RestaurantAPI
             }
 
             app.UseHttpsRedirection();
-
+            
             app.UseRouting();
+            app.UseCors("mvcLoginPolicy");
 
             app.UseAuthentication();
             app.UseAuthorization();

@@ -26,6 +26,9 @@
                         @* //TODO mangler bedre implemtions *@
                         <a href="/Booking/Register" class="btn btn-primary">Opret login</a>
                         <input type="submit" name="submit" class="btn btn-primary" value="Login" />
+                        <button class="btn btn-primary" onclick="sendData();">fddfdsf</button>
+                        <input id="clickMe" type="button" value="clickme" onclick="sendData();" />
+
                     </div>
                 }
             </div>
@@ -39,21 +42,38 @@
     @Scripts.Render("~/bundles/jqueryval")
 
     <script>
-        var loginData = {
-            grant_type: 'password',
-            username: self.Email(),
-            password: self.Password()
-        };
+        function sendData() {
+            var formData = new FormData();
+            var loginData = {
+                username: "test",
+                password: "dsdsdsdsdsd",
+                role: "Customer"
+            };
+            
+            var lData = {"username": "string", "password": "string", "role": "Customer"};
+            //var obj = JSON.parse(lData);
+            console.log(lData);
 
-        $.ajax({
-            type: 'POST',
-            url: 'https://localhost:44386/api',
-            data: loginData
-        }).done(function (data) {
-            self.user(data.userName);
-            // Cache the access token in session storage.
-            sessionStorage.setItem(tokenKey, data.access_token);
-        }).fail(showError);
+            $.ajax({
+                type: "POST",
+                url: "https://localhost:44386/api/User/Authenticate",
+                contentType: 'application/json',
+                dataType: 'json',
+                data: JSON.stringify(lData),
+                success: function (result) {
+                    console.log('Submission was a suc.');
+                    console.log(result);
+                    self.user(data.userName);
+                    // Cache the access token in session storage.
+                    sessionStorage.setItem(tokenKey, data.access_token);
+                },
+                error: function (data) {
+                    console.log('Submission was a fail.');
+                    console.log(data);
+                }
+            });
+
+        }
     </script>
 
 }
