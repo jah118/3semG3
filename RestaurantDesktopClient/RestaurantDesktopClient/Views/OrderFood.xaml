@@ -6,7 +6,6 @@
       xmlns:local="clr-namespace:RestaurantDesktopClient.Views" 
       xmlns:controls="clr-namespace:RestaurantDesktopClient.Views.Controls" 
       xmlns:local1="clr-namespace:RestaurantDesktopClient.Views.ViewModels"
-      xmlns:local2="clr-namespace:RestaurantDesktopClient.Views.ViewModels"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
       Title="OrderFood">
@@ -43,7 +42,5 @@
         <controls:ListPageControl x:Name="DrinkListPage" Grid.Column="5" Grid.ColumnSpan="5" Grid.Row="1" Grid.RowSpan="4"  Margin="15,0,0,0" >
         </controls:ListPageControl>
         <controls:ListPageControl x:Name="SummaryListPage" Grid.Column="0" Grid.ColumnSpan="10" Grid.Row="5" Grid.RowSpan="4"  Margin="15,0,0,0" />
-
     </Grid>
 </Page>
-    
