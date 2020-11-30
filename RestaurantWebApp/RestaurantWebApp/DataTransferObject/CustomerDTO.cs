@@ -4,6 +4,21 @@ namespace RestaurantWebApp.DataTransferObject
 {
     public class CustomerDTO
     {
+        public CustomerDTO()
+        {
+        }
+
+        public CustomerDTO(string phone, string email, string firstName, string lastName, string address, string zipCode, string city)
+        {
+            Phone = phone;
+            Email = email;
+            FirstName = firstName;
+            LastName = lastName;
+            Address = address;
+            ZipCode = zipCode;
+            City = city;
+        }
+
         public int Id { get; }
 
         [Required] //TODO lav bedre regex[RegularExpression("^([+](\\d{1,3})\\s?)?((\\(\\d{3,5}\\)|\\d{3,5})(\\s)?)\\d{3,8}$", ErrorMessage = "Tast")]
