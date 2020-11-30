@@ -13,7 +13,7 @@ namespace DataAccess.Models
     {
         public PaymentCondition()
         {
-            RestaurantOrder = new HashSet<Order>();
+            RestaurantOrder = new HashSet<RestaurantOrder>();
         }
 
         [Key]

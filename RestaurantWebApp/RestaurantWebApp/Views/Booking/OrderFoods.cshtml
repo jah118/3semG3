@@ -1,87 +1,88 @@
-﻿@model IList<DataTransferObjects.FoodDTO>
+﻿@model IList <RestaurantWebApp.DataTransferObject.FoodDTO>
 
 @{
     <h2> Bestilling af mad</h2>
 
 }
-@using (Html.BeginForm()) {
-<table style="width: 100% !important; height: 100% !important">
-    <tr style="width:100%; height:16%">
-        <td rowspan="3">
-            <table style="width: 100% !important; height: 100% !important;">
-                <tr>
-                    <td align="center" style="width:50%">
-                        <div class="form-group">
-                            <div class="col-md-5">
-                         
+@using (Html.BeginForm())
+{
+    <table style="width: 100% !important; height: 100% !important">
+        <tr style="width:100%; height:16%">
+            <td rowspan="3">
+                <table style="width: 100% !important; height: 100% !important;">
+                    <tr>
+                        <td align="center" style="width:50%">
+                            <div class="form-group">
+                                <div class="col-md-5">
+
+                                </div>
                             </div>
-                        </div>
-                        <div>
-                            <label>Retter</label>
-                        </div>
-                        <div id="foodListDiv" style=" overflow: scroll; min-height: 100px; max-height: 300px; width: 90%">
-                            <select name="Tables" id="Tables2" class="form-control" multiple>
-                                @if (Model != null)
-                                {
-                                    foreach (var x in Model)
+                            <div>
+                                <label>Retter</label>
+                            </div>
+                            <div id="foodListDiv" style=" overflow: scroll; min-height: 100px; max-height: 300px; width: 90%">
+                                <select name="Tables" id="Tables2" class="form-control" multiple>
+                                    @if (Model != null)
                                     {
-                                        <option value="@x.Id">  @x.Name </option>
+                                        foreach (var x in Model)
+                                        {
+                                            <option value="@x.Id">  @x.Name </option>
+                                        }
                                     }
-                                }
-                            </select>
-                            <table id="foodTable" style="width:100%; height:100%">
-                            </table>
-                        </div>
-                    </td>
-                    <td align="center">
-                        <div>
-                            <label>Drikkevare</label>
-                        </div>
-                        <div style="overflow: scroll; min-height:100px; max-height: 300px; width:90%">
-                            <table id="drinkTable" style="width:100%; height:100%"></table>
-                        </div>
-                        <div>
-                        </div>
-                    </td>
-                </tr>
-            </table>
-        </td>
-        <td>
-            <div><button disabled="disabled">Se menu</button></div>
-        </td>
-    </tr>
-    <tr></tr>
-    <tr></tr>
-    <tr></tr>
-    <tr></tr>
-    <tr style="width:100%; height:100%">
-        <td rowspan="2">
-            <div style="        overflow: scroll;
+                                </select>
+                                <table id="foodTable" style="width:100%; height:100%">
+                                </table>
+                            </div>
+                        </td>
+                        <td align="center">
+                            <div>
+                                <label>Drikkevare</label>
+                            </div>
+                            <div style="overflow: scroll; min-height:100px; max-height: 300px; width:90%">
+                                <table id="drinkTable" style="width:100%; height:100%"></table>
+                            </div>
+                            <div>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+            <td>
+                <div><button disabled="disabled">Se menu</button></div>
+            </td>
+        </tr>
+        <tr></tr>
+        <tr></tr>
+        <tr></tr>
+        <tr></tr>
+        <tr style="width:100%; height:100%">
+            <td rowspan="2">
+                <div style="        overflow: scroll;
         max-height: 100px;
         margin-top: 20px;
         border:medium
 ">
-                <div>
-                    <label>Ordre:</label>
+                    <div>
+                        <label>Ordre:</label>
+                    </div>
+                    <table id="summaryTable" border="1" style="width:100%">
+                    </table>
                 </div>
-                <table id="summaryTable" border="1" style="width:100%">
-                </table>
-            </div>
-        </td>
-    </tr>
-    <tr></tr>
-    <tr></tr>
-    <tr id="FooterCol" style="width:100%; height:16%">
-        <td align="right" colspan="2">
-            <div><a href="/Booking/Create" onclick="btnBackClick()" class="btn btn-info" role="button"> Back..</a></div>
-        </td>
-    </tr>
-</table>
-                             }
+            </td>
+        </tr>
+        <tr></tr>
+        <tr></tr>
+        <tr id="FooterCol" style="width:100%; height:16%">
+            <td align="right" colspan="2">
+                <div><a href="/Booking/Create" onclick="btnBackClick()" class="btn btn-info" role="button"> Back..</a></div>
+            </td>
+        </tr>
+    </table>
+}
 
 <script>
     var summary = [];
-    
+
 
     function btnBackClick() {
 
