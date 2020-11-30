@@ -32,7 +32,7 @@ namespace RestaurantAPI.Controllers
         }
 
         [HttpGet("Testbearer"), Authorize(Roles = "Employee")]
-        public IActionResult test()
+        public IActionResult Test()
         {
             return Ok("cool");
         }
