@@ -2,6 +2,7 @@
 using DataAccess.DataTransferObjects;
 using DataAccess.Repositories.Interfaces;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using RestaurantAPI.Authentication;
 //using RestaurantAPI.Filters;
@@ -38,6 +39,7 @@ namespace RestaurantAPI.Controllers
         }
 
         [AllowAnonymous]
+        //[EnableCors("PublicApi")]
         [HttpPost("Post")]
         public IActionResult Post([FromBody] LoginInfo user)
         {
@@ -50,6 +52,7 @@ namespace RestaurantAPI.Controllers
         [AllowAnonymous]
         //[RestrictHttps]
         [HttpPost("Authenticate")]
+        //[EnableCors("PublicApi")]
         public IActionResult Authenticate([FromBody] LoginInfo login)
         {
             var token = _authManager.Authenticate(login.Username, login.Password, login.Role);
