@@ -31,9 +31,9 @@ namespace RestaurantDesktopClient.Views
             OrderFoodModelView OrderFoodModelView = new OrderFoodModelView(summaryFoodsViewModel, searchFoodsViewModel, searchDriksViewModel);
 
 
-            //SummaryListPage.DataContext = summaryFoodsViewModel;
-            //FoodListPage.DataContext = searchFoodsViewModel;
-            //DrinkListPage.DataContext = searchDriksViewModel;
+            SummaryListPage.DataContext = summaryFoodsViewModel;
+            FoodListPage.DataContext = searchFoodsViewModel;
+            DrinkListPage.DataContext = searchDriksViewModel;
 
             //Binding bindingSummary = new Binding() { Mode = BindingMode.TwoWay, Source = OrderFoodModelView.SelectedSummaryFood, Path = new PropertyPath(".") };
             //BindingOperations.SetBinding(SummaryListPage.dgResult, DataGrid.SelectedItemProperty, bindingSummary);
