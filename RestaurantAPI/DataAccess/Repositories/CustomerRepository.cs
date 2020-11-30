@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace DataAccess.Repositories
 {
@@ -21,9 +22,14 @@ namespace DataAccess.Repositories
         public CustomerDTO Create(CustomerDTO obj, bool transactionEndpoint = true)
         {
             if (transactionEndpoint) _context.Database.BeginTransaction(IsolationLevel.Serializable);
-            var added = _context.Add(Converter.Convert(obj));
+            var added = CreateCustomer(obj);
             if (transactionEndpoint) _context.SaveChanges();
             return Converter.Convert(added.Entity);
+        }
+
+        internal EntityEntry<Customer> CreateCustomer(CustomerDTO obj)
+        {
+            return _context.Add(Converter.Convert(obj));
         }
 
         public bool Delete(CustomerDTO obj, bool transactionEndpoint = true)
@@ -40,6 +46,8 @@ namespace DataAccess.Repositories
                 .Include(c => c.Person)
                     .ThenInclude(c => c.Location)
                         .ThenInclude(c => c.ZipCodeNavigation)
+                .AsNoTracking()
+                .ToList()
                     ;
 
             var res = new List<CustomerDTO>();
@@ -59,6 +67,7 @@ namespace DataAccess.Repositories
                             .Include(c => c.Person)
                             .ThenInclude(c => c.Location)
                             .ThenInclude(c => c.ZipCodeNavigation)
+                            .AsNoTracking()
                             .FirstOrDefault();
             if (customer != null)
             {

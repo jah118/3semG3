@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace DataAccess.Utility
 {
-    public class PasswordHashing
+    public static class PasswordHashing
     {
         private const int SALT_SIZE = 64; // size in bytes
         private const int HASH_SIZE = 64; // size in bytes

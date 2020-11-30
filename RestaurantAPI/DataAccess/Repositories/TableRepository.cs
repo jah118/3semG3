@@ -3,6 +3,9 @@ using DataAccess.DataTransferObjects.Converters;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using DataAccess.Models;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace DataAccess.Repositories
 {
@@ -20,6 +23,11 @@ namespace DataAccess.Repositories
             throw new NotImplementedException();
         }
 
+        internal EntityEntry<RestaurantTables> CreateTable(RestaurantTablesDTO obj)
+        {
+            throw new NotImplementedException();
+        }
+
         public bool Delete(RestaurantTablesDTO obj, bool transactionEndpoint = true)
         {
             throw new NotImplementedException();
@@ -27,9 +35,7 @@ namespace DataAccess.Repositories
 
         public IEnumerable<RestaurantTablesDTO> GetAll()
         {
-            Converter.Convert(_context.RestaurantTables.ToList());
-            return Converter.Convert(_context.RestaurantTables.ToList());
-
+            return Converter.Convert(_context.RestaurantTables.AsNoTracking().ToList());
         }
 
         public RestaurantTablesDTO GetById(int id)

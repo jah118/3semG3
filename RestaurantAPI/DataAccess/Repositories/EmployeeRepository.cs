@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace DataAccess.Repositories
 {
@@ -21,9 +22,14 @@ namespace DataAccess.Repositories
         public EmployeeDTO Create(EmployeeDTO obj, bool transactionEndpoint = true)
         {
             if (transactionEndpoint) _context.Database.BeginTransaction(IsolationLevel.Serializable);
-            //insert logic here
+            var added = CreateEmployee(obj);
             if (transactionEndpoint) _context.SaveChanges();
-            throw new NotImplementedException();
+            return Converter.Convert(added.Entity);
+        }
+
+        internal EntityEntry<Employee> CreateEmployee(EmployeeDTO obj)
+        {
+            return _context.Add(Converter.Convert(obj));
         }
 
         public bool Delete(EmployeeDTO obj, bool transactionEndpoint = true)
@@ -40,20 +46,16 @@ namespace DataAccess.Repositories
                 .Include(e => e.Person)
                 .ThenInclude(e => e.Location)
                 .ThenInclude(e => e.ZipCodeNavigation)
-                .Include(e => e.Title); //remember to include every time an additional . is added in the create part
-            var res = new List<EmployeeDTO>();
-            foreach (Employee e in employees)
-            {
-                res.Add(Converter.Convert(e));
-            }
+                .Include(e => e.Title)
+                .AsNoTracking().ToList(); //remember to include every time an additional . is added in the create part
 
-            return res;
+            return employees.Select(Converter.Convert).ToList();
         }
 
         public EmployeeDTO GetById(int id)
         {
             EmployeeDTO res = null;
-            Employee employee = _context.Employee
+            var employee = _context.Employee
                  .Where(c => c.Id == id)
                  .Include(c => c.Person)
                  .ThenInclude(c => c.Location)

@@ -1,21 +1,25 @@
 ﻿using DataAccess.DataTransferObjects;
+using DataAccess.DataTransferObjects.Converters;
+using DataAccess.Models;
 using DataAccess.Repositories.Interfaces;
 using DataAccess.Utility;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DataAccess.Repositories
 {
     public class UserRepository : IAccountRepository
     {
-        RestaurantContext _context;
+        private readonly RestaurantContext _context;
+
         public UserRepository(RestaurantContext context)
         {
             _context = context;
         }
+
         public UserDTO Create(UserDTO obj, bool transactionEndpoint = true)
         {
             //Create User with option of adding password later
@@ -24,10 +28,34 @@ namespace DataAccess.Repositories
 
         public UserDTO Create(UserDTO obj, string password, bool transactionEndpoint = true)
         {
-            var result = PasswordHashing.CreateHash(password);
+            if (transactionEndpoint) _context.Database.BeginTransaction(IsolationLevel.Serializable);
+            var (hash, salt) = PasswordHashing.CreateHash(password);
             //Validate
-            
+            if (User.ValidateAddedUser(obj))
+            {
+                var personId = obj.AccountType switch
+                {
+                    UserRoles.Customer => new CustomerRepository(_context).CreateCustomer(obj.Customer).Entity.PersonId,
+                    UserRoles.Employee => new EmployeeRepository(_context).CreateEmployee(obj.Employee).Entity.PersonId,
+                    _ => null,
+                };
 
+                if (personId != null)
+                {
+                    var toAddUser = new User()
+                    {
+                        Username = obj.Username,
+                        PersonId = personId,
+                        PasswordHash = hash,
+                        Salt = salt
+                    };
+
+                    _context.Add(toAddUser);
+                    _context.Entry(toAddUser).GetDatabaseValues();
+                    return GetById(toAddUser.Id);
+                }
+            }
+            if (transactionEndpoint) _context.Database.RollbackTransaction();
 
             return null;
         }
@@ -44,7 +72,18 @@ namespace DataAccess.Repositories
 
         public UserDTO GetById(int id)
         {
-            throw new NotImplementedException();
+            var user = _context.User
+                .Where(u => u.Id == id)
+                .Include(u => u.Person)
+                .ThenInclude(c => c.Customer)
+                .Include(e => e.Person.Employee)
+                .ThenInclude(e => e.Title)
+                .Include(p => p.Person.Location)
+                    .ThenInclude(c => c.ZipCodeNavigation)
+                .AsNoTracking()
+                .FirstOrDefault();
+
+            return Converter.Convert(user);
         }
 
         public IEnumerable<UserDTO> GetCountWithOffsetByOrdering(int count, int offset, string ordering)

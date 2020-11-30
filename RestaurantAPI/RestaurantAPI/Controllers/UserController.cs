@@ -4,7 +4,7 @@ using DataAccess.Repositories.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using RestaurantAPI.Authentication;
-//using RestaurantAPI.Filters;
+using RestaurantAPI.Filters;
 using RestaurantAPI.Models;
 
 namespace RestaurantAPI.Controllers
@@ -41,14 +41,13 @@ namespace RestaurantAPI.Controllers
         [HttpPost("Post")]
         public IActionResult Post([FromBody] LoginInfo user)
         {
-            string res = null;
             var resulting = _accountRepository.Create(user.User);
-            _authManager.Authenticate(resulting.Username, user.Password, resulting.AccountType);
-            return resulting != null ? Ok(resulting) : Conflict();
+            var token =_authManager.Authenticate(resulting.Username, user.Password, resulting.AccountType);
+            return resulting != null ? Ok(token) : Conflict();
         }
 
         [AllowAnonymous]
-        //[RestrictHttps]
+        [RestrictHttps]
         [HttpPost("Authenticate")]
         public IActionResult Authenticate([FromBody] LoginInfo login)
         {
