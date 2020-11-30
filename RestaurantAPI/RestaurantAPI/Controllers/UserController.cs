@@ -43,7 +43,8 @@ namespace RestaurantAPI.Controllers
         [HttpPost("Post")]
         public IActionResult Post([FromBody] LoginInfo user)
         {
-            var resulting = _accountRepository.Create(user.User);
+            var resulting = _accountRepository.Create(
+                user.User, user.Password);
             var token =_authManager.Authenticate(resulting.Username, user.Password, resulting.AccountType);
             return resulting != null ? Ok(token) : Conflict();
         }
