@@ -15,8 +15,10 @@ namespace RestaurantAPI.Models
 
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
-            if (string.IsNullOrEmpty(Username) || string.IsNullOrEmpty(User.Username))
+            if (string.IsNullOrEmpty(Username) && (User == null || string.IsNullOrEmpty(User.Username)))
                 yield return new ValidationResult("Body must contain a Username, either in the form of a UserDTO or a plain string");
+            if (Role == UserRoles.Undefined && (User == null ||  User.AccountType == UserRoles.Undefined))
+                yield return new ValidationResult("You must define a user role for the added user");
         }
     }
 }

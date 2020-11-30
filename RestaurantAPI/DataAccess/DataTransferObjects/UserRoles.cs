@@ -8,6 +8,7 @@ namespace DataAccess.DataTransferObjects
 {
     public enum UserRoles
     {
+        Undefined,
         Customer,
         Employee
     }
@@ -24,7 +25,7 @@ namespace DataAccess.DataTransferObjects
             };
         }
 
-        public static UserRoles Parse(String roleText)
+        public static UserRoles Parse(string roleText)
         {
             return roleText switch
             {
