@@ -8,19 +8,21 @@ namespace RestaurantWebApp.DataTransferObject
         //[Key, Column(Order = 1)]
         //[DatabaseGeneratedAttribute(DatabaseGeneratedOption.Identity)]
         //public int idUser { get; }
-        public CustomerDTO Customer { get; set; }
 
+        public int Id { get; set; }
         [Required]
         [StringLength(50, MinimumLength = 5)]
         public string Username { get; set; }
-
-        [Required]
-        [RegularExpression(@"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,15}$")]
+        public CustomerDTO Customer { get; set; }
+        public EmployeeDTO Employee { get; set; }
+        public UserRoles AccountType { get; set; }
+        
+        [DataType(DataType.Password)]
         public string Password { get; set; }
 
-        [Required]
-        [RegularExpression(@"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,15}$")]
         [Compare("Password")]
         public string ConfirmPassword { get; set; }
+
+        public string Token { get; set; }
     }
 }
