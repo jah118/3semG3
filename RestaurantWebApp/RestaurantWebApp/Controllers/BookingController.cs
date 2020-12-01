@@ -44,13 +44,17 @@ namespace RestaurantWebApp.Controllers
             //TODO her skal laves så den kan tage begge former for login Username/Email
 
             ReservationDTO rv = new ReservationDTO();
+
+
             rv.Tables = _tableService.GetAll();
             if (rv.Tables == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.ServiceUnavailable);
             }
 
+            //rv.TimeSlots = _bookingService
             //TODO  dette er temp  her skal være
+
             var ls = new List<ReservationTimesDTO>();
             var dateToDay = DateTime.Now;
             var ts = new TimeSpan(17, 30, 0);
