@@ -32,7 +32,11 @@ namespace DataAccess.DataTransferObjects.Converters
                     Location = new Location()
                     {
                         Address = c.Address,
-                        ZipCode = c.ZipCode,
+                        ZipCodeNavigation = new ZipId()
+                        {
+                            ZipCode = c.ZipCode,
+                            City = c.City
+                        }
                     }
                 }
             };

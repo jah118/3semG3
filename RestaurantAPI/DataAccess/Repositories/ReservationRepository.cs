@@ -35,11 +35,13 @@ namespace DataAccess.Repositories
 
                 if (compareCount == 0)
                 {
+
+                    var toAdd = Converter.Convert(obj);
                     if (obj.Customer.Id == 0)
                     {
-                        obj.Customer = new CustomerRepository(_context).Create(obj.Customer, false);
+                        var customerToAdd = new CustomerRepository(_context).CreateCustomer(obj.Customer);
+                        toAdd.Customer = customerToAdd.Entity;
                     }
-                    var toAdd = Converter.Convert(obj);
                     _context.Add<Reservation>(toAdd).GetDatabaseValues();
                     _context.Entry(toAdd).GetDatabaseValues();
                     foreach (RestaurantTablesDTO rt in obj.Tables)

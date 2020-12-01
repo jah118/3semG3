@@ -32,7 +32,7 @@ namespace RestaurantAPI.Controllers
             return res != null ? Ok(res) : NotFound(id);
         }
 
-        [HttpGet("Testbearer"), Authorize(Roles = "Employee")]
+        [HttpGet("Testbearer"), Authorize(Roles = "Customer,Employee")]
         public IActionResult Test()
         {
             return Ok("cool");
