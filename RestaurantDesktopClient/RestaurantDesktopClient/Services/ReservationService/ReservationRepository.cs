@@ -30,8 +30,6 @@ namespace RestaurantDesktopClient.Reservation
                 request.AddJsonBody(json);
                 var response = client.Execute(request).Content;
                 res = JsonConvert.DeserializeObject<ReservationDTO>(response);
-
-
             }
             catch
             {

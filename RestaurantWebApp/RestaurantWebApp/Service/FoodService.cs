@@ -19,7 +19,7 @@ namespace RestaurantWebApp.Service
         {
             _constring = constring;
         }
-        public bool Create(FoodDTO obj)
+        public FoodDTO Create(FoodDTO obj)
         {
             throw new NotImplementedException();
         }

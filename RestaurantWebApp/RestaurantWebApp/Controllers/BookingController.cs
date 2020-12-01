@@ -22,12 +22,14 @@ namespace RestaurantWebApp.Controllers
         private readonly IBookingService _bookingService;
         private readonly ITableService _tableService;
         private readonly IFoodService _foodService;
+        private readonly IOrderService _orderService;
 
-        public BookingController(IBookingService bookingService, ITableService tableService, IFoodService foodService)
+        public BookingController(IBookingService bookingService, ITableService tableService, IFoodService foodService, IOrderService orderService)
         {
             _bookingService = bookingService;
             _tableService = tableService;
             _foodService = foodService;
+            _orderService = orderService;
         }
 
         // GET: Booking
@@ -108,11 +110,11 @@ namespace RestaurantWebApp.Controllers
             {
                 return View(reservation);
             }
-            var response = await _bookingService.CreateAsync(reservation);
+            var res = _bookingService.Create(reservation);
 
-            if (response == HttpStatusCode.OK)
+            if (res != null)
             {
-                return RedirectToAction("Index");
+                return OrderFood(res);
             }
 
             return View(reservation);
@@ -180,34 +182,41 @@ namespace RestaurantWebApp.Controllers
 
         //}
         [HttpGet]
-        public ActionResult OrderFood()
+        public ActionResult OrderFood(ReservationDTO reservation)
         {
-            var f = new FoodViewModel();
+            var foods = new FoodViewModel();
             IEnumerable<FoodDTO> fdto = _foodService.GetAll();
 
             var Foods = new List<FoodDTO>();
             var Drinks = new List<FoodDTO>();
             foreach (var item in fdto)
             {
-                if (item.FoodCategoryName.Name.Equals("Mad"))
-
+                if (item.FoodCategoryName.Equals("Mad"))
                 {
                     Foods.Add(item);
                 }
-                else if (item.FoodCategoryName.Name.Equals("Drikkevare"))
+                else if (item.FoodCategoryName.Equals("Drikkevare"))
                 {
                     Drinks.Add(item);
                 }
+            }
+            foods.Foods = Foods;
+            foods.Drinks = Drinks;
 
-
+            OrderDTO order = _orderService.GetAll().Where(x => x.ReservationID == reservation.Id).OrderBy(x=>x.OrderDate).FirstOrDefault();
+            if(order == null)
+            {
+                order = new OrderDTO
+                {
+                    ReservationID = reservation.Id,
+                    PaymentCondition = PaymentCondition.Begyndt.ToString()
+                };
             }
 
-
-            f.Foods = Foods;
-            f.Drinks = Drinks;
-
-            return View(f);
+            Tuple<OrderDTO, FoodViewModel> res = Tuple.Create(order, foods);
+            return View(res);
         }
+
 
         //GET: Login
         [AllowAnonymous]

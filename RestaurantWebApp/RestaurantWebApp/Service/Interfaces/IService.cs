@@ -11,7 +11,7 @@ namespace RestaurantWebApp.Service.Interfaces
 
         TEntity GetById(int id);
 
-        bool Create(TEntity obj);
+        TEntity Create(TEntity obj);
 
         TEntity Update(TEntity obj);
 

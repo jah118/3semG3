@@ -152,6 +152,7 @@
     <Compile Include="DataTransferObject\EmployeeDTO.cs" />
     <Compile Include="DataTransferObject\FoodCategoryDTO.cs" />
     <Compile Include="DataTransferObject\FoodDTO.cs" />
+    <Compile Include="DataTransferObject\OrderDTO.cs" />
     <Compile Include="DataTransferObject\OrderLineDTO.cs" />
     <Compile Include="DataTransferObject\PaymentConditionDTO.cs" />
     <Compile Include="DataTransferObject\PriceDTO.cs" />
@@ -169,6 +170,8 @@
     <Compile Include="Service\BookingServices.cs" />
     <Compile Include="Service\FoodService.cs" />
     <Compile Include="Service\Interfaces\IFoodService.cs" />
+    <Compile Include="Service\Interfaces\IOrderService.cs" />
+    <Compile Include="Service\OrderService.cs" />
     <Compile Include="Service\TableServices.cs" />
     <Compile Include="Service\Interfaces\IBookingService.cs" />
     <Compile Include="Service\Interfaces\IService.cs" />
@@ -310,7 +313,6 @@
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Booking\Index.cshtml" />
     <Content Include="Views\Booking\Create.cshtml" />
-    <Content Include="Views\Booking\OrderFoods.cshtml" />
     <Content Include="Scripts\umd\popper.min.js.map" />
     <Content Include="Scripts\umd\popper.js.map" />
     <Content Include="Scripts\umd\popper.js.flow" />
