@@ -32,6 +32,9 @@ namespace RestaurantDesktopClient.Views
 
 
             SummaryListPage.DataContext = summaryFoodsViewModel;
+            Binding summaryBinding = new Binding("SelectedSummaryFood");
+            summaryBinding.Source = OrderFoodModelView;
+            SummaryListPage.dgResult.SetBinding( DataGrid.SelectedItemProperty, summaryBinding);
             FoodListPage.DataContext = searchFoodsViewModel;
             DrinkListPage.DataContext = searchDriksViewModel;
 

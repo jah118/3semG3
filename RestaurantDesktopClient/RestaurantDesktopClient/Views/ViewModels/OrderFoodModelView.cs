@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -19,6 +20,19 @@ namespace RestaurantDesktopClient.Views.ViewModels
         private FoodDTO _selectedFood;
         private FoodDTO _selectedDrink;
         private FoodDTO _selectedSummary;
+
+        public event PropertyChangedEventHandler PropertyChanged;
+        private void OnPropertyChanged(string propertyName)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+        public OrderFoodModelView(SummaryFoodsViewModel summaryFoodsViewModel, SearchFoodsViewModel searchFoodsViewModel, SearchDriksViewModel searchDriksViewModel)
+        {
+            AddFoodCommand = new RelayCommand(AddFoodToSummary);
+            AddDrinkCommand = new RelayCommand(AddDringToSummary);
+            RemoveSummary = new RelayCommand(RemoveFromSummary);
+
+        }
         public FoodDTO SelectedFood
         {
             get { return _selectedFood; }
@@ -50,17 +64,12 @@ namespace RestaurantDesktopClient.Views.ViewModels
             }
         }
 
-        public event PropertyChangedEventHandler PropertyChanged;
-        private void OnPropertyChanged(string propertyName)
+        public List<FoodDTO> ListFoodSearch
         {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+            get { return null; }
+            set { }
         }
-        public OrderFoodModelView(SummaryFoodsViewModel summaryFoodsViewModel, SearchFoodsViewModel searchFoodsViewModel, SearchDriksViewModel searchDriksViewModel)
-        {
-            AddFoodCommand = new RelayCommand(AddFoodToSummary);
-            AddDrinkCommand = new RelayCommand(AddDringToSummary);
-            RemoveSummary = new RelayCommand(RemoveFromSummary);
-        }
+
         private void AddDringToSummary()
         {
 

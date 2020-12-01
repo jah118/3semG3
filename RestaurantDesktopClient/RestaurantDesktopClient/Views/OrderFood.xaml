@@ -3,9 +3,7 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-      xmlns:local="clr-namespace:RestaurantDesktopClient.Views" 
-      xmlns:controls="clr-namespace:RestaurantDesktopClient.Views.Controls" 
-      xmlns:local1="clr-namespace:RestaurantDesktopClient.Views.ViewModels"
+      DataContext="{Binding OrderFoodModelView}"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
       Title="OrderFood">
@@ -37,10 +35,16 @@
 
         </Grid.RowDefinitions>
 
-        <controls:ListPageControl x:Name="FoodListPage" Grid.Column="0" Grid.ColumnSpan="5" Grid.Row="1" Grid.RowSpan="4"  Margin="15,0,0,0" >
-        </controls:ListPageControl>
-        <controls:ListPageControl x:Name="DrinkListPage" Grid.Column="5" Grid.ColumnSpan="5" Grid.Row="1" Grid.RowSpan="4"  Margin="15,0,0,0" >
-        </controls:ListPageControl>
-        <controls:ListPageControl x:Name="SummaryListPage" Grid.Column="0" Grid.ColumnSpan="10" Grid.Row="5" Grid.RowSpan="4"  Margin="15,0,0,0" />
+        <TextBox x:Name="txtFoodSearch" Grid.Row="1" Grid.ColumnSpan="3" Height="20"/>
+        <Button x:Name="btnSearchFood" Content="Søg" Grid.Column="3" Grid.Row="1" Height="20"  />
+        <ListBox x:Name="lbFoodSearchBox" ItemsSource="{Binding ListFoodSearch}" Grid.Row="2" Grid.ColumnSpan="5" Grid.RowSpan="3" Margin="0,0,15,15"/>
+
+        <TextBox x:Name="txtDrinkSearch" Grid.Row="5" Grid.ColumnSpan="6" Height="20"/>
+        <Button x:Name="btnSearchDrink" Content="Søg" Grid.Column="8" Grid.Row="1" Height="20"  />
+        <ListBox x:Name="lbDrinkSearchBox" Grid.Row="2" Grid.ColumnSpan="5" Grid.Column="5" Grid.RowSpan="3" Margin="0,0,15,15"/>
+
+        <TextBox x:Name="txtSummarySearch" Grid.Row="1" Grid.Column="5" Grid.ColumnSpan="3" Height="20"/>
+        <Button x:Name="btnSearchSummary" Content="Søg" Grid.Column="6" Grid.Row="5" Height="20"  />
+        <ListBox x:Name="lbSummarySearchBox" Grid.Row="6" Grid.RowSpan="3" Grid.ColumnSpan="9" Grid.Column="0" />
     </Grid>
 </Page>

@@ -18,7 +18,7 @@
         </div>
         <div class="col-md-5 float-right">
             <label> Drikkevarer</label>
-            @Html.ListBoxFor(model => model.Item2.Drinks, new SelectList(Model.Item2.Drinks, "Id", "Name"), new { @class = "control - label" })
+            @Html.ListBoxFor(model => model.Item2.Drinks, new SelectList(Model.Item2.Drinks, "Id", "Name"),new { @class = "control - label" })
             <input type="button" value="Vælg drikkevarer" />
         </div>
         <div id="summaryDiv" class="col-md-12 float-left">

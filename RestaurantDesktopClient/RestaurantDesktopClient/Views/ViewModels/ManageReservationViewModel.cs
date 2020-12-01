@@ -303,7 +303,7 @@ namespace RestaurantDesktopClient.Views.ManageReservation
             set
             {
                 _reservationTable = value;
-                PropertyChanged(this, new PropertyChangedEventArgs("ReservationTable"));
+                PropertyChanged(this, new PropertyChangedEventArgs("SearchTable"));
             }
         }
         public void UpdateReservation()

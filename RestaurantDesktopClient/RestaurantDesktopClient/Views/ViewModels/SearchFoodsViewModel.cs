@@ -5,17 +5,18 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace RestaurantDesktopClient.Views.ViewModels
 {
-    class SearchFoodsViewModel
+    class SearchFoodsViewModel : INotifyPropertyChanged
     {
         private DataTable _foodTable;
         private readonly IRepository<FoodDTO> repository;
         private DataRowView _selectedRowView;
-        public DataRowView SelectedItem
+        public DataRowView SelectedRowView
         {
             get
             {
@@ -25,10 +26,15 @@ namespace RestaurantDesktopClient.Views.ViewModels
             {
                 _selectedRowView = value;
                 int.TryParse(_selectedRowView.Row.ItemArray[0].ToString(), out int id);
+                OnPropertyChanged("SelectedFood");
             }
         }
 
-
+        public event PropertyChangedEventHandler PropertyChanged;
+        protected void OnPropertyChanged([CallerMemberName] string name = null)
+        {
+            this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
+        }
         public SearchFoodsViewModel()
         {
             repository = new FoodRepository();
@@ -42,7 +48,6 @@ namespace RestaurantDesktopClient.Views.ViewModels
             _foodTable.Columns.Add("Description", typeof(String));
         }
 
-        public event PropertyChangedEventHandler PropertyChanged;
         public DataTable SearchTable
         {
             get
@@ -64,7 +69,7 @@ namespace RestaurantDesktopClient.Views.ViewModels
             set
             {
                 _foodTable = value;
-                PropertyChanged(this, new PropertyChangedEventArgs("_foodTable"));
+                OnPropertyChanged("SearchTable");
             }
         }
 
