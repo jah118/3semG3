@@ -23,7 +23,8 @@ namespace DataAccess.Repositories
         {
             if (transactionEndpoint) _context.Database.BeginTransaction(IsolationLevel.Serializable);
             var added = CreateCustomer(obj);
-            if (transactionEndpoint) _context.SaveChanges();
+            _context.SaveChanges();
+            if (transactionEndpoint)_context.Database.CommitTransaction();
             return Converter.Convert(added.Entity);
         }
 
@@ -36,7 +37,8 @@ namespace DataAccess.Repositories
         {
             if (transactionEndpoint) _context.Database.BeginTransaction(IsolationLevel.Serializable);
             //insert logic here
-            if (transactionEndpoint) _context.SaveChanges();
+            _context.SaveChanges();
+            if (transactionEndpoint)_context.Database.CommitTransaction();
             throw new NotImplementedException();
         }
 

@@ -33,25 +33,27 @@ namespace DataAccess.Repositories
             //Validate
             if (User.ValidateAddedUser(obj))
             {
-                var personId = obj.AccountType switch
+                var person = obj.AccountType switch
                 {
-                    UserRoles.Customer => new CustomerRepository(_context).CreateCustomer(obj.Customer).Entity.PersonId,
-                    UserRoles.Employee => new EmployeeRepository(_context).CreateEmployee(obj.Employee).Entity.PersonId,
+                    UserRoles.Customer => new CustomerRepository(_context).CreateCustomer(obj.Customer).Entity.Person,
+                    UserRoles.Employee => new EmployeeRepository(_context).CreateEmployee(obj.Employee).Entity.Person,
                     _ => null,
                 };
 
-                if (personId != null)
+                if (person != null)
                 {
                     var toAddUser = new User()
                     {
                         Username = obj.Username,
-                        PersonId = personId,
+                        Person = person,
                         PasswordHash = hash,
                         Salt = salt
                     };
 
                     _context.Add(toAddUser);
+                    _context.SaveChanges();
                     _context.Entry(toAddUser).GetDatabaseValues();
+                    if (transactionEndpoint)_context.Database.CommitTransaction();
                     return GetById(toAddUser.Id);
                 }
             }

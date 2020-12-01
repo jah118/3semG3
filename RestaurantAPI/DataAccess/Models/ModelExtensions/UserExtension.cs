@@ -6,21 +6,20 @@ namespace DataAccess.Models
     {
         public static bool ValidateAddedUser(UserDTO toValidate)
         {
+            if (toValidate == null) return false;
             //TODO make sure all cases are covered
             if (string.IsNullOrEmpty(toValidate.Username)) return false;
             if (toValidate.Username == null) return false;
             switch (toValidate.AccountType)
             {
                 case UserRoles.Customer:
-                    if (toValidate.Customer == null) return false;
+                    if (Customer.Validate(toValidate.Customer)) return false;
                     break;
                 case UserRoles.Employee:
-                    if (toValidate.Employee == null) return false;
+                    if (Employee.Validate(toValidate.Employee)) return false;
                     break;
                 default: return false;
             }
-
-            
             return true;
         }
     }

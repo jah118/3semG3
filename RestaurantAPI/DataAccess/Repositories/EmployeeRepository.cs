@@ -2,11 +2,11 @@
 using DataAccess.DataTransferObjects.Converters;
 using DataAccess.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
-using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace DataAccess.Repositories
 {
@@ -23,7 +23,8 @@ namespace DataAccess.Repositories
         {
             if (transactionEndpoint) _context.Database.BeginTransaction(IsolationLevel.Serializable);
             var added = CreateEmployee(obj);
-            if (transactionEndpoint) _context.SaveChanges();
+            _context.SaveChanges();
+            if (transactionEndpoint) _context.Database.CommitTransaction();
             return Converter.Convert(added.Entity);
         }
 
@@ -37,6 +38,7 @@ namespace DataAccess.Repositories
             if (transactionEndpoint) _context.Database.BeginTransaction(IsolationLevel.Serializable);
             //insert logic here
             if (transactionEndpoint) _context.SaveChanges();
+            if (transactionEndpoint)_context.Database.CommitTransaction();
             throw new NotImplementedException();
         }
 

@@ -42,8 +42,8 @@ namespace DataAccess.Repositories
                         var customerToAdd = new CustomerRepository(_context).CreateCustomer(obj.Customer);
                         toAdd.Customer = customerToAdd.Entity;
                     }
-                    _context.Add<Reservation>(toAdd).GetDatabaseValues();
-                    _context.Entry(toAdd).GetDatabaseValues();
+
+                    _context.Reservation.Add(toAdd);
                     foreach (RestaurantTablesDTO rt in obj.Tables)
                     {
                         _context.Add<ReservationsTables>(new ReservationsTables
@@ -52,7 +52,8 @@ namespace DataAccess.Repositories
                             RestaurantTablesId = rt.Id
                         });
                     }
-                    if (transactionEndpoint) _context.SaveChanges();
+                    _context.SaveChanges();
+                    if (transactionEndpoint)_context.Database.CommitTransaction();
                     _context.Entry(toAdd).GetDatabaseValues();
                     return GetById(toAdd.Id);
                 }
@@ -79,6 +80,7 @@ namespace DataAccess.Repositories
             if (transactionEndpoint) _context.Database.BeginTransaction(IsolationLevel.Serializable);
             //insert logic here
             if (transactionEndpoint) _context.SaveChanges();
+            if (transactionEndpoint)_context.Database.CommitTransaction();
             throw new NotImplementedException();
         }
 
