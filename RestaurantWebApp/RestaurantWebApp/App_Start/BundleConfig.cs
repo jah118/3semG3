@@ -30,6 +30,11 @@ namespace RestaurantWebApp
                       "~/Content/site.css",
                       "~/Content/simple-sidebar.css"));
 
+            bundles.Add(new StyleBundle("~/Content/login").Include(
+                "~/Content/login.css")); 
+            bundles.Add(new StyleBundle("~/Content/createView").Include(
+                "~/Content/createView.css"));
+
             bundles.Add(new StyleBundle("~/Content/datepicker").Include(
                       "~/Content/datepicker.css"));
             bundles.Add(new ScriptBundle("~/bundles/datepicker").Include(

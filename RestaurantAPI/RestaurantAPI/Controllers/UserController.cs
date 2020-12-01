@@ -2,9 +2,10 @@
 using DataAccess.DataTransferObjects;
 using DataAccess.Repositories.Interfaces;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using RestaurantAPI.Authentication;
-//using RestaurantAPI.Filters;
+using RestaurantAPI.Filters;
 using RestaurantAPI.Models;
 
 namespace RestaurantAPI.Controllers
@@ -31,25 +32,27 @@ namespace RestaurantAPI.Controllers
             return res != null ? Ok(res) : NotFound(id);
         }
 
-        [HttpGet("Testbearer"), Authorize(Roles = "Employee")]
-        public IActionResult test()
+        [HttpGet("Testbearer"), Authorize(Roles = "Customer,Employee")]
+        public IActionResult Test()
         {
             return Ok("cool");
         }
 
         [AllowAnonymous]
+        //[EnableCors("PublicApi")]
         [HttpPost("Post")]
         public IActionResult Post([FromBody] LoginInfo user)
         {
-            string res = null;
-            var resulting = _accountRepository.Create(user.User);
-            _authManager.Authenticate(resulting.Username, user.Password, resulting.AccountType);
-            return resulting != null ? Ok(resulting) : Conflict();
+            var resulting = _accountRepository.Create(
+                user.User, user.Password);
+            var token =_authManager.Authenticate(resulting.Username, user.Password, resulting.AccountType);
+            return resulting != null ? Ok(token) : Conflict();
         }
 
         [AllowAnonymous]
-        //[RestrictHttps]
+        [RestrictHttps]
         [HttpPost("Authenticate")]
+        //[EnableCors("PublicApi")]
         public IActionResult Authenticate([FromBody] LoginInfo login)
         {
             var token = _authManager.Authenticate(login.Username, login.Password, login.Role);

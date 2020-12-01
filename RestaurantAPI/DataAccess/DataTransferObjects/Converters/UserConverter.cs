@@ -1,9 +1,5 @@
 ﻿using DataAccess.Models;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DataAccess.DataTransferObjects.Converters
 {
@@ -13,7 +9,12 @@ namespace DataAccess.DataTransferObjects.Converters
         {
             Customer customer = u.Person.Customer.SingleOrDefault(c => c.PersonId == u.PersonId);
             Employee employee = u.Person.Employee.SingleOrDefault(c => c.PersonId == u.PersonId);
-            UserRoles role = UserRoles.Customer;
+            UserRoles role = UserRoles.Undefined;
+            if (customer != null)
+            {
+                role = UserRoles.Customer;
+            }
+            //Employee overrides the Role as a customer
             if (employee != null)
             {
                 role = UserRoles.Employee;
@@ -21,11 +22,10 @@ namespace DataAccess.DataTransferObjects.Converters
             return new UserDTO
             {
                 Customer = Convert(customer),
-                Employee= Convert(employee),
+                Employee = Convert(employee),
                 AccountType = role,
                 Id = u.Id,
                 Username = u.Username
-
             };
         }
 
@@ -33,7 +33,6 @@ namespace DataAccess.DataTransferObjects.Converters
         {
             return new User()
             {
-                
             };
         }
     }

@@ -19,5 +19,28 @@ namespace DataAccess.DataTransferObjects.Converters
                 City = employee.Person.Location.ZipCodeNavigation.City
             };
         }
+
+        public static Employee Convert(EmployeeDTO c)
+        {
+            return new Employee()
+            {
+                Title = new EmployeeTitle()
+                {
+                    Title = c.Title
+                },
+                Person = new Person()
+                {
+                    Email = c.Email,
+                    FirstName = c.FirstName,
+                    LastName = c.LastName,
+                    Phone = c.Phone,
+                    Location = new Location()
+                    {
+                        Address = c.Address,
+                        ZipCode = c.ZipCode,
+                    }
+                }
+            };
+        }
     }
 }

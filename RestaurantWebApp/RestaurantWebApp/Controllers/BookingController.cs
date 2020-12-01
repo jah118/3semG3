@@ -18,6 +18,7 @@ namespace RestaurantWebApp.Controllers
     public class BookingController : Controller
     {
         private ControllerContext _context = new ControllerContext();
+        
 
         private readonly IBookingService _bookingService;
         private readonly ITableService _tableService;
@@ -106,11 +107,11 @@ namespace RestaurantWebApp.Controllers
                 }
             }
 
-            if (!ModelState.IsValid)
-            {
-                return View(reservation);
-            }
-            var res = _bookingService.Create(reservation);
+            //if (!ModelState.IsValid)
+            //{
+            //    return View(reservation);
+            //}
+            var response = await _bookingService.CreateAsync(reservation);
 
             if (res != null)
             {
@@ -222,20 +223,26 @@ namespace RestaurantWebApp.Controllers
         [AllowAnonymous]
         public ActionResult Login()
         {
-            return View();
+            UserDTO user = new UserDTO {AccountType = UserRoles.Customer};
+            return View(user);
         }
 
         [AllowAnonymous]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Login(string email, string password)
+        public ActionResult Login(UserDTO user)
         {
+           var s =  HttpContext.Response;
+            //var token = user.Token;
+            //var uname = user.Username;
+
+
             //if (ModelState.IsValid)
             //{
-            //    var f_password = GetMD5(password);
+
 
             //    //var data = _db.Users.Where(s => s.Email.Equals(email) && s.Password.Equals(f_password)).ToList();
-            //    var data = _bs.GetUser(ConfigurationManager.AppSettings["ServiceApi"]);
+            //    //var data = _bs.GetUser(ConfigurationManager.AppSettings["ServiceApi"]);
             //    if (data.Count() > 0)
             //    {
             //        //add session

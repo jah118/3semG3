@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace DataAccess.Repositories
 {
@@ -24,12 +25,9 @@ namespace DataAccess.Repositories
             if (transactionEndpoint) _context.Database.BeginTransaction(IsolationLevel.Serializable);
             try
             {
-                //Caution O(n^2) or greater, this performs badly, it currently only checks if ANY table intersects
-                //Change to focus on tables, return list of the ones that intersect and give it back to the the caller,
-                //to tell which ones need rebooking or don't and handle failure in another way.
                 var compareCount = _context.Reservation
                     .Include(r => r.ReservationsTables)
-                    .ThenInclude(r => r.RestaurantTables)
+                        .ThenInclude(r => r.RestaurantTables)
                     .Where(r =>
                         r.ReservationTime <= obj.ReservationTime.AddMinutes(90) &&
                         r.ReservationTime.AddMinutes(90) >= obj.ReservationTime)
@@ -37,13 +35,15 @@ namespace DataAccess.Repositories
 
                 if (compareCount == 0)
                 {
+
+                    var toAdd = Converter.Convert(obj);
                     if (obj.Customer.Id == 0)
                     {
-                        obj.Customer = new CustomerRepository(_context).Create(obj.Customer, false);
+                        var customerToAdd = new CustomerRepository(_context).CreateCustomer(obj.Customer);
+                        toAdd.Customer = customerToAdd.Entity;
                     }
-                    var toAdd = Converter.Convert(obj);
-                    _context.Add<Reservation>(toAdd).GetDatabaseValues();
-                    _context.Entry(toAdd).GetDatabaseValues();
+
+                    _context.Reservation.Add(toAdd);
                     foreach (RestaurantTablesDTO rt in obj.Tables)
                     {
                         _context.Add<ReservationsTables>(new ReservationsTables
@@ -52,7 +52,8 @@ namespace DataAccess.Repositories
                             RestaurantTablesId = rt.Id
                         });
                     }
-                    if (transactionEndpoint) _context.SaveChanges();
+                    _context.SaveChanges();
+                    if (transactionEndpoint)_context.Database.CommitTransaction();
                     _context.Entry(toAdd).GetDatabaseValues();
                     return GetById(toAdd.Id);
                 }
@@ -69,11 +70,17 @@ namespace DataAccess.Repositories
             return null;
         }
 
+        internal EntityEntry<Reservation> CreateReservation(ReservationDTO obj)
+        {
+            throw new NotImplementedException(); //Move logic from Create method to here and return method from the other
+        }
+
         public bool Delete(ReservationDTO obj, bool transactionEndpoint = true)
         {
             if (transactionEndpoint) _context.Database.BeginTransaction(IsolationLevel.Serializable);
             //insert logic here
             if (transactionEndpoint) _context.SaveChanges();
+            if (transactionEndpoint)_context.Database.CommitTransaction();
             throw new NotImplementedException();
         }
 
@@ -87,7 +94,7 @@ namespace DataAccess.Repositories
                                     .ThenInclude(c => c.Location)
                                         .ThenInclude(c => c.ZipCodeNavigation)
                             .Include(rt => rt.ReservationsTables)
-                                .ThenInclude(t => t.RestaurantTables).ToList();
+                                .ThenInclude(t => t.RestaurantTables).AsNoTracking().ToList();
 
             if (reservations != null)
             {
@@ -108,13 +115,12 @@ namespace DataAccess.Repositories
                                         .ThenInclude(c => c.ZipCodeNavigation)
                             .Include(rt => rt.ReservationsTables)
                                 .ThenInclude(t => t.RestaurantTables)
+                            .AsNoTracking()
                             .FirstOrDefault();
-
             if (reservation != null)
             {
                 res = Converter.Convert(reservation);
             }
-
             return res;
         }
 

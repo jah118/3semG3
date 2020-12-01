@@ -7,8 +7,6 @@
     <meta name="author" content="">
     <title>@ViewBag.Title - Restaurant</title>
 
-    <!-- Bootstrap core CSS -->
-    <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 
     <!-- Custom styles for this template -->
     @Styles.Render("~/Content/css")
@@ -27,7 +25,6 @@
             </div>
         </div>
         <!-- /#sidebar-wrapper -->
-        
         @* the following cod snip need to be in if where if a vaild token is i header the show a differnt nav *@
         <!-- Page Content -->
         <div id="page-content-wrapper">
@@ -63,15 +60,17 @@
     </div>
 
     <!-- Menu Toggle Script -->
+
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
     <script>
         $("#menu-toggle").click(function (e) {
             e.preventDefault();
             $("#wrapper").toggleClass("toggled");
         });
     </script>
-
-    @Scripts.Render("~/bundles/jquery")
-    @Scripts.Render("~/bundles/bootstrap")
     @RenderSection("scripts", required: false)
+
 </body>
 </html>
