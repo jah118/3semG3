@@ -35,11 +35,13 @@ namespace RestaurantWebApp
             bundles.Add(new StyleBundle("~/Content/createView").Include(
                 "~/Content/createView.css"));
 
-            bundles.Add(new StyleBundle("~/Content/datepicker").Include(
-                      "~/Content/datepicker.css"));
-            bundles.Add(new ScriptBundle("~/bundles/datepicker").Include(
-                      "~/Scripts/datepicker.js",
-                      "~/Scripts/bootstrap.min.js"));
+            //Create bundel for jQueryUI  
+            //js  
+            bundles.Add(new ScriptBundle("~/bundles/jqueryui").Include(
+                "~/Scripts/jquery-ui-{version}.js"));
+            //css  
+            bundles.Add(new StyleBundle("~/Content/cssjqryUi").Include(
+                "~/Content/jquery-ui.css"));
         }
     }
 }
