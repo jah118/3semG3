@@ -1,5 +1,6 @@
 ﻿using DataAccess.DataTransferObjects;
 using Newtonsoft.Json;
+using RestaurantDesktopClient.Views.ViewModels;
 using RestSharp;
 using System;
 using System.Collections.Generic;
@@ -10,9 +11,14 @@ using System.Threading.Tasks;
 
 namespace RestaurantDesktopClient.Services.CustomerService
 {
-    class CustomerRepository : ICustomerRepository
+    class CustomerRepository : IRepository<CustomerDTO>
     {
-        public CustomerDTO GetCustomerById(int customerId)
+        public CustomerDTO Create(CustomerDTO t)
+        {
+            throw new NotImplementedException();
+        }
+
+        public CustomerDTO Get(int customerId)
         {
             string constring = ConfigurationManager.ConnectionStrings["ServiceConString"].ConnectionString;
             var client = new RestClient(constring);
@@ -24,6 +30,11 @@ namespace RestaurantDesktopClient.Services.CustomerService
             CustomerDTO res = JsonConvert.DeserializeObject<CustomerDTO>(content);
 
             return res;
+        }
+
+        public IEnumerable<CustomerDTO> GetAll()
+        {
+            throw new NotImplementedException();
         }
     }
 }

@@ -1,4 +1,8 @@
-﻿using System;
+﻿using Autofac;
+using DataAccess.DataTransferObjects;
+using RestaurantDesktopClient.Reservation;
+using RestaurantDesktopClient.Views.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;

@@ -1,9 +1,9 @@
 ﻿<Application x:Class="RestaurantDesktopClient.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:local="clr-namespace:RestaurantDesktopClient"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-         
+        <vm:ViewModelLocator xmlns:vm="clr-namespace:RestaurantDesktopClient.Views.ViewModels"
+                           x:Key="Locator" />
     </Application.Resources>
 </Application>

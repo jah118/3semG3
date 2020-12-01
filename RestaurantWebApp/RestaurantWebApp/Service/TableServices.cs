@@ -32,7 +32,7 @@ namespace RestaurantWebApp.Service
             throw new NotImplementedException();
         }
 
-        public bool Create(RestaurantTablesDTO obj)
+        public RestaurantTablesDTO Create(RestaurantTablesDTO obj)
         {
             throw new NotImplementedException();
         }

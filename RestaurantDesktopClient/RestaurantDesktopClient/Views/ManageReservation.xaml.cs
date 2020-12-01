@@ -1,7 +1,9 @@
 ﻿using DataAccess.DataTransferObjects;
-using RestaurantDesktopClient.Controllers;
 using RestaurantDesktopClient.Reservation;
+using RestaurantDesktopClient.Services.CustomerService;
 using RestaurantDesktopClient.Views.Controls;
+using RestaurantDesktopClient.Views.ManageReservation;
+using RestaurantDesktopClient.Views.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -28,43 +30,11 @@ namespace RestaurantDesktopClient.Views
         public ManageReservationView()
         {
             InitializeComponent();
-            ReservationViewControl.btnCreateNew.Click += BtnCreateNew_Click;
-            ListPageControl.dgResult.SelectedCellsChanged += DgResult_SelectedCellsChanged;
-            Headline.SetHeadline("Manage Reservation");
+            ManageReservationViewModel mrvm = new ManageReservationViewModel();
+            ListPageControl.DataContext = mrvm;
+            ReservationViewControl.dtpReservationTime.DataContext = mrvm;
+            ReservationViewControl.DataContext = mrvm;
         }
 
-        private void DgResult_SelectedCellsChanged(object sender, SelectedCellsChangedEventArgs e)
-        {
-            DataRowView dr = (DataRowView)ListPageControl.dgResult.SelectedItem;
-            int id = int.Parse(dr["Reservation number"].ToString());
-            ReservationDTO reservation = new ReservationController().GetReservationById(id);
-            ReservationViewControl.SetReservationInformation(reservation);
-        }
-
-        private void BtnCreateNew_Click(object sender, RoutedEventArgs e)
-        {
-            //TODO: relay command
-            ReservationDTO reservation = new ReservationDTO
-            {
-                Deposit = (bool)ReservationViewControl.cbDepositPayed.IsChecked,
-                Customer = new CustomerController().getCustomerByid(int.Parse(ReservationViewControl.txtCustomerNumber.Text)),
-                Tables = GetTablesFromlvTableNames(),
-                ReservationTime = ReservationViewControl.dtpReservationTime.getDateTime(),
-                ReservationDate = ReservationViewControl.dpReservationDate.DisplayDate,
-                NoOfPeople = int.Parse(ReservationViewControl.txtNumOfPersons.Text),
-                Note = ReservationViewControl.txtReservationComments.Text
-            };
-            IReservationRepository repository = new ReservationRepository();
-            repository.CreateReservation(reservation);
-        }
-        private List<TablesDTO> GetTablesFromlvTableNames()
-        {
-            List<TablesDTO> res = new List<TablesDTO>();
-            foreach(TablesDTO item in ReservationViewControl.lvTableNames.SelectedItems)
-            {
-                res.Add(item);
-            }
-            return res;
-        }
     }
 }

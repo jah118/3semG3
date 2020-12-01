@@ -28,6 +28,17 @@ namespace RestaurantWebAppCore.Service
             //});
             return res;
         }
+        public IEnumerable<FoodDTO> GetAllFoods(string constring)
+        {
+            var client = new RestClient(constring);
+            var request = new RestRequest("/Food", Method.GET);
+            var content = client.Execute(request).Content;
+
+            var res = JsonConvert.DeserializeObject<IEnumerable<FoodDTO>>(content);
+
+
+            return res;
+        }
 
 
         public async Task<IRestResponse> PostBookingAsync(ReservationDTO reservation)

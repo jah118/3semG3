@@ -11,6 +11,8 @@ namespace DataAccess.DataTransferObjects
         public int Id { get; }
         public string Name { get; set; }
         public string Description { get; set; }
-        public FoodCategoryDTO FoodCategoryName { get; set; }
+        public string foodCategoryName { get; set; }
+        public double Price { get; internal set; }
+        public int Quantity { get; set; }
     }
 }
