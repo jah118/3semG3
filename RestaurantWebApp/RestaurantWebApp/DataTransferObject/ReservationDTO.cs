@@ -10,6 +10,7 @@ namespace RestaurantWebApp.DataTransferObject
         {
             ReservationDate = DateTime.Now;
             Deposit = false;
+            OrderingFood = false;
         }
 
         //for testing
@@ -46,5 +47,6 @@ namespace RestaurantWebApp.DataTransferObject
         [Required] [Display(Name = "Borde ")] public IEnumerable<RestaurantTablesDTO> Tables { get; set; }
 
         public IEnumerable<ReservationTimesDTO> TimeSlots { get; set; }
+        public bool OrderingFood { get; set; }
     }
 }

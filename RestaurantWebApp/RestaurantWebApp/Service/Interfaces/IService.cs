@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Net;
 using System.Threading.Tasks;
+using RestaurantWebApp.DataTransferObject;
 using RestSharp;
 
 namespace RestaurantWebApp.Service.Interfaces
@@ -20,7 +21,7 @@ namespace RestaurantWebApp.Service.Interfaces
 
         Task<TEntity> GetByIdAsync(int id);
 
-        Task<HttpStatusCode> CreateAsync(TEntity obj);
+        Task<IRestResponse> CreateAsync(TEntity obj);
 
         Task<TEntity> UpdateAsync(TEntity obj);
 

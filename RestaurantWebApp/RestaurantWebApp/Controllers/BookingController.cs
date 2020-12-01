@@ -1,7 +1,8 @@
-using RestaurantWebApp.Model;
-using RestaurantWebApp.Service;
+using Newtonsoft.Json;
 using RestaurantWebApp.DataTransferObject;
+using RestaurantWebApp.Model;
 using RestaurantWebApp.Service.Interfaces;
+using RestaurantWebApp.Util;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -9,8 +10,6 @@ using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using System.Web.Mvc;
-using RestaurantWebApp.Util;
-using System.Configuration;
 
 namespace RestaurantWebApp.Controllers
 {
@@ -18,7 +17,6 @@ namespace RestaurantWebApp.Controllers
     public class BookingController : Controller
     {
         private ControllerContext _context = new ControllerContext();
-        
 
         private readonly IBookingService _bookingService;
         private readonly ITableService _tableService;
@@ -44,13 +42,12 @@ namespace RestaurantWebApp.Controllers
         public ActionResult Create()
         {
             //TODO her skal laves så den kan tage begge former for login Username/Email
-            //if (Session["Username"] != null)
-            //{
+
             ReservationDTO rv = new ReservationDTO();
             rv.Tables = _tableService.GetAll();
             if (rv.Tables == null)
             {
-                //return new HttpStatusCodeResult(HttpStatusCode.ServiceUnavailable);
+                return new HttpStatusCodeResult(HttpStatusCode.ServiceUnavailable);
             }
 
             //TODO  dette er temp  her skal være
@@ -79,7 +76,7 @@ namespace RestaurantWebApp.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Create(ReservationDTO reservation)
         {
-            //TODO senere når api virker ville der bar kunne bruges uden at kunne konverter 
+            //TODO senere når api virker ville der bar kunne bruges uden at kunne konverter
             //bruge timeslot
             var date = Request.Form["ReservationTime"];
             var time = Request.Form["Timeslots"];
@@ -111,12 +108,23 @@ namespace RestaurantWebApp.Controllers
             //{
             //    return View(reservation);
             //}
+
             var response = await _bookingService.CreateAsync(reservation);
 
-            if (res != null)
+            if (response.StatusCode == HttpStatusCode.OK && reservation.OrderingFood == false)
             {
-                return OrderFood(res);
+                return RedirectToAction("Index");
             }
+
+            if (response.StatusCode == HttpStatusCode.OK && reservation.OrderingFood)
+            {
+                var res = JsonConvert.DeserializeObject<ReservationDTO>(response.Content);
+                if (res != null)
+                {
+                    return OrderFood(res);
+                }
+            }
+
 
             return View(reservation);
         }
@@ -204,8 +212,8 @@ namespace RestaurantWebApp.Controllers
             foods.Foods = Foods;
             foods.Drinks = Drinks;
 
-            OrderDTO order = _orderService.GetAll().Where(x => x.ReservationID == reservation.Id).OrderBy(x=>x.OrderDate).FirstOrDefault();
-            if(order == null)
+            OrderDTO order = _orderService.GetAll().Where(x => x.ReservationID == reservation.Id).OrderBy(x => x.OrderDate).FirstOrDefault();
+            if (order == null)
             {
                 order = new OrderDTO
                 {
@@ -218,12 +226,11 @@ namespace RestaurantWebApp.Controllers
             return View(res);
         }
 
-
         //GET: Login
         [AllowAnonymous]
         public ActionResult Login()
         {
-            UserDTO user = new UserDTO {AccountType = UserRoles.Customer};
+            UserDTO user = new UserDTO { AccountType = UserRoles.Customer };
             return View(user);
         }
 
@@ -232,15 +239,12 @@ namespace RestaurantWebApp.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Login(UserDTO user)
         {
-           var s =  HttpContext.Response;
+            var s = HttpContext.Response;
             //var token = user.Token;
             //var uname = user.Username;
 
-
             //if (ModelState.IsValid)
             //{
-
-
             //    //var data = _db.Users.Where(s => s.Email.Equals(email) && s.Password.Equals(f_password)).ToList();
             //    //var data = _bs.GetUser(ConfigurationManager.AppSettings["ServiceApi"]);
             //    if (data.Count() > 0)
@@ -300,7 +304,5 @@ namespace RestaurantWebApp.Controllers
 
             return View();
         }
-
     }
 }
-
