@@ -18,31 +18,29 @@ namespace RestaurantDesktopClient.Views
 {
     public partial class MainMenu : Page
     {
-        private readonly MainWindow mainWindow;
-        public MainMenu(MainWindow mainWindow)
+        public MainMenu()
         {
             InitializeComponent();
-            this.mainWindow = mainWindow;
         }
 
         private void BtnManageEmployee_Click(object sender, RoutedEventArgs e)
         {
-            mainWindow.MainFrame.Navigate(new ManageEmployee());
+            MainWindow.ChangeFrame(new ManageEmployee());
         }
 
         private void BtnManageCusomter_Click(object sender, RoutedEventArgs e)
         {
-            mainWindow.MainFrame.Navigate(new ManageCustomer());
+            MainWindow.ChangeFrame(new ManageCustomer());
         }
 
         private void BtnReservatons_Click(object sender, RoutedEventArgs e)
         {
-            mainWindow.MainFrame.Navigate( new ManageReservationView());
+            MainWindow.ChangeFrame( new ManageReservationView());
         }
 
         private void BtnManageTables_Click(object sender, RoutedEventArgs e)
         {
-            mainWindow.MainFrame.Navigate(new ManageTable());
+            MainWindow.ChangeFrame(new ManageTable());
         }
     }
 }

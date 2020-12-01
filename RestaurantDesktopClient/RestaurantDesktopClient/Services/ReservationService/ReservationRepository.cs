@@ -1,5 +1,6 @@
 ﻿using DataAccess.DataTransferObjects;
 using Newtonsoft.Json;
+using RestaurantDesktopClient.Views.ViewModels;
 using RestSharp;
 using System;
 using System.Collections;
@@ -11,15 +12,15 @@ using System.Threading.Tasks;
 
 namespace RestaurantDesktopClient.Reservation
 {
-    public class ReservationRepository : IReservationRepository
+    public class ReservationRepository : IRepository<ReservationDTO>
     {
         public ReservationRepository()
         {
 
         }
-        public System.Net.HttpStatusCode CreateReservation(ReservationDTO reservation)
+        public ReservationDTO Create(ReservationDTO reservation)
         {
-            System.Net.HttpStatusCode res = System.Net.HttpStatusCode.Unused;
+            ReservationDTO res = null;
             try
             {
                 string constring = ConfigurationManager.ConnectionStrings["ServiceConString"].ConnectionString;
@@ -27,8 +28,8 @@ namespace RestaurantDesktopClient.Reservation
                 string json = JsonConvert.SerializeObject(reservation);
                 var request = new RestRequest("/reservation", Method.POST);
                 request.AddJsonBody(json);
-                res = client.Execute(request).StatusCode;
-                
+                var response = client.Execute(request).Content;
+                res = JsonConvert.DeserializeObject<ReservationDTO>(response);
             }
             catch
             {
@@ -36,7 +37,7 @@ namespace RestaurantDesktopClient.Reservation
             return res;
         }
 
-        public ReservationDTO GetReservation(int id)
+        public ReservationDTO Get(int id)
         {
             ReservationDTO res = null;
             try
@@ -54,12 +55,11 @@ namespace RestaurantDesktopClient.Reservation
             return res;
         }
 
-        List<ReservationDTO> IReservationRepository.GetAllReservations()
+        public IEnumerable<ReservationDTO> GetAll()
         {
             List<ReservationDTO> res = new List<ReservationDTO>();
             try
             {
-                //TODO: autofac readup and write..
                 string constring = ConfigurationManager.ConnectionStrings["ServiceConString"].ConnectionString;
                 var client = new RestClient(constring);
                 var request = new RestRequest("/reservation", Method.GET);
@@ -69,8 +69,7 @@ namespace RestaurantDesktopClient.Reservation
             catch
             {
             }
-            return (List<ReservationDTO>)res;
+            return res;
         }
-
     }
 }

@@ -1,4 +1,6 @@
 ﻿using DataAccess.Models;
+using System;
+using System.Collections.Generic;
 
 namespace DataAccess.DataTransferObjects.Converters
 {
@@ -41,5 +43,6 @@ namespace DataAccess.DataTransferObjects.Converters
                 }
             };
         }
+
     }
 }

@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Net;
 using System.Threading.Tasks;
 using RestSharp.Extensions;
+using Newtonsoft.Json;
 
 namespace RestaurantWebApp.Service
 {
@@ -32,15 +33,15 @@ namespace RestaurantWebApp.Service
             throw new System.NotImplementedException();
         }
 
-        public bool Create(ReservationDTO obj)
-        {
-            var client = new RestClient(_connectionString);
-            var request = new RestRequest("/Reservation", Method.POST);
-            request.AddJsonBody(obj);
-            var response = client.Execute(request).IsSuccessful;
+        //public bool Create(ReservationDTO obj)
+        //{
+        //    var client = new RestClient(_connectionString);
+        //    var request = new RestRequest("/Reservation", Method.POST);
+        //    request.AddJsonBody(obj);
+        //    var response = client.Execute(request).IsSuccessful;
 
-            return response;
-        }
+        //    return response;
+        //}
 
         public ReservationDTO Update(ReservationDTO obj)
         {
@@ -80,6 +81,17 @@ namespace RestaurantWebApp.Service
         public Task<bool> DeleteAsync(ReservationDTO obj)
         {
             throw new System.NotImplementedException();
+        }
+
+        public ReservationDTO Create(ReservationDTO obj)
+        {
+            var client = new RestClient(_connectionString);
+            var request = new RestRequest("/Reservation", Method.POST);
+            request.AddJsonBody(obj);
+            var content = client.Execute(request).Content;
+            var res = JsonConvert.DeserializeObject<ReservationDTO>(content);
+
+            return res;
         }
     }
 }

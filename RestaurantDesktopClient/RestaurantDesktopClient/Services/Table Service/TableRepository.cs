@@ -1,5 +1,6 @@
 ﻿using DataAccess.DataTransferObjects;
 using Newtonsoft.Json;
+using RestaurantDesktopClient.Views.ViewModels;
 using RestSharp;
 using System;
 using System.Collections.Generic;
@@ -10,9 +11,9 @@ using System.Threading.Tasks;
 
 namespace RestaurantDesktopClient.Services.Table_Service
 {
-    class TableRepository : ITableRepository
+    class TableRepository : IRepository<TablesDTO>
     {
-        public List<TablesDTO> GetAllTables()
+        public IEnumerable<TablesDTO> GetAll()
         {
             string constring = ConfigurationManager.ConnectionStrings["ServiceConString"].ConnectionString;
             var client = new RestClient(constring);
@@ -26,7 +27,7 @@ namespace RestaurantDesktopClient.Services.Table_Service
             return res;
         }
 
-        public TablesDTO GetTableByNumber(int number)
+        public TablesDTO Get(int number)
         {
             string constring = ConfigurationManager.ConnectionStrings["ServiceConString"].ConnectionString;
             var client = new RestClient(constring);
@@ -41,5 +42,9 @@ namespace RestaurantDesktopClient.Services.Table_Service
             return res;
         }
 
+        public TablesDTO Create(TablesDTO t)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

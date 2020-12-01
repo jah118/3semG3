@@ -1,4 +1,6 @@
-﻿using RestaurantWebApp.DataTransferObject;
+using RestaurantWebApp.Model;
+using RestaurantWebApp.Service;
+using RestaurantWebApp.DataTransferObject;
 using RestaurantWebApp.Service.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -8,6 +10,7 @@ using System.Net;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 using RestaurantWebApp.Util;
+using System.Configuration;
 
 namespace RestaurantWebApp.Controllers
 {
@@ -19,11 +22,15 @@ namespace RestaurantWebApp.Controllers
 
         private readonly IBookingService _bookingService;
         private readonly ITableService _tableService;
+        private readonly IFoodService _foodService;
+        private readonly IOrderService _orderService;
 
-        public BookingController(IBookingService bookingService, ITableService tableService)
+        public BookingController(IBookingService bookingService, ITableService tableService, IFoodService foodService, IOrderService orderService)
         {
             _bookingService = bookingService;
             _tableService = tableService;
+            _foodService = foodService;
+            _orderService = orderService;
         }
 
         // GET: Booking
@@ -82,9 +89,10 @@ namespace RestaurantWebApp.Controllers
                 var datetime = FormatTime.FormatterForReservationTimeFromString(date, time);
                 if (datetime != null) reservation.ReservationTime = datetime;
             }
-         
+
             var r = Request.Form["Tables"];
             if (!string.IsNullOrEmpty(r))
+
             {
                 //dette tager tables som kommer som en lang string og laver dem om til en liste
                 try
@@ -105,9 +113,9 @@ namespace RestaurantWebApp.Controllers
             //}
             var response = await _bookingService.CreateAsync(reservation);
 
-            if (response == HttpStatusCode.OK)
+            if (res != null)
             {
-                return RedirectToAction("Index");
+                return OrderFood(res);
             }
 
             return View(reservation);
@@ -148,6 +156,68 @@ namespace RestaurantWebApp.Controllers
                 return View();
             }
         }
+
+        //POST: Booking/OrderFoods
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        // public async ActionResult OrderFoods(FoodDTO food)
+        // {
+        //var client = new RestClient("https://localhost:44349/api/Food");
+
+        //var request = new RestRequest("Food/{FoodId}", Method.GET);
+
+        //request.AddUrlSegment("{FoodId", 1);
+
+        //var content = client.Execute(request).Content;
+
+        //    return View();
+        // }
+
+        // GET: Booking/OrderFoods
+        //[HttpGet]
+        //public ActionResult OrderFoods()
+        //{
+        //    IEnumerable<FoodDTO> fdto = _foodService.GetAll();
+
+        //    return View(fdto);
+
+        //}
+        [HttpGet]
+        public ActionResult OrderFood(ReservationDTO reservation)
+        {
+            var foods = new FoodViewModel();
+            IEnumerable<FoodDTO> fdto = _foodService.GetAll();
+
+            var Foods = new List<FoodDTO>();
+            var Drinks = new List<FoodDTO>();
+            foreach (var item in fdto)
+            {
+                if (item.FoodCategoryName.Equals("Mad"))
+                {
+                    Foods.Add(item);
+                }
+                else if (item.FoodCategoryName.Equals("Drikkevare"))
+                {
+                    Drinks.Add(item);
+                }
+            }
+            foods.Foods = Foods;
+            foods.Drinks = Drinks;
+
+            OrderDTO order = _orderService.GetAll().Where(x => x.ReservationID == reservation.Id).OrderBy(x=>x.OrderDate).FirstOrDefault();
+            if(order == null)
+            {
+                order = new OrderDTO
+                {
+                    ReservationID = reservation.Id,
+                    PaymentCondition = PaymentCondition.Begyndt.ToString()
+                };
+            }
+
+            Tuple<OrderDTO, FoodViewModel> res = Tuple.Create(order, foods);
+            return View(res);
+        }
+
 
         //GET: Login
         [AllowAnonymous]
@@ -228,23 +298,9 @@ namespace RestaurantWebApp.Controllers
             //    return View();
             //}
 
-
             return View();
         }
 
-        ////GET: Booking/Food
-        //[HttpGet]
-        //public ActionResult OrderFoods()
-        //{
-        //    //var client = new RestClient("https://localhost:44349/api/Food");
-
-        //    //var request = new RestRequest("Food/{FoodId}", Method.GET);
-
-        //    //request.AddUrlSegment("{FoodId", 1);
-
-        //    //var content = client.Execute(request).Content;
-
-        //    return View();
-        //}
     }
 }
+
