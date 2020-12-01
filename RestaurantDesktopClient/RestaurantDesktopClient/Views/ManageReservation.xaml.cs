@@ -35,6 +35,5 @@ namespace RestaurantDesktopClient.Views
             ReservationViewControl.dtpReservationTime.DataContext = mrvm;
             ReservationViewControl.DataContext = mrvm;
         }
-
     }
 }
