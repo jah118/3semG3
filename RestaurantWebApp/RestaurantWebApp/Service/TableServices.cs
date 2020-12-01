@@ -61,7 +61,7 @@ namespace RestaurantWebApp.Service
             throw new NotImplementedException();
         }
 
-        public Task<HttpStatusCode> CreateAsync(RestaurantTablesDTO obj)
+        public Task<IRestResponse> CreateAsync(RestaurantTablesDTO obj)
         {
             throw new NotImplementedException();
         }

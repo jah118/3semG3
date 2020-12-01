@@ -41,7 +41,7 @@ namespace RestaurantWebApp.Service
             return res;
         }
 
-        public Task<HttpStatusCode> CreateAsync(OrderDTO obj)
+        public Task<IRestResponse> CreateAsync(OrderDTO obj)
         {
             throw new NotImplementedException();
         }

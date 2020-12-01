@@ -63,13 +63,12 @@ namespace RestaurantWebApp.Service
             throw new System.NotImplementedException();
         }
 
-        public async Task<HttpStatusCode> CreateAsync(ReservationDTO obj)
+        public async Task<IRestResponse> CreateAsync(ReservationDTO obj)
         {
             var client = new RestClient(_connectionString);
             var request = new RestRequest("/Reservation", Method.POST);
             request.AddJsonBody(obj);
-            var response = (await client.ExecuteAsync(request)).StatusCode;
-
+            var response = (await client.ExecuteAsync(request));
             return response;
         }
 
