@@ -8,7 +8,8 @@ namespace RestaurantWebApp.DataTransferObject
     {
         public ReservationDTO()
         {
-            _reservationDate = DateTime.Now;
+            ReservationDate = DateTime.Now;
+            Deposit = false;
         }
 
         //for testing
@@ -24,7 +25,7 @@ namespace RestaurantWebApp.DataTransferObject
         }
 
         public int Id { get; }
-        private DateTime _reservationDate;
+        public DateTime ReservationDate { get;}
 
         [Required] public CustomerDTO Customer { get; set; }
 
