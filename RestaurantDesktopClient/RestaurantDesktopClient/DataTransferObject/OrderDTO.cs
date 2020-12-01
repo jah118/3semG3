@@ -14,5 +14,7 @@ namespace DataAccess.DataTransferObjects
         public DateTime OrderDate { get; set; }
         public string PaymentCondition { get; set; }
         public List<FoodDTO> Foods { get; set; }
+
+
     }
 }

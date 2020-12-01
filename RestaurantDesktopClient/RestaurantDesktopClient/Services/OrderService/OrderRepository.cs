@@ -29,13 +29,9 @@ namespace RestaurantDesktopClient.Services.OrderService
                 request.AddJsonBody(json);
                 var response = client.Execute(request).Content;
                 res = JsonConvert.DeserializeObject<OrderDTO>(response);
-
-
             }
             catch
-            {
-
-            }
+            {}
             return res;
         }
 
