@@ -15,29 +15,47 @@ namespace RestaurantDesktopClient.Services.Table_Service
     {
         public IEnumerable<TablesDTO> GetAll()
         {
-            string constring = ConfigurationManager.ConnectionStrings["ServiceConString"].ConnectionString;
-            var client = new RestClient(constring);
+            List<TablesDTO> res = null;
+            try
+            {
+                string constring = ConfigurationManager.ConnectionStrings["ServiceConString"].ConnectionString;
+                var client = new RestClient(constring);
 
-            var request = new RestRequest("/Table", Method.GET);
+                var request = new RestRequest("/Table", Method.GET);
 
-            var content = client.Execute(request).Content;
+                var content = client.Execute(request).Content;
 
-            List<TablesDTO> res = JsonConvert.DeserializeObject<List<TablesDTO>>(content);
+                res = JsonConvert.DeserializeObject<List<TablesDTO>>(content);
+            }
+            catch
+            {
 
-            return res;
+            }
+
+
+            return res ?? new List<TablesDTO>();
         }
 
         public TablesDTO Get(int number)
         {
-            string constring = ConfigurationManager.ConnectionStrings["ServiceConString"].ConnectionString;
-            var client = new RestClient(constring);
+            TablesDTO res = null;
+            try
+            {
+                string constring = ConfigurationManager.ConnectionStrings["ServiceConString"].ConnectionString;
+                var client = new RestClient(constring);
 
-            var request = new RestRequest("Tables/{Id}", Method.GET);
-            request.AddUrlSegment("Id", number);
+                var request = new RestRequest("Tables/{Id}", Method.GET);
+                request.AddUrlSegment("Id", number);
 
-            var content = client.Execute(request).Content;
+                var content = client.Execute(request).Content;
 
-            TablesDTO res = (TablesDTO)JsonConvert.DeserializeObject(content);
+                res = (TablesDTO)JsonConvert.DeserializeObject(content);
+            }
+            catch
+            {
+
+            }
+
 
             return res;
         }

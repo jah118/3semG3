@@ -79,7 +79,7 @@
             </ListView.View>
         </ListView>
         <ComboBox Name="ccbPaymentCondition" ItemsSource="{Binding Source={StaticResource EnumPaymentCondition}}" SelectedItem="{Binding SelectedPaymentCondition, Mode=TwoWay}"  Grid.Column="0" Grid.Row="9" Height="20" />
-        <Button x:Name="btnCancel" Content="Tilbage" Command="{Binding btnCancelClicked}" Grid.Column="8" Grid.Row="10" Margin="15" />
-        <Button x:Name="btnSave" Content="Gem" Command="{Binding btnSaveClicked}" Grid.Column="9" Grid.Row="10" Margin="15" />
+        <Button x:Name="btnCancel" Content="Tilbage" Command="{Binding BtnCancelClicked}" Grid.Column="8" Grid.Row="10" Margin="15" />
+        <Button x:Name="btnSave" Content="Gem" Command="{Binding BtnSaveClicked}" Grid.Column="9" Grid.Row="10" Margin="15" />
     </Grid>
 </Page>

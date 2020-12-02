@@ -1,10 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DataAccess.DataTransferObjects
 {
@@ -21,8 +16,8 @@ namespace DataAccess.DataTransferObjects
 
         public ReservationDTO()
         {
-            this.ReservationDate = DateTime.Now;
-            this.ReservationTime = DateTime.Now;
+            ReservationDate = DateTime.Now;
+            ReservationTime = DateTime.Now;
         }
     }
 }

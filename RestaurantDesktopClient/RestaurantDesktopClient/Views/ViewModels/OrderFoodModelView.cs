@@ -1,24 +1,21 @@
 ﻿using DataAccess.DataTransferObjects;
-using GalaSoft.MvvmLight.Command;
 using RestaurantDesktopClient.Services.OrderService;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.Data;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace RestaurantDesktopClient.Views.ViewModels
 {
     class OrderFoodModelView
     {
+        #region Fields
         private int _reservationId;
-        public PaymentCondition SelectedPaymentCondition { get; set; }
-        public RelayCommand btnCancelClicked { get; set; }
-        public RelayCommand btnSaveClicked { get; set; }
         private ObservableCollection<FoodDTO> _ordersFood;
+        #endregion
+        #region Properties
+        public PaymentCondition SelectedPaymentCondition { get; set; }
         public ObservableCollection<FoodDTO> SummaryFoods
         {
             get
@@ -32,7 +29,7 @@ namespace RestaurantDesktopClient.Views.ViewModels
             get
             {
                 return _foodRepository.GetAll()
-                    .Where(x => x.foodCategoryName.Equals("Mad")).ToList();
+                    .Where(x => x.FoodCategoryName.Equals("Mad")).ToList();
             }
             set { }
         }
@@ -41,17 +38,48 @@ namespace RestaurantDesktopClient.Views.ViewModels
             get
             {
                 return _foodRepository.GetAll()
-                    .Where(x => x.foodCategoryName.Equals("Drikkevare")).ToList();
+                    .Where(x => x.FoodCategoryName.Equals("Drikkevare")).ToList();
             }
             set { }
         }
         private IRepository<FoodDTO> _foodRepository;
         private IRepository<OrderDTO> _orderRepository;
+        public FoodDTO SelectedFood
+        {
+            get { return null; }
+            set
+            {
+                AddToSummary(value);
+            }
+        }
+        public FoodDTO SelectedDrink
+        {
+            get { return null; }
+            set
+            {
+                AddToSummary(value);
+            }
+        }
+        public FoodDTO SelectedSummaryFood
+        {
+            get { return null; }
+            set
+            {
+                RemoveFromSummary(value);
+            }
+        }
+        #endregion
+        #region Relaycommand
+        public RelayCommand BtnCancelClicked { get; set; }
+        public RelayCommand BtnSaveClicked { get; set; }
+
+        #endregion
+
         public OrderFoodModelView(int reservationId)
         {
             _reservationId = reservationId;
-            btnCancelClicked = new RelayCommand(CancelClicked);
-            btnSaveClicked = new RelayCommand(SaveClicked);
+            BtnCancelClicked = new RelayCommand(CancelClicked);
+            BtnSaveClicked = new RelayCommand(SaveClicked);
             _foodRepository = new FoodRepository();
             _orderRepository = new OrderRepository();
             var order = _orderRepository.GetAll()
@@ -59,7 +87,7 @@ namespace RestaurantDesktopClient.Views.ViewModels
                 .OrderBy(x => x.OrderDate)
                 .FirstOrDefault();
             _ordersFood = order != null ? new ObservableCollection<FoodDTO>(order.Foods) : new ObservableCollection<FoodDTO>();
-            if(order != null)
+            if (order != null)
             {
                 SelectedPaymentCondition = (PaymentCondition)Enum.Parse(typeof(PaymentCondition), order.PaymentCondition);
             }
@@ -78,10 +106,10 @@ namespace RestaurantDesktopClient.Views.ViewModels
                 OrderDate = DateTime.Now,
                 ReservationID = _reservationId,
                 PaymentCondition = SelectedPaymentCondition.ToString(),
-            }) ;
+            });
             MainWindow.ChangeFrame(new ManageReservationView());
         }
-        private void addToSummary(FoodDTO obj)
+        private void AddToSummary(FoodDTO obj)
         {
             if (!SummaryFoods.Contains(obj))
             {
@@ -106,29 +134,6 @@ namespace RestaurantDesktopClient.Views.ViewModels
                 SummaryFoods.Remove(obj);
             }
         }
-        public FoodDTO SelectedFood
-        {
-            get { return null;}
-            set
-            {
-                addToSummary(value);
-            }
-        }
-        public FoodDTO SelectedDrink
-        {
-            get { return null;}
-            set
-            {
-                addToSummary(value);
-            }
-        }
-        public FoodDTO SelectedSummaryFood
-        {
-            get { return null;}
-            set
-            {
-                RemoveFromSummary(value);
-            }
-        }
+
     }
 }
