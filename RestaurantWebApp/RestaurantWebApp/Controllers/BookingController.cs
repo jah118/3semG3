@@ -87,8 +87,8 @@ namespace RestaurantWebApp.Controllers
 
             if (time.Length > 0)
             {
-                var datetime = FormatTime.FormatterForReservationTimeFromString(date, time);
-                if (datetime != null) reservation.ReservationTime = datetime;
+                DateTime datetime = FormatTime.FormatterForReservationTimeFromString(date, time);
+                reservation.ReservationTime = datetime;
             }
 
             var r = Request.Form["Tables"];
