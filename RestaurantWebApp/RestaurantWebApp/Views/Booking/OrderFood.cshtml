@@ -4,55 +4,98 @@
     ViewBag.Title = "Madbestilling";
 }
 
+
+@section Styles {
+
+
+}
+
 <h2>Madbestilling</h2>
+<div class="container">
+    <div class="row">
 
-<div class="form-horizontal">
-    <div class="form-group">
+        <div class="form-horizontal">
+            <div class="form-group">
 
-        <div class="col-md-5 float-left">
-            <label>Retter</label>
-            @Html.ListBoxFor(model => model.Item2.Foods, new SelectList(Model.Item2.Foods, "Id", "Name"), new { Id="foodList", style = "width:100%" })
+                <div class="col-md-5 float-left">
+                    <label>Retter</label>
+                    @*Html.ListBox("Project_Tags",new MultiSelectList(Model.Tags, "Id", "Name", Model.Project.Tags.Select(t => t.Id)))*@
+                    @*@Html.ListBoxFor(model => model.Item2.Foods, new SelectList(Model.Item2.Foods, "Id", "Name"), new { Id = "foodList", style = "width:100%" })*@
+                    @*@Html.ListBoxFor(model => model.Item2.Foods, new MultiSelectList(Model.Item1.Foods, "Id", "Name",Model.Item2.Foods.Select(t =>t.Id)))*@
+                    <div onscroll="" class="col-md-10" style="overflow: scroll;">
+                        <table id="myTable" class="table" cellspacing="0" s>
 
-            <button onclick="AddFoods()" > vælg mad</button>
-            @*<input type="button" onclick="addFoods()" value="Vælg ret/retter" />*@
-        </div>
-        <div class="col-md-5 float-right">
-            <label> Drikkevarer</label>
-            @Html.ListBoxFor(model => model.Item2.Drinks, new SelectList(Model.Item2.Drinks, "Id", "Name"),new { @class = "control - label" })
-            <input type="button" value="Vælg drikkevarer" />
-        </div>
-        <div id="summaryDiv" class="col-md-12 float-left">
-            @Html.ListBoxFor(model => model.Item1.Foods, new SelectList(Model.Item1.Foods, "Id", "Name"), new { Id="summaryList", style = "width:100%"})
-            <input id="RemoveFromSummaryList" type="button" accept="removeFoods" value="Fjern ret/retter" />
+                            <tr>
+                                <th>Name</th>
+                                <th>Price</th>
+                            </tr>
+
+                            @foreach (var item in Model.Item2.Foods)
+                            {
+
+                                <tr>
+                                    <td>@item.Name</td>
+                                    <td>@item.Id</td>
+                                    <td>@item.Price</td>
+                                    <td><button onclick="addFoods(@Model.Item2.Foods.Where(x=>x.Id == item.Id));"> tilføj</button></td>
+                                </tr>
+                            }
+                        </table>
+                    </div>
+                    <button id="AddFoodsbtn"> vælg mad</button>
+                    @*<input type="button" onclick="addFoods()" value="Vælg ret/retter" />*@
+                </div>
+                <div class="col-md-5 float-right">
+                    <label> Drikkevarer</label>
+                    @Html.ListBoxFor(model => model.Item2.Drinks, new SelectList(Model.Item2.Drinks, "Id", "Name"), new { @class = "control - label" })
+
+                    <input type="button" value="Vælg drikkevarer" />
+                </div>
+                <div id="summaryDiv" class="col-md-12 float-left">
+                    @Html.ListBoxFor(model => model.Item1.Foods, new SelectList(Model.Item1.Foods, "Id", "Name"), new { Id = "summaryList", style = "width:100%" })
+                    <input id="RemoveFromSummaryList" type="button" accept="removeFoods" value="Fjern ret/retter" onclick=removeFoods(); />
+                </div>
+            </div>
         </div>
     </div>
 </div>
-
 
 <div>
     <input type="submit" value="Gem mad og drikke " class="btn btn-primary" />
 </div>
 
 
-<script>
-    var foodList = document.getElementById("foodList");
-    function AddFoods() {
-        var x = foodList.selectedItem();
-    var foods = @Model.Item2;
-    var summaryList = @Model.Item1.Foods;
-    var selected = foodList.selectedItem;
-    summaryList.Add(selected);
-        var r = 1 + 1;
+@section Scripts {
+    <script>
 
-    }
+        $('#AddFoodsbtn').click(function () {
+            var selected = $('#Item2.Foods').val;
+            $.each(selected,
+                function (key, value) {
+                    $('#Item1.Foods').append($("<option></option>").attr("value", value).text(value));
+                });
+        });
+    </script>
+    <script>
+        var foodList = document.getElementById("foodList");
 
+        function addFoods(data) {
+            console.write(data + "");
+            @*var x = foodList.selectedItem();
+            var foods = @Model.Item2;
+            var summaryList = @Model.Item1.Foods;
+            var selected = foodList.selectedItem;
+            summaryList.Add(selected);
+            var r = 1 + 1;*@
 
-    function removeFoods() {
+        }
+
+        @*function removeFoods() {
         var foods = @Model.Item2;
         var summaryList = @Model.Item1.Foods;
         var selected = summaryList.selectedItem;
         summaryList.Remove(selected);
 
-     }
-</script>
-
+    }*@
+    </script>
+}
