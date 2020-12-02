@@ -9,8 +9,11 @@
 
 
     <!-- Custom styles for this template -->
+
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
+    @Styles.Render("~/Content/themes/base/css")
+
     @RenderSection("styles", required: false)
 </head>
 <body>
@@ -62,9 +65,10 @@
 
     <!-- Menu Toggle Script -->
 
-
+    @Scripts.Render("~/bundles/modernizr")
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/bundles/jqueryui")
     <script>
         $("#menu-toggle").click(function (e) {
             e.preventDefault();

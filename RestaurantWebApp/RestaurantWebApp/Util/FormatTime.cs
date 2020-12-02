@@ -4,7 +4,10 @@ namespace RestaurantWebApp.Util
 {
     public static class FormatTime
     {
-        public static DateTime? FormatterForReservationTimeFromString(string date, string timeStamp)
+        //if the date string contains a time element hh:mm:ss,
+        //then the string is split so only date remains so a new time can be added
+        //else just add time to date
+        public static DateTime FormatterForReservationTimeFromString(string date, string timeStamp)
         {
             var timeSplit = timeStamp.Split(' ');
 
