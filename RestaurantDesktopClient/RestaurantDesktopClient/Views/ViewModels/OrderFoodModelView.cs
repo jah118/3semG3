@@ -58,7 +58,7 @@ namespace RestaurantDesktopClient.Views.ViewModels
                 .Where(x => x.ReservationID == reservationId)
                 .OrderBy(x => x.OrderDate)
                 .FirstOrDefault();
-            _ordersFood = new ObservableCollection<FoodDTO>(order.Foods);
+            _ordersFood = order != null ? new ObservableCollection<FoodDTO>(order.Foods) : new ObservableCollection<FoodDTO>();
             if(order != null)
             {
                 SelectedPaymentCondition = (PaymentCondition)Enum.Parse(typeof(PaymentCondition), order.PaymentCondition);
@@ -73,6 +73,7 @@ namespace RestaurantDesktopClient.Views.ViewModels
         {
             _orderRepository.Create(new OrderDTO()
             {
+                Employee = new EmployeeDTO() { Id = 2 }, //TODO change when login are ready
                 Foods = _ordersFood.ToList(),
                 OrderDate = DateTime.Now,
                 ReservationID = _reservationId,

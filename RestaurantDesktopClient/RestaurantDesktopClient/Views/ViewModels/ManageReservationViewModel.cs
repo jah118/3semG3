@@ -13,6 +13,7 @@ using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
 using System.Windows.Navigation;
 
@@ -34,6 +35,7 @@ namespace RestaurantDesktopClient.Views.ManageReservation
         public RelayCommand ReservationTimeMinHours { get; set; }
         public RelayCommand ReservationTimeAddMin { get; set; }
         public RelayCommand ReservationTimeMinMinuts { get; set; }
+        public RelayCommand ClearValuesCommand { get; set; }
         public DateTime GetReservationTimeDate
         {
             get => SelectedReservation != null ? SelectedReservation.ReservationTime : DateTime.Now;
@@ -52,28 +54,41 @@ namespace RestaurantDesktopClient.Views.ManageReservation
             RemoveReservationCommand = new RelayCommand(RemoveReservation);
             UpdateReservationCommand = new RelayCommand(UpdateReservation);
             OrderFoodCommand = new RelayCommand(OrderFood);
+            ClearValuesCommand = new RelayCommand(ClearValues);
             SelectedTables = new TablesDTO();
+        }
+        private void ClearValues()
+        {
+            UpdateSelectedReservation(new ReservationDTO()
+            {
+                ReservationDate = DateTime.Now,
+                Deposit = false,
+            });
         }
         public TablesDTO SetSelectedTables
         {
             get
             {
-                return SelectedReservation.Tables != null ? SelectedReservation.Tables.FirstOrDefault() ?? null : new TablesDTO();
+                return SelectedReservation.Tables != null ? SelectedReservation.Tables.FirstOrDefault() ?? null : null;
             }
             set
             {
-                if (SelectedReservation.Tables == null)
+                if (value != null)
                 {
-                    SelectedReservation.Tables = new List<TablesDTO>();
+                    if (SelectedReservation.Tables == null)
+                    {
+                        SelectedReservation.Tables = new List<TablesDTO>();
+                    }
+                    var found = SelectedReservation.Tables.Find(x => x.Id == value.Id);
+                    if (found != null)
+                    {
+                    }
+                    else
+                    {
+                        SelectedReservation.Tables.Add(value);
+                    }
                 }
-                    var found = SelectedReservation.Tables.Find(x => x.TableNumber == value.TableNumber);
-                if(found != null)
-                {
-                }
-                else
-                {
-                    SelectedReservation.Tables.Add(value);
-                }
+
             }
         }
         private void AddHoursToReservationTime()
@@ -323,6 +338,7 @@ namespace RestaurantDesktopClient.Views.ManageReservation
             else
             {
                 ReservationDTO _reservation = CreateReservation();
+                if (_reservation == null) return;
                 UpdateSelectedReservation(_reservation);
                 MainWindow.ChangeFrame(new OrderFood(_reservation.Id));
             }
@@ -349,6 +365,7 @@ namespace RestaurantDesktopClient.Views.ManageReservation
         public ReservationDTO CreateReservation()
         {
             var res = repository.Create(SelectedReservation);
+            if (res == null) MessageBox.Show("Fejl ved oprettelse af reservation");
             return res;
         }
     }

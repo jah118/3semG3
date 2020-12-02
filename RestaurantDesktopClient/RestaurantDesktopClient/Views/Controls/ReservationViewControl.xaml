@@ -62,7 +62,7 @@
         <Label Content="Kommentar: " HorizontalAlignment="Right" Grid.Row="7" Grid.Column="1" />
         <TextBox x:Name="txtReservationComments" Text="{Binding ReservationComment, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Grid.RowSpan="2" Grid.Column="2" Grid.ColumnSpan="2" Grid.Row="7" />
         <Button x:Name="btnOrderFood" Content="Bestil mad" Command="{Binding OrderFoodCommand}" Grid.Row="9" Grid.Column="3" VerticalAlignment="Top" HorizontalAlignment="Left" Width="75"/>
-        <Button x:Name="btnClearForms" Content="Nulstil" Grid.Row="9" Grid.Column="3"  VerticalAlignment="Top" HorizontalAlignment="Right" Width="75" Click="BtnClearForms_Click" />
+        <Button x:Name="btnClearForms" Content="Nulstil" Command="{Binding ClearValuesCommand}" Grid.Row="9" Grid.Column="3"  VerticalAlignment="Top" HorizontalAlignment="Right" Width="75" />
         <Grid Grid.Row="10" Grid.Column="1" Grid.ColumnSpan="3">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="3*"/>

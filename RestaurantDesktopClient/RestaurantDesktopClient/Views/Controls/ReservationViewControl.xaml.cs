@@ -28,15 +28,5 @@ namespace RestaurantDesktopClient.Views.Controls
         {
             InitializeComponent();
         }
-
-        private void BtnClearForms_Click(object sender, RoutedEventArgs e)
-        {
-            cbDepositPayed.IsChecked = false;
-            txtCustomerNumber.Text = "";
-            dpReservationDate.SelectedDate = DateTime.Now;
-            txtNumOfPersons.Text = "";
-            txtReservationComments.Text = "";
-            txtReservationNumber.Text = "";
-        }
     }
 }
