@@ -73,7 +73,7 @@ namespace RestaurantDesktopClient.Views.ViewModels
         {
             _orderRepository.Create(new OrderDTO()
             {
-                Employee = new EmployeeDTO() { Id = 2 }, //TODO change when login are ready
+                EmployeeID = 2, //TODO change when login are ready
                 Foods = _ordersFood.ToList(),
                 OrderDate = DateTime.Now,
                 ReservationID = _reservationId,
