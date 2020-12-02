@@ -57,7 +57,7 @@ namespace RestaurantDesktopClient.Reservation
 
         public IEnumerable<ReservationDTO> GetAll()
         {
-            List<ReservationDTO> res = new List<ReservationDTO>();
+            List<ReservationDTO> res = null;
             try
             {
                 string constring = ConfigurationManager.ConnectionStrings["ServiceConString"].ConnectionString;
@@ -69,7 +69,7 @@ namespace RestaurantDesktopClient.Reservation
             catch
             {
             }
-            return res;
+            return res ?? new List<ReservationDTO>();
         }
     }
 }

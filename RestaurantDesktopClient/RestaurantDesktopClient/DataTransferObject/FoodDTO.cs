@@ -12,7 +12,7 @@ namespace DataAccess.DataTransferObjects
         public int Id { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
-        public string foodCategoryName { get; set; }
+        public string FoodCategoryName { get; set; }
         public double Price { get; internal set; }
         private int _quantity = 0;
         public int Quantity { get { return _quantity; } set { _quantity = value; OnPropertyChanged("Quantity"); } }

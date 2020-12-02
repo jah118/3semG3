@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace DataAccess.DataTransferObjects
 {
@@ -16,7 +12,7 @@ namespace DataAccess.DataTransferObjects
         public string Address { get; set; }
         public string ZipCode { get; set; }
         public string City { get; set; }
-
+        public string FullName { get { return FirstName + " " + LastName; } }
         public virtual ICollection<ReservationDTO> Reservation { get; set; }
     }
 }

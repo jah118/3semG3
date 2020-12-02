@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
+﻿
 namespace DataAccess.DataTransferObjects
 {
     public partial class TablesDTO

@@ -37,12 +37,10 @@ namespace DataAccess.Repositories
                 throw;
             }
         }
-
         public bool Delete(OrderDTO obj, bool transactionEndpoint = true)
         {
             throw new NotImplementedException();
         }
-
         public IEnumerable<OrderDTO> GetAll()
         {
             IEnumerable<OrderDTO> res = null;
@@ -67,7 +65,6 @@ namespace DataAccess.Repositories
             return res;
 
         }
-
         public OrderDTO GetById(int id)
         {
             OrderDTO res = null;
@@ -87,12 +84,10 @@ namespace DataAccess.Repositories
             if (order != null) res = Converter.Convert(order);
             return res;
         }
-
         public IEnumerable<OrderDTO> GetCountWithOffsetByOrdering(int count, int offset, string ordering)
         {
             throw new NotImplementedException();
         }
-
         public OrderDTO Update(OrderDTO obj, bool transactionEndpoint = true)
         {
             throw new NotImplementedException();

@@ -3,10 +3,13 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:RestaurantDesktopClient.Views.ViewModels"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
       Title="MainMenu">
-
+    <Page.DataContext>
+        <local:MainMenuViewModel/>
+    </Page.DataContext>
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="6*"/>
@@ -24,19 +27,13 @@
             <RowDefinition Height="6*" />
             <RowDefinition Height="6*" />
             <RowDefinition Height="6*" />
-            <RowDefinition Height="6*" />
-
-
+            <RowDefinition Height="6*" /> 
         </Grid.RowDefinitions>
 
-        <Button Name ="btnReservatons" Content="Reservations" Margin="0,0,5,5" Grid.ColumnSpan="2" Grid.RowSpan="2" Grid.Row="1" Grid.Column="1"  FontSize="14" Click="BtnReservatons_Click" />
-        <Button Name ="btnManageCusomter" Content="Manage Customer" Margin="0,5,5,0" Grid.ColumnSpan="2" Grid.RowSpan="2"  Grid.Row="3" Grid.Column="1" FontSize="14" Click="BtnManageCusomter_Click"  />
-
-
-        <Button Name ="btnManageTables" Content="Manage Tables" Margin="5,5,0,0" Grid.ColumnSpan="2" Grid.RowSpan="2" Grid.Row="3" Grid.Column="3"  FontSize="14" Click="BtnManageTables_Click"  />
-        <Button Name ="BtnManageEmployee" Content="Manage Employee" Margin="5,0,0,5" Grid.ColumnSpan="2" Grid.RowSpan="2"  Grid.Row="1" Grid.Column="3" FontSize="14" Click="BtnManageEmployee_Click"  />
-
-
+        <Button Name ="BtnReservatons" Content="Administrere Reservationer" Command="{Binding BtnManageReservationClicked}" Margin="0,0,5,5" Grid.ColumnSpan="2" Grid.RowSpan="2" Grid.Row="1" Grid.Column="1"  FontSize="14" />
+        <Button Name ="BtnManageCusomter" IsEnabled="False" Content="Administrere kunder" Margin="0,5,5,0" Grid.ColumnSpan="2" Grid.RowSpan="2"  Grid.Row="3" Grid.Column="1" FontSize="14" />
+        <Button Name ="BtnManageTables" IsEnabled="False" Content="Administrere borde" Margin="5,5,0,0" Grid.ColumnSpan="2" Grid.RowSpan="2" Grid.Row="3" Grid.Column="3"  FontSize="14" />
+        <Button Name ="BtnManageEmployee" IsEnabled="False" Content="Administrere Medarbejdere" Margin="5,0,0,5" Grid.ColumnSpan="2" Grid.RowSpan="2"  Grid.Row="1" Grid.Column="3" FontSize="14" />
 
     </Grid>
 </Page>

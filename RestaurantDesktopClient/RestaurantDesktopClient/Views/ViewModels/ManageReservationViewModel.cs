@@ -5,66 +5,34 @@ using RestaurantDesktopClient.Services.Table_Service;
 using RestaurantDesktopClient.Views.ViewModels;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Data;
 using System.Linq;
-using System.Reflection;
 using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Input;
-using System.Windows.Navigation;
 
 namespace RestaurantDesktopClient.Views.ManageReservation
 {
     class ManageReservationViewModel : INotifyPropertyChanged
     {
-        private DataTable _reservationTable;
-        private DataRowView _selectedRowView;
+        #region Fields
         private static ReservationDTO _selectedReservation;
-        public TablesDTO SelectedTables { get; set; }
-        public ReservationDTO SelectedReservation { get { return _selectedReservation != null ? _selectedReservation : _selectedReservation = new ReservationDTO(); } set { _selectedReservation = value; } }
         private readonly IRepository<ReservationDTO> repository = new ReservationRepository();
-        public RelayCommand CreateReservationCommand { get; set; }
-        public RelayCommand RemoveReservationCommand { get; set; }
-        public RelayCommand UpdateReservationCommand { get; set; }
-        public RelayCommand OrderFoodCommand { get; set; }
-        public RelayCommand ReservationTimeAddHours { get; set; }
-        public RelayCommand ReservationTimeMinHours { get; set; }
-        public RelayCommand ReservationTimeAddMin { get; set; }
-        public RelayCommand ReservationTimeMinMinuts { get; set; }
-        public RelayCommand ClearValuesCommand { get; set; }
+        #endregion
+        #region Properties
+        public string Headline { get { return "Reservationer"; } }
+        public TablesDTO SelectedTables { get; set; }
+        public ReservationDTO SelectedReservation
+        {
+            get { return _selectedReservation ?? (_selectedReservation = new ReservationDTO()); }
+            set { UpdateSelectedReservation(value); _selectedReservation = value; }
+        }
         public DateTime GetReservationTimeDate
         {
             get => SelectedReservation != null ? SelectedReservation.ReservationTime : DateTime.Now;
             set { if (SelectedReservation != null) { SelectedReservation.ReservationTime = value; }; }
         }
-        public string GetReservationTimeMinuts { get => SelectedReservation != null ? trimDateTime(SelectedReservation.ReservationTime).Minute + "" : "0"; set { } }
+        public string GetReservationTimeMinuts { get => SelectedReservation != null ? TrimDateTime(SelectedReservation.ReservationTime).Minute + "" : "0"; set { } }
         public string GetReservationTimeHours { get => SelectedReservation != null ? SelectedReservation.ReservationTime.Hour + "" : "0"; set { } }
-        public string Headline { get { return "Reservationer"; } }
-        public ManageReservationViewModel()
-        {
-            ReservationTimeAddHours = new RelayCommand(AddHoursFromReservationTime);
-            ReservationTimeMinHours = new RelayCommand(AddHoursToReservationTime);
-            ReservationTimeAddMin = new RelayCommand(AddMinutsToReservationTime);
-            ReservationTimeMinMinuts = new RelayCommand(MinMinutsFromReservationTime);
-            CreateReservationCommand = new RelayCommand(CreateAndExitReservation);
-            RemoveReservationCommand = new RelayCommand(RemoveReservation);
-            UpdateReservationCommand = new RelayCommand(UpdateReservation);
-            OrderFoodCommand = new RelayCommand(OrderFood);
-            ClearValuesCommand = new RelayCommand(ClearValues);
-            SelectedTables = new TablesDTO();
-        }
-        private void ClearValues()
-        {
-            UpdateSelectedReservation(new ReservationDTO()
-            {
-                ReservationDate = DateTime.Now,
-                Deposit = false,
-            });
-        }
         public TablesDTO SetSelectedTables
         {
             get
@@ -91,75 +59,7 @@ namespace RestaurantDesktopClient.Views.ManageReservation
 
             }
         }
-        private void AddHoursToReservationTime()
-        {
-            if (SelectedReservation != null) SelectedReservation.ReservationTime = trimDateTime(SelectedReservation.ReservationTime.AddHours(-1));
 
-            this.OnPropertyChanged("GetReservationTimeDate");
-            this.OnPropertyChanged("GetReservationTimeHours");
-        }
-        private void AddHoursFromReservationTime()
-        {
-            if (SelectedReservation != null) SelectedReservation.ReservationTime = trimDateTime(SelectedReservation.ReservationTime.AddHours(1));
-
-            this.OnPropertyChanged("GetReservationTimeDate");
-            this.OnPropertyChanged("GetReservationTimeHours");
-        }
-        private void AddMinutsToReservationTime()
-        {
-            if (SelectedReservation != null) SelectedReservation.ReservationTime = trimDateTime(SelectedReservation.ReservationTime.AddMinutes(15));
-
-            this.OnPropertyChanged("GetReservationTimeDate");
-            this.OnPropertyChanged("GetReservationTimeMinuts");
-            this.OnPropertyChanged("GetReservationTimeHours");
-
-        }
-        private void MinMinutsFromReservationTime()
-        {
-            if (SelectedReservation != null) SelectedReservation.ReservationTime = trimDateTime(SelectedReservation.ReservationTime.AddMinutes(-15));
-            this.OnPropertyChanged("GetReservationTimeDate");
-            this.OnPropertyChanged("GetReservationTimeMinuts");
-            this.OnPropertyChanged("GetReservationTimeHours");
-        }
-        private DateTime trimDateTime(DateTime dt)
-        {
-            if (dt.Minute > 0 && dt.Minute < 15)
-            {
-                while (dt.Minute < 15)
-                {
-                    dt = dt.AddMinutes(1);
-                }
-            }
-            else if (dt.Minute > 15 && dt.Minute < 30)
-            {
-                while (dt.Minute < 30)
-                {
-                    dt = dt.AddMinutes(1);
-                }
-            }
-            else if (dt.Minute > 30 && dt.Minute < 45)
-            {
-                while (dt.Minute < 45)
-                {
-                    dt = dt.AddMinutes(1);
-                }
-            }
-            else if (dt.Minute > 45 && dt.Minute <= 59)
-            {
-                while (dt.Minute > 0)
-                {
-                    dt = dt.AddMinutes(-1);
-                }
-            }
-            return dt;
-        }
-        public List<string> Tables()
-        {
-            IRepository<TablesDTO> repos = new TableRepository();
-            var temp = repos.GetAll();
-            var res = from TablesDTO in temp select TablesDTO.Id + "";
-            return res.ToList();
-        }
         public string ReservationComment
         {
             get { return SelectedReservation != null ? SelectedReservation.Note : ""; }
@@ -187,19 +87,16 @@ namespace RestaurantDesktopClient.Views.ManageReservation
         {
             get
             {
-                var res = new List<TablesDTO>();
                 if (SelectedReservation.Tables != null)
                 {
-                    res = SelectedReservation.Tables;
+                    return SelectedReservation.Tables;
                 }
                 else
                 {
                     IRepository<TablesDTO> ir = new TableRepository();
-                    res = ir.GetAll().ToList();
+                    return ir.GetAll().ToList();
 
                 }
-
-                return res;
             }
             set
             {
@@ -245,7 +142,7 @@ namespace RestaurantDesktopClient.Views.ManageReservation
         }
         public bool ReservationDeposit
         {
-            get { return SelectedReservation != null ? SelectedReservation.Deposit : false; }
+            get => SelectedReservation != null ? SelectedReservation.Deposit : false;
             set
             {
                 if (SelectedReservation != null)
@@ -267,59 +164,121 @@ namespace RestaurantDesktopClient.Views.ManageReservation
                 }
             }
         }
+       
+        #endregion
+        #region relayCommands
+        public RelayCommand CreateReservationCommand { get; set; }
+        public RelayCommand RemoveReservationCommand { get; set; }
+        public RelayCommand UpdateReservationCommand { get; set; }
+        public RelayCommand OrderFoodCommand { get; set; }
+        public RelayCommand ReservationTimeAddHours { get; set; }
+        public RelayCommand ReservationTimeMinHours { get; set; }
+        public RelayCommand ReservationTimeAddMin { get; set; }
+        public RelayCommand ReservationTimeMinMinuts { get; set; }
+        public RelayCommand ClearValuesCommand { get; set; }
+        #endregion
+
+        public ManageReservationViewModel()
+        {
+            InitRelayCommands();
+            SelectedTables = new TablesDTO();
+        }
+
+        private void InitRelayCommands()
+        {
+            ReservationTimeAddHours = new RelayCommand(AddHoursFromReservationTime);
+            ReservationTimeMinHours = new RelayCommand(AddHoursToReservationTime);
+            ReservationTimeAddMin = new RelayCommand(AddMinutsToReservationTime);
+            ReservationTimeMinMinuts = new RelayCommand(MinMinutsFromReservationTime);
+            CreateReservationCommand = new RelayCommand(CreateAndExitReservation);
+            RemoveReservationCommand = new RelayCommand(RemoveReservation);
+            UpdateReservationCommand = new RelayCommand(UpdateReservation);
+            OrderFoodCommand = new RelayCommand(OrderFood);
+            ClearValuesCommand = new RelayCommand(ClearValues);
+        }
+
         public event PropertyChangedEventHandler PropertyChanged;
         protected void OnPropertyChanged([CallerMemberName] string name = null)
         {
             this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
         }
-        private void CreateSearchTable()
-        {
-            _reservationTable = new DataTable();
-            _reservationTable.Columns.Add(new DataColumn("Reservation Number"));
-            _reservationTable.Columns.Add(new DataColumn("Customer"));
-            _reservationTable.Columns.Add(new DataColumn("ReservationDate"));
-            _reservationTable.Columns.Add(new DataColumn("ReservationTime"));
-            _reservationTable.Columns.Add(new DataColumn("NoOfPeople"));
-        }
-        public DataRowView SelectedRowView
+        private List<ReservationDTO> _reservationSearchList;
+        public List<ReservationDTO> ReservationSearchList
         {
             get
             {
-                return _selectedRowView;
+                return _reservationSearchList ?? repository.GetAll().ToList();
             }
             set
             {
-                _selectedRowView = value;
-                int.TryParse(_selectedRowView.Row.ItemArray[0].ToString(), out int id);
-                UpdateSelectedReservation(repository.Get(id));
-
+                _reservationSearchList = value;
             }
         }
-        public DataTable SearchTable
-        {
 
-            get
+        #region manageReservationControlBindings
+        private void AddHoursToReservationTime()
+        {
+            if (SelectedReservation != null) SelectedReservation.ReservationTime = TrimDateTime(SelectedReservation.ReservationTime.AddHours(-1));
+
+            this.OnPropertyChanged("GetReservationTimeDate");
+            this.OnPropertyChanged("GetReservationTimeHours");
+        }
+        private void AddHoursFromReservationTime()
+        {
+            if (SelectedReservation != null) SelectedReservation.ReservationTime = TrimDateTime(SelectedReservation.ReservationTime.AddHours(1));
+
+            this.OnPropertyChanged("GetReservationTimeDate");
+            this.OnPropertyChanged("GetReservationTimeHours");
+        }
+        private void AddMinutsToReservationTime()
+        {
+            if (SelectedReservation != null) SelectedReservation.ReservationTime = TrimDateTime(SelectedReservation.ReservationTime.AddMinutes(15));
+
+            this.OnPropertyChanged("GetReservationTimeDate");
+            this.OnPropertyChanged("GetReservationTimeMinuts");
+            this.OnPropertyChanged("GetReservationTimeHours");
+
+        }
+        private void MinMinutsFromReservationTime()
+        {
+            if (SelectedReservation != null) SelectedReservation.ReservationTime = TrimDateTime(SelectedReservation.ReservationTime.AddMinutes(-15));
+            this.OnPropertyChanged("GetReservationTimeDate");
+            this.OnPropertyChanged("GetReservationTimeMinuts");
+            this.OnPropertyChanged("GetReservationTimeHours");
+        }
+        private DateTime TrimDateTime(DateTime dt)
+        {
+            if (dt.Minute > 0 && dt.Minute < 15)
             {
-                IEnumerable<ReservationDTO> _reservations = repository.GetAll();
-                if (_reservations != null)
+                while (dt.Minute < 15)
                 {
-
-                    if (_reservationTable == null) CreateSearchTable();
-
-                    _reservations.ToList().ForEach(x =>
-                    {
-                        DataRow dr = _reservationTable.NewRow();
-                        _reservationTable.Rows.Add(dr.ItemArray = new[] { x.Id+"", x.Customer.FirstName + " " + x.Customer.LastName,
-                            x.ReservationDate+"", x.ReservationTime+"", x.NoOfPeople +"" });
-                    });
+                    dt = dt.AddMinutes(1);
                 }
-                return _reservationTable;
             }
-            set
+            else if (dt.Minute > 15 && dt.Minute < 30)
             {
-                _reservationTable = value;
-                PropertyChanged(this, new PropertyChangedEventArgs("SearchTable"));
+                while (dt.Minute < 30)
+                {
+                    dt = dt.AddMinutes(1);
+                }
             }
+            else if (dt.Minute > 30 && dt.Minute < 45)
+            {
+                while (dt.Minute < 45)
+                {
+                    dt = dt.AddMinutes(1);
+                }
+            }
+            else if (dt.Minute > 45 && dt.Minute <= 59)
+            {
+                while (dt.Minute > 0)
+                {
+                    dt = dt.AddMinutes(-1);
+                }
+                SelectedReservation.ReservationTime = SelectedReservation.ReservationTime.AddHours(1);
+                OnPropertyChanged("GetReservationTimeHours");
+            }
+            return dt;
         }
         public void UpdateReservation()
         {
@@ -345,18 +304,18 @@ namespace RestaurantDesktopClient.Views.ManageReservation
         }
         private void UpdateSelectedReservation(ReservationDTO reservation)
         {
-            SelectedReservation = reservation;
-            this.OnPropertyChanged("ReservationComment");
-            this.OnPropertyChanged("ReservationNumber");
-            this.OnPropertyChanged("ReservationTables");
-            this.OnPropertyChanged("ReservationNumOfPersons");
-            this.OnPropertyChanged("ReservationDate");
-            this.OnPropertyChanged("ReservationTime");
-            this.OnPropertyChanged("GetReservationTimeDate");
-            this.OnPropertyChanged("ReservationDeposit");
-            this.OnPropertyChanged("ReservationCustomer");
-            this.OnPropertyChanged("GetReservationTimeMinuts");
-            this.OnPropertyChanged("GetReservationTimeHours");
+            _selectedReservation = reservation;
+            OnPropertyChanged("ReservationComment");
+            OnPropertyChanged("ReservationNumber");
+            OnPropertyChanged("ReservationTables");
+            OnPropertyChanged("ReservationNumOfPersons");
+            OnPropertyChanged("ReservationDate");
+            OnPropertyChanged("ReservationTime");
+            OnPropertyChanged("GetReservationTimeDate");
+            OnPropertyChanged("ReservationDeposit");
+            OnPropertyChanged("ReservationCustomer");
+            OnPropertyChanged("GetReservationTimeMinuts");
+            OnPropertyChanged("GetReservationTimeHours");
         }
         public void CreateAndExitReservation()
         {
@@ -368,5 +327,14 @@ namespace RestaurantDesktopClient.Views.ManageReservation
             if (res == null) MessageBox.Show("Fejl ved oprettelse af reservation");
             return res;
         }
+        private void ClearValues()
+        {
+            UpdateSelectedReservation(new ReservationDTO()
+            {
+                ReservationDate = DateTime.Now,
+                Deposit = false,
+            });
+        }
+        #endregion
     }
 }
