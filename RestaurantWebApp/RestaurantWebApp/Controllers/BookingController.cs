@@ -125,7 +125,8 @@ namespace RestaurantWebApp.Controllers
                 var res = JsonConvert.DeserializeObject<ReservationDTO>(response.Content);
                 if (res != null)
                 {
-                    return OrderFood(res);
+                    //return OrderFood(res);
+                    RedirectToAction("OrderFood", res);
                 }
             }
 
