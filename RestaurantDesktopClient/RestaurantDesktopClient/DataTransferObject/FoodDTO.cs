@@ -9,7 +9,7 @@ namespace DataAccess.DataTransferObjects
 {
     public class FoodDTO : INotifyPropertyChanged
     {
-        public int Id { get; }
+        public int Id { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
         public string foodCategoryName { get; set; }

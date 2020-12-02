@@ -8,12 +8,9 @@ namespace DataAccess.DataTransferObjects
         public TablesDTO()
         {
 
-        }
-
-        public int Id { get; }
+        } 
+        public int Id { get; set; }
         public int NoOfSeats { get; set; }
-        public int TableNumber { get; set; }
-
-       
+        public int TableNumber { get; set; }       
     }
 }
