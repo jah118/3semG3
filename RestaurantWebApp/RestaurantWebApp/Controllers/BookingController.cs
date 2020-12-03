@@ -201,7 +201,7 @@ namespace RestaurantWebApp.Controllers
             var foodsview = new FoodViewModel();
             IEnumerable<FoodDTO> fdto = _foodService.GetAll();
 
-           
+
 
 
             var Foods = new List<FoodDTO>();
@@ -236,83 +236,23 @@ namespace RestaurantWebApp.Controllers
             return View(foodsview);
         }
 
-        //GET: Login
-        [AllowAnonymous]
-        public ActionResult Login()
-        {
-            UserDTO user = new UserDTO { AccountType = UserRoles.Customer };
-            return View(user);
-        }
-
-        [AllowAnonymous]
+        // POST: Booking/OrderFoods
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Login(UserDTO user)
+        //[ValidateAntiForgeryToken]
+        public ActionResult OrderFood(FoodViewModel foodsview)
         {
-            var s = HttpContext.Response;
-            //var token = user.Token;
-            //var uname = user.Username;
+            var data = foodsview;
+        //    var client = new RestClient("https://localhost:44349/api/Food");
 
-            //if (ModelState.IsValid)
-            //{
-            //    //var data = _db.Users.Where(s => s.Email.Equals(email) && s.Password.Equals(f_password)).ToList();
-            //    //var data = _bs.GetUser(ConfigurationManager.AppSettings["ServiceApi"]);
-            //    if (data.Count() > 0)
-            //    {
-            //        //add session
-            //        Session["FullName"] = data.FirstOrDefault().FirstName + " " + data.FirstOrDefault().LastName;
-            //        Session["Email"] = data.FirstOrDefault().Email;
-            //        Session["idUser"] = data.FirstOrDefault().idUser;
-            //        return RedirectToAction("Index");
-            //    }
-            //    else
-            //    {
-            //        ViewBag.error = "Login failed";
-            //        return RedirectToAction("Login");
-            //    }
-            //}
+        //    var request = new RestRequest("Food/{FoodId}", Method.GET);
+
+        //    request.AddUrlSegment("{FoodId", 1);
+
+        //    var content = client.Execute(request).Content;
+
             return View();
         }
 
-        //Logout
-        public ActionResult Logout()
-        {
-            //Session.Clear();//remove session
-            //ControllerContext.HttpContext.Cache.Remove()
-            return RedirectToAction("Login");
-        }
 
-        //GET: Register
-        [AllowAnonymous]
-        public ActionResult Register()
-        {
-            var user = new UserDTO();
-            return View(user);
-        }
-
-        //POST: Register
-        [HttpPost]
-        [AllowAnonymous]
-        [ValidateAntiForgeryToken]
-        public ActionResult Register(UserDTO _user)
-        {
-            if (ModelState.IsValid)
-            {
-                return RedirectToAction("Index");
-            }
-
-            //var response = ControllerContext.RequestContext.HttpContext.
-            //if (check == null)
-            //{
-            //    return RedirectToAction("Index");
-            //}
-            //else
-            //{
-            //    ViewBag.error = "Email already exists";
-            //    return View();
-            //}
-
-            return View();
-        }
     }
 }
