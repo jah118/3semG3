@@ -1,0 +1,59 @@
+﻿<UserControl x:Class="RestaurantDesktopClient.Views.Controls.CUDEmployeeControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:RestaurantDesktopClient.Views.Controls"
+             mc:Ignorable="d" 
+            d:DesignHeight="450" d:DesignWidth="800">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="10*"/>
+            <ColumnDefinition Width="10*"/>
+            <ColumnDefinition Width="10*"/>
+            <ColumnDefinition Width="10*"/>
+            <ColumnDefinition Width="10*"/>
+
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="10*" />
+            <RowDefinition Height="10*" />
+            <RowDefinition Height="10*" />
+            <RowDefinition Height="10*" />
+            <RowDefinition Height="10*" />
+            <RowDefinition Height="10*" />
+            <RowDefinition Height="10*" />
+            <RowDefinition Height="10*" />
+            <RowDefinition Height="10*" />
+        </Grid.RowDefinitions>
+
+        <Label Name ="lblEmployeeName"  Content="Employee Name: "  Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2"  />
+        <TextBox Name ="txtName"  Grid.Column="2" Grid.ColumnSpan="3" Grid.Row="0" Margin="0,5,0,5" />
+
+        <Label Name ="lblPhone"  Content="Phone: "  Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2" />
+        <TextBox Name ="txtPhone" Grid.Column="2" Grid.ColumnSpan="3" Grid.Row="1" Margin="0,5,0,5 "/>
+
+        <Label Name ="lblAddress"  Content="Address: "  Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="2"  />
+        <TextBox Name ="txtAddress" Grid.Column="2" Grid.ColumnSpan="3" Grid.Row="2" Margin="0,5,0,5" />
+
+        <Label Name ="lblPostalCode"  Content="Postal Code: "  Grid.Column="0" Grid.Row="3" Grid.ColumnSpan="2" />
+        <TextBox Name ="txtPostalCode"  Grid.Column="2" Grid.ColumnSpan="3" Grid.Row="3" Margin="0,5,0,5" />
+
+        <Label Name ="lblCity"  Content="City: "  Grid.Column="0" Grid.Row="4" Grid.ColumnSpan="2" />
+        <TextBox Name ="txtCity" Grid.Column="2" Grid.ColumnSpan="3" Grid.Row="4" Margin="0,5,0,5" />
+
+        <Label Name ="lblCountry"  Content="Country: " Grid.Column="0" Grid.Row="5" Grid.ColumnSpan="2" />
+        <TextBox Name ="txtCountry"  Grid.Column="2" Grid.ColumnSpan="3" Grid.Row="5" Margin="0,5,0,5" />
+
+        <Label Name ="lblSalary"  Content="Salary: " Grid.Column="0" Grid.Row="6"/>
+        <TextBox Name ="txtSalary" Grid.Column="2" Grid.ColumnSpan="3" Grid.Row="6" Margin="0,5,0,5" />
+
+        <Label Name ="lblTitle"  Content="Title: " Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="7" />
+        <TextBox Name ="txtTitle" MinWidth="150" Grid.Column="2" Grid.ColumnSpan="3" Grid.Row="7" Margin="0,5,0,5"  />
+
+        <Button Name ="btnCreate" Content="Create New" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="8" Margin="5,5,5,5"  />
+        <Button Name ="btnDelete" Content="Delete"  Grid.Column="2" Grid.Row="8" Margin="5,5,5,5" />
+        <Button Name ="btnUpdate" Content="Update"  Grid.Column="3" Grid.ColumnSpan="2" Grid.Row="8" Margin="5,5,5,5" />
+
+    </Grid>
+</UserControl>

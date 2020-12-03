@@ -1,0 +1,25 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net5.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Scripts\0001_CreateTables.sql" />
+    <None Remove="Scripts\0002_DataInsert.sql" />
+    <None Remove="Scripts\0003_CreateUser.sql" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Scripts\0001_CreateTables.sql" />
+    <EmbeddedResource Include="Scripts\0002_DataInsert.sql" />
+    <EmbeddedResource Include="Scripts\0003_CreateUser.sql" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="dbup-core" Version="4.4.0" />
+    <PackageReference Include="dbup-sqlserver" Version="4.4.0" />
+  </ItemGroup>
+
+</Project>
