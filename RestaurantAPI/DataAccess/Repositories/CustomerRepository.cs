@@ -30,7 +30,14 @@ namespace DataAccess.Repositories
 
         internal EntityEntry<Customer> CreateCustomer(CustomerDTO obj)
         {
-            return _context.Add(Converter.Convert(obj));
+            var customer = Converter.Convert(obj);
+            var zipresolution = _context.ZipId.FirstOrDefault(zip =>
+                zip.ZipCode.Equals(customer.Person.Location.ZipCodeNavigation.ZipCode));
+            if (zipresolution != null)
+            {
+                customer.Person.Location.ZipCodeNavigation = zipresolution;
+            }
+            return _context.Add(customer);
         }
 
         public bool Delete(CustomerDTO obj, bool transactionEndpoint = true)
