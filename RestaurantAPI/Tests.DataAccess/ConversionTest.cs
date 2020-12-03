@@ -169,10 +169,61 @@ namespace DataAccess.Tests
                 }
             };
         }
+        private List<Reservation> GetReservations()
+        {
+            return new List<Reservation>()
+            {
+                new Reservation
+                {
+                    Deposit = true,
+                    Id = 1,
+                    NoOfPeople = 4,
+                    ReservationDate = DateTime.Now,
+                    ReservationTime = DateTime.Now.AddDays(2),
+                    Note = "Some note for reservation1",
+
+
+                },
+                new Reservation
+                {
+                    Deposit = false,
+                    Id =2,
+                    NoOfPeople = 3,
+                    ReservationDate = DateTime.Now.AddDays(1),
+                    ReservationTime = DateTime.Now.AddDays(2),
+                    Note = "Some note for reservation2",
+
+
+                }
+            };
+        }
         #endregion
 
+        #region ReservationConversion
 
-        #region OrderConverter
+        [TestMethod, TestCategory("Integration"), TestCategory("Converters")]
+        public void ReservationConversionReservationListToReservationDTOList()
+        {
+            //Arrange
+            List<Reservation> reservations = GetReservations();
+            //Act
+            List<ReservationDTO> reservationDTOs = Converter.Convert(reservations).ToList();
+            //Assert
+            for (int i = 0; i < reservations.Count; i++)
+            {
+                Assert.AreEqual(reservations.Count, reservationDTOs.Count);
+                Assert.AreEqual(reservations[i].Id, reservationDTOs[i].Id);
+                Assert.AreEqual(reservations[i].Deposit, reservationDTOs[i].Deposit);
+                Assert.AreEqual(reservations[i].Note, reservationDTOs[i].Note);
+                Assert.AreEqual(reservations[i].NoOfPeople, reservationDTOs[i].NoOfPeople);
+                Assert.AreEqual(reservations[i].ReservationDate, reservationDTOs[i].ReservationDate);
+                Assert.AreEqual(reservations[i].ReservationTime, reservationDTOs[i].ReservationTime);
+            }
+        }
+
+        #endregion
+
+        #region OrderConversion
         [TestMethod, TestCategory("Integration"), TestCategory("Converters")]
         public void OrderConversionOrderListToOrderDTOList()
         {
@@ -183,6 +234,7 @@ namespace DataAccess.Tests
             //Assert
             for (int i = 0; i < orders.Count; i++)
             {
+                Assert.AreEqual(orderDTOs.Count, orders.Count);
                 Assert.AreEqual(orders[i].OrderNo, orderDTOs[i].OrderNo);
                 Assert.AreEqual(orders[i].PaymentCondition.Condition, orderDTOs[i].PaymentCondition);
                 Assert.AreEqual(orders[i].EmployeeId, orderDTOs[i].EmployeeID);
@@ -297,6 +349,7 @@ namespace DataAccess.Tests
             }
         }
         #endregion
+
         //[TestMethod, TestCategory("Unit"), TestCategory("Converters")]
         //public void CustomerConversionOutput()
         //{
