@@ -20,9 +20,6 @@ namespace DataAccess.DataTransferObjects.Converters
                 Id = obj.Id,
                 Name = obj.Name,
                 Description = obj.Description,
-               
-
-
             };
             
         }
@@ -30,8 +27,7 @@ namespace DataAccess.DataTransferObjects.Converters
 
         public static FoodDTO  Convert(Food obj)
         {
-            var priceobj = obj.Price.Where(p => p.FoodId == obj.Id).FirstOrDefault();
-            var orderLineobj = obj.OrderLine.FirstOrDefault();
+            var priceobj = obj.Price.Where(p => p.Food.Id == obj.Id).FirstOrDefault();
             return new FoodDTO()
             {
                 Id = obj.Id,

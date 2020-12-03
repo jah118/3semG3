@@ -10,7 +10,7 @@ namespace DataAccess.DataTransferObjects
         public int EmployeeID { get; set; }
         public DateTime OrderDate { get; set; }
         public string PaymentCondition { get; set; }
-        internal List<OrderLineDTO> OrderLines { get; set; }
+        public List<OrderLineDTO> OrderLines { get; set; }
 
     }
 }
