@@ -6,6 +6,7 @@ using RestaurantWebApp.Util;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Dynamic;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
@@ -43,10 +44,7 @@ namespace RestaurantWebApp.Controllers
         {
             //TODO her skal laves så den kan tage begge former for login Username/Email
 
-            ReservationDTO rv = new ReservationDTO();
-
-
-            rv.Tables = _tableService.GetAll();
+            var rv = new ReservationDTO { Tables = _tableService.GetAll() };
             if (rv.Tables == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.ServiceUnavailable);
@@ -126,10 +124,9 @@ namespace RestaurantWebApp.Controllers
                 if (res != null)
                 {
                     //return OrderFood(res);
-                    RedirectToAction("OrderFood", res);
+                    return RedirectToAction("OrderFood", res);
                 }
             }
-
 
             return View(reservation);
         }
@@ -170,39 +167,27 @@ namespace RestaurantWebApp.Controllers
             }
         }
 
-        //POST: Booking/OrderFoods
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        // public async ActionResult OrderFoods(FoodDTO food)
-        // {
-        //var client = new RestClient("https://localhost:44349/api/Food");
-
-        //var request = new RestRequest("Food/{FoodId}", Method.GET);
-
-        //request.AddUrlSegment("{FoodId", 1);
-
-        //var content = client.Execute(request).Content;
-
-        //    return View();
-        // }
-
-        // GET: Booking/OrderFoods
-        //[HttpGet]
-        //public ActionResult OrderFoods()
-        //{
-        //    IEnumerable<FoodDTO> fdto = _foodService.GetAll();
-
-        //    return View(fdto);
-
-        //}
         [HttpGet]
-        public ActionResult OrderFood(ReservationDTO reservation)
+        //public ActionResult OrderFood(ReservationDTO reservation)
+        public ActionResult OrderFood()
         {
-            var foodsview = new FoodViewModel();
-            IEnumerable<FoodDTO> fdto = _foodService.GetAll();
+            //////////////////////////
 
+            ReservationDTO reservation = new ReservationDTO(
+                99,
+                new CustomerDTO("88888888", "JensJensen@gmaiul.com", "jens", "jensen", "jensvej 2", "9000", "aalborg"),
+                DateTime.Now,
+                5,
+                false,
+                "TEST",
+                new List<RestaurantTablesDTO>{ new RestaurantTablesDTO(97, 2, 97), new RestaurantTablesDTO(98, 4, 98) }
 
+                );
+            ///////////////////////////////
 
+            //reservation = reservation1;
+
+            var fdto = _foodService.GetAll();
 
             var Foods = new List<FoodDTO>();
             var Drinks = new List<FoodDTO>();
@@ -225,30 +210,45 @@ namespace RestaurantWebApp.Controllers
                 order = new OrderDTO
                 {
                     ReservationID = reservation.Id,
+                    OrderDate = DateTime.Today,
                     PaymentCondition = PaymentCondition.Begyndt.ToString()
                 };
             }
-            foodsview.Foods = Foods;
-            foodsview.Drinks = Drinks;
-            foodsview.Order = order;
 
-            //Tuple<OrderDTO, FoodViewModel> res = Tuple.Create(order, foods);
-            return View(foodsview);
+            var foodsView = new FoodViewModel();
+
+            foodsView.VmFoods = Foods; 
+            foodsView.VmDrinks = Drinks;
+            foodsView.VmOrder = order;
+            foodsView.VmReservation = reservation;
+            foodsView.VmOrderFoodAndDrinks = new List<FoodDTO>();
+
+            dynamic mymodel = new ExpandoObject();
+
+            mymodel.Mad = Foods;
+            mymodel.Drikkevare = Drinks;
+            mymodel.Bestilt = new List<FoodDTO>();
+            //var model = new FoodViewModel { vmDrinks = Drinks, vmFoods = Foods, vmOrder = order};
+
+            //Tuple<OrderDTO, FoodViewModel> res = Tuple.Create(order, foodsView);
+            //foodsView
+            return View(foodsView);
         }
 
         // POST: Booking/OrderFoods
         [HttpPost]
-        //[ValidateAntiForgeryToken]
-        public ActionResult OrderFood(FoodViewModel foodsview)
+        public ActionResult OrderFood(FoodViewModel res)
         {
-            var data = foodsview;
-        //    var client = new RestClient("https://localhost:44349/api/Food");
+            var data = res;
+            var date2 = Request.Form["s"];
+            var date22 = Request.Form["VmOrderFoodAndDrinks"];
+            //    var client = new RestClient("https://localhost:44349/api/Food");
 
-        //    var request = new RestRequest("Food/{FoodId}", Method.GET);
+            //    var request = new RestRequest("Food/{FoodId}", Method.GET);
 
-        //    request.AddUrlSegment("{FoodId", 1);
+            //    request.AddUrlSegment("{FoodId", 1);
 
-        //    var content = client.Execute(request).Content;
+            //    var content = client.Execute(request).Content;
 
             return View();
         }

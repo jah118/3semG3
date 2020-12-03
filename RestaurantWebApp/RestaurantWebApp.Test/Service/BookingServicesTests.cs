@@ -23,7 +23,7 @@ namespace RestaurantWebApp.Test.Service
         [TestMethod]
         public void CreateAsyncTest()
         {
-            var reservation = new ReservationDTO(
+            var reservation = new ReservationDTO(1,
                 new CustomerDTO(),
                 DateTime.Now,
                 4,

@@ -1,56 +1,75 @@
-﻿@using System.Web.UI.HtmlControls
-@model RestaurantWebApp.Model.FoodViewModel
-@*@model Tuple<RestaurantWebApp.DataTransferObject.OrderDTO, RestaurantWebApp.Model.FoodViewModel>*@
-@using (Html.BeginForm())
-{
-    ViewBag.Title = "Madbestilling";
-}
+﻿@model RestaurantWebApp.Model.FoodViewModel
+
+
+
 
 @section Styles {
-
 }
 
-<h2>Madbestilling</h2>
 <div class="container">
-    <div class="row">
+    <h2>Madbestilling</h2>
+    <hr />
+    @using (Html.BeginForm("OrderFood", "Booking", FormMethod.Post ))
 
-        <div class="form-horizontal">
-            <div class="form-group">
+    {
 
-                <div class="col-md-5 float-left">
-                    <label>Retter</label>
-                    @Html.ListBoxFor(model => model.Foods, new SelectList(Model.Foods, "Id", "Name"), new { @class = "control - label", name = "tsFood", id = "tsFoods", size = "20" })
-                    <button id="AddFoodsBtn"> vælg mad</button>
-                </div>
-                <div class="col-md-5 float-right">
-                    <label> Drikkevarer</label>
-                    @Html.ListBoxFor(model => model.Drinks, new SelectList(Model.Drinks, "Id", "Name"), new { @class = "control - label", name = "tsDrinks", id = "tsDrinks", size = "20" })
+        <div class="row">
+            <div class="col">
+                <div class="form-group">
 
-                    <input id="AddDrinksBtn" type="button" value="Vælg drikkevarer" />
-                </div>
-
-                <div id="summaryDiv" class="col-md-12 float-left">
-                    <hr />
-                    @Html.ListBoxFor(model => model.Foods,
-                        new SelectList(Model.Order.Foods, "Id", "Name"), new { Id = "summaryList", style = "width:100%", size = "20" })
-                    @* //TODO this needs a impl at this point no remove function *@
-                    <input id="RemoveFromSummaryList" type="button" accept="removeFoods" value="Fjern ret/retter" />
+                    <label class="col-md-5">Retter</label>
+                    <div class="col-md-10">
+                        @Html.ListBoxFor(model => model.VmFoods, new SelectList(Model.VmFoods, "Id", "Name"), new { name = "tsFood", id = "tsFoods", size = "20" })
+                        <input id="AddFoodsBtn" type="button" value="Vælg Madvarer" />
+                    </div>
                 </div>
             </div>
+
+            <div class="col">
+                <div class="form-group">
+                    <label class="col-md-5"> Drikkevarer</label>
+                    <div class="col-md-10">
+                        @Html.ListBoxFor(model => model.VmDrinks, new SelectList(Model.VmDrinks, "Id", "Name"), new { name = "tsDrinks", id = "tsDrinks", size = "20" })
+                        <input id="AddDrinksBtn" type="button" value="Vælg drikkevarer" />
+                    </div>
+                </div>
+            </div>
+
+
+
         </div>
-    </div>
+
+        <div class="row" id="summaryDiv">
+            <hr />
+            <label class="col-md-5"> Valgt mad</label>
+            <div class="col-md-10">
+                @Html.ListBoxFor(model => model.VmOrderFoodAndDrinks, new SelectList(Model.VmOrderFoodAndDrinks, "Id", "Name"), new {  Id = "summaryList", size = "20", style = "width:100%" })
+                <input id="RemoveFromSummaryList" type="button" value="Fjern ret/retter" />
+            </div>
+        </div>
+
+        <div>
+            <input type="submit" value="Gem mad og drikke " class="btn btn-primary" />
+        </div>
+
+        <div>
+            @Html.ValidationSummary()
+        </div>
+      
+    }
+</div>
+<div>
+    @Html.ActionLink("Gå til forside", "Index")
 </div>
 
-<div>
-    <input type="submit" value="Gem mad og drikke " class="btn btn-primary" />
-</div>
+
 
 @section Scripts {
     <script>
         $(document).ready(function () {
             $('#AddDrinksBtn').click(function () {
                 var txt = $("#tsDrinks option:selected").text();
-                var vale = $("#tsDrinks").val();
+                var vale = $("#tsDrinks ").val();
                 $.each(vale,
                     function (key, val) {
                         $('#summaryList').append($("<option></option>").attr("value", val).text(txt));
@@ -69,49 +88,11 @@
             });
         });
 
-        //$(document).ready(function () {
-        //    $('#AddFoodsBtn').click(function () {
-        //        var selected = $('#tsFoods').val();
-        //        $('#tsDrinks option:selected').appendto();
-        //        $.each(selected,
-        //            function (key, val) {
-        //                $('#summaryList').append($("<option></option>").attr("value", val).text(val));
-        //            });
-        //    });
-        //});
-
-
-
         $(document).ready(function () {
             $('#RemoveFromSummaryList').click(function () {
                 $('#summaryList option:selected').remove();
-                //var selected = $('#summaryList').val();
-                //$.each(selected,
-                //    function (key, val) {
-                //        $(this).remove($("<option></option>"));
-                //    });
-                //$("#summaryList").each(function() {
-                //    $(this).remove($("<option></option>"));
-                //});
-                //$.each(selected,
-                //    function (key, val) {
-                //        $('#summaryList').remove($("<option></option>").attr("value", val).text(val));
-                //    });
             });
         });
     </script>
 
-    @*<script>
-
-            //$('#test').click(function () { alert("Handler for .click() called.") });
-
-            $('#test').click(function () {
-                var selected = $('#myList option:selected').val;
-                //alert("Handler for .click() called." + selected );
-                $.each(selected,
-                    function (key, value) {
-                        $('#summaryList').append($("<option></option>").attr("value", value).text(value));
-                    });
-            });
-        </script>*@
 }
