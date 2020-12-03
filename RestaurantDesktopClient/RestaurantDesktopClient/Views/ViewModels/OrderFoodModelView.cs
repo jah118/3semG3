@@ -1,4 +1,5 @@
 ﻿using DataAccess.DataTransferObjects;
+using RestaurantDesktopClient.DataTransferObject;
 using RestaurantDesktopClient.Services.OrderService;
 using System;
 using System.Collections.Generic;
@@ -12,11 +13,11 @@ namespace RestaurantDesktopClient.Views.ViewModels
     {
         #region Fields
         private int _reservationId;
-        private ObservableCollection<FoodDTO> _ordersFood;
+        private ObservableCollection<OrderLineDTO> _ordersFood;
         #endregion
         #region Properties
         public PaymentCondition SelectedPaymentCondition { get; set; }
-        public ObservableCollection<FoodDTO> SummaryFoods
+        public ObservableCollection<OrderLineDTO> SummaryFoods
         {
             get
             {
@@ -60,7 +61,7 @@ namespace RestaurantDesktopClient.Views.ViewModels
                 AddToSummary(value);
             }
         }
-        public FoodDTO SelectedSummaryFood
+        public OrderLineDTO SelectedSummaryFood
         {
             get { return null; }
             set
@@ -86,12 +87,11 @@ namespace RestaurantDesktopClient.Views.ViewModels
                 .Where(x => x.ReservationID == reservationId)
                 .OrderBy(x => x.OrderDate)
                 .FirstOrDefault();
-            _ordersFood = order != null ? new ObservableCollection<FoodDTO>(order.Foods) : new ObservableCollection<FoodDTO>();
+            _ordersFood = order != null ? new ObservableCollection<OrderLineDTO>(order.OrderLines) : new ObservableCollection<OrderLineDTO>();
             if (order != null)
             {
                 SelectedPaymentCondition = (PaymentCondition)Enum.Parse(typeof(PaymentCondition), order.PaymentCondition);
             }
-
         }
         private void CancelClicked()
         {
@@ -102,7 +102,7 @@ namespace RestaurantDesktopClient.Views.ViewModels
             _orderRepository.Create(new OrderDTO()
             {
                 EmployeeID = 2, //TODO change when login are ready
-                Foods = _ordersFood.ToList(),
+                OrderLines = _ordersFood.ToList(),
                 OrderDate = DateTime.Now,
                 ReservationID = _reservationId,
                 PaymentCondition = SelectedPaymentCondition.ToString(),
@@ -111,18 +111,18 @@ namespace RestaurantDesktopClient.Views.ViewModels
         }
         private void AddToSummary(FoodDTO obj)
         {
-            if (!SummaryFoods.Contains(obj))
+            var found = SummaryFoods.Where(x => x.Food.Id == obj.Id).FirstOrDefault();
+            if (found == null)
             {
-                obj.Quantity++;
-                SummaryFoods.Add(obj);
+                SummaryFoods.Add(new OrderLineDTO{  Food = obj, Quantity = 1 });
             }
             else
             {
-                obj.Quantity++;
+                found.Quantity++;
             }
 
         }
-        private void RemoveFromSummary(FoodDTO obj)
+        private void RemoveFromSummary(OrderLineDTO obj)
         {
             if (obj.Quantity > 1)
             {

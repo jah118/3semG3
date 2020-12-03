@@ -27,9 +27,9 @@ namespace DataAccess.DataTransferObjects.Converters
                 OrderNo = obj.OrderNo,
                 PaymentCondition = obj.PaymentCondition.Condition,
                 ReservationID = obj.Reservation.Id,
-                Foods = new List<FoodDTO>()
+                OrderLines = new List<OrderLineDTO>()
             };
-            obj.OrderLine.ToList().ForEach(x => orderDTO.Foods.Add(Converter.Convert(x.Food)));
+            obj.OrderLine.ToList().ForEach(x => orderDTO.OrderLines.Add(new OrderLineDTO { Food = Converter.Convert(x.Food), Quantity = x.Quantity }));
             return orderDTO;
         }
         public static RestaurantOrder Convert(OrderDTO obj)
@@ -41,9 +41,9 @@ namespace DataAccess.DataTransferObjects.Converters
                 OrderNo = obj.OrderNo,
                 ReservationId = obj.ReservationID
             };
-            order.OrderLine = obj.Foods.Select(x => new OrderLine()
+            order.OrderLine = obj.OrderLines.Select(x => new OrderLine()
             {
-                FoodId = x.Id,
+                FoodId = x.Food.Id,
                 Quantity = x.Quantity,
                 OrderNumber = obj.OrderNo,
                 OrderNumberNavigation = order

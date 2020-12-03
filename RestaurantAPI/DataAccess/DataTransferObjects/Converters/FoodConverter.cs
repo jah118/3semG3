@@ -39,7 +39,6 @@ namespace DataAccess.DataTransferObjects.Converters
                 Description = obj.Description,
                 Price = priceobj != null ? Decimal.ToDouble(Convert(priceobj).PriceValue) : 0,
                 FoodCategoryName = obj.FoodCategory.Name,
-                Quantity = orderLineobj != null ? orderLineobj.Quantity : 0
             };
         }
 
