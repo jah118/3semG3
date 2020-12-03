@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Net;
+using System.Runtime.InteropServices;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using RestaurantWebApp.DataTransferObject;
 using RestaurantWebApp.Service.Interfaces;
@@ -35,7 +36,7 @@ namespace RestaurantWebApp.Test.Service
 
             //Assert
             //Assert.AreEqual(response.StatusCode, HttpStatusCode.OK);
-            Assert.IsTrue(response == HttpStatusCode.OK);
+            Assert.IsTrue(response.StatusCode == HttpStatusCode.OK);
         }
     }
 }

@@ -37,18 +37,17 @@ namespace RestaurantWebApp.Test.Util
         }
 
         [TestMethod]
-        public void FormatterForReservationTimeTestValidDate()
+        public void FormatterForReservationTimeTestInValidDate()
         {
             //Arrange
-            const string date = "";
+            const string date = " ";
             const string timeStamp = "27-11-2020 19:30:00";
 
             //Act
             var dateTime = FormatTime.FormatterForReservationTimeFromString(date, timeStamp);
 
             //Assert
-            Assert.IsNotNull(dateTime);
-            Assert.AreEqual(new DateTime(2020, 11, 27, 19, 30, 00), dateTime);
+            Assert.ThrowsException<FormatException>(() => FormatTime.FormatterForReservationTimeFromString(date, timeStamp));
         }
 
     }
