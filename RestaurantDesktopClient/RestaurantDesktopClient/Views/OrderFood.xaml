@@ -71,15 +71,15 @@
         <ListView x:Name="lvSummarySearchBox" ItemsSource="{Binding SummaryFoods}" SelectedItem="{Binding SelectedSummaryFood}" Grid.Row="6" Grid.RowSpan="3" Grid.ColumnSpan="10" Grid.Column="0" >
             <ListView.View>
                 <GridView>
-                    <GridViewColumn DisplayMemberBinding="{Binding Path=Name}" Header="Navn" Width="Auto"/>
+                    <GridViewColumn DisplayMemberBinding="{Binding Path=Food.Name}" Header="Navn" Width="Auto"/>
                     <GridViewColumn DisplayMemberBinding="{Binding Path=Quantity}" Header="Antal" Width="Auto"/>
-                    <GridViewColumn DisplayMemberBinding="{Binding Path=Price}" Header="pris pr. stk" Width="Auto"/>
-                    <GridViewColumn DisplayMemberBinding="{Binding Path=Description}" Header="Beskrivelse" Width="200"/>
+                    <GridViewColumn DisplayMemberBinding="{Binding Path=Food.Price}" Header="pris pr. stk" Width="Auto"/>
+                    <GridViewColumn DisplayMemberBinding="{Binding Path=Food.Description}" Header="Beskrivelse" Width="200"/>
                 </GridView>
             </ListView.View>
         </ListView>
         <ComboBox Name="ccbPaymentCondition" ItemsSource="{Binding Source={StaticResource EnumPaymentCondition}}" SelectedItem="{Binding SelectedPaymentCondition, Mode=TwoWay}"  Grid.Column="0" Grid.Row="9" Height="20" />
-        <Button x:Name="btnCancel" Content="Tilbage" Command="{Binding btnCancelClicked}" Grid.Column="8" Grid.Row="10" Margin="15" />
-        <Button x:Name="btnSave" Content="Gem" Command="{Binding btnSaveClicked}" Grid.Column="9" Grid.Row="10" Margin="15" />
+        <Button x:Name="btnCancel" Content="Tilbage" Command="{Binding BtnCancelClicked}" Grid.Column="8" Grid.Row="10" Margin="15" />
+        <Button x:Name="btnSave" Content="Gem" Command="{Binding BtnSaveClicked}" Grid.Column="9" Grid.Row="10" Margin="15" />
     </Grid>
 </Page>

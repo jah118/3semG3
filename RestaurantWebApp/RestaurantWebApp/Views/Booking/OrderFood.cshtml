@@ -1,58 +1,109 @@
-﻿@model Tuple<RestaurantWebApp.DataTransferObject.OrderDTO, RestaurantWebApp.Model.FoodViewModel>
+﻿@using System.Web.UI.HtmlControls
+@model RestaurantWebApp.Model.FoodViewModel
+@*@model Tuple<RestaurantWebApp.DataTransferObject.OrderDTO, RestaurantWebApp.Model.FoodViewModel>*@
 @using (Html.BeginForm())
 {
     ViewBag.Title = "Madbestilling";
 }
 
+@section Styles {
+
+}
+
 <h2>Madbestilling</h2>
+<div class="container">
+    <div class="row">
 
-<div class="form-horizontal">
-    <div class="form-group">
+        <div class="form-horizontal">
+            <div class="form-group">
 
-        <div class="col-md-5 float-left">
-            <label>Retter</label>
-            @Html.ListBoxFor(model => model.Item2.Foods, new SelectList(Model.Item2.Foods, "Id", "Name"), new { Id="foodList", style = "width:100%" })
+                <div class="col-md-5 float-left">
+                    <label>Retter</label>
+                    @Html.ListBoxFor(model => model.Foods, new SelectList(Model.Drinks, "Name", "Name"), new { @class = "control - label", name= "tsFood", id = "tsFoods", size = "20" })
+                    <button id="AddFoodsBtn"> vælg mad</button>
+                </div>
+                <div class="col-md-5 float-right">
+                    <label> Drikkevarer</label>
+                    @Html.ListBoxFor(model => model.Drinks, new SelectList(Model.Drinks, "Name", "Name"), new { @class = "control - label", name = "tsDrinks", id = "tsDrinks", size = "20" })
 
-            <button onclick="AddFoods()" > vælg mad</button>
-            @*<input type="button" onclick="addFoods()" value="Vælg ret/retter" />*@
-        </div>
-        <div class="col-md-5 float-right">
-            <label> Drikkevarer</label>
-            @Html.ListBoxFor(model => model.Item2.Drinks, new SelectList(Model.Item2.Drinks, "Id", "Name"),new { @class = "control - label" })
-            <input type="button" value="Vælg drikkevarer" />
-        </div>
-        <div id="summaryDiv" class="col-md-12 float-left">
-            @Html.ListBoxFor(model => model.Item1.Foods, new SelectList(Model.Item1.Foods, "Id", "Name"), new { Id="summaryList", style = "width:100%"})
-            <input id="RemoveFromSummaryList" type="button" accept="removeFoods" value="Fjern ret/retter" />
+                    <input id="AddDrinksBtn" type="button" value="Vælg drikkevarer" />
+                </div>
+
+                <div id="summaryDiv" class="col-md-12 float-left">
+                    <hr />
+                    @Html.ListBoxFor(model => model.Foods,
+                        new SelectList(Model.Order.Foods, "Id", "Name"), new {Id = "summaryList", style = "width:100%", size = "20" })
+                    @* //TODO this needs a impl at this point no remove function *@
+                    <input id="RemoveFromSummaryList" type="button" accept="removeFoods" value="Fjern ret/retter" onclick=removeFoods();/>
+                </div>
+            </div>
         </div>
     </div>
 </div>
-
 
 <div>
     <input type="submit" value="Gem mad og drikke " class="btn btn-primary" />
 </div>
 
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $('#AddDrinksBtn').click(function () {
+                var selected = $('#tsDrinks').val();
+                $.each(selected,
+                    function (key, val) {
+                        $('#summaryList').append($("<option></option>").attr("value", val).text(val));
+                    });
 
-<script>
-    var foodList = document.getElementById("foodList");
-    function AddFoods() {
-        var x = foodList.selectedItem();
-    var foods = @Model.Item2;
-    var summaryList = @Model.Item1.Foods;
-    var selected = foodList.selectedItem;
-    summaryList.Add(selected);
-        var r = 1 + 1;
+                //works kinda
+                //$.each(selected, function (i, item) {
+                //    $('#tsDrinks1').append($('<option></option>', {
+                //        value: item.value,
+                //        text: item.text
+                //    }));
+                //});
 
-    }
+                //alert(selected);
+                //$.each(leftselected,
+                //    function(key, value) {
+                //        $('#rightSelectednumbers').append($("<option></option>").attr("value", value).text(value));
+                //    });
+            });
+        });
+
+        $(document).ready(function () {
+            $('#AddFoodsBtn').click(function () {
+                var selected = $('#tsFoods').val();
+                $.each(selected,
+                    function (key, val) {
+                        $('#summaryList').append($("<option></option>").attr("value", val).text(val));
+                    });
+            });
+        });
 
 
-    function removeFoods() {
-        var foods = @Model.Item2;
-        var summaryList = @Model.Item1.Foods;
-        var selected = summaryList.selectedItem;
-        summaryList.Remove(selected);
+        $(document).ready(function () {
+            $('#RemoveFromSummaryList').click(function () {
+                var selected = $('#summaryList').val();
+                $.each(selected,
+                    function (key, val) {
+                        $('#summaryList').remove($("<option></option>").attr("value", val).text(val));
+                    });
+            });
+        });
+    </script>
 
-     }
-</script>
+    @*<script>
 
+        //$('#test').click(function () { alert("Handler for .click() called.") });
+
+        $('#test').click(function () {
+            var selected = $('#myList option:selected').val;
+            //alert("Handler for .click() called." + selected );
+            $.each(selected,
+                function (key, value) {
+                    $('#summaryList').append($("<option></option>").attr("value", value).text(value));
+                });
+        });
+    </script>*@
+   }

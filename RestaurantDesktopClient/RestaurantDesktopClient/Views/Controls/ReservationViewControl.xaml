@@ -3,8 +3,6 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
-             xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
              xmlns:local="clr-namespace:RestaurantDesktopClient.Views.Controls"
              mc:Ignorable="d" 
                     d:DesignHeight="450" d:DesignWidth="800">
@@ -34,12 +32,6 @@
         <TextBlock x:Name="txtReservationNumber" Text="{Binding ReservationNumber, Mode=TwoWay}" VerticalAlignment="Center" Margin="0,2,0,2" Grid.Column="2"/>
         <Label Content="Borde: " Grid.Column="1" HorizontalAlignment="Right" Grid.Row="1"/>
         <ListView x:Name="lvTableNames" SelectionMode="Multiple" ItemsSource="{Binding ReservationTables, Mode=TwoWay}" SelectedItem="{Binding SetSelectedTables, Mode=TwoWay}" Margin="0,0,0,2" Grid.Column="2" Grid.ColumnSpan="2" Grid.Row="1">
-            <i:Interaction.Triggers>
-                <i:EventTrigger EventName="SelectionChanged">
-                    <i:InvokeCommandAction Command="{Binding SetSelectedTables}" CommandParameter="{Binding ElementName=lvTableNames}">
-                    </i:InvokeCommandAction>
-                </i:EventTrigger>
-            </i:Interaction.Triggers>
             <ListView.View>
                 <GridView>
                     <GridView.Columns>
@@ -62,7 +54,7 @@
         <Label Content="Kommentar: " HorizontalAlignment="Right" Grid.Row="7" Grid.Column="1" />
         <TextBox x:Name="txtReservationComments" Text="{Binding ReservationComment, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Grid.RowSpan="2" Grid.Column="2" Grid.ColumnSpan="2" Grid.Row="7" />
         <Button x:Name="btnOrderFood" Content="Bestil mad" Command="{Binding OrderFoodCommand}" Grid.Row="9" Grid.Column="3" VerticalAlignment="Top" HorizontalAlignment="Left" Width="75"/>
-        <Button x:Name="btnClearForms" Content="Nulstil" Grid.Row="9" Grid.Column="3"  VerticalAlignment="Top" HorizontalAlignment="Right" Width="75" Click="BtnClearForms_Click" />
+        <Button x:Name="btnClearForms" Content="Nulstil" Command="{Binding ClearValuesCommand}" Grid.Row="9" Grid.Column="3"  VerticalAlignment="Top" HorizontalAlignment="Right" Width="75" />
         <Grid Grid.Row="10" Grid.Column="1" Grid.ColumnSpan="3">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="3*"/>

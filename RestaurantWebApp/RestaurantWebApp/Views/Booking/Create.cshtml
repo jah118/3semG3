@@ -7,7 +7,8 @@
 <hr />
 @section Styles {
     @Styles.Render("~/Content/createView")
-    @Styles.Render("~/Content/cssjqryUi")
+    
+
     <link href="https://code.jquery.com/ui/1.12.1/themes/smoothness/jquery-ui.css" rel="stylesheet" type="text/css">
 }
 
@@ -28,7 +29,7 @@
                 <div class="form-group">
                     @Html.LabelFor(model => model.ReservationTime, new { @class = "control-label col-md-5" })
                     <div class="col-md-10">
-                        @Html.TextBoxFor(model => model.ReservationTime, new {@class = "form-control", placeholder="klik for at vælge dato" })
+                        @Html.TextBoxFor(model => model.ReservationTime, new { @class = "form-control", placeholder = "klik for at vælge dato" })
                         @Html.ValidationMessageFor(model => model.ReservationTime, "", new { @class = "text-danger" })
 
                         @Html.DropDownListFor(m => m.TimeSlots, new SelectList(Model.TimeSlots, "Date", "Time"), "Vælg tidspunkt", new { @class = "form-control" })
@@ -150,10 +151,10 @@
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <a href="/Booking/OrderFood" class="btn btn-primary">
-                    Bestil Mad
+                <!--<a href="/Booking/OrderFood" class="btn btn-primary">
+                    Bestil Mad-->
                     @* //TODO Mangler implmentation *@
-                </a>
+                <!--</a>-->
                 <input type="submit" value="Gem og afslut" class="btn btn-primary" />
             </div>
         </div>
@@ -169,15 +170,17 @@
 </div>
 
 @section Scripts {
-    @Scripts.Render("~/bundles/jqueryval")
+    @*//TODO for dette virker skal valdiation slået fra , der en fejl i opsetning der gør man ikke kan komme vidre fordi den mener dette ikke er en vaild date i reservation time.*@
+    @*@Scripts.Render("~/bundles/jqueryval")*@
     @Scripts.Render("~/bundles/jqueryui")
+
 
     <script>
         $(function () {
 
             $("#ReservationTime").datepicker({
                 dateFormat: "dd-mm-yy",
-                maxDate: '+1m +15d',
+                maxDate: '+3m +15d',
                 minDate: 0
             });
         });

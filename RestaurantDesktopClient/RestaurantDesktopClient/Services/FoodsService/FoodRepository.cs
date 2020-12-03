@@ -25,7 +25,7 @@ namespace RestaurantDesktopClient.Views.ViewModels
 
         public IEnumerable<FoodDTO> GetAll()
         {
-            List<FoodDTO> res = new List<FoodDTO>();
+            List<FoodDTO> res = null;
             try
             {
                 //TODO: autofac readup and write..
@@ -38,7 +38,7 @@ namespace RestaurantDesktopClient.Views.ViewModels
             catch
             {
             }
-            return res;
+            return res ?? new List<FoodDTO>();
         }
     }
 }

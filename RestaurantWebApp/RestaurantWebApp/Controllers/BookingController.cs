@@ -87,8 +87,8 @@ namespace RestaurantWebApp.Controllers
 
             if (time.Length > 0)
             {
-                var datetime = FormatTime.FormatterForReservationTimeFromString(date, time);
-                if (datetime != null) reservation.ReservationTime = datetime;
+                DateTime datetime = FormatTime.FormatterForReservationTimeFromString(date, time);
+                reservation.ReservationTime = datetime;
             }
 
             var r = Request.Form["Tables"];
@@ -125,7 +125,8 @@ namespace RestaurantWebApp.Controllers
                 var res = JsonConvert.DeserializeObject<ReservationDTO>(response.Content);
                 if (res != null)
                 {
-                    return OrderFood(res);
+                    //return OrderFood(res);
+                    RedirectToAction("OrderFood", res);
                 }
             }
 
@@ -197,8 +198,11 @@ namespace RestaurantWebApp.Controllers
         [HttpGet]
         public ActionResult OrderFood(ReservationDTO reservation)
         {
-            var foods = new FoodViewModel();
+            var foodsview = new FoodViewModel();
             IEnumerable<FoodDTO> fdto = _foodService.GetAll();
+
+           
+
 
             var Foods = new List<FoodDTO>();
             var Drinks = new List<FoodDTO>();
@@ -213,8 +217,7 @@ namespace RestaurantWebApp.Controllers
                     Drinks.Add(item);
                 }
             }
-            foods.Foods = Foods;
-            foods.Drinks = Drinks;
+
 
             OrderDTO order = _orderService.GetAll().Where(x => x.ReservationID == reservation.Id).OrderBy(x => x.OrderDate).FirstOrDefault();
             if (order == null)
@@ -225,9 +228,12 @@ namespace RestaurantWebApp.Controllers
                     PaymentCondition = PaymentCondition.Begyndt.ToString()
                 };
             }
+            foodsview.Foods = Foods;
+            foodsview.Drinks = Drinks;
+            foodsview.Order = order;
 
-            Tuple<OrderDTO, FoodViewModel> res = Tuple.Create(order, foods);
-            return View(res);
+            //Tuple<OrderDTO, FoodViewModel> res = Tuple.Create(order, foods);
+            return View(foodsview);
         }
 
         //GET: Login

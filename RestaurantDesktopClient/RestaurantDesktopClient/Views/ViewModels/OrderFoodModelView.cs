@@ -1,25 +1,23 @@
 ﻿using DataAccess.DataTransferObjects;
-using GalaSoft.MvvmLight.Command;
+using RestaurantDesktopClient.DataTransferObject;
 using RestaurantDesktopClient.Services.OrderService;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.Data;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace RestaurantDesktopClient.Views.ViewModels
 {
     class OrderFoodModelView
     {
+        #region Fields
         private int _reservationId;
+        private ObservableCollection<OrderLineDTO> _ordersFood;
+        #endregion
+        #region Properties
         public PaymentCondition SelectedPaymentCondition { get; set; }
-        public RelayCommand btnCancelClicked { get; set; }
-        public RelayCommand btnSaveClicked { get; set; }
-        private ObservableCollection<FoodDTO> _ordersFood;
-        public ObservableCollection<FoodDTO> SummaryFoods
+        public ObservableCollection<OrderLineDTO> SummaryFoods
         {
             get
             {
@@ -32,7 +30,7 @@ namespace RestaurantDesktopClient.Views.ViewModels
             get
             {
                 return _foodRepository.GetAll()
-                    .Where(x => x.foodCategoryName.Equals("Mad")).ToList();
+                    .Where(x => x.FoodCategoryName.Equals("Mad")).ToList();
             }
             set { }
         }
@@ -41,29 +39,59 @@ namespace RestaurantDesktopClient.Views.ViewModels
             get
             {
                 return _foodRepository.GetAll()
-                    .Where(x => x.foodCategoryName.Equals("Drikkevare")).ToList();
+                    .Where(x => x.FoodCategoryName.Equals("Drikkevare")).ToList();
             }
             set { }
         }
         private IRepository<FoodDTO> _foodRepository;
         private IRepository<OrderDTO> _orderRepository;
+        public FoodDTO SelectedFood
+        {
+            get { return null; }
+            set
+            {
+                AddToSummary(value);
+            }
+        }
+        public FoodDTO SelectedDrink
+        {
+            get { return null; }
+            set
+            {
+                AddToSummary(value);
+            }
+        }
+        public OrderLineDTO SelectedSummaryFood
+        {
+            get { return null; }
+            set
+            {
+                RemoveFromSummary(value);
+            }
+        }
+        #endregion
+        #region Relaycommand
+        public RelayCommand BtnCancelClicked { get; set; }
+        public RelayCommand BtnSaveClicked { get; set; }
+
+        #endregion
+
         public OrderFoodModelView(int reservationId)
         {
             _reservationId = reservationId;
-            btnCancelClicked = new RelayCommand(CancelClicked);
-            btnSaveClicked = new RelayCommand(SaveClicked);
+            BtnCancelClicked = new RelayCommand(CancelClicked);
+            BtnSaveClicked = new RelayCommand(SaveClicked);
             _foodRepository = new FoodRepository();
             _orderRepository = new OrderRepository();
             var order = _orderRepository.GetAll()
                 .Where(x => x.ReservationID == reservationId)
                 .OrderBy(x => x.OrderDate)
                 .FirstOrDefault();
-            _ordersFood = new ObservableCollection<FoodDTO>(order.Foods);
-            if(order != null)
+            _ordersFood = order != null ? new ObservableCollection<OrderLineDTO>(order.OrderLines) : new ObservableCollection<OrderLineDTO>();
+            if (order != null)
             {
                 SelectedPaymentCondition = (PaymentCondition)Enum.Parse(typeof(PaymentCondition), order.PaymentCondition);
             }
-
         }
         private void CancelClicked()
         {
@@ -73,27 +101,28 @@ namespace RestaurantDesktopClient.Views.ViewModels
         {
             _orderRepository.Create(new OrderDTO()
             {
-                Foods = _ordersFood.ToList(),
+                EmployeeID = 2, //TODO change when login are ready
+                OrderLines = _ordersFood.ToList(),
                 OrderDate = DateTime.Now,
                 ReservationID = _reservationId,
                 PaymentCondition = SelectedPaymentCondition.ToString(),
-            }) ;
+            });
             MainWindow.ChangeFrame(new ManageReservationView());
         }
-        private void addToSummary(FoodDTO obj)
+        private void AddToSummary(FoodDTO obj)
         {
-            if (!SummaryFoods.Contains(obj))
+            var found = SummaryFoods.Where(x => x.Food.Id == obj.Id).FirstOrDefault();
+            if (found == null)
             {
-                obj.Quantity++;
-                SummaryFoods.Add(obj);
+                SummaryFoods.Add(new OrderLineDTO{  Food = obj, Quantity = 1 });
             }
             else
             {
-                obj.Quantity++;
+                found.Quantity++;
             }
 
         }
-        private void RemoveFromSummary(FoodDTO obj)
+        private void RemoveFromSummary(OrderLineDTO obj)
         {
             if (obj.Quantity > 1)
             {
@@ -105,29 +134,6 @@ namespace RestaurantDesktopClient.Views.ViewModels
                 SummaryFoods.Remove(obj);
             }
         }
-        public FoodDTO SelectedFood
-        {
-            get { return null;}
-            set
-            {
-                addToSummary(value);
-            }
-        }
-        public FoodDTO SelectedDrink
-        {
-            get { return null;}
-            set
-            {
-                addToSummary(value);
-            }
-        }
-        public FoodDTO SelectedSummaryFood
-        {
-            get { return null;}
-            set
-            {
-                RemoveFromSummary(value);
-            }
-        }
+
     }
 }

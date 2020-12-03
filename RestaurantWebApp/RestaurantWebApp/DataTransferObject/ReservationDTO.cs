@@ -32,8 +32,8 @@ namespace RestaurantWebApp.DataTransferObject
 
         [Required]
         [Display(Name = "Reservationstidspunkt")]
-        [DisplayFormat(DataFormatString = "{dd-MM-yyyy HH:mm:ss}", ApplyFormatInEditMode = true)]
-        public DateTime? ReservationTime { get; set; }
+        [DisplayFormat(DataFormatString = "{dd-MM-yyyy HH:mm:ss}")]
+        public DateTime ReservationTime { get; set; }
 
         [Required]
         [Range(1, 25)]
