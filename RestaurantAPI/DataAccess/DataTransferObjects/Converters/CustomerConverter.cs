@@ -25,6 +25,7 @@ namespace DataAccess.DataTransferObjects.Converters
         {
             return new Customer()
             {
+                Id = c.Id,
                 Person = new Person()
                 {
                     Email = c.Email,

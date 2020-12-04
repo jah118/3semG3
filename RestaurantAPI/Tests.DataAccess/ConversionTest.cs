@@ -13,6 +13,228 @@ namespace DataAccess.Tests
     public class ConversionTest
     {
         #region TestDataMethods
+        private List<Customer> GetCustomers()
+        {
+            return new List<Customer>()
+            {
+                new Customer
+                {
+                    Id = 1,
+                    Person = new Person
+                    {
+                        Phone = "12345678",
+                        Email = "Person1@Test.com",
+                        FirstName = "Person1",
+                        LastName = "TestPerson1",
+                        Location = new Location
+                        {
+                            Address = "Address for TestPerson1",
+                            ZipCodeNavigation = new ZipId
+                            {
+                                ZipCode = "1000",
+                                City = "TestCity"
+                            },
+                        },
+                    },
+                },
+                new Customer
+                {
+                    Id = 2,
+                    Person = new Person
+                    {
+                        Phone = "87654321",
+                        Email = "Person2@Test.com",
+                        FirstName = "Person2",
+                        LastName = "TestPerson2",
+                        Location = new Location
+                        {
+                            Address = "Address for TestPerson2",
+                            ZipCodeNavigation = new ZipId
+                            {
+                                ZipCode = "2000",
+                                City = "TestCity2"
+                            },
+                        },
+                    },
+                }
+            };
+        }
+        private List<CustomerDTO> GetCustomerDTOs()
+        {
+            return new List<CustomerDTO>()
+            {
+                new CustomerDTO
+                {
+                    Id = 1,
+                    Phone = "12345678",
+                    Email = "Person1@Test.com",
+                    FirstName = "Person1",
+                    LastName = "TestPerson1",
+                    Address = "Address for TestPerson1",
+                    ZipCode = "1000",
+                    City = "TestCity"
+                },
+                new CustomerDTO
+                {
+                    Id = 2,
+                    Phone = "87654321",
+                    Email = "Person2@Test.com",
+                    FirstName = "Person2",
+                    LastName = "TestPerson2",
+                    Address = "Address for TestPerson2",
+                    ZipCode = "2000",
+                    City = "TestCity2"
+                }
+            };
+        }
+        private List<EmployeeDTO> GetEmployeeDTOs()
+        {
+            return new List<EmployeeDTO>()
+            {
+                new EmployeeDTO
+                {
+                    Id = 1,
+                    Title = "Medarbejder",
+                    Phone = "12345678",
+                    Email = "Person1@Test.com",
+                    FirstName = "Person1",
+                    LastName = "TestPerson1",
+                    Address = "Address for TestPerson1",
+                    ZipCode = "1000",
+                    City = "TestCity"
+                },
+                new EmployeeDTO
+                {
+                    Id = 2,
+                    Title = "TestMedarbejder",
+                    Phone = "87654321",
+                    Email = "Person2@Test.com",
+                    FirstName = "Person2",
+                    LastName = "TestPerson2",
+                    Address = "Address for TestPerson2",
+                    ZipCode = "2000",
+                    City = "TestCity2"
+                }
+            };
+        }
+        private List<Employee> GetEmployees()
+        {
+            return new List<Employee>()
+            {
+                new Employee
+                {
+                    Id = 1,
+                    Salary = 200,
+                    Title = new EmployeeTitle{Title = "Medarbejder" },
+                    Person = new Person
+                    {
+                        Phone = "12345678",
+                        Email = "Person1@Test.com",
+                        FirstName = "Person1",
+                        LastName = "TestPerson1",
+                        Location = new Location
+                        {
+                            Address = "Address for TestPerson1",
+                            ZipCodeNavigation = new ZipId
+                            {
+                                ZipCode = "1000",
+                                City = "TestCity"
+                            },
+                        },
+                    },
+                },
+                new Employee
+                {
+                    Id = 2,
+                    Salary = 100,
+                    Title = new EmployeeTitle{Title = "TestTitle" },
+                    Person = new Person
+                    {
+                        Phone = "87654321",
+                        Email = "Person2@Test.com",
+                        FirstName = "Person2",
+                        LastName = "TestPerson2",
+                        Location = new Location
+                        {
+                            Address = "Address for TestPerson2",
+                            ZipCodeNavigation = new ZipId
+                            {
+                                ZipCode = "2000",
+                                City = "TestCity2"
+                            },
+                        },
+                    },
+                }
+            };
+        }
+        private List<FoodCategory> GetFoodCategories()
+        {
+            return new List<FoodCategory>()
+            {
+                new FoodCategory
+                {
+                    Id = 1,
+                    Name = "Mad"
+                },
+                new FoodCategory
+                {
+                    Id = 2,
+                    Name = "Drikkevare"
+                }
+            };
+        }
+        private List<FoodCategoryDTO> GetFoodCategoriesDTO()
+        {
+            return new List<FoodCategoryDTO>()
+            {
+                new FoodCategoryDTO
+                {
+                    Id = 1,
+                    Name = "Mad",
+                },
+                new FoodCategoryDTO
+                {
+                    Id = 2,
+                    Name = "Drikkevare"
+                }
+            };
+        }
+        private List<RestaurantTablesDTO> GetRestaurantTablesDTO()
+        {
+            return new List<RestaurantTablesDTO>()
+            {
+                new RestaurantTablesDTO
+                {
+                    NoOfSeats = 3,
+                    TableNumber = 1,
+                    Id = 2,
+                },
+                new RestaurantTablesDTO
+                {
+                    NoOfSeats = 4,
+                    TableNumber = 2,
+                    Id = 3,
+                },
+            };
+        }
+        private List<RestaurantTables> GetRestaurantTables()
+        {
+            return new List<RestaurantTables>()
+            {
+                new RestaurantTables
+                {
+                    NoOfSeats = 3,
+                    TableNumber = 1,
+                    Id = 2,
+                },
+                new RestaurantTables
+                {
+                    NoOfSeats = 4,
+                    TableNumber = 2,
+                    Id = 3,
+                },
+            };
+        }
         private List<PriceDTO> GetPriceDTO()
         {
             return new List<PriceDTO>() {
@@ -169,6 +391,33 @@ namespace DataAccess.Tests
                 }
             };
         }
+
+        private List<ReservationDTO> GetReservationDTOs()
+        {
+            return new List<ReservationDTO>()
+            {
+                new ReservationDTO
+                {
+                    Id = 1,
+                    Note = "Some note for reservationDTO 1",
+                    Deposit = true,
+                    NoOfPeople = 3,
+                    ReservationDate = DateTime.Now.AddHours(5),
+                    ReservationTime = DateTime.Now.AddDays(2),
+                    Customer = new CustomerDTO{Id = 1}
+                },
+                new ReservationDTO
+                {
+                    Id = 2,
+                    Note = "Some note for reservationDTO 2",
+                    Deposit = false,
+                    NoOfPeople = 6,
+                    ReservationDate = DateTime.Now,
+                    ReservationTime = DateTime.Now.AddDays(2),
+                    Customer = new CustomerDTO{Id = 22}
+                },
+            };
+        }
         private List<Reservation> GetReservations()
         {
             return new List<Reservation>()
@@ -199,6 +448,147 @@ namespace DataAccess.Tests
         }
         #endregion
 
+        #region CustomerConversion
+        [TestMethod, TestCategory("Unit"), TestCategory("Converters")]
+        public void CustomerConversionCustomerDTOToCustomer()
+        {
+            //Arrange
+            CustomerDTO customerDTO = GetCustomerDTOs()[0];
+            //Act
+            Customer customer = Converter.Convert(customerDTO);
+            //Assert
+            Assert.AreEqual(customer.Id, customerDTO.Id);
+            Assert.AreEqual(customer.Person.Phone, customerDTO.Phone);
+            Assert.AreEqual(customer.Person.Email, customerDTO.Email);
+            Assert.AreEqual(customer.Person.FirstName, customerDTO.FirstName);
+            Assert.AreEqual(customer.Person.LastName, customerDTO.LastName);
+            Assert.AreEqual(customer.Person.Location.Address, customerDTO.Address);
+            Assert.AreEqual(customer.Person.Location.ZipCodeNavigation.ZipCode, customerDTO.ZipCode);
+            Assert.AreEqual(customer.Person.Location.ZipCodeNavigation.City, customerDTO.City);
+        }
+        [TestMethod, TestCategory("Unit"), TestCategory("Converters")]
+        public void CustomerConversionCustomerToCustomerDTO()
+        {
+            //Arrange
+            Customer customer = GetCustomers()[0];
+            //Act
+            CustomerDTO customerDTO = Converter.Convert(customer);
+            //Assert
+            Assert.AreEqual(customer.Id, customerDTO.Id);
+            Assert.AreEqual(customer.Person.Phone, customerDTO.Phone);
+            Assert.AreEqual(customer.Person.Email, customerDTO.Email);
+            Assert.AreEqual(customer.Person.FirstName, customerDTO.FirstName);
+            Assert.AreEqual(customer.Person.LastName, customerDTO.LastName);
+            Assert.AreEqual(customer.Person.Location.Address, customerDTO.Address);
+            Assert.AreEqual(customer.Person.Location.ZipCodeNavigation.ZipCode, customerDTO.ZipCode);
+            Assert.AreEqual(customer.Person.Location.ZipCodeNavigation.City, customerDTO.City);
+        }
+
+        #endregion
+
+        #region EmployeeConversion
+        [TestMethod, TestCategory("Unit"), TestCategory("Converters")]
+        public void EmployeeConversionEmployeeDTOToEmployee()
+        {
+            //Arrange
+            EmployeeDTO employeeDTO = GetEmployeeDTOs()[0];
+            //Act
+            Employee employee = Converter.Convert(employeeDTO);
+            //Assert
+            Assert.AreEqual(employee.Id, employeeDTO.Id);
+            Assert.AreEqual(employee.Title.Title, employeeDTO.Title);
+            Assert.AreEqual(employee.Person.Phone, employeeDTO.Phone);
+            Assert.AreEqual(employee.Person.Email, employeeDTO.Email);
+            Assert.AreEqual(employee.Person.FirstName, employeeDTO.FirstName);
+            Assert.AreEqual(employee.Person.LastName, employeeDTO.LastName);
+            Assert.AreEqual(employee.Person.Location.Address, employeeDTO.Address);
+            Assert.AreEqual(employee.Person.Location.ZipCode, employeeDTO.ZipCode);
+        }
+        [TestMethod, TestCategory("Unit"), TestCategory("Converters")]
+        public void EmployeeConversionEmployeeToEmployeeDTO()
+        {
+            //Arrange
+            Employee employee = GetEmployees()[0];
+            //Act
+            EmployeeDTO employeeDTO = Converter.Convert(employee);
+            //Assert
+            Assert.AreEqual(employee.Id, employeeDTO.Id);
+            Assert.AreEqual(employee.Title.Title, employeeDTO.Title);
+            Assert.AreEqual(employee.Person.Phone, employeeDTO.Phone);
+            Assert.AreEqual(employee.Person.Email, employeeDTO.Email);
+            Assert.AreEqual(employee.Person.FirstName, employeeDTO.FirstName);
+            Assert.AreEqual(employee.Person.LastName, employeeDTO.LastName);
+            Assert.AreEqual(employee.Person.Location.Address, employeeDTO.Address);
+            Assert.AreEqual(employee.Person.Location.ZipCodeNavigation.ZipCode, employeeDTO.ZipCode);
+            Assert.AreEqual(employee.Person.Location.ZipCodeNavigation.City, employeeDTO.City);
+        }
+        #endregion
+
+        #region FoodCategoryConversion
+        [TestMethod, TestCategory("Integration"), TestCategory("Converters")]
+        public void FoodCategoryConversionFoodCategoryDTOToFoodCategory()
+        {
+            //Arrange
+            List<FoodCategoryDTO> foodCategoriesDTO = GetFoodCategoriesDTO();
+            //Act
+            List<FoodCategory> foodCategorys = Converter.Convert(foodCategoriesDTO).ToList();
+            //Assert
+            for (int i = 0; i < foodCategoriesDTO.Count; i++)
+            {
+                Assert.AreEqual(foodCategoriesDTO.Count, foodCategorys.Count);
+                Assert.AreEqual(foodCategoriesDTO[i].Id, foodCategorys[i].Id);
+                Assert.AreEqual(foodCategoriesDTO[i].Name, foodCategorys[i].Name);
+            }
+        }
+        [TestMethod, TestCategory("Integration"), TestCategory("Converters")]
+        public void FoodCategoryConversionFoodCategoryToFoodCategoryDTO()
+        {
+            //Arrange
+            List<FoodCategory> foodCategories = GetFoodCategories();
+            //Act
+            List<FoodCategoryDTO> foodCategoryDTOs = Converter.Convert(foodCategories).ToList();
+            //Assert
+            for (int i = 0; i < foodCategories.Count; i++)
+            {
+                Assert.AreEqual(foodCategories.Count, foodCategoryDTOs.Count);
+                Assert.AreEqual(foodCategories[i].Id, foodCategoryDTOs[i].Id);
+                Assert.AreEqual(foodCategories[i].Name, foodCategoryDTOs[i].Name);
+            }
+        }
+        #endregion
+
+        #region RestaurantTablesConversion
+        [TestMethod, TestCategory("Integration"), TestCategory("Converters")]
+        public void RestaurantTablesConversionRestaurantTablesListToRestaurantTablesDTOList()
+        {
+            //Arrange
+            List<RestaurantTables> tables = GetRestaurantTables();
+            //Act
+            List<RestaurantTablesDTO> tablesDTO = Converter.Convert(tables).ToList();
+            //Assert
+            for (int i = 0; i < tablesDTO.Count; i++)
+            {
+                Assert.AreEqual(tables.Count, tablesDTO.Count);
+                Assert.AreEqual(tablesDTO[i].Id, tables[i].Id);
+                Assert.AreEqual(tablesDTO[i].NoOfSeats, tables[i].NoOfSeats);
+                Assert.AreEqual(tablesDTO[i].TableNumber, tables[i].TableNumber);
+            }
+        }
+        [TestMethod, TestCategory("Unit"), TestCategory("Converters")]
+        public void RestaurantTablesConversionRestaurantTablesDTOToRestaurantTables()
+        {
+            //Arrange
+            RestaurantTablesDTO tablesDTO = GetRestaurantTablesDTO()[0];
+            //Act
+            RestaurantTables tables = Converter.Convert(tablesDTO);
+            //Assert
+
+            Assert.AreEqual(tablesDTO.Id, tables.Id);
+            Assert.AreEqual(tablesDTO.NoOfSeats, tables.NoOfSeats);
+            Assert.AreEqual(tablesDTO.TableNumber, tables.TableNumber);
+        }
+        #endregion
+
         #region ReservationConversion
 
         [TestMethod, TestCategory("Integration"), TestCategory("Converters")]
@@ -212,14 +602,33 @@ namespace DataAccess.Tests
             for (int i = 0; i < reservations.Count; i++)
             {
                 Assert.AreEqual(reservations.Count, reservationDTOs.Count);
+
                 Assert.AreEqual(reservations[i].Id, reservationDTOs[i].Id);
-                Assert.AreEqual(reservations[i].Deposit, reservationDTOs[i].Deposit);
                 Assert.AreEqual(reservations[i].Note, reservationDTOs[i].Note);
+                Assert.AreEqual(reservations[i].Deposit, reservationDTOs[i].Deposit);
                 Assert.AreEqual(reservations[i].NoOfPeople, reservationDTOs[i].NoOfPeople);
                 Assert.AreEqual(reservations[i].ReservationDate, reservationDTOs[i].ReservationDate);
                 Assert.AreEqual(reservations[i].ReservationTime, reservationDTOs[i].ReservationTime);
             }
         }
+
+        [TestMethod, TestCategory("Integration"), TestCategory("Converters")]
+        public void ReservationConversionReservationDTOToReservation()
+        {
+            //Arrange
+            ReservationDTO reservationDTO = GetReservationDTOs()[0];
+            //Act
+            Reservation reservation = Converter.Convert(reservationDTO);
+            //Assert
+            Assert.AreEqual(reservation.Id, reservationDTO.Id);
+            Assert.AreEqual(reservation.Note, reservationDTO.Note);
+            Assert.AreEqual(reservation.Deposit, reservationDTO.Deposit);
+            Assert.AreEqual(reservation.NoOfPeople, reservationDTO.NoOfPeople);
+            Assert.AreEqual(reservation.ReservationDate, reservationDTO.ReservationDate);
+            Assert.AreEqual(reservation.ReservationTime, reservationDTO.ReservationTime);
+            Assert.AreEqual(reservation.CustomerId, reservationDTO.Customer.Id);
+        }
+
 
         #endregion
 

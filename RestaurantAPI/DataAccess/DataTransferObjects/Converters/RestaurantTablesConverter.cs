@@ -10,6 +10,7 @@ namespace DataAccess.DataTransferObjects.Converters
         {
             return new RestaurantTables()
             {
+                Id = obj.Id,
                 NoOfSeats = obj.NoOfSeats,
                 TableNumber = obj.TableNumber
             };
@@ -19,6 +20,7 @@ namespace DataAccess.DataTransferObjects.Converters
         {
             return new RestaurantTablesDTO(obj.Id)
             {
+                Id = obj.Id,
                 NoOfSeats = obj.NoOfSeats,
                 TableNumber = obj.TableNumber
             };

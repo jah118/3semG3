@@ -11,6 +11,7 @@ namespace DataAccess.DataTransferObjects.Converters
         {
             return new Reservation()
             {
+                Id = obj.Id,
                 CustomerId = obj.Customer.Id,
                 Deposit = obj.Deposit,
                 NoOfPeople = obj.NoOfPeople,
