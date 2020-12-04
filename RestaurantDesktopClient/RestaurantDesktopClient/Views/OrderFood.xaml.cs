@@ -1,6 +1,4 @@
-﻿using RestaurantDesktopClient.Services.OrderService;
-using RestaurantDesktopClient.Views.ViewModels;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -24,9 +22,7 @@ namespace RestaurantDesktopClient.Views
     {
         public OrderFood(int id)
         {
-            InitializeComponent(); 
-            OrderFoodModelView ofmv = new OrderFoodModelView(id);
-            this.DataContext = ofmv;
+            InitializeComponent();
         }
 
     }

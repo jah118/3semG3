@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using MvvmCross.Commands;
+using MvvmCross.Navigation;
 using MvvmCross.ViewModels;
 using RestaurantClientService.DataTransferObjects;
 using RestaurantClientService.Services;
@@ -14,6 +15,7 @@ namespace RestaurantClientService.ViewModels
     public class OrderFoodViewModel : MvxViewModel<ReservationDTO>
     {
         #region Fields
+        private readonly IMvxNavigationService _navigation;
         private int _reservationId;
         private ObservableCollection<OrderLineDTO> _ordersFood;
         #endregion
@@ -78,17 +80,23 @@ namespace RestaurantClientService.ViewModels
 
         #endregion
 
-        public OrderFoodViewModel(int reservationId,
+        public OrderFoodViewModel(IMvxNavigationService navigation,
             FoodRepository foodRepository,
             OrderRepository orderRepository)
         {
-            _reservationId = reservationId;
+            _navigation = navigation;
             BtnCancelClicked = new MvxCommand(CancelClicked);
             BtnSaveClicked = new MvxCommand(SaveClicked);
             _foodRepository = foodRepository;
             _orderRepository = orderRepository;
+        }
+
+        public override void Prepare(ReservationDTO parameter)
+        {
+            //Todo make sure concurrency is gooch
+            _reservationId = parameter.Id;
             var order = _orderRepository.GetAll()
-                .Where(x => x.ReservationID == reservationId)
+                .Where(x => x.ReservationID == _reservationId)
                 .OrderBy(x => x.OrderDate)
                 .FirstOrDefault();
             _ordersFood = order != null ? new ObservableCollection<OrderLineDTO>(order.OrderLines) : new ObservableCollection<OrderLineDTO>();
@@ -98,15 +106,9 @@ namespace RestaurantClientService.ViewModels
             }
         }
 
-        public override void Prepare(ReservationDTO parameter)
-        {
-            base.Prepare();
-        }
-
         private void CancelClicked()
         {
-            _na
-            MainWindow.ChangeFrame(new ManageReservationView());
+            _navigation.Navigate<ManageReservationViewModel>();
         }
         private void SaveClicked()
         {
@@ -118,7 +120,7 @@ namespace RestaurantClientService.ViewModels
                 ReservationID = _reservationId,
                 PaymentCondition = SelectedPaymentCondition.ToString(),
             });
-            MainWindow.ChangeFrame(new ManageReservationView());
+            _navigation.Navigate<ManageReservationViewModel>();
         }
         private void AddToSummary(FoodDTO obj)
         {

@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using MvvmCross;
 using MvvmCross.Commands;
 using MvvmCross.Navigation;
 using MvvmCross.ViewModels;
 using RestaurantClientService.DataTransferObjects;
+using RestaurantClientService.Interaction;
 using RestaurantClientService.Services;
 using RestaurantClientService.Services.CustomerService;
 using RestaurantClientService.Services.ReservationService;
@@ -22,6 +24,7 @@ namespace RestaurantClientService.ViewModels
         private readonly IRepository<TablesDTO> _tableRepository;
         private readonly IRepository<CustomerDTO> _customerRepository;
         private IMvxNavigationService _navigation;
+        private IMvxInteraction<BoolQuestion> _boolDialog;
         #endregion
         #region Properties
         public string Headline { get { return "Reservationer"; } }
@@ -162,9 +165,8 @@ namespace RestaurantClientService.ViewModels
             {
                 if (SelectedReservation != null)
                 {
-                    IRepository<CustomerDTO> ir = new CustomerRepository();
                     int.TryParse(value, out int id);
-                    SelectedReservation.Customer = ir.Get(id);
+                    SelectedReservation.Customer = _customerRepository.Get(id);
                 }
             }
         }
@@ -182,12 +184,17 @@ namespace RestaurantClientService.ViewModels
         public IMvxCommand ClearValuesCommand { get; set; }
         #endregion
 
+        #region Interactions
+        public IMvxInteraction<BoolQuestion> BoolDialog => _boolDialog;
+        #endregion
+
         public ManageReservationViewModel
             (IRepository<ReservationDTO> reservationRepository,
             IRepository<TablesDTO> tableRepository,
             IRepository<CustomerDTO> customerRepository,
             IMvxNavigationService navigation)
         {
+            _boolDialog = new MvxInteraction<BoolQuestion>();
             _navigation = navigation;
             _reservationRepository = reservationRepository;
             _tableRepository = tableRepository;
@@ -308,16 +315,13 @@ namespace RestaurantClientService.ViewModels
             if (SelectedReservation.Id > 0)
             {
                 _navigation.Navigate<OrderFoodViewModel, ReservationDTO>(SelectedReservation);
-                MainWindow.ChangeFrame(new OrderFood(SelectedReservation.Id));
             }
             else
             {
                 ReservationDTO _reservation = CreateReservation();
                 if (_reservation == null) return;
                 UpdateSelectedReservation(_reservation);
-                _navigation.Navigate<
-                >()
-                MainWindow.ChangeFrame(new OrderFood(_reservation.Id));
+                _navigation.Navigate<OrderFoodViewModel, ReservationDTO>(SelectedReservation);
             }
         }
         private void UpdateSelectedReservation(ReservationDTO reservation)
@@ -342,7 +346,7 @@ namespace RestaurantClientService.ViewModels
         public ReservationDTO CreateReservation()
         {
             var res = _reservationRepository.Create(SelectedReservation);
-            if (res == null) MessageBox.Show("Fejl ved oprettelse af reservation");
+            if (res == null) Mvx//TODO MessageBox.Show("Fejl ved oprettelse af reservation");
             return res;
         }
         private void ClearValues()
