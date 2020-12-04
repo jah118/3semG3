@@ -12,13 +12,14 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using MvvmCross.Platforms.Wpf.Views;
 
 namespace RestaurantDesktopClient.Views
 {
     /// <summary>
     /// Interaction logic for ManageTable.xaml
     /// </summary>
-    public partial class ManageTable : Page
+    public partial class ManageTable : MvxWpfView
     {
         public ManageTable()
         {

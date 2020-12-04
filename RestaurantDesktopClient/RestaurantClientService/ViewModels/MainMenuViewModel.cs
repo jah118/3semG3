@@ -18,5 +18,19 @@ namespace RestaurantClientService.ViewModels
         {
             _navigation.Navigate<ManageReservationViewModel>();
         }
+        private void ManageEmployee_Clicked()
+        {
+            _navigation.Navigate<ManageReservationViewModel>();
+        }
+
+        private void ManageCustomer_Clicked()
+        {
+            _navigation.Navigate<ManageReservationViewModel>();
+        }
+
+        private void ManageTables_Clicked()
+        {
+            _navigation.Navigate<ManageReservationViewModel>();
+        }
     }
 }

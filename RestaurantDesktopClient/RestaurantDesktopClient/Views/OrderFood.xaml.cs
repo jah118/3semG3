@@ -12,15 +12,16 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using MvvmCross.Platforms.Wpf.Views;
 
 namespace RestaurantDesktopClient.Views
 {
     /// <summary>
     /// Interaction logic for OrderFood.xaml
     /// </summary>
-    public partial class OrderFood : Page
+    public partial class OrderFood : MvxWpfView
     {
-        public OrderFood(int id)
+        public OrderFood()
         {
             InitializeComponent();
         }

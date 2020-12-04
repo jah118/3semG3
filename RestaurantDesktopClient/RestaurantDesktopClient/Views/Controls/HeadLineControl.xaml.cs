@@ -25,9 +25,5 @@ namespace RestaurantDesktopClient.Views.Controls
             InitializeComponent();
         }
 
-        internal void SetHeadline(string text)
-        {
-            lblManageEmployee.Content = text;
-        }
     }
 }

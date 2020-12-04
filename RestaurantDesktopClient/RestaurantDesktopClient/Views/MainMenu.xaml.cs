@@ -13,34 +13,16 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using MvvmCross.Platforms.Wpf.Views;
 
 namespace RestaurantDesktopClient.Views
 {
-    public partial class MainMenu : Page
+    public partial class MainMenu : MvxWindow
     {
         public MainMenu()
         {
             InitializeComponent();
         }
 
-        private void BtnManageEmployee_Click(object sender, RoutedEventArgs e)
-        {
-            MainWindow.ChangeFrame(new ManageEmployee());
-        }
-
-        private void BtnManageCusomter_Click(object sender, RoutedEventArgs e)
-        {
-            MainWindow.ChangeFrame(new ManageCustomer());
-        }
-
-        private void BtnReservatons_Click(object sender, RoutedEventArgs e)
-        {
-            MainWindow.ChangeFrame( new ManageReservationView());
-        }
-
-        private void BtnManageTables_Click(object sender, RoutedEventArgs e)
-        {
-            MainWindow.ChangeFrame(new ManageTable());
-        }
     }
 }

@@ -1,46 +1,50 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using MvvmCross;
-using MvvmCross.Commands;
+﻿using MvvmCross.Commands;
 using MvvmCross.Navigation;
 using MvvmCross.ViewModels;
 using RestaurantClientService.DataTransferObjects;
 using RestaurantClientService.Interaction;
 using RestaurantClientService.Services;
-using RestaurantClientService.Services.CustomerService;
-using RestaurantClientService.Services.ReservationService;
-using RestaurantClientService.Services.Table_Service;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Linq;
+using System.Runtime.CompilerServices;
 
 namespace RestaurantClientService.ViewModels
 {
     public class ManageReservationViewModel : MvxViewModel
     {
         #region Fields
+
         private static ReservationDTO _selectedReservation;
         private readonly IRepository<ReservationDTO> _reservationRepository;
         private readonly IRepository<TablesDTO> _tableRepository;
         private readonly IRepository<CustomerDTO> _customerRepository;
         private IMvxNavigationService _navigation;
         private MvxInteraction<IBoolQuestion> _boolDialog;
-        #endregion
+
+        #endregion Fields
+
         #region Properties
+
         public string Headline { get { return "Reservationer"; } }
         public TablesDTO SelectedTables { get; set; }
+
         public ReservationDTO SelectedReservation
         {
             get { return _selectedReservation ?? (_selectedReservation = new ReservationDTO()); }
             set { UpdateSelectedReservation(value); _selectedReservation = value; }
         }
+
         public DateTime GetReservationTimeDate
         {
             get => SelectedReservation != null ? SelectedReservation.ReservationTime : DateTime.Now;
             set { if (SelectedReservation != null) { SelectedReservation.ReservationTime = value; }; }
         }
-        public string GetReservationTimeMinuts { get => SelectedReservation != null ? TrimDateTime(SelectedReservation.ReservationTime).Minute + "" : "0"; set { } }
+
+        public string GetReservationTimeMinutes { get => SelectedReservation != null ? TrimDateTime(SelectedReservation.ReservationTime).Minute + "" : "0"; set { } }
         public string GetReservationTimeHours { get => SelectedReservation != null ? SelectedReservation.ReservationTime.Hour + "" : "0"; set { } }
+
         public TablesDTO SetSelectedTables
         {
             get
@@ -64,7 +68,6 @@ namespace RestaurantClientService.ViewModels
                         SelectedReservation.Tables.Add(value);
                     }
                 }
-
             }
         }
 
@@ -79,6 +82,7 @@ namespace RestaurantClientService.ViewModels
                 }
             }
         }
+
         public string ReservationNumber
         {
             get { return SelectedReservation != null ? SelectedReservation.Id + "" : ""; }
@@ -91,6 +95,7 @@ namespace RestaurantClientService.ViewModels
                 }
             }
         }
+
         public List<TablesDTO> ReservationTables
         {
             get
@@ -102,7 +107,6 @@ namespace RestaurantClientService.ViewModels
                 else
                 {
                     return _tableRepository.GetAll().ToList();
-
                 }
             }
             set
@@ -113,6 +117,7 @@ namespace RestaurantClientService.ViewModels
                 }
             }
         }
+
         public string ReservationNumOfPersons
         {
             get { return SelectedReservation != null ? SelectedReservation.NoOfPeople + "" : ""; }
@@ -125,6 +130,7 @@ namespace RestaurantClientService.ViewModels
                 }
             }
         }
+
         public DateTime ReservationDate
         {
             get { return SelectedReservation != null ? SelectedReservation.ReservationDate : DateTime.Now; }
@@ -136,6 +142,7 @@ namespace RestaurantClientService.ViewModels
                 }
             }
         }
+
         public DateTime ReservationTime
         {
             get { return SelectedReservation != null ? SelectedReservation.ReservationTime : DateTime.Now; }
@@ -147,6 +154,7 @@ namespace RestaurantClientService.ViewModels
                 }
             }
         }
+
         public bool ReservationDeposit
         {
             get => SelectedReservation != null ? SelectedReservation.Deposit : false;
@@ -158,6 +166,7 @@ namespace RestaurantClientService.ViewModels
                 }
             }
         }
+
         public string ReservationCustomer
         {
             get { return SelectedReservation.Customer != null ? SelectedReservation.Customer.Id + "" : ""; }
@@ -170,9 +179,11 @@ namespace RestaurantClientService.ViewModels
                 }
             }
         }
-       
-        #endregion
+
+        #endregion Properties
+
         #region relayCommands
+
         public IMvxCommand CreateReservationCommand { get; set; }
         public IMvxCommand RemoveReservationCommand { get; set; }
         public IMvxCommand UpdateReservationCommand { get; set; }
@@ -182,11 +193,14 @@ namespace RestaurantClientService.ViewModels
         public IMvxCommand ReservationTimeAddMinutes { get; set; }
         public IMvxCommand ReservationTimeMinMinutes { get; set; }
         public IMvxCommand ClearValuesCommand { get; set; }
-        #endregion
+
+        #endregion relayCommands
 
         #region Interactions
+
         public IMvxInteraction<IBoolQuestion> BoolDialog => _boolDialog;
-        #endregion
+
+        #endregion Interactions
 
         public ManageReservationViewModel
             (IRepository<ReservationDTO> reservationRepository,
@@ -201,7 +215,6 @@ namespace RestaurantClientService.ViewModels
             _customerRepository = customerRepository;
             SelectedTables = new TablesDTO();
             InitCommands();
-            
         }
 
         private void InitCommands()
@@ -217,13 +230,8 @@ namespace RestaurantClientService.ViewModels
             ClearValuesCommand = new MvxCommand(ClearValues);
         }
 
-        public event PropertyChangedEventHandler PropertyChanged;
-        protected void OnPropertyChanged([CallerMemberName] string name = null)
-        {
-            this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
-        }
+
         private List<ReservationDTO> _reservationSearchList;
-        
 
         public List<ReservationDTO> ReservationSearchList
         {
@@ -238,6 +246,7 @@ namespace RestaurantClientService.ViewModels
         }
 
         #region manageReservationControlBindings
+
         private void AddHoursToReservationTime()
         {
             if (SelectedReservation != null) SelectedReservation.ReservationTime = TrimDateTime(SelectedReservation.ReservationTime.AddHours(-1));
@@ -245,6 +254,7 @@ namespace RestaurantClientService.ViewModels
             this.OnPropertyChanged("GetReservationTimeDate");
             this.OnPropertyChanged("GetReservationTimeHours");
         }
+
         private void AddHoursFromReservationTime()
         {
             if (SelectedReservation != null) SelectedReservation.ReservationTime = TrimDateTime(SelectedReservation.ReservationTime.AddHours(1));
@@ -252,6 +262,7 @@ namespace RestaurantClientService.ViewModels
             this.OnPropertyChanged("GetReservationTimeDate");
             this.OnPropertyChanged("GetReservationTimeHours");
         }
+
         private void AddMinutesToReservationTime()
         {
             if (SelectedReservation != null) SelectedReservation.ReservationTime = TrimDateTime(SelectedReservation.ReservationTime.AddMinutes(15));
@@ -259,8 +270,8 @@ namespace RestaurantClientService.ViewModels
             this.OnPropertyChanged("GetReservationTimeDate");
             this.OnPropertyChanged("GetReservationTimeMinuts");
             this.OnPropertyChanged("GetReservationTimeHours");
-
         }
+
         private void MinMinutesFromReservationTime()
         {
             if (SelectedReservation != null) SelectedReservation.ReservationTime = TrimDateTime(SelectedReservation.ReservationTime.AddMinutes(-15));
@@ -268,6 +279,7 @@ namespace RestaurantClientService.ViewModels
             this.OnPropertyChanged("GetReservationTimeMinutes");
             this.OnPropertyChanged("GetReservationTimeHours");
         }
+
         private DateTime TrimDateTime(DateTime dt)
         {
             if (dt.Minute > 0 && dt.Minute < 15)
@@ -302,14 +314,15 @@ namespace RestaurantClientService.ViewModels
             }
             return dt;
         }
+
         public void UpdateReservation()
         {
-
         }
+
         public void RemoveReservation()
         {
-
         }
+
         public void OrderFood()
         {
             if (SelectedReservation.Id > 0)
@@ -324,6 +337,7 @@ namespace RestaurantClientService.ViewModels
                 _navigation.Navigate<OrderFoodViewModel, ReservationDTO>(SelectedReservation);
             }
         }
+
         private void UpdateSelectedReservation(ReservationDTO reservation)
         {
             _selectedReservation = reservation;
@@ -339,10 +353,12 @@ namespace RestaurantClientService.ViewModels
             OnPropertyChanged("GetReservationTimeMinutes");
             OnPropertyChanged("GetReservationTimeHours");
         }
+
         public void CreateAndExitReservation()
         {
             CreateReservation();
         }
+
         public ReservationDTO CreateReservation()
         {
             var res = _reservationRepository.Create(SelectedReservation);
@@ -355,6 +371,7 @@ namespace RestaurantClientService.ViewModels
             });//TODO MessageBox.Show("Fejl ved oprettelse af reservation");
             return res;
         }
+
         private void ClearValues()
         {
             UpdateSelectedReservation(new ReservationDTO()
@@ -363,6 +380,7 @@ namespace RestaurantClientService.ViewModels
                 Deposit = false,
             });
         }
-        #endregion
+
+        #endregion manageReservationControlBindings
     }
 }
