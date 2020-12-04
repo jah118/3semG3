@@ -185,7 +185,7 @@ namespace RestaurantClientService.ViewModels
         #endregion
 
         #region Interactions
-        public IMvxInteraction<BoolQuestion> BoolDialog => _boolDialog;
+        public IMvxInteraction<IBoolQuestion> BoolDialog => _boolDialog;
         #endregion
 
         public ManageReservationViewModel
@@ -194,7 +194,7 @@ namespace RestaurantClientService.ViewModels
             IRepository<CustomerDTO> customerRepository,
             IMvxNavigationService navigation)
         {
-            _boolDialog = new MvxInteraction<BoolQuestion>();
+            _boolDialog = new MvxInteraction<IBoolQuestion>();
             _navigation = navigation;
             _reservationRepository = reservationRepository;
             _tableRepository = tableRepository;
