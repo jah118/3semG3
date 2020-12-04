@@ -49,7 +49,7 @@
             <ListView.View>
                 <GridView>
                     <GridViewColumn DisplayMemberBinding="{Binding Path=Name}" Header="Navn" Width="Auto"/>
-                    <GridViewColumn DisplayMemberBinding="{Binding Path=Price}" Header="pris" Width="Auto"/>
+                    <GridViewColumn DisplayMemberBinding="{Binding Path=Price}" Header="Pris" Width="Auto"/>
                     <GridViewColumn DisplayMemberBinding="{Binding Path=Description}" Header="Beskrivelse" Width="200"/>
                 </GridView>
             </ListView.View>
@@ -61,7 +61,7 @@
             <ListView.View>
                 <GridView>
                     <GridViewColumn DisplayMemberBinding="{Binding Path=Name}" Header="Navn" Width="Auto"/>
-                    <GridViewColumn DisplayMemberBinding="{Binding Path=Price}" Header="pris" Width="Auto"/>
+                    <GridViewColumn DisplayMemberBinding="{Binding Path=Price}" Header="Pris" Width="Auto"/>
                     <GridViewColumn DisplayMemberBinding="{Binding Path=Description}" Header="Beskrivelse" Width="200"/>
                 </GridView>
             </ListView.View>
@@ -73,7 +73,7 @@
                 <GridView>
                     <GridViewColumn DisplayMemberBinding="{Binding Path=Food.Name}" Header="Navn" Width="Auto"/>
                     <GridViewColumn DisplayMemberBinding="{Binding Path=Quantity}" Header="Antal" Width="Auto"/>
-                    <GridViewColumn DisplayMemberBinding="{Binding Path=Food.Price}" Header="pris pr. stk" Width="Auto"/>
+                    <GridViewColumn DisplayMemberBinding="{Binding Path=Food.Price}" Header="Pris pr. stk" Width="Auto"/>
                     <GridViewColumn DisplayMemberBinding="{Binding Path=Food.Description}" Header="Beskrivelse" Width="200"/>
                 </GridView>
             </ListView.View>

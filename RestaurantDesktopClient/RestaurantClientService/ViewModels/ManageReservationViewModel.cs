@@ -1,22 +1,23 @@
-﻿using DataAccess.DataTransferObjects;
-using RestaurantDesktopClient.Reservation;
-using RestaurantDesktopClient.Services.CustomerService;
-using RestaurantDesktopClient.Services.Table_Service;
-using RestaurantDesktopClient.Views.ViewModels;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Windows;
+using MvvmCross.Commands;
+using MvvmCross.ViewModels;
+using RestaurantClientService.DataTransferObjects;
+using RestaurantClientService.Services;
+using RestaurantClientService.Services.CustomerService;
+using RestaurantClientService.Services.ReservationService;
+using RestaurantClientService.Services.Table_Service;
 
-namespace RestaurantDesktopClient.Views.ManageReservation
+namespace RestaurantClientService.ViewModels
 {
-    class ManageReservationViewModel : INotifyPropertyChanged
+    public class ManageReservationViewModel : MvxViewModel
     {
         #region Fields
         private static ReservationDTO _selectedReservation;
-        private readonly IRepository<ReservationDTO> repository = new ReservationRepository();
+        private readonly IRepository<ReservationDTO> _repository = new ReservationRepository();
         #endregion
         #region Properties
         public string Headline { get { return "Reservationer"; } }
@@ -167,18 +168,18 @@ namespace RestaurantDesktopClient.Views.ManageReservation
        
         #endregion
         #region relayCommands
-        public RelayCommand CreateReservationCommand { get; set; }
-        public RelayCommand RemoveReservationCommand { get; set; }
-        public RelayCommand UpdateReservationCommand { get; set; }
-        public RelayCommand OrderFoodCommand { get; set; }
-        public RelayCommand ReservationTimeAddHours { get; set; }
-        public RelayCommand ReservationTimeMinHours { get; set; }
-        public RelayCommand ReservationTimeAddMin { get; set; }
-        public RelayCommand ReservationTimeMinMinuts { get; set; }
-        public RelayCommand ClearValuesCommand { get; set; }
+        public IMvxCommand CreateReservationCommand { get; set; }
+        public IMvxCommand RemoveReservationCommand { get; set; }
+        public IMvxCommand UpdateReservationCommand { get; set; }
+        public IMvxCommand OrderFoodCommand { get; set; }
+        public IMvxCommand ReservationTimeAddHours { get; set; }
+        public IMvxCommand ReservationTimeMinHours { get; set; }
+        public IMvxCommand ReservationTimeAddMin { get; set; }
+        public IMvxCommand ReservationTimeMinMinutes { get; set; }
+        public IMvxCommand ClearValuesCommand { get; set; }
         #endregion
 
-        public ManageReservationViewModel()
+        public ManageReservationViewModel(IRepository<ReservationDTO> repository)
         {
             InitRelayCommands();
             SelectedTables = new TablesDTO();
@@ -186,15 +187,15 @@ namespace RestaurantDesktopClient.Views.ManageReservation
 
         private void InitRelayCommands()
         {
-            ReservationTimeAddHours = new RelayCommand(AddHoursFromReservationTime);
-            ReservationTimeMinHours = new RelayCommand(AddHoursToReservationTime);
-            ReservationTimeAddMin = new RelayCommand(AddMinutsToReservationTime);
-            ReservationTimeMinMinuts = new RelayCommand(MinMinutsFromReservationTime);
-            CreateReservationCommand = new RelayCommand(CreateAndExitReservation);
-            RemoveReservationCommand = new RelayCommand(RemoveReservation);
-            UpdateReservationCommand = new RelayCommand(UpdateReservation);
-            OrderFoodCommand = new RelayCommand(OrderFood);
-            ClearValuesCommand = new RelayCommand(ClearValues);
+            ReservationTimeAddHours = new MvxCommand(AddHoursFromReservationTime);
+            ReservationTimeMinHours = new MvxCommand(AddHoursToReservationTime);
+            ReservationTimeAddMin = new MvxCommand(AddMinutsToReservationTime);
+            ReservationTimeMinMinutes = new MvxCommand(MinMinutsFromReservationTime);
+            CreateReservationCommand = new MvxCommand(CreateAndExitReservation);
+            RemoveReservationCommand = new MvxCommand(RemoveReservation);
+            UpdateReservationCommand = new MvxCommand(UpdateReservation);
+            OrderFoodCommand = new MvxCommand(OrderFood);
+            ClearValuesCommand = new MvxCommand(ClearValues);
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -207,7 +208,7 @@ namespace RestaurantDesktopClient.Views.ManageReservation
         {
             get
             {
-                return _reservationSearchList ?? repository.GetAll().ToList();
+                return _reservationSearchList ?? _repository.GetAll().ToList();
             }
             set
             {
@@ -323,7 +324,7 @@ namespace RestaurantDesktopClient.Views.ManageReservation
         }
         public ReservationDTO CreateReservation()
         {
-            var res = repository.Create(SelectedReservation);
+            var res = _repository.Create(SelectedReservation);
             if (res == null) MessageBox.Show("Fejl ved oprettelse af reservation");
             return res;
         }

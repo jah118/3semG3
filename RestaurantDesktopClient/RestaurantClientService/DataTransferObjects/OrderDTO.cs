@@ -1,9 +1,8 @@
 ﻿using Newtonsoft.Json;
-using RestaurantDesktopClient.DataTransferObject;
 using System;
 using System.Collections.Generic;
 
-namespace DataAccess.DataTransferObjects
+namespace RestaurantClientService.DataTransferObjects
 {
     public class OrderDTO
     {

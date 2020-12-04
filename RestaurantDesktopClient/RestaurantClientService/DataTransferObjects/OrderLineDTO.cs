@@ -1,10 +1,9 @@
-﻿using DataAccess.DataTransferObjects;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using System.ComponentModel;
 
-namespace RestaurantDesktopClient.DataTransferObject
+namespace RestaurantClientService.DataTransferObjects
 {
-    class OrderLineDTO : INotifyPropertyChanged
+    public class OrderLineDTO : INotifyPropertyChanged
     {
         private int _quantity = 0;
         [JsonProperty("quantity")]

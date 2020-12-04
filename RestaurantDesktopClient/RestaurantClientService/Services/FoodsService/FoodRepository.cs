@@ -1,16 +1,17 @@
-﻿using DataAccess.DataTransferObjects;
+﻿using System.Collections.Generic;
 using Newtonsoft.Json;
+using RestaurantClientService.DataTransferObjects;
 using RestSharp;
-using System.Collections.Generic;
-using System.Configuration;
 
-namespace RestaurantDesktopClient.Views.ViewModels
+namespace RestaurantClientService.Services.FoodsService
 {
     internal class FoodRepository : IRepository<FoodDTO>
     {
-        public FoodRepository()
-        {
+        private readonly string _constring;
 
+        public FoodRepository(string constring)
+        {
+            _constring = constring;
         }
 
         public FoodDTO Create(FoodDTO t)

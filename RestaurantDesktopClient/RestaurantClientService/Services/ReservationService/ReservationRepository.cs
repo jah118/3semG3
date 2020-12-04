@@ -1,23 +1,19 @@
-﻿using DataAccess.DataTransferObjects;
-using Newtonsoft.Json;
-using RestaurantDesktopClient.Views.ViewModels;
+﻿using Newtonsoft.Json;
+using RestaurantClientService.DataTransferObjects;
 using RestSharp;
-using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Configuration;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace RestaurantDesktopClient.Reservation
+namespace RestaurantClientService.Services.ReservationService
 {
     public class ReservationRepository : IRepository<ReservationDTO>
     {
-        public ReservationRepository()
-        {
+        private readonly string _constring;
 
+        public ReservationRepository(string constring)
+        {
+            _constring = constring;
         }
+
         public ReservationDTO Create(ReservationDTO reservation)
         {
             ReservationDTO res = null;

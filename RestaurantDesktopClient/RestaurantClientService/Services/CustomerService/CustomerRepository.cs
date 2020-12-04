@@ -1,18 +1,19 @@
-﻿using DataAccess.DataTransferObjects;
-using Newtonsoft.Json;
-using RestaurantDesktopClient.Views.ViewModels;
-using RestSharp;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Configuration;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Newtonsoft.Json;
+using RestaurantClientService.DataTransferObjects;
+using RestSharp;
 
-namespace RestaurantDesktopClient.Services.CustomerService
+namespace RestaurantClientService.Services.CustomerService
 {
     class CustomerRepository : IRepository<CustomerDTO>
     {
+        private readonly string _constring;
+
+        public CustomerRepository(string constring)
+        {
+            _constring = constring;
+        }
         public CustomerDTO Create(CustomerDTO t)
         {
             throw new NotImplementedException();

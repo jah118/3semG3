@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace DataAccess.DataTransferObjects
+namespace RestaurantClientService.DataTransferObjects
 {
     public class FoodCategoryDTO
     {

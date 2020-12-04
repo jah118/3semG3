@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using RestaurantClientService.DataTransferObjects;
 
-namespace DataAccess.DataTransferObjects
+namespace RestaurantClientService.DataTransferObjects
 {
     public class ReservationDTO
     {

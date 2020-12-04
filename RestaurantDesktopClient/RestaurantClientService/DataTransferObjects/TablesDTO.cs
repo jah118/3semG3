@@ -1,5 +1,5 @@
 ﻿
-namespace DataAccess.DataTransferObjects
+namespace RestaurantClientService.DataTransferObjects
 {
     public partial class TablesDTO
     {

@@ -1,15 +1,15 @@
-﻿using DataAccess.DataTransferObjects;
-using RestaurantDesktopClient.DataTransferObject;
-using RestaurantDesktopClient.Services.OrderService;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Data;
 using System.Linq;
+using MvvmCross.ViewModels;
+using RestaurantClientService.Services;
+using RestaurantClientService.Services.FoodsService;
+using RestaurantClientService.Services.OrderService;
 
-namespace RestaurantDesktopClient.Views.ViewModels
+namespace RestaurantClientService.ViewModels
 {
-    class OrderFoodModelView
+    public class OrderFoodModelView : MvxViewModel
     {
         #region Fields
         private int _reservationId;

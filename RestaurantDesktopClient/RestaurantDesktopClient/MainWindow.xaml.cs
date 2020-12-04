@@ -13,24 +13,19 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using MvvmCross.Platforms.Wpf.Views;
 
 namespace RestaurantDesktopClient
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class MainWindow : MvxWindow
     {
-        private static Frame mainFrame;
         public MainWindow()
         {
             InitializeComponent();
-            mainFrame = MainFrame;
-            ChangeFrame(new MainMenu());
         }
-        public static void ChangeFrame(Page page)
-        {
-            mainFrame.Navigate(page);
-        }
+
     }
 }
