@@ -24,7 +24,7 @@ namespace RestaurantClientService.ViewModels
         private readonly IRepository<TablesDTO> _tableRepository;
         private readonly IRepository<CustomerDTO> _customerRepository;
         private IMvxNavigationService _navigation;
-        private IMvxInteraction<BoolQuestion> _boolDialog;
+        private MvxInteraction<IBoolQuestion> _boolDialog;
         #endregion
         #region Properties
         public string Headline { get { return "Reservationer"; } }
@@ -346,7 +346,13 @@ namespace RestaurantClientService.ViewModels
         public ReservationDTO CreateReservation()
         {
             var res = _reservationRepository.Create(SelectedReservation);
-            if (res == null) Mvx//TODO MessageBox.Show("Fejl ved oprettelse af reservation");
+            if (res == null) _boolDialog.Raise(new BoolQuestion()
+            {
+                BoolCallbackAction = async (ok) =>
+                {
+                },
+                Question = "Fejl ved oprettelse af reservation"
+            });//TODO MessageBox.Show("Fejl ved oprettelse af reservation");
             return res;
         }
         private void ClearValues()
