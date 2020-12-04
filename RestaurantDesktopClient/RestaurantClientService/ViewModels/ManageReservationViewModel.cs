@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using MvvmCross.Commands;
+using MvvmCross.Navigation;
 using MvvmCross.ViewModels;
 using RestaurantClientService.DataTransferObjects;
 using RestaurantClientService.Services;
@@ -17,7 +18,10 @@ namespace RestaurantClientService.ViewModels
     {
         #region Fields
         private static ReservationDTO _selectedReservation;
-        private readonly IRepository<ReservationDTO> _repository = new ReservationRepository();
+        private readonly IRepository<ReservationDTO> _reservationRepository;
+        private readonly IRepository<TablesDTO> _tableRepository;
+        private readonly IRepository<CustomerDTO> _customerRepository;
+        private IMvxNavigationService _navigation;
         #endregion
         #region Properties
         public string Headline { get { return "Reservationer"; } }
@@ -94,8 +98,7 @@ namespace RestaurantClientService.ViewModels
                 }
                 else
                 {
-                    IRepository<TablesDTO> ir = new TableRepository();
-                    return ir.GetAll().ToList();
+                    return _tableRepository.GetAll().ToList();
 
                 }
             }
@@ -174,23 +177,32 @@ namespace RestaurantClientService.ViewModels
         public IMvxCommand OrderFoodCommand { get; set; }
         public IMvxCommand ReservationTimeAddHours { get; set; }
         public IMvxCommand ReservationTimeMinHours { get; set; }
-        public IMvxCommand ReservationTimeAddMin { get; set; }
+        public IMvxCommand ReservationTimeAddMinutes { get; set; }
         public IMvxCommand ReservationTimeMinMinutes { get; set; }
         public IMvxCommand ClearValuesCommand { get; set; }
         #endregion
 
-        public ManageReservationViewModel(IRepository<ReservationDTO> repository)
+        public ManageReservationViewModel
+            (IRepository<ReservationDTO> reservationRepository,
+            IRepository<TablesDTO> tableRepository,
+            IRepository<CustomerDTO> customerRepository,
+            IMvxNavigationService navigation)
         {
-            InitRelayCommands();
+            _navigation = navigation;
+            _reservationRepository = reservationRepository;
+            _tableRepository = tableRepository;
+            _customerRepository = customerRepository;
             SelectedTables = new TablesDTO();
+            InitCommands();
+            
         }
 
-        private void InitRelayCommands()
+        private void InitCommands()
         {
             ReservationTimeAddHours = new MvxCommand(AddHoursFromReservationTime);
             ReservationTimeMinHours = new MvxCommand(AddHoursToReservationTime);
-            ReservationTimeAddMin = new MvxCommand(AddMinutsToReservationTime);
-            ReservationTimeMinMinutes = new MvxCommand(MinMinutsFromReservationTime);
+            ReservationTimeAddMinutes = new MvxCommand(AddMinutesToReservationTime);
+            ReservationTimeMinMinutes = new MvxCommand(MinMinutesFromReservationTime);
             CreateReservationCommand = new MvxCommand(CreateAndExitReservation);
             RemoveReservationCommand = new MvxCommand(RemoveReservation);
             UpdateReservationCommand = new MvxCommand(UpdateReservation);
@@ -204,11 +216,13 @@ namespace RestaurantClientService.ViewModels
             this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
         }
         private List<ReservationDTO> _reservationSearchList;
+        
+
         public List<ReservationDTO> ReservationSearchList
         {
             get
             {
-                return _reservationSearchList ?? _repository.GetAll().ToList();
+                return _reservationSearchList ?? _reservationRepository.GetAll().ToList();
             }
             set
             {
@@ -231,7 +245,7 @@ namespace RestaurantClientService.ViewModels
             this.OnPropertyChanged("GetReservationTimeDate");
             this.OnPropertyChanged("GetReservationTimeHours");
         }
-        private void AddMinutsToReservationTime()
+        private void AddMinutesToReservationTime()
         {
             if (SelectedReservation != null) SelectedReservation.ReservationTime = TrimDateTime(SelectedReservation.ReservationTime.AddMinutes(15));
 
@@ -240,11 +254,11 @@ namespace RestaurantClientService.ViewModels
             this.OnPropertyChanged("GetReservationTimeHours");
 
         }
-        private void MinMinutsFromReservationTime()
+        private void MinMinutesFromReservationTime()
         {
             if (SelectedReservation != null) SelectedReservation.ReservationTime = TrimDateTime(SelectedReservation.ReservationTime.AddMinutes(-15));
             this.OnPropertyChanged("GetReservationTimeDate");
-            this.OnPropertyChanged("GetReservationTimeMinuts");
+            this.OnPropertyChanged("GetReservationTimeMinutes");
             this.OnPropertyChanged("GetReservationTimeHours");
         }
         private DateTime TrimDateTime(DateTime dt)
@@ -293,6 +307,7 @@ namespace RestaurantClientService.ViewModels
         {
             if (SelectedReservation.Id > 0)
             {
+                _navigation.Navigate<OrderFoodViewModel, ReservationDTO>(SelectedReservation);
                 MainWindow.ChangeFrame(new OrderFood(SelectedReservation.Id));
             }
             else
@@ -300,6 +315,8 @@ namespace RestaurantClientService.ViewModels
                 ReservationDTO _reservation = CreateReservation();
                 if (_reservation == null) return;
                 UpdateSelectedReservation(_reservation);
+                _navigation.Navigate<
+                >()
                 MainWindow.ChangeFrame(new OrderFood(_reservation.Id));
             }
         }
@@ -315,7 +332,7 @@ namespace RestaurantClientService.ViewModels
             OnPropertyChanged("GetReservationTimeDate");
             OnPropertyChanged("ReservationDeposit");
             OnPropertyChanged("ReservationCustomer");
-            OnPropertyChanged("GetReservationTimeMinuts");
+            OnPropertyChanged("GetReservationTimeMinutes");
             OnPropertyChanged("GetReservationTimeHours");
         }
         public void CreateAndExitReservation()
@@ -324,7 +341,7 @@ namespace RestaurantClientService.ViewModels
         }
         public ReservationDTO CreateReservation()
         {
-            var res = _repository.Create(SelectedReservation);
+            var res = _reservationRepository.Create(SelectedReservation);
             if (res == null) MessageBox.Show("Fejl ved oprettelse af reservation");
             return res;
         }

@@ -52,7 +52,6 @@ namespace RestaurantClientService.Services.Table_Service
             catch
             {
             }
-
             return res;
         }
 

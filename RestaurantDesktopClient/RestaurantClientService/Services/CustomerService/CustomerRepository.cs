@@ -1,12 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using RestaurantClientService.DataTransferObjects;
 using RestSharp;
+using System;
+using System.Collections.Generic;
 
 namespace RestaurantClientService.Services.CustomerService
 {
-    class CustomerRepository : IRepository<CustomerDTO>
+    public class CustomerRepository : IRepository<CustomerDTO>
     {
         private readonly string _constring;
 
@@ -14,6 +14,7 @@ namespace RestaurantClientService.Services.CustomerService
         {
             _constring = constring;
         }
+
         public CustomerDTO Create(CustomerDTO t)
         {
             throw new NotImplementedException();
@@ -21,8 +22,7 @@ namespace RestaurantClientService.Services.CustomerService
 
         public CustomerDTO Get(int customerId)
         {
-            string constring = ConfigurationManager.ConnectionStrings["ServiceConString"].ConnectionString;
-            var client = new RestClient(constring);
+            var client = new RestClient(_constring);
 
             var request = new RestRequest("/customer/{Id}", Method.GET);
             request.AddUrlSegment("Id", customerId);

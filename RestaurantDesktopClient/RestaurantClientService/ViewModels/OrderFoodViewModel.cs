@@ -2,14 +2,16 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using MvvmCross.Commands;
 using MvvmCross.ViewModels;
+using RestaurantClientService.DataTransferObjects;
 using RestaurantClientService.Services;
 using RestaurantClientService.Services.FoodsService;
 using RestaurantClientService.Services.OrderService;
 
 namespace RestaurantClientService.ViewModels
 {
-    public class OrderFoodModelView : MvxViewModel
+    public class OrderFoodViewModel : MvxViewModel<ReservationDTO>
     {
         #region Fields
         private int _reservationId;
@@ -70,19 +72,21 @@ namespace RestaurantClientService.ViewModels
             }
         }
         #endregion
-        #region Relaycommand
-        public RelayCommand BtnCancelClicked { get; set; }
-        public RelayCommand BtnSaveClicked { get; set; }
+        #region Commands
+        public IMvxCommand BtnCancelClicked { get; set; }
+        public IMvxCommand BtnSaveClicked { get; set; }
 
         #endregion
 
-        public OrderFoodModelView(int reservationId)
+        public OrderFoodViewModel(int reservationId,
+            FoodRepository foodRepository,
+            OrderRepository orderRepository)
         {
             _reservationId = reservationId;
-            BtnCancelClicked = new RelayCommand(CancelClicked);
-            BtnSaveClicked = new RelayCommand(SaveClicked);
-            _foodRepository = new FoodRepository();
-            _orderRepository = new OrderRepository();
+            BtnCancelClicked = new MvxCommand(CancelClicked);
+            BtnSaveClicked = new MvxCommand(SaveClicked);
+            _foodRepository = foodRepository;
+            _orderRepository = orderRepository;
             var order = _orderRepository.GetAll()
                 .Where(x => x.ReservationID == reservationId)
                 .OrderBy(x => x.OrderDate)
@@ -93,8 +97,15 @@ namespace RestaurantClientService.ViewModels
                 SelectedPaymentCondition = (PaymentCondition)Enum.Parse(typeof(PaymentCondition), order.PaymentCondition);
             }
         }
+
+        public override void Prepare(ReservationDTO parameter)
+        {
+            base.Prepare();
+        }
+
         private void CancelClicked()
         {
+            _na
             MainWindow.ChangeFrame(new ManageReservationView());
         }
         private void SaveClicked()

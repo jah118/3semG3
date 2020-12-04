@@ -6,7 +6,7 @@ namespace RestaurantClientService.ViewModels
 {
     public class MainMenuViewModel : MvxViewModel
     {
-        private IMvxNavigationService _navigation;
+        private readonly IMvxNavigationService _navigation;
         public IMvxCommand BtnManageReservationClicked { get; set; }
         public MainMenuViewModel(IMvxNavigationService navigation)
         {
@@ -16,8 +16,7 @@ namespace RestaurantClientService.ViewModels
 
         private void ManageReservation_Clicked()
         {
-            _navigation.Navigate()
-            MainWindow.ChangeFrame(new ManageReservationView());
+            _navigation.Navigate<ManageReservationViewModel>();
         }
     }
 }

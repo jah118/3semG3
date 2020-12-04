@@ -19,8 +19,7 @@ namespace RestaurantClientService.Services.ReservationService
             ReservationDTO res = null;
             try
             {
-                string constring = ConfigurationManager.ConnectionStrings["ServiceConString"].ConnectionString;
-                var client = new RestClient(constring);
+                var client = new RestClient(_constring);
                 string json = JsonConvert.SerializeObject(reservation);
                 var request = new RestRequest("/reservation", Method.POST);
                 request.AddJsonBody(json);
@@ -38,8 +37,7 @@ namespace RestaurantClientService.Services.ReservationService
             ReservationDTO res = null;
             try
             {
-                string constring = ConfigurationManager.ConnectionStrings["ServiceConString"].ConnectionString;
-                var client = new RestClient(constring);
+                var client = new RestClient(_constring);
                 var request = new RestRequest("/reservation/{Id}", Method.GET);
                 request.AddUrlSegment("Id", id);
                 var response = client.Execute(request).Content;
@@ -56,8 +54,7 @@ namespace RestaurantClientService.Services.ReservationService
             List<ReservationDTO> res = null;
             try
             {
-                string constring = ConfigurationManager.ConnectionStrings["ServiceConString"].ConnectionString;
-                var client = new RestClient(constring);
+                var client = new RestClient(_constring);
                 var request = new RestRequest("/reservation", Method.GET);
                 var content = client.Execute(request).Content;
                 res = JsonConvert.DeserializeObject<List<ReservationDTO>>(content);

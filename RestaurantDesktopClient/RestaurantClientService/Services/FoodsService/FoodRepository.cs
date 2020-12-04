@@ -1,11 +1,11 @@
-﻿using System.Collections.Generic;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using RestaurantClientService.DataTransferObjects;
 using RestSharp;
+using System.Collections.Generic;
 
 namespace RestaurantClientService.Services.FoodsService
 {
-    internal class FoodRepository : IRepository<FoodDTO>
+    public class FoodRepository : IRepository<FoodDTO>
     {
         private readonly string _constring;
 
@@ -29,9 +29,7 @@ namespace RestaurantClientService.Services.FoodsService
             List<FoodDTO> res = null;
             try
             {
-                //TODO: autofac readup and write..
-                string constring = ConfigurationManager.ConnectionStrings["ServiceConString"].ConnectionString;
-                var client = new RestClient(constring);
+                var client = new RestClient(_constring);
                 var request = new RestRequest("/Food", Method.GET);
                 var content = client.Execute(request).Content;
                 res = JsonConvert.DeserializeObject<List<FoodDTO>>(content);
