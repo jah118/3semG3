@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DataAccess.DataTransferObjects
 {
@@ -13,7 +10,7 @@ namespace DataAccess.DataTransferObjects
         public int EmployeeID { get; set; }
         public DateTime OrderDate { get; set; }
         public string PaymentCondition { get; set; }
-        public List<FoodDTO> Foods { get; set; }
+        internal List<OrderLineDTO> OrderLines { get; set; }
 
     }
 }

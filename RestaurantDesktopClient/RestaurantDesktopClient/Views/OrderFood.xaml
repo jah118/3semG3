@@ -71,10 +71,10 @@
         <ListView x:Name="lvSummarySearchBox" ItemsSource="{Binding SummaryFoods}" SelectedItem="{Binding SelectedSummaryFood}" Grid.Row="6" Grid.RowSpan="3" Grid.ColumnSpan="10" Grid.Column="0" >
             <ListView.View>
                 <GridView>
-                    <GridViewColumn DisplayMemberBinding="{Binding Path=Name}" Header="Navn" Width="Auto"/>
+                    <GridViewColumn DisplayMemberBinding="{Binding Path=Food.Name}" Header="Navn" Width="Auto"/>
                     <GridViewColumn DisplayMemberBinding="{Binding Path=Quantity}" Header="Antal" Width="Auto"/>
-                    <GridViewColumn DisplayMemberBinding="{Binding Path=Price}" Header="pris pr. stk" Width="Auto"/>
-                    <GridViewColumn DisplayMemberBinding="{Binding Path=Description}" Header="Beskrivelse" Width="200"/>
+                    <GridViewColumn DisplayMemberBinding="{Binding Path=Food.Price}" Header="pris pr. stk" Width="Auto"/>
+                    <GridViewColumn DisplayMemberBinding="{Binding Path=Food.Description}" Header="Beskrivelse" Width="200"/>
                 </GridView>
             </ListView.View>
         </ListView>

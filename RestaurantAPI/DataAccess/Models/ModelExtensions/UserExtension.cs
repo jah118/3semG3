@@ -4,7 +4,7 @@ namespace DataAccess.Models
 {
     public partial class User
     {
-        public static bool ValidateAddedUser(UserDTO toValidate)
+        public static bool Validate(UserDTO toValidate)
         {
             if (toValidate == null) return false;
             //TODO make sure all cases are covered

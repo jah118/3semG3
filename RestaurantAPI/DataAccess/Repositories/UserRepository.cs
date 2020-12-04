@@ -31,7 +31,7 @@ namespace DataAccess.Repositories
             if (transactionEndpoint) _context.Database.BeginTransaction(IsolationLevel.Serializable);
             var (hash, salt) = PasswordHashing.CreateHash(password);
             //Validate
-            if (User.ValidateAddedUser(obj))
+            if (User.Validate(obj))
             {
                 var person = obj.AccountType switch
                 {

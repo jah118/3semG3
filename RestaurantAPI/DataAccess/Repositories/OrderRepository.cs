@@ -25,7 +25,7 @@ namespace DataAccess.Repositories
                 if (transactionEndpoint) _context.Database.BeginTransaction(IsolationLevel.Serializable);
                 var order = Converter.Convert(obj);
                 order.PaymentConditionId = _context.PaymentCondition.Where(x => x.Condition.Equals(obj.PaymentCondition)).FirstOrDefault().Id;
-                
+
                 var added = _context.RestaurantOrder.Add(order);
                 _context.SaveChanges();
                 _context.Database.CommitTransaction();
@@ -73,7 +73,9 @@ namespace DataAccess.Repositories
                 .Where(o => o.OrderNo == id)
                 .Include(f => f.OrderLine)
                     .ThenInclude(f => f.Food)
-                        .ThenInclude(f => f.FoodCategory)
+                    .ThenInclude(f => f.Price)
+                .Include(f => f.OrderLine)
+                    .ThenInclude(f=>f.Food.FoodCategory)
                 .Include(e => e.Employee)
                     .ThenInclude(e => e.Person)
                         .ThenInclude(e => e.Location)

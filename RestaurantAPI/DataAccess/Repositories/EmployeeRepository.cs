@@ -30,6 +30,13 @@ namespace DataAccess.Repositories
 
         internal EntityEntry<Employee> CreateEmployee(EmployeeDTO obj)
         {
+            var employee = Converter.Convert(obj);
+            var zipresolution = _context.ZipId.FirstOrDefault(zip =>
+                zip.ZipCode.Equals(employee.Person.Location.ZipCodeNavigation.ZipCode));
+            if (zipresolution != null)
+            {
+                employee.Person.Location.ZipCodeNavigation = zipresolution;
+            }
             return _context.Add(Converter.Convert(obj));
         }
 

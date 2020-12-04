@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using RestaurantDesktopClient.DataTransferObject;
+using System;
 using System.Collections.Generic;
 
 namespace DataAccess.DataTransferObjects
@@ -10,7 +12,8 @@ namespace DataAccess.DataTransferObjects
         public int EmployeeID { get; set; }
         public DateTime OrderDate { get; set; }
         public string PaymentCondition { get; set; }
-        public List<FoodDTO> Foods { get; set; }
+        [JsonProperty("orderLines")]
+        internal List<OrderLineDTO> OrderLines { get; set; }
 
 
     }
