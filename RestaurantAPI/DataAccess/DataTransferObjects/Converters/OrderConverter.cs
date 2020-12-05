@@ -9,28 +9,31 @@ namespace DataAccess.DataTransferObjects.Converters
 {
     public partial class Converter
     {
-        public static IEnumerable<OrderDTO> Convert(List<RestaurantOrder> obj)
-        {
-            List<OrderDTO> res = new List<OrderDTO>();
-            obj.ForEach((x) =>
-            {
-                res.Add(Convert(x));
-            });
-            return res;
-        }
+
         public static OrderDTO Convert(RestaurantOrder obj)
         {
-            OrderDTO orderDTO = new OrderDTO()
+            return new OrderDTO()
             {
                 EmployeeID = obj.EmployeeId,
                 OrderDate = obj.OrderDate,
                 OrderNo = obj.OrderNo,
                 PaymentCondition = obj.PaymentCondition.Condition,
                 ReservationID = obj.Reservation.Id,
-                OrderLines = new List<OrderLineDTO>()
+                OrderLines = Convert(obj.OrderLine)
+                //OrderLines = (ICollection<OrderLineDTO>)obj.OrderLine
+                //OrderLines = new List<OrderLineDTO>()
             };
-            obj.OrderLine.ToList().ForEach(x => orderDTO.OrderLines.Add(new OrderLineDTO { Food = Converter.Convert(x.Food), Quantity = x.Quantity }));
-            return orderDTO;
+            //OrderDTO orderDTO = new OrderDTO()
+            //{
+            //    EmployeeID = obj.EmployeeId,
+            //    OrderDate = obj.OrderDate,
+            //    OrderNo = obj.OrderNo,
+            //    PaymentCondition = obj.PaymentCondition.Condition,
+            //    ReservationID = obj.Reservation.Id,
+            //    OrderLines = new List<OrderLineDTO>()
+            //};
+            //obj.OrderLine.ToList().ForEach(x => orderDTO.OrderLines.Add(new OrderLineDTO { Food = Converter.Convert(x.Food), Quantity = x.Quantity }));
+            //return orderDTO;
         }
         public static RestaurantOrder Convert(OrderDTO obj)
         {
@@ -49,6 +52,19 @@ namespace DataAccess.DataTransferObjects.Converters
                 OrderNumberNavigation = order
             }).ToHashSet();
             return order;
+        }
+        public static IEnumerable<OrderDTO> Convert(List<RestaurantOrder> obj)
+        {
+            var res = new List<OrderDTO>();
+            foreach (var item in obj)
+            {
+                res.Add(Convert(item));
+            }
+            //obj.ForEach((x) =>
+            //{
+            //    res.Add(Convert(x));
+            //});
+            return res;
         }
     }
 }

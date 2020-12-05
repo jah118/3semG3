@@ -40,10 +40,17 @@ namespace RestaurantWebApp.Service
 
             return res;
         }
-
-        public Task<IRestResponse> CreateAsync(OrderDTO obj)
+        //todo clean up and test
+        public async Task<IRestResponse> CreateAsync(OrderDTO obj)
         {
-            throw new NotImplementedException();
+            var client = new RestClient(_conString);
+            //string json = JsonConvert.SerializeObject(obj);
+            var request = new RestRequest("/Order", Method.POST);
+            request.AddJsonBody(obj);
+            //var content = client.Execute(request).Content;
+            //res = JsonConvert.DeserializeObject<OrderDTO>(content);
+            var response = (await client.ExecuteAsync(request));
+            return response;
         }
 
         public bool Delete(OrderDTO obj)

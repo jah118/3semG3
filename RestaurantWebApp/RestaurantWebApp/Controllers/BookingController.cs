@@ -6,7 +6,6 @@ using RestaurantWebApp.Util;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Dynamic;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
@@ -19,14 +18,14 @@ namespace RestaurantWebApp.Controllers
     {
         private ControllerContext _context = new ControllerContext();
 
-        private readonly IBookingService _bookingService;
+        private readonly IReservationService _reservationService;
         private readonly ITableService _tableService;
         private readonly IFoodService _foodService;
         private readonly IOrderService _orderService;
 
-        public BookingController(IBookingService bookingService, ITableService tableService, IFoodService foodService, IOrderService orderService)
+        public BookingController(IReservationService reservationService, ITableService tableService, IFoodService foodService, IOrderService orderService)
         {
-            _bookingService = bookingService;
+            _reservationService = reservationService;
             _tableService = tableService;
             _foodService = foodService;
             _orderService = orderService;
@@ -50,7 +49,7 @@ namespace RestaurantWebApp.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.ServiceUnavailable);
             }
 
-            //rv.TimeSlots = _bookingService
+            //rv.TimeSlots = _reservationService
             //TODO  dette er temp  her skal være
 
             var ls = new List<ReservationTimesDTO>();
@@ -96,7 +95,7 @@ namespace RestaurantWebApp.Controllers
                 //dette tager tables som kommer som en lang string og laver dem om til en liste
                 try
                 {
-                    var tables = FormatStringToTables.StringOfIdToTables(r);
+                    var tables = ConvertStringToTables.StringOfIdToTables(r);
                     reservation.Tables = tables;
                 }
                 catch (FormatException e)
@@ -111,7 +110,7 @@ namespace RestaurantWebApp.Controllers
             //    return View(reservation);
             //}
 
-            var response = await _bookingService.CreateAsync(reservation);
+            var response = await _reservationService.CreateAsync(reservation);
 
             if (response.StatusCode == HttpStatusCode.OK && reservation.OrderingFood == false)
             {
@@ -171,6 +170,10 @@ namespace RestaurantWebApp.Controllers
         //public ActionResult OrderFood(ReservationDTO reservation)
         public ActionResult OrderFood()
         {
+
+            //TODO remove this when test arf made for order or this not need any more
+            //this just makes it so u can skip reservation page 
+
             //////////////////////////
 
             ReservationDTO reservation = new ReservationDTO(
@@ -180,16 +183,25 @@ namespace RestaurantWebApp.Controllers
                 5,
                 false,
                 "TEST",
-                new List<RestaurantTablesDTO>{ new RestaurantTablesDTO(97, 2, 97), new RestaurantTablesDTO(98, 4, 98) }
+                new List<RestaurantTablesDTO> { new RestaurantTablesDTO(97, 2, 97), new RestaurantTablesDTO(98, 4, 98) }
 
                 );
             ///////////////////////////////
 
             //reservation = reservation1;
 
-            var fdto = _foodService.GetAll();
+            if (reservation == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.Forbidden, "no valid reservaion");
+            }
 
+            var fdto = _foodService.GetAll();
+            if (fdto == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.ServiceUnavailable);
+            }
             var Foods = new List<FoodDTO>();
+            //IEnumerable<FoodDTO> Drinks = new List<FoodDTO>();
             var Drinks = new List<FoodDTO>();
             foreach (var item in fdto)
             {
@@ -203,56 +215,83 @@ namespace RestaurantWebApp.Controllers
                 }
             }
 
+            FoodViewModel model = new FoodViewModel();
 
-            OrderDTO order = _orderService.GetAll().Where(x => x.ReservationID == reservation.Id).OrderBy(x => x.OrderDate).FirstOrDefault();
-            if (order == null)
-            {
-                order = new OrderDTO
-                {
-                    ReservationID = reservation.Id,
-                    OrderDate = DateTime.Today,
-                    PaymentCondition = PaymentCondition.Begyndt.ToString()
-                };
-            }
+            CustomViewModel cvm = new CustomViewModel();
 
-            var foodsView = new FoodViewModel();
+            // //cvm.listDrink = Drinks;
+            // IEnumerable<FoodDTO> d;
 
-            foodsView.VmFoods = Foods; 
-            foodsView.VmDrinks = Drinks;
-            foodsView.VmOrder = order;
-            foodsView.VmReservation = reservation;
-            foodsView.VmOrderFoodAndDrinks = new List<FoodDTO>();
+            // model.VmFoods = Foods;
+            // model.VmDrinks = Drinks;
+            // model.Slf = GetSelectListItems(Foods);
+            // model.Sld = GetSelectListItems(Drinks);
+            // model.VmOrderFoodAndDrinks = new List<SelectList>();
 
-            dynamic mymodel = new ExpandoObject();
+            var lsback = new List<FoodDTO>();
 
-            mymodel.Mad = Foods;
-            mymodel.Drikkevare = Drinks;
-            mymodel.Bestilt = new List<FoodDTO>();
-            //var model = new FoodViewModel { vmDrinks = Drinks, vmFoods = Foods, vmOrder = order};
+            Tuple<List<FoodDTO>, List<FoodDTO>, List<FoodDTO>, ReservationDTO> res = Tuple.Create(Foods, Drinks, lsback, reservation);
 
-            //Tuple<OrderDTO, FoodViewModel> res = Tuple.Create(order, foodsView);
-            //foodsView
-            return View(foodsView);
+            return View(res);
         }
 
         // POST: Booking/OrderFoods
         [HttpPost]
-        public ActionResult OrderFood(FoodViewModel res)
+        //public async Task<ActionResult> OrderFood(List<string> Item3, FormCollection collection, ReservationDTO Item4, string ReservationNumber)
+        public async Task<ActionResult> OrderFood(List<string> Item3, string ReservationNumber)
+        //public async Task<ActionResult> OrderFood(string testhej)
         {
-            var data = res;
-            var date2 = Request.Form["s"];
-            var date22 = Request.Form["VmOrderFoodAndDrinks"];
-            //    var client = new RestClient("https://localhost:44349/api/Food");
+            //var data = res;
+            //var data = Request.Form["Item1"];
+            //var data1 = Request.Form["Item2"];
+            //var data2 = Request.Form["Item3"];
+            var data3 = Request.Form["ReservationNumber"];
+            //var date22 = Request.Form["VmOrderFoodAndDrinks"];
 
-            //    var request = new RestRequest("Food/{FoodId}", Method.GET);
+            List<FoodDTO> foodsListFromApi = _foodService.GetAll().ToList();
+            var allGood = int.TryParse(data3, out var ReservationId);
+            if (Item3.Count > 0 && allGood)
+            {
+                var orderLineList = ConvertStringToOrderLines.ListOfFoodsIdToOrderLines(Item3, foodsListFromApi);
+                var r = new ReservationDTO(ReservationId);
+                OrderDTO order = _orderService.GetAll().Where(x => x.ReservationID == r.Id).OrderBy(x => x.OrderDate).FirstOrDefault();
+                if (order == null)
+                {
+                    order = new OrderDTO
+                    {
+                        ReservationID = r.Id,
+                        OrderDate = DateTime.Today,
+                        PaymentCondition = PaymentCondition.Begyndt.ToString(),
+                        OrderLines = orderLineList
+                    };
+                }
+                else
+                {
+                    //TODO add logic to handel if is in use by a order
+                }
 
-            //    request.AddUrlSegment("{FoodId", 1);
+                var response = await _orderService.CreateAsync(order);
 
-            //    var content = client.Execute(request).Content;
+                if (response.StatusCode == HttpStatusCode.OK)
+                {
+                    return RedirectToAction("Index");
+                }
+            }
+            else
+            {
+                //TODO add error msg that no res id matched/wasChanged or was not net from the creation of reservation
+                //if all good fails
 
-            return View();
+                //TODO add error msg to view
+                //NO Food were selected
+                //throw new NotImplementedException("NO Food were selected or no food return from post");
+                return View(ReservationNumber);
+            }
+
+            //TODO add so same view return on fail  with same reservaion id.
+
+            return View(ReservationNumber);
+            //return View();
         }
-
-
     }
 }

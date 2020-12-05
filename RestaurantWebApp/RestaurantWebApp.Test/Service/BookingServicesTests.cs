@@ -12,11 +12,11 @@ namespace RestaurantWebApp.Test.Service
     [TestClass]
     public class BookingServicesTests
     {
-        private readonly IBookingService _bookingService;
+        private readonly IReservationService _reservationService;
 
-        public BookingServicesTests(IBookingService bookingService)
+        public BookingServicesTests(IReservationService reservationService)
         {
-            _bookingService = bookingService;
+            _reservationService = reservationService;
         }
 
 
@@ -32,7 +32,7 @@ namespace RestaurantWebApp.Test.Service
                 new List<RestaurantTablesDTO>());
 
             //Act
-            var response = _bookingService.CreateAsync(reservation).Result;
+            var response = _reservationService.CreateAsync(reservation).Result;
 
             //Assert
             //Assert.AreEqual(response.StatusCode, HttpStatusCode.OK);

@@ -1,42 +1,46 @@
 ﻿using DataAccess;
-using DataAccess.Repositories;
 using DataAccess.DataTransferObjects;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace RestaurantAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
     [ApiConventionType(typeof(DefaultApiConventions))]
-    public class OrderController : Controller
+    public class OrderController : ControllerBase
     {
-        private IRepository<OrderDTO> _repository;
-        public OrderController(IRepository<OrderDTO> repo)
+        private readonly IRepository<OrderDTO> _orderRepository;
+
+        public OrderController(IRepository<OrderDTO> orderOrderRepository)
         {
-            _repository = repo;
+            _orderRepository = orderOrderRepository;
         }
+
         [HttpGet]
         public IActionResult Get()
         {
-            return Ok(_repository.GetAll());
+            var res = _orderRepository.GetAll();
+            return res != null ? (IActionResult)Ok(res) : NotFound();
         }
 
         [HttpGet("{id}")]
         public IActionResult Get(int id)
         {
-            return Ok(_repository.GetById(id));
+            var res = _orderRepository.GetById(id);
+            return res != null ? (IActionResult)Ok(res) : NotFound(id);
+        }
+
+        [HttpPut]
+        public IActionResult Put(int id, [FromBody] ReservationDTO value)
+        {
+            return NotFound();
         }
 
         [HttpPost]
         public IActionResult Post([FromBody] OrderDTO value)
         {
-            var res = _repository.Create(value);
-
-            return res != null ? Ok(res) : Conflict(value);
+            var res = _orderRepository.Create(value);
+            return res != null ? (IActionResult)Ok(res) : Conflict(value);
         }
     }
 }

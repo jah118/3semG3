@@ -9,18 +9,13 @@ using Newtonsoft.Json;
 
 namespace RestaurantWebApp.Service
 {
-    public class BookingServices : IBookingService
+    public class ReservationService : IReservationService
     {
         private readonly string _connectionString;
 
-        public BookingServices(string constring)
+        public ReservationService(string constring)
         {
             _connectionString = constring;
-        }
-
-        public UserDTO GetUser(string v)
-        {
-            throw new System.NotImplementedException();
         }
 
         public IEnumerable<ReservationDTO> GetAll()
@@ -30,19 +25,14 @@ namespace RestaurantWebApp.Service
 
         public ReservationDTO GetById(int id)
         {
-            throw new System.NotImplementedException();
+            var client = new RestClient(_connectionString);
+            var request = new RestRequest("/Reservation/{id}", Method.POST);
+            request.AddParameter("Id", id);
+            var content = client.Execute(request).Content;
+            var res = JsonConvert.DeserializeObject<ReservationDTO>(content);
+            return res;
         }
-
-        //public bool Create(ReservationDTO obj)
-        //{
-        //    var client = new RestClient(_connectionString);
-        //    var request = new RestRequest("/Reservation", Method.POST);
-        //    request.AddJsonBody(obj);
-        //    var response = client.Execute(request).IsSuccessful;
-
-        //    return response;
-        //}
-
+        
         public ReservationDTO Update(ReservationDTO obj)
         {
             throw new System.NotImplementedException();
@@ -58,9 +48,14 @@ namespace RestaurantWebApp.Service
             throw new System.NotImplementedException();
         }
 
-        public Task<ReservationDTO> GetByIdAsync(int id)
+        public async Task<ReservationDTO> GetByIdAsync(int id)
         {
-            throw new System.NotImplementedException();
+            var client = new RestClient(_connectionString);
+            var request = new RestRequest("/Reservation/{id}", Method.POST);
+            request.AddParameter("Id", id);
+            var content = (await client.ExecuteAsync(request)).Content;
+            var res = JsonConvert.DeserializeObject<ReservationDTO>(content);
+            return res;
         }
 
         public async Task<IRestResponse> CreateAsync(ReservationDTO obj)

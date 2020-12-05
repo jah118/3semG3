@@ -13,9 +13,14 @@ namespace RestaurantWebApp.DataTransferObject
             OrderingFood = false;
         }
 
+        public ReservationDTO(int id)
+        {
+            Id = id;
+        }
+
         //for testing
         public ReservationDTO(int id, CustomerDTO customer, DateTime reservationTime, int noOfPeople,
-            bool deposit, string note, IEnumerable<RestaurantTablesDTO> restaurantTables) :this()
+            bool deposit, string note, IEnumerable<RestaurantTablesDTO> restaurantTables) : this()
         {
             Id = id;
             Customer = customer;
@@ -27,7 +32,7 @@ namespace RestaurantWebApp.DataTransferObject
         }
 
         public int Id { get; set; }
-        public DateTime ReservationDate { get;}
+        public DateTime ReservationDate { get; }
 
         [Required] public CustomerDTO Customer { get; set; }
 
