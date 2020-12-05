@@ -20,7 +20,7 @@ namespace RestaurantWebApp.Test.Util
             var lastTable = new RestaurantTablesDTO(7, 0, 0);
 
             //Act
-            var tables = FormatStringToTables.StringOfIdToTables(stringOfTables);
+            var tables = ConvertStringToTables.StringOfIdToTables(stringOfTables);
             var restaurantTables = tables.ToList();
 
             //Assert
@@ -39,7 +39,7 @@ namespace RestaurantWebApp.Test.Util
             const string stringOfTables = "1, ,3,5,7";
 
             //Act /
-            Assert.ThrowsException<FormatException>(() => FormatStringToTables.StringOfIdToTables(stringOfTables));
+            Assert.ThrowsException<FormatException>(() => ConvertStringToTables.StringOfIdToTables(stringOfTables));
         }
 
         [TestMethod]
@@ -49,7 +49,7 @@ namespace RestaurantWebApp.Test.Util
             const string stringOfTables = "   ";
 
             //Act /
-            Assert.ThrowsException<FormatException>(() => FormatStringToTables.StringOfIdToTables(stringOfTables));
+            Assert.ThrowsException<FormatException>(() => ConvertStringToTables.StringOfIdToTables(stringOfTables));
         }
     }
 }

@@ -28,7 +28,7 @@
                     </div>
                     <div class="form-group">
                         @* //TODO mangler bedre implemtions *@
-                        <a href="/Booking/Register" class="btn btn-primary">Opret login</a>
+                        <a href="/Account/Register" class="btn btn-primary">Opret login</a>
                         <input type="submit" name="submit" class="btn btn-primary" value="Login" />
                         <button class="btn btn-primary" onclick="sendData();">fddfdsf</button>
                         <input id="submit" type="submit" value="Login" class="btn btn-primary" onclick="sendData();" />
@@ -83,26 +83,27 @@
                 }
 
             });
-            var username = "user";
-            var password = "pwd";
 
-            var url = 'https://localhost:44386/api/User/Authenticate';
-            $.ajax({​​
-                url: url,
-                success: function(json) {​​
-                    alert("Success", json);
-                }​​,
-                error: function(XMLHttpRequest, textStatus, errorThrown) {​​
-                    alert(textStatus, errorThrown);
-                }​​,
+            //var username = "user";
+            //var password = "pwd";
 
-                //headers: {​​'Authorization': 'Bearer bWFkaHNvbWUxMjM='}​​,
-                beforeSend: function (xhr) {​​
-                    xhr.setRequestHeader("Authorization", "Bearer" + btoa(username + ":" + password));
-                }​​,
-                type: 'GET',
-                contentType: 'json',
-            }​​);
+            //var url = 'https://localhost:44386/api/User/Authenticate';
+            //$.ajax({​​
+            //    url: url,
+            //    success: function(json) {​​
+            //        alert("Success", json);
+            //    }​​,
+            //    error: function(XMLHttpRequest, textStatus, errorThrown) {​​
+            //        alert(textStatus, errorThrown);
+            //    }​​,
+
+            //    //headers: {​​'Authorization': 'Bearer bWFkaHNvbWUxMjM='}​​,
+            //    beforeSend: function (xhr) {​​
+            //        xhr.setRequestHeader("Authorization", "Bearer" + btoa(username + ":" + password));
+            //    }​​,
+            //    type: 'GET',
+            //    contentType: 'json',
+            //}​​);
 
 
 
