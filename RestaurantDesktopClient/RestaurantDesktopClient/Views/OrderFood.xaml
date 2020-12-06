@@ -7,7 +7,8 @@
       xmlns:sys="clr-namespace:System;assembly=mscorlib"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
-      Title="OrderFood">
+      Title="OrderFood"
+      DataContext="{Binding F, Source={StaticResource Locator}}">
     <Page.Resources>
         <ObjectDataProvider x:Key="EnumPaymentCondition" MethodName="GetValues" ObjectType="{x:Type sys:Enum}">
             <ObjectDataProvider.MethodParameters>

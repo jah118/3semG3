@@ -13,17 +13,24 @@ namespace RestaurantDesktopClient.Services.OrderService
 {
     class OrderRepository : IRepository<OrderDTO>
     {
+        private string _constring;
+
         public OrderRepository()
         {
 
         }
+
+        public OrderRepository(string constring)
+        {
+            this._constring = constring;
+        }
+
         public OrderDTO Create(OrderDTO order)
         {
             OrderDTO res = null;
             try
             {
-                string constring = ConfigurationManager.ConnectionStrings["ServiceConString"].ConnectionString;
-                var client = new RestClient(constring);
+                var client = new RestClient(_constring);
                 string json = JsonConvert.SerializeObject(order);
                 var request = new RestRequest("/order", Method.POST);
                 request.AddJsonBody(json);
@@ -40,8 +47,7 @@ namespace RestaurantDesktopClient.Services.OrderService
             IEnumerable<OrderDTO> res = new List<OrderDTO>();
             try
             {
-                string constring = ConfigurationManager.ConnectionStrings["ServiceConString"].ConnectionString;
-                var client = new RestClient(constring);
+                var client = new RestClient(_constring);
                 var request = new RestRequest("/order", Method.GET);
                 var response = client.Execute(request).Content;
                 res = JsonConvert.DeserializeObject<IEnumerable<OrderDTO>>(response);
@@ -57,8 +63,7 @@ namespace RestaurantDesktopClient.Services.OrderService
             OrderDTO res = null;
             try
             {
-                string constring = ConfigurationManager.ConnectionStrings["ServiceConString"].ConnectionString;
-                var client = new RestClient(constring);
+                var client = new RestClient(_constring);
                 var request = new RestRequest("/order/{Id}", Method.GET);
                 request.AddUrlSegment("Id", id);
                 var response = client.Execute(request).Content;

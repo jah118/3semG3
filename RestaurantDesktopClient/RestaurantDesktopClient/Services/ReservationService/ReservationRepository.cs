@@ -14,17 +14,24 @@ namespace RestaurantDesktopClient.Reservation
 {
     public class ReservationRepository : IRepository<ReservationDTO>
     {
+        private string _constring;
+
         public ReservationRepository()
         {
 
         }
+
+        public ReservationRepository(string constring)
+        {
+            this._constring = constring;
+        }
+
         public ReservationDTO Create(ReservationDTO reservation)
         {
             ReservationDTO res = null;
             try
             {
-                string constring = ConfigurationManager.ConnectionStrings["ServiceConString"].ConnectionString;
-                var client = new RestClient(constring);
+                var client = new RestClient(_constring);
                 string json = JsonConvert.SerializeObject(reservation);
                 var request = new RestRequest("/reservation", Method.POST);
                 request.AddJsonBody(json);
@@ -42,8 +49,7 @@ namespace RestaurantDesktopClient.Reservation
             ReservationDTO res = null;
             try
             {
-                string constring = ConfigurationManager.ConnectionStrings["ServiceConString"].ConnectionString;
-                var client = new RestClient(constring);
+                var client = new RestClient(_constring);
                 var request = new RestRequest("/reservation/{Id}", Method.GET);
                 request.AddUrlSegment("Id", id);
                 var response = client.Execute(request).Content;
@@ -60,8 +66,7 @@ namespace RestaurantDesktopClient.Reservation
             List<ReservationDTO> res = null;
             try
             {
-                string constring = ConfigurationManager.ConnectionStrings["ServiceConString"].ConnectionString;
-                var client = new RestClient(constring);
+                var client = new RestClient(_constring);
                 var request = new RestRequest("/reservation", Method.GET);
                 var content = client.Execute(request).Content;
                 res = JsonConvert.DeserializeObject<List<ReservationDTO>>(content);

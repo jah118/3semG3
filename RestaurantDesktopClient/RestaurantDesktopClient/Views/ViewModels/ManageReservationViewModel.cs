@@ -9,14 +9,17 @@ using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows;
+using GalaSoft.MvvmLight;
 
 namespace RestaurantDesktopClient.Views.ManageReservation
 {
-    class ManageReservationViewModel : INotifyPropertyChanged
+    public class ManageReservationViewModel : ViewModelBase
     {
         #region Fields
         private static ReservationDTO _selectedReservation;
-        private readonly IRepository<ReservationDTO> repository = new ReservationRepository();
+        private readonly IRepository<ReservationDTO> _reservationRepository;
+        private readonly IRepository<CustomerDTO> _customerRepository;
+        private readonly IRepository<TablesDTO> _tableRepository;
         #endregion
         #region Properties
         public string Headline { get { return "Reservationer"; } }
@@ -93,8 +96,7 @@ namespace RestaurantDesktopClient.Views.ManageReservation
                 }
                 else
                 {
-                    IRepository<TablesDTO> ir = new TableRepository();
-                    return ir.GetAll().ToList();
+                    return _tableRepository.GetAll().ToList();
 
                 }
             }
@@ -142,7 +144,7 @@ namespace RestaurantDesktopClient.Views.ManageReservation
         }
         public bool ReservationDeposit
         {
-            get => SelectedReservation != null ? SelectedReservation.Deposit : false;
+            get => SelectedReservation != null && SelectedReservation.Deposit;
             set
             {
                 if (SelectedReservation != null)
@@ -158,13 +160,12 @@ namespace RestaurantDesktopClient.Views.ManageReservation
             {
                 if (SelectedReservation != null)
                 {
-                    IRepository<CustomerDTO> ir = new CustomerRepository();
                     int.TryParse(value, out int id);
-                    SelectedReservation.Customer = ir.Get(id);
+                    SelectedReservation.Customer = _customerRepository.Get(id);
                 }
             }
         }
-       
+
         #endregion
         #region relayCommands
         public RelayCommand CreateReservationCommand { get; set; }
@@ -178,8 +179,12 @@ namespace RestaurantDesktopClient.Views.ManageReservation
         public RelayCommand ClearValuesCommand { get; set; }
         #endregion
 
-        public ManageReservationViewModel()
+        public ManageReservationViewModel(IRepository<ReservationDTO> reservationRepository, IRepository<CustomerDTO> customerRepository
+        , IRepository<TablesDTO> tableRepository)
         {
+            _customerRepository = customerRepository;
+            _tableRepository = tableRepository;
+            _reservationRepository = reservationRepository;
             InitRelayCommands();
             SelectedTables = new TablesDTO();
         }
@@ -207,7 +212,7 @@ namespace RestaurantDesktopClient.Views.ManageReservation
         {
             get
             {
-                return _reservationSearchList ?? repository.GetAll().ToList();
+                return _reservationSearchList ?? _reservationRepository.GetAll().ToList();
             }
             set
             {
@@ -229,6 +234,7 @@ namespace RestaurantDesktopClient.Views.ManageReservation
 
             this.OnPropertyChanged("GetReservationTimeDate");
             this.OnPropertyChanged("GetReservationTimeHours");
+
         }
         private void AddMinutsToReservationTime()
         {
@@ -292,14 +298,14 @@ namespace RestaurantDesktopClient.Views.ManageReservation
         {
             if (SelectedReservation.Id > 0)
             {
-                MainWindow.ChangeFrame(new OrderFood(SelectedReservation.Id));
+                MainWindow.ChangeFrame(new OrderFood());
             }
             else
             {
                 ReservationDTO _reservation = CreateReservation();
                 if (_reservation == null) return;
                 UpdateSelectedReservation(_reservation);
-                MainWindow.ChangeFrame(new OrderFood(_reservation.Id));
+                MainWindow.ChangeFrame(new OrderFood());
             }
         }
         private void UpdateSelectedReservation(ReservationDTO reservation)
@@ -323,7 +329,7 @@ namespace RestaurantDesktopClient.Views.ManageReservation
         }
         public ReservationDTO CreateReservation()
         {
-            var res = repository.Create(SelectedReservation);
+            var res = _reservationRepository.Create(SelectedReservation);
             if (res == null) MessageBox.Show("Fejl ved oprettelse af reservation");
             return res;
         }

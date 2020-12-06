@@ -8,9 +8,16 @@ namespace RestaurantDesktopClient.Views.ViewModels
 {
     internal class FoodRepository : IRepository<FoodDTO>
     {
+        private string _constring;
+
         public FoodRepository()
         {
 
+        }
+
+        public FoodRepository(string constring)
+        {
+            this._constring = constring;
         }
 
         public FoodDTO Create(FoodDTO t)
@@ -28,9 +35,7 @@ namespace RestaurantDesktopClient.Views.ViewModels
             List<FoodDTO> res = null;
             try
             {
-                //TODO: autofac readup and write..
-                string constring = ConfigurationManager.ConnectionStrings["ServiceConString"].ConnectionString;
-                var client = new RestClient(constring);
+                var client = new RestClient(_constring);
                 var request = new RestRequest("/Food", Method.GET);
                 var content = client.Execute(request).Content;
                 res = JsonConvert.DeserializeObject<List<FoodDTO>>(content);

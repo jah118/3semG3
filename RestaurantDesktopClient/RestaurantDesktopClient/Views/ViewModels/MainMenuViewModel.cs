@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using GalaSoft.MvvmLight;
 
 namespace RestaurantDesktopClient.Views.ViewModels
 {
-    class MainMenuViewModel
+    public class MainMenuViewModel : ViewModelBase
     {
         public RelayCommand BtnManageReservationClicked { get; set; }
         public MainMenuViewModel()

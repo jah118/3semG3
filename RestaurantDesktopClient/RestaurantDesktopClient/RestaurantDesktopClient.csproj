@@ -126,7 +126,6 @@
     <Compile Include="Services\ReservationService\ReservationRepository.cs" />
     <Compile Include="Services\Table Service\TableRepository.cs" />
     <Compile Include="Views\ViewModels\MainMenuViewModel.cs" />
-    <Compile Include="Views\ViewModels\MainViewModel.cs" />
     <Compile Include="Views\ViewModels\ViewModelLocator.cs" />
     <Compile Include="Views\Controls\BackControl.xaml.cs">
       <DependentUpon>BackControl.xaml</DependentUpon>
@@ -170,7 +169,7 @@
     <Compile Include="Services\FoodsService\FoodRepository.cs" />
     <Compile Include="Services\IRepository.cs" />
     <Compile Include="Views\ViewModels\ManageReservationViewModel.cs" />
-    <Compile Include="Views\ViewModels\OrderFoodModelView.cs" />
+    <Compile Include="Views\ViewModels\OrderFoodViewModel.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
