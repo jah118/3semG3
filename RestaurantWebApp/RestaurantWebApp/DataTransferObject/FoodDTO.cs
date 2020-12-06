@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Web.UI.WebControls.WebParts;
 
 namespace RestaurantWebApp.DataTransferObject
 {
@@ -8,7 +7,6 @@ namespace RestaurantWebApp.DataTransferObject
         public FoodDTO(int id)
         {
             Id = id;
-
         }
 
         public int Id { get; set; }
@@ -17,6 +15,11 @@ namespace RestaurantWebApp.DataTransferObject
         public string FoodCategoryName { get; set; }
         public double Price { get; set; }
 
+        public bool Equals(FoodDTO other)
+        {
+            if (other == null) return false;
+            return (this.Id.Equals(other.Id));
+        }
 
         public override bool Equals(object obj)
         {
@@ -24,12 +27,6 @@ namespace RestaurantWebApp.DataTransferObject
             FoodDTO objAsFoodDTO = obj as FoodDTO;
             if (objAsFoodDTO == null) return false;
             return Equals(objAsFoodDTO);
-        }
-
-        public bool Equals(FoodDTO other)
-        {
-            if (other == null) return false;
-            return (this.Id.Equals(other.Id));
         }
 
         public override int GetHashCode()
