@@ -29,7 +29,7 @@ namespace DataAccess.DataTransferObjects.Converters
             };
         }
 
-        public static IEnumerable<Price> Convert(IEnumerable<PriceDTO> obj)
+        public static ICollection<Price> Convert(ICollection<PriceDTO> obj)
         {
             var list = new List<Price>();
             foreach (var p in obj)
@@ -38,7 +38,7 @@ namespace DataAccess.DataTransferObjects.Converters
             }
             return list;
         }
-        public static IEnumerable<PriceDTO> Convert(IEnumerable<Price> obj)
+        public static ICollection<PriceDTO> Convert(ICollection<Price> obj)
         {
             var list = new List<PriceDTO>();
             foreach (var p in obj)
