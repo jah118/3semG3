@@ -14,6 +14,7 @@ using Microsoft.OpenApi.Models;
 using RestaurantAPI.Authentication;
 using System.Text;
 using System.Text.Json.Serialization;
+using DataAccess.Models;
 
 namespace RestaurantAPI
 {

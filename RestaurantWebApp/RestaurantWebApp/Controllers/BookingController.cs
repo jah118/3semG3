@@ -18,14 +18,14 @@ namespace RestaurantWebApp.Controllers
     {
         private ControllerContext _context = new ControllerContext();
 
-        private readonly IBookingService _bookingService;
+        private readonly IReservationService _reservationService;
         private readonly ITableService _tableService;
         private readonly IFoodService _foodService;
         private readonly IOrderService _orderService;
 
-        public BookingController(IBookingService bookingService, ITableService tableService, IFoodService foodService, IOrderService orderService)
+        public BookingController(IReservationService reservationService, ITableService tableService, IFoodService foodService, IOrderService orderService)
         {
-            _bookingService = bookingService;
+            _reservationService = reservationService;
             _tableService = tableService;
             _foodService = foodService;
             _orderService = orderService;
@@ -43,16 +43,13 @@ namespace RestaurantWebApp.Controllers
         {
             //TODO her skal laves så den kan tage begge former for login Username/Email
 
-            ReservationDTO rv = new ReservationDTO();
-
-
-            rv.Tables = _tableService.GetAll();
+            var rv = new ReservationDTO { Tables = _tableService.GetAll() };
             if (rv.Tables == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.ServiceUnavailable);
             }
 
-            //rv.TimeSlots = _bookingService
+            //rv.TimeSlots = _reservationService
             //TODO  dette er temp  her skal være
 
             var ls = new List<ReservationTimesDTO>();
@@ -98,7 +95,7 @@ namespace RestaurantWebApp.Controllers
                 //dette tager tables som kommer som en lang string og laver dem om til en liste
                 try
                 {
-                    var tables = FormatStringToTables.StringOfIdToTables(r);
+                    var tables = ConvertStringToTables.StringOfIdToTables(r);
                     reservation.Tables = tables;
                 }
                 catch (FormatException e)
@@ -113,7 +110,7 @@ namespace RestaurantWebApp.Controllers
             //    return View(reservation);
             //}
 
-            var response = await _bookingService.CreateAsync(reservation);
+            var response = await _reservationService.CreateAsync(reservation);
 
             if (response.StatusCode == HttpStatusCode.OK && reservation.OrderingFood == false)
             {
@@ -126,10 +123,9 @@ namespace RestaurantWebApp.Controllers
                 if (res != null)
                 {
                     //return OrderFood(res);
-                    RedirectToAction("OrderFood", res);
+                    return RedirectToAction("OrderFood", res);
                 }
             }
-
 
             return View(reservation);
         }
@@ -170,41 +166,42 @@ namespace RestaurantWebApp.Controllers
             }
         }
 
-        //POST: Booking/OrderFoods
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        // public async ActionResult OrderFoods(FoodDTO food)
-        // {
-        //var client = new RestClient("https://localhost:44349/api/Food");
-
-        //var request = new RestRequest("Food/{FoodId}", Method.GET);
-
-        //request.AddUrlSegment("{FoodId", 1);
-
-        //var content = client.Execute(request).Content;
-
-        //    return View();
-        // }
-
-        // GET: Booking/OrderFoods
-        //[HttpGet]
-        //public ActionResult OrderFoods()
-        //{
-        //    IEnumerable<FoodDTO> fdto = _foodService.GetAll();
-
-        //    return View(fdto);
-
-        //}
         [HttpGet]
-        public ActionResult OrderFood(ReservationDTO reservation)
+        //public ActionResult OrderFood(ReservationDTO reservation)
+        public ActionResult OrderFood()
         {
-            var foodsview = new FoodViewModel();
-            IEnumerable<FoodDTO> fdto = _foodService.GetAll();
 
-           
+            //TODO remove this when test arf made for order or this not need any more
+            //this just makes it so u can skip reservation page 
 
+            //////////////////////////
 
+            ReservationDTO reservation = new ReservationDTO(
+                99,
+                new CustomerDTO("88888888", "JensJensen@gmaiul.com", "jens", "jensen", "jensvej 2", "9000", "aalborg"),
+                DateTime.Now,
+                5,
+                false,
+                "TEST",
+                new List<RestaurantTablesDTO> { new RestaurantTablesDTO(97, 2, 97), new RestaurantTablesDTO(98, 4, 98) }
+
+                );
+            ///////////////////////////////
+
+            //reservation = reservation1;
+
+            if (reservation == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.Forbidden, "no valid reservaion");
+            }
+
+            var fdto = _foodService.GetAll();
+            if (fdto == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.ServiceUnavailable);
+            }
             var Foods = new List<FoodDTO>();
+            //IEnumerable<FoodDTO> Drinks = new List<FoodDTO>();
             var Drinks = new List<FoodDTO>();
             foreach (var item in fdto)
             {
@@ -218,101 +215,83 @@ namespace RestaurantWebApp.Controllers
                 }
             }
 
+            FoodViewModel model = new FoodViewModel();
 
-            OrderDTO order = _orderService.GetAll().Where(x => x.ReservationID == reservation.Id).OrderBy(x => x.OrderDate).FirstOrDefault();
-            if (order == null)
+            CustomViewModel cvm = new CustomViewModel();
+
+            // //cvm.listDrink = Drinks;
+            // IEnumerable<FoodDTO> d;
+
+            // model.VmFoods = Foods;
+            // model.VmDrinks = Drinks;
+            // model.Slf = GetSelectListItems(Foods);
+            // model.Sld = GetSelectListItems(Drinks);
+            // model.VmOrderFoodAndDrinks = new List<SelectList>();
+
+            var lsback = new List<FoodDTO>();
+
+            Tuple<List<FoodDTO>, List<FoodDTO>, List<FoodDTO>, ReservationDTO> res = Tuple.Create(Foods, Drinks, lsback, reservation);
+
+            return View(res);
+        }
+
+        // POST: Booking/OrderFoods
+        [HttpPost]
+        //public async Task<ActionResult> OrderFood(List<string> Item3, FormCollection collection, ReservationDTO Item4, string ReservationNumber)
+        public async Task<ActionResult> OrderFood(List<string> Item3, string ReservationNumber)
+        //public async Task<ActionResult> OrderFood(string testhej)
+        {
+            //var data = res;
+            //var data = Request.Form["Item1"];
+            //var data1 = Request.Form["Item2"];
+            //var data2 = Request.Form["Item3"];
+            var data3 = Request.Form["ReservationNumber"];
+            //var date22 = Request.Form["VmOrderFoodAndDrinks"];
+
+            List<FoodDTO> foodsListFromApi = _foodService.GetAll().ToList();
+            var allGood = int.TryParse(data3, out var ReservationId);
+            if (Item3.Count > 0 && allGood)
             {
-                order = new OrderDTO
+                var orderLineList = ConvertStringToOrderLines.ListOfFoodsIdToOrderLines(Item3, foodsListFromApi);
+                var r = new ReservationDTO(ReservationId);
+                OrderDTO order = _orderService.GetAll().Where(x => x.ReservationID == r.Id).OrderBy(x => x.OrderDate).FirstOrDefault();
+                if (order == null)
                 {
-                    ReservationID = reservation.Id,
-                    PaymentCondition = PaymentCondition.Begyndt.ToString()
-                };
+                    order = new OrderDTO
+                    {
+                        ReservationID = r.Id,
+                        OrderDate = DateTime.Today,
+                        PaymentCondition = PaymentCondition.Begyndt.ToString(),
+                        OrderLines = orderLineList
+                    };
+                }
+                else
+                {
+                    //TODO add logic to handel if is in use by a order
+                }
+
+                var response = await _orderService.CreateAsync(order);
+
+                if (response.StatusCode == HttpStatusCode.OK)
+                {
+                    return RedirectToAction("Index");
+                }
             }
-            foodsview.Foods = Foods;
-            foodsview.Drinks = Drinks;
-            foodsview.Order = order;
-
-            //Tuple<OrderDTO, FoodViewModel> res = Tuple.Create(order, foods);
-            return View(foodsview);
-        }
-
-        //GET: Login
-        [AllowAnonymous]
-        public ActionResult Login()
-        {
-            UserDTO user = new UserDTO { AccountType = UserRoles.Customer };
-            return View(user);
-        }
-
-        [AllowAnonymous]
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Login(UserDTO user)
-        {
-            var s = HttpContext.Response;
-            //var token = user.Token;
-            //var uname = user.Username;
-
-            //if (ModelState.IsValid)
-            //{
-            //    //var data = _db.Users.Where(s => s.Email.Equals(email) && s.Password.Equals(f_password)).ToList();
-            //    //var data = _bs.GetUser(ConfigurationManager.AppSettings["ServiceApi"]);
-            //    if (data.Count() > 0)
-            //    {
-            //        //add session
-            //        Session["FullName"] = data.FirstOrDefault().FirstName + " " + data.FirstOrDefault().LastName;
-            //        Session["Email"] = data.FirstOrDefault().Email;
-            //        Session["idUser"] = data.FirstOrDefault().idUser;
-            //        return RedirectToAction("Index");
-            //    }
-            //    else
-            //    {
-            //        ViewBag.error = "Login failed";
-            //        return RedirectToAction("Login");
-            //    }
-            //}
-            return View();
-        }
-
-        //Logout
-        public ActionResult Logout()
-        {
-            //Session.Clear();//remove session
-            //ControllerContext.HttpContext.Cache.Remove()
-            return RedirectToAction("Login");
-        }
-
-        //GET: Register
-        [AllowAnonymous]
-        public ActionResult Register()
-        {
-            var user = new UserDTO();
-            return View(user);
-        }
-
-        //POST: Register
-        [HttpPost]
-        [AllowAnonymous]
-        [ValidateAntiForgeryToken]
-        public ActionResult Register(UserDTO _user)
-        {
-            if (ModelState.IsValid)
+            else
             {
-                return RedirectToAction("Index");
+                //TODO add error msg that no res id matched/wasChanged or was not net from the creation of reservation
+                //if all good fails
+
+                //TODO add error msg to view
+                //NO Food were selected
+                //throw new NotImplementedException("NO Food were selected or no food return from post");
+                return View(ReservationNumber);
             }
 
-            //var response = ControllerContext.RequestContext.HttpContext.
-            //if (check == null)
-            //{
-            //    return RedirectToAction("Index");
-            //}
-            //else
-            //{
-            //    ViewBag.error = "Email already exists";
-            //    return View();
-            //}
+            //TODO add so same view return on fail  with same reservaion id.
 
-            return View();
+            return View(ReservationNumber);
+            //return View();
         }
     }
 }

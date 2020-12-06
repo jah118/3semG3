@@ -11,7 +11,6 @@ namespace DataAccess.DataTransferObjects.Converters
         {
             return new Reservation()
             {
-                Id = obj.Id,
                 CustomerId = obj.Customer.Id,
                 Deposit = obj.Deposit,
                 NoOfPeople = obj.NoOfPeople,
@@ -26,7 +25,7 @@ namespace DataAccess.DataTransferObjects.Converters
             return new ReservationDTO()
             {
                 Id = obj.Id,
-                Customer = obj.Customer != null ? Converter.Convert(obj.Customer) : null,
+                Customer = Convert(obj.Customer),
                 Deposit = obj.Deposit,
                 NoOfPeople = obj.NoOfPeople,
                 Tables = Convert(obj.ReservationsTables.Where(rt => rt.ReservationId.Equals(obj.Id)).Select(t => t.RestaurantTables)),

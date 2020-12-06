@@ -20,22 +20,27 @@ namespace DataAccess.Repositories
         }
         public OrderDTO Create(OrderDTO obj, bool transactionEndpoint = true)
         {
+            //Sanity check here, ensure unique tables etc
+            if (transactionEndpoint) _context.Database.BeginTransaction(IsolationLevel.Serializable);
             try
             {
-                if (transactionEndpoint) _context.Database.BeginTransaction(IsolationLevel.Serializable);
+
                 var order = Converter.Convert(obj);
                 order.PaymentConditionId = _context.PaymentCondition.Where(x => x.Condition.Equals(obj.PaymentCondition)).FirstOrDefault().Id;
 
                 var added = _context.RestaurantOrder.Add(order);
                 _context.SaveChanges();
-                _context.Database.CommitTransaction();
+                if (transactionEndpoint) _context.Database.CommitTransaction();
+                _context.Entry(order).GetDatabaseValues();
                 return GetById(order.OrderNo);
+
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 _context.Database.RollbackTransaction();
                 throw;
             }
+            return null;
         }
         public bool Delete(OrderDTO obj, bool transactionEndpoint = true)
         {
@@ -75,7 +80,7 @@ namespace DataAccess.Repositories
                     .ThenInclude(f => f.Food)
                     .ThenInclude(f => f.Price)
                 .Include(f => f.OrderLine)
-                    .ThenInclude(f=>f.Food.FoodCategory)
+                    .ThenInclude(f => f.Food.FoodCategory)
                 .Include(e => e.Employee)
                     .ThenInclude(e => e.Person)
                         .ThenInclude(e => e.Location)

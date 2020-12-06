@@ -5,7 +5,7 @@ using RestaurantWebApp.DataTransferObject;
 
 namespace RestaurantWebApp.Util
 {
-    public static class FormatStringToTables
+    public static class ConvertStringToTables
     {
         //this method takes a string of this format "1,2,5,7"
         //and makes it to list of tables, where each table in the list has the id from the string
@@ -24,4 +24,8 @@ namespace RestaurantWebApp.Util
             return tables;
         }
     }
+
+   
+
+
 }

@@ -1,109 +1,115 @@
-﻿@using System.Web.UI.HtmlControls
-@model RestaurantWebApp.Model.FoodViewModel
-@*@model Tuple<RestaurantWebApp.DataTransferObject.OrderDTO, RestaurantWebApp.Model.FoodViewModel>*@
-@using (Html.BeginForm())
-{
-    ViewBag.Title = "Madbestilling";
-}
+﻿@*@using System.Web.Mvc.Html
+ 
+    @model Tuple<List<RestaurantWebApp.DataTransferObject.FoodDTO>, List<RestaurantWebApp.DataTransferObject.FoodDTO>, List<RestaurantWebApp.DataTransferObject.FoodDTO>>*@
+
+@*@model dynamic*@
+@model Tuple<List<RestaurantWebApp.DataTransferObject.FoodDTO>, List<RestaurantWebApp.DataTransferObject.FoodDTO>, List<RestaurantWebApp.DataTransferObject.FoodDTO>, RestaurantWebApp.DataTransferObject.ReservationDTO>
+
 
 @section Styles {
-
 }
 
-<h2>Madbestilling</h2>
 <div class="container">
-    <div class="row">
+    <h2>Madbestilling</h2>
+    <hr />
+    @using (Html.BeginForm("OrderFood", "Booking", FormMethod.Post))
 
-        <div class="form-horizontal">
+    {
+        <div class="row">
+            
+            <input type="hidden" value="@Model.Item4.Id" name="ReservationNumber"/>
+            <div class="col">
+                <div class="form-group">
+
+                    <label class="col-md-5">Retter</label>
+                    <div class="col-md-10">
+                        @Html.ListBoxFor(model => model.Item1, new SelectList(Model.Item1, "Id", "Name"), new {size = "20"})
+                        @*@Html.ListBoxFor(m => m.Slf,Model.Slf, new { size = "20" })*@
+                        <input id="AddFoodsBtn" type="button" value="Vælg Madvarer"/>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col">
+                <div class="form-group">
+                    <label class="col-md-5"> Drikkevarer</label>
+                    <div class="col-md-10">
+                        @Html.ListBoxFor(model => model.Item2, new SelectList(Model.Item2, "Id", "Name"), new {size = "20"})
+                        <input id="AddDrinksBtn" type="button" value="Vælg drikkevarer"/>
+                    </div>
+                </div>
+            </div>
+
+
+
+        </div>
+
+        <div class="row">
+            <hr />
             <div class="form-group">
-
-                <div class="col-md-5 float-left">
-                    <label>Retter</label>
-                    @Html.ListBoxFor(model => model.Foods, new SelectList(Model.Drinks, "Name", "Name"), new { @class = "control - label", name= "tsFood", id = "tsFoods", size = "20" })
-                    <button id="AddFoodsBtn"> vælg mad</button>
-                </div>
-                <div class="col-md-5 float-right">
-                    <label> Drikkevarer</label>
-                    @Html.ListBoxFor(model => model.Drinks, new SelectList(Model.Drinks, "Name", "Name"), new { @class = "control - label", name = "tsDrinks", id = "tsDrinks", size = "20" })
-
-                    <input id="AddDrinksBtn" type="button" value="Vælg drikkevarer" />
-                </div>
-
-                <div id="summaryDiv" class="col-md-12 float-left">
-                    <hr />
-                    @Html.ListBoxFor(model => model.Foods,
-                        new SelectList(Model.Order.Foods, "Id", "Name"), new {Id = "summaryList", style = "width:100%", size = "20" })
-                    @* //TODO this needs a impl at this point no remove function *@
-                    <input id="RemoveFromSummaryList" type="button" accept="removeFoods" value="Fjern ret/retter" onclick=removeFoods();/>
+                <label class="col-md-5"> Valgt mad</label>
+                <div class="col-md-10">
+                    @Html.ListBoxFor(model => model.Item3, new SelectList(Model.Item3, "Id", "Name"), new { size = "20", style = "width:100%" })
+                    <input id="RemoveFromSummaryList" type="button" value="Fjern ret/retter" />
                 </div>
             </div>
         </div>
-    </div>
+
+        <div>
+            <input type="submit" value="Gem mad og drikke" onclick="selectAll();" class="btn btn-primary" />
+        </div>
+
+        <div>
+            @Html.ValidationSummary()
+        </div>
+
+    }
+</div>
+<div>
+    @Html.ActionLink("Gå til forside", "Index")
 </div>
 
-<div>
-    <input type="submit" value="Gem mad og drikke " class="btn btn-primary" />
-</div>
+
 
 @section Scripts {
     <script>
+
+        function selectAll() {
+            selectBox = document.getElementById("Item3");
+
+            for (var i = 0; i < selectBox.options.length; i++) {
+                selectBox.options[i].selected = true;
+            }
+        }
+
+
         $(document).ready(function () {
             $('#AddDrinksBtn').click(function () {
-                var selected = $('#tsDrinks').val();
-                $.each(selected,
+                var txt = $("#Item2 option:selected").text();
+                var vale = $("#Item2").val();
+                $.each(vale,
                     function (key, val) {
-                        $('#summaryList').append($("<option></option>").attr("value", val).text(val));
+                        $('#Item3').append($("<option></option>").attr("value", val).text(txt));
                     });
-
-                //works kinda
-                //$.each(selected, function (i, item) {
-                //    $('#tsDrinks1').append($('<option></option>', {
-                //        value: item.value,
-                //        text: item.text
-                //    }));
-                //});
-
-                //alert(selected);
-                //$.each(leftselected,
-                //    function(key, value) {
-                //        $('#rightSelectednumbers').append($("<option></option>").attr("value", value).text(value));
-                //    });
             });
         });
 
         $(document).ready(function () {
             $('#AddFoodsBtn').click(function () {
-                var selected = $('#tsFoods').val();
-                $.each(selected,
+                var txt = $("#Item1 option:selected").text();
+                var vale = $("#Item1").val();
+                $.each(vale,
                     function (key, val) {
-                        $('#summaryList').append($("<option></option>").attr("value", val).text(val));
+                        $('#Item3').append($("<option></option>").attr("value", val).text(txt));
                     });
             });
         });
 
-
         $(document).ready(function () {
             $('#RemoveFromSummaryList').click(function () {
-                var selected = $('#summaryList').val();
-                $.each(selected,
-                    function (key, val) {
-                        $('#summaryList').remove($("<option></option>").attr("value", val).text(val));
-                    });
+                $('#Item3 option:selected').remove();
             });
         });
     </script>
 
-    @*<script>
-
-        //$('#test').click(function () { alert("Handler for .click() called.") });
-
-        $('#test').click(function () {
-            var selected = $('#myList option:selected').val;
-            //alert("Handler for .click() called." + selected );
-            $.each(selected,
-                function (key, value) {
-                    $('#summaryList').append($("<option></option>").attr("value", value).text(value));
-                });
-        });
-    </script>*@
-   }
+}

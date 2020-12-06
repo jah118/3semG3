@@ -2,7 +2,7 @@
 
 namespace RestaurantWebApp.Service.Interfaces
 {
-    public interface IBookingService : IService<ReservationDTO>
+    public interface IReservationService : IService<ReservationDTO>
     {
     }
 }
