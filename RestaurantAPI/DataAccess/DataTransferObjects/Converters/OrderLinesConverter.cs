@@ -8,10 +8,11 @@ namespace DataAccess.DataTransferObjects.Converters
         //Unsure if this makes more sense than disretely handling dto -> Model mapping, and having a secondary constructor
         public static OrderLine Convert(OrderLineDTO obj)
         {
+            var food = Convert(obj.Food);
             return new OrderLine()
             {
                 Quantity = obj.Quantity,
-                Food = Converter.Convert(obj.Food)
+                FoodId = food.Id,
             };
         }
 
@@ -20,12 +21,12 @@ namespace DataAccess.DataTransferObjects.Converters
             return new OrderLineDTO()
             {
                 Quantity = obj.Quantity,
-                Food = Converter.Convert(obj.Food)
+                Food = Convert(obj.Food)
             };
         }
 
 
-        public static IEnumerable<OrderLine> Convert(IEnumerable<OrderLineDTO> obj)
+        public static ICollection<OrderLine> Convert(ICollection<OrderLineDTO> obj)
         {
             var list = new List<OrderLine>();
             foreach (var t in obj)
@@ -35,7 +36,7 @@ namespace DataAccess.DataTransferObjects.Converters
             return list;
         }
 
-        public static IEnumerable<OrderLineDTO> Convert(IEnumerable<OrderLine> obj)
+        public static ICollection<OrderLineDTO> Convert(ICollection<OrderLine> obj)
         {
             var list = new List<OrderLineDTO>();
             foreach (var t in obj)

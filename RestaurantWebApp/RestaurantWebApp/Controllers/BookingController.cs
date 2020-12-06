@@ -167,8 +167,8 @@ namespace RestaurantWebApp.Controllers
         }
 
         [HttpGet]
-        //public ActionResult OrderFood(ReservationDTO reservation)
-        public ActionResult OrderFood()
+        public ActionResult OrderFood(ReservationDTO reservation)
+        //public ActionResult OrderFood()
         {
 
             //TODO remove this when test arf made for order or this not need any more
@@ -176,19 +176,19 @@ namespace RestaurantWebApp.Controllers
 
             //////////////////////////
 
-            ReservationDTO reservation = new ReservationDTO(
-                99,
-                new CustomerDTO("88888888", "JensJensen@gmaiul.com", "jens", "jensen", "jensvej 2", "9000", "aalborg"),
-                DateTime.Now,
-                5,
-                false,
-                "TEST",
-                new List<RestaurantTablesDTO> { new RestaurantTablesDTO(97, 2, 97), new RestaurantTablesDTO(98, 4, 98) }
+            //ReservationDTO reservation = new ReservationDTO(
+            //    41,
+            //    new CustomerDTO("88888888", "JensJensen@gmaiul.com", "jens", "jensen", "jensvej 2", "9000", "aalborg"),
+            //    DateTime.Now,
+            //    5,
+            //    false,
+            //    "TEST",
+            //    new List<RestaurantTablesDTO> { new RestaurantTablesDTO(97, 2, 97), new RestaurantTablesDTO(98, 4, 98) }
 
-                );
+            //    );
             ///////////////////////////////
 
-            //reservation = reservation1;
+
 
             if (reservation == null)
             {
@@ -215,6 +215,7 @@ namespace RestaurantWebApp.Controllers
                 }
             }
 
+            //TODO at later time use Viewmodel for better MOdel binding or find the cause of bad binding with the use tuple
             FoodViewModel model = new FoodViewModel();
 
             CustomViewModel cvm = new CustomViewModel();
@@ -237,7 +238,6 @@ namespace RestaurantWebApp.Controllers
 
         // POST: Booking/OrderFoods
         [HttpPost]
-        //public async Task<ActionResult> OrderFood(List<string> Item3, FormCollection collection, ReservationDTO Item4, string ReservationNumber)
         public async Task<ActionResult> OrderFood(List<string> Item3, string ReservationNumber)
         //public async Task<ActionResult> OrderFood(string testhej)
         {
@@ -261,6 +261,7 @@ namespace RestaurantWebApp.Controllers
                     {
                         ReservationID = r.Id,
                         OrderDate = DateTime.Today,
+                        EmployeeID = 1,
                         PaymentCondition = PaymentCondition.Begyndt.ToString(),
                         OrderLines = orderLineList
                     };

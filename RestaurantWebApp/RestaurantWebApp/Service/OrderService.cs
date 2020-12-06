@@ -44,11 +44,8 @@ namespace RestaurantWebApp.Service
         public async Task<IRestResponse> CreateAsync(OrderDTO obj)
         {
             var client = new RestClient(_conString);
-            //string json = JsonConvert.SerializeObject(obj);
             var request = new RestRequest("/Order", Method.POST);
             request.AddJsonBody(obj);
-            //var content = client.Execute(request).Content;
-            //res = JsonConvert.DeserializeObject<OrderDTO>(content);
             var response = (await client.ExecuteAsync(request));
             return response;
         }
