@@ -128,6 +128,7 @@ namespace RestaurantClientService.ViewModels
             if (found == null)
             {
                 SummaryFoods.Add(new OrderLineDTO{  Food = obj, Quantity = 1 });
+                RaisePropertyChanged(() => SummaryFoods);
             }
             else
             {

@@ -12,13 +12,14 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using MvvmCross.Platforms.Wpf.Views;
 
 namespace RestaurantDesktopClient.Views.Controls
 {
     /// <summary>
     /// Interaction logic for CUDEmployeeControl.xaml
     /// </summary>
-    public partial class CUDEmployeeControl : UserControl
+    public partial class CUDEmployeeControl : MvxWpfView
     {
         public CUDEmployeeControl()
         {

@@ -33,6 +33,7 @@ namespace RestaurantClientService
             base.Initialize();
         }
 
+
         private static IConfiguration Configure()
         {
             var configuration = new ConfigurationBuilder()

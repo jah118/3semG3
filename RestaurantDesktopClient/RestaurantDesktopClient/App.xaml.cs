@@ -19,6 +19,8 @@ namespace RestaurantDesktopClient
         public App()
         {
             this.RegisterSetupType<MvxWpfSetup<RestaurantClientService.App>>();
+
         }
+
     }
 }

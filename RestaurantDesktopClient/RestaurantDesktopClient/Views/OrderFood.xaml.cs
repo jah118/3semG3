@@ -13,13 +13,14 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using MvvmCross.Platforms.Wpf.Views;
+using RestaurantClientService.ViewModels;
 
 namespace RestaurantDesktopClient.Views
 {
     /// <summary>
     /// Interaction logic for OrderFood.xaml
     /// </summary>
-    public partial class OrderFood : MvxWpfView
+    public partial class OrderFood// : MvxWpfView<OrderFoodViewModel>
     {
         public OrderFood()
         {

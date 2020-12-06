@@ -251,33 +251,27 @@ namespace RestaurantClientService.ViewModels
         {
             if (SelectedReservation != null) SelectedReservation.ReservationTime = TrimDateTime(SelectedReservation.ReservationTime.AddHours(-1));
 
-            this.OnPropertyChanged("GetReservationTimeDate");
-            this.OnPropertyChanged("GetReservationTimeHours");
+            RaisePropertyChanged(() => SelectedReservation);
         }
 
         private void AddHoursFromReservationTime()
         {
             if (SelectedReservation != null) SelectedReservation.ReservationTime = TrimDateTime(SelectedReservation.ReservationTime.AddHours(1));
 
-            this.OnPropertyChanged("GetReservationTimeDate");
-            this.OnPropertyChanged("GetReservationTimeHours");
+            RaisePropertyChanged(() => SelectedReservation);
         }
 
         private void AddMinutesToReservationTime()
         {
             if (SelectedReservation != null) SelectedReservation.ReservationTime = TrimDateTime(SelectedReservation.ReservationTime.AddMinutes(15));
 
-            this.OnPropertyChanged("GetReservationTimeDate");
-            this.OnPropertyChanged("GetReservationTimeMinuts");
-            this.OnPropertyChanged("GetReservationTimeHours");
+            RaisePropertyChanged(() => SelectedReservation);
         }
 
         private void MinMinutesFromReservationTime()
         {
             if (SelectedReservation != null) SelectedReservation.ReservationTime = TrimDateTime(SelectedReservation.ReservationTime.AddMinutes(-15));
-            this.OnPropertyChanged("GetReservationTimeDate");
-            this.OnPropertyChanged("GetReservationTimeMinutes");
-            this.OnPropertyChanged("GetReservationTimeHours");
+            RaisePropertyChanged(() => SelectedReservation);
         }
 
         private DateTime TrimDateTime(DateTime dt)
@@ -310,7 +304,7 @@ namespace RestaurantClientService.ViewModels
                     dt = dt.AddMinutes(-1);
                 }
                 SelectedReservation.ReservationTime = SelectedReservation.ReservationTime.AddHours(1);
-                OnPropertyChanged("GetReservationTimeHours");
+                RaisePropertyChanged(() => SelectedReservation);
             }
             return dt;
         }
@@ -340,18 +334,19 @@ namespace RestaurantClientService.ViewModels
 
         private void UpdateSelectedReservation(ReservationDTO reservation)
         {
-            _selectedReservation = reservation;
-            OnPropertyChanged("ReservationComment");
-            OnPropertyChanged("ReservationNumber");
-            OnPropertyChanged("ReservationTables");
-            OnPropertyChanged("ReservationNumOfPersons");
-            OnPropertyChanged("ReservationDate");
-            OnPropertyChanged("ReservationTime");
-            OnPropertyChanged("GetReservationTimeDate");
-            OnPropertyChanged("ReservationDeposit");
-            OnPropertyChanged("ReservationCustomer");
-            OnPropertyChanged("GetReservationTimeMinutes");
-            OnPropertyChanged("GetReservationTimeHours");
+            SetProperty(ref _selectedReservation, reservation);
+            RaisePropertyChanged(() => SelectedReservation);
+            //OnPropertyChanged("ReservationComment");
+            //OnPropertyChanged("ReservationNumber");
+            //OnPropertyChanged("ReservationTables");
+            //OnPropertyChanged("ReservationNumOfPersons");
+            //OnPropertyChanged("ReservationDate");
+            //OnPropertyChanged("ReservationTime");
+            //OnPropertyChanged("GetReservationTimeDate");
+            //OnPropertyChanged("ReservationDeposit");
+            //OnPropertyChanged("ReservationCustomer");
+            //OnPropertyChanged("GetReservationTimeMinutes");
+            //OnPropertyChanged("GetReservationTimeHours");
         }
 
         public void CreateAndExitReservation()

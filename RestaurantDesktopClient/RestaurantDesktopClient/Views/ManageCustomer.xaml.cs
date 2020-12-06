@@ -12,13 +12,14 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using MvvmCross.Platforms.Wpf.Views;
 
 namespace RestaurantDesktopClient.Views
 {
     /// <summary>
     /// Interaction logic for ManageCustomer.xaml
     /// </summary>
-    public partial class ManageCustomer : Page
+    public partial class ManageCustomer : MvxWpfView
     {
         public ManageCustomer()
         {
