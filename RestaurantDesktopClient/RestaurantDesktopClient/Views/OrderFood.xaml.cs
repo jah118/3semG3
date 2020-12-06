@@ -20,7 +20,7 @@ namespace RestaurantDesktopClient.Views
     /// <summary>
     /// Interaction logic for OrderFood.xaml
     /// </summary>
-    public partial class OrderFood// : MvxWpfView<OrderFoodViewModel>
+    public partial class OrderFood
     {
         public OrderFood()
         {

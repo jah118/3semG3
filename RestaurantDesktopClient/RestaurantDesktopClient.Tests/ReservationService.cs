@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using DataAccess.DataTransferObjects;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using RestaurantDesktopClient.Reservation;
 
 namespace RestaurantDesktopClient.Tests
 {

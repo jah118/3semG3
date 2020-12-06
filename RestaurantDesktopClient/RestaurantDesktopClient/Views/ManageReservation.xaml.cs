@@ -5,7 +5,7 @@ namespace RestaurantDesktopClient.Views
     /// <summary>
     /// Interaction logic for ManageReservation.xaml
     /// </summary>
-    public partial class ManageReservationView : MvxWpfView
+    public partial class ManageReservationView
     {
         public ManageReservationView()
         {

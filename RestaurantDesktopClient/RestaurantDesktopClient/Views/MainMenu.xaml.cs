@@ -17,7 +17,7 @@ using MvvmCross.Platforms.Wpf.Views;
 
 namespace RestaurantDesktopClient.Views
 {
-    public partial class MainMenu : MvxWindow
+    public partial class MainMenu
     {
         public MainMenu()
         {

@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Threading.Tasks;
 
 namespace RestaurantClientService.ViewModels
 {
@@ -361,6 +362,7 @@ namespace RestaurantClientService.ViewModels
             {
                 BoolCallbackAction = async (ok) =>
                 {
+                    await Task.Delay(1);
                 },
                 Question = "Fejl ved oprettelse af reservation"
             });//TODO MessageBox.Show("Fejl ved oprettelse af reservation");
