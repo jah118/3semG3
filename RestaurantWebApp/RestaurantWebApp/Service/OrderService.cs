@@ -15,6 +15,11 @@ namespace RestaurantWebApp.Service
     {
         private string _conString;
 
+        public OrderService(IOrderService configString)
+        {
+            
+        }
+
         public OrderService(string configString)
         {
             this._conString = configString;
