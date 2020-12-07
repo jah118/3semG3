@@ -6,6 +6,6 @@ namespace DataAccess.Repositories.Interfaces
 {
     public interface IReservationRepository : IRepository<ReservationDTO>
     {
-        public IEnumerable<ReservationTimeSlots> GetReservationTimeByDate(DateTime dateTime);
+        public AvailableTimesDTO GetReservationTimeByDate(DateTime dateTime);
     }
 }

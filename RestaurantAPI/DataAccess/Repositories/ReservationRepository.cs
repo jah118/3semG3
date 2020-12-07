@@ -42,12 +42,12 @@ namespace DataAccess.Repositories
                     if (obj.Customer.Id == 0)
                     {
                         //TODO does this need be here ?  is there better place for it ?
-                        var isCustomer = _context.Customer.Include(c => c.Person)
+                        var isCustomer = _context.Customer
+                            .Include(c => c.Person)
                             .ThenInclude(c => c.Location)
                             .ThenInclude(c => c.ZipCodeNavigation)
-                            .Where(c => c.Person.Phone
-                                .Equals(obj.Customer.Phone))
-                            .FirstOrDefault();
+                            .FirstOrDefault(c => c.Person.Phone
+                                .Equals(obj.Customer.Phone));
                         if (isCustomer == null)
                         {
                             var customerToAdd = new CustomerRepository(_context).CreateCustomer(obj.Customer);
@@ -116,41 +116,71 @@ namespace DataAccess.Repositories
             return res;
         }
 
-        public IEnumerable<ReservationTimeSlots> GetReservationTimeByDate(DateTime dateTime)
+        public AvailableTimesDTO GetReservationTimeByDate(DateTime dateTime)
         {
-            var startTime = new TimeSpan(17, 00, 00);
+            var timeSlots = new AvailableTimesDTO() {AvailabilityDate = dateTime.Date, TableOpenings = new List<AvailableTimesDTO.TableTimes>()};
+            var startTime = new TimeSpan(12, 00, 00);
             var endTime = new TimeSpan(22, 00, 00);
 
-            var startDateTime = dateTime.Subtract(TimeSpan.Zero) + startTime;
-            var endDateTime = dateTime.Subtract(TimeSpan.Zero) + endTime;
 
-            IList<ReservationTimeSlots> res = null;
-            var availableTimes = _context.Reservation
+            var startDateTime = dateTime.Date + startTime;
+            var endDateTime = dateTime.Date + endTime;
+
+            var all = _context.Reservation
                 .Include(r => r.ReservationsTables)
                 .ThenInclude(r => r.RestaurantTables)
-                .Where(r => 
-                    r.ReservationTime <= dateTime.AddMinutes(90) &&
-                    r.ReservationTime.AddMinutes(90) >= dateTime).Select(r => r.ReservationsTables).Where(t=>t.)
-                //.Where(t => t.RestaurantTablesId
-                //    .Equals(obj.Tables.Select(table => table.Id).Any()))).Count(); ;
+                .Where(r =>
+                    r.ReservationTime <= endDateTime &&
+                    r.ReservationTime >= startDateTime).AsNoTracking();
+            var tables = new TableRepository(_context).GetAll();
+            var availabilityList = new List<AvailableTimesDTO.TableTimes>();
+            foreach (var table in tables)
+            {
+                var tableTime = new AvailableTimesDTO.TableTimes() {Table = table};
+                var timesAvailable = new List<(TimeSpan start, TimeSpan end)>();
+                var times = all.Where(r => r.ReservationsTables.Any(t => t.RestaurantTablesId == table.Id))
+                    .Select(r => r.ReservationTime).OrderBy(t => t.TimeOfDay);
+                var lastTime = startTime;
+                foreach (var time in times)
+                {
+                    timesAvailable.Add((lastTime, time.TimeOfDay));
+                    lastTime = time.TimeOfDay.Add(TimeSpan.FromMinutes(90));
+                }
+                timesAvailable.Add((lastTime, endTime));
+
+                availabilityList.Add(tableTime);
+            }
+
+            timeSlots.TableOpenings = availabilityList;
 
 
-            var reservationsInDB = _context.Reservation.Where(d => d.ReservationTime >= startDateTime && d.ReservationTime <= endDateTime)
-                .Include(c => c.Customer)
-                .ThenInclude(c => c.Person)
-                .ThenInclude(c => c.Location)
-                .ThenInclude(c => c.ZipCodeNavigation)
-                .Include(rt => rt.ReservationsTables)
-                .ThenInclude(t => t.RestaurantTables).AsNoTracking().ToList();
+            //IList<ReservationTimeSlots> res = null;
+            //var availableTimes = _context.Reservation
+            //    .Include(r => r.ReservationsTables)
+            //    .ThenInclude(r => r.RestaurantTables)
+            //    .Where(r => 
+            //        r.ReservationTime <= dateTime.AddMinutes(90) &&
+            //        r.ReservationTime.AddMinutes(90) >= dateTime).Select(r => r.ReservationsTables).Where(t=>t.)
+            //    //.Where(t => t.RestaurantTablesId
+            //    //    .Equals(obj.Tables.Select(table => table.Id).Any()))).Count(); ;
 
 
-            //.Select(r => r.ReservationsTables
-            //    .Where(t => t.RestaurantTablesId
-            //        .Equals(obj.Tables.Select(table => table.Id).Any())));
+            //var reservationsInDB = _context.Reservation.Where(d => d.ReservationTime >= startDateTime && d.ReservationTime <= endDateTime)
+            //    .Include(c => c.Customer)
+            //    .ThenInclude(c => c.Person)
+            //    .ThenInclude(c => c.Location)
+            //    .ThenInclude(c => c.ZipCodeNavigation)
+            //    .Include(rt => rt.ReservationsTables)
+            //    .ThenInclude(t => t.RestaurantTables).AsNoTracking().ToList();
 
-            //if (reservations != null) res = Converter.Convert(reservations);
-            //res = AvailableTimes;
-            return res;
+
+            ////.Select(r => r.ReservationsTables
+            ////    .Where(t => t.RestaurantTablesId
+            ////        .Equals(obj.Tables.Select(table => table.Id).Any())));
+
+            ////if (reservations != null) res = Converter.Convert(reservations);
+            ////res = AvailableTimes;
+            return timeSlots;
         }
 
         public IEnumerable<ReservationDTO> GetAll()
