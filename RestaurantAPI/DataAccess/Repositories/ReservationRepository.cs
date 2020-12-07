@@ -21,69 +21,81 @@ namespace DataAccess.Repositories
 
         public ReservationDTO Create(ReservationDTO obj, bool transactionEndpoint = true)
         {
-            //Sanity check here, ensure unique tables etc.
-            if (transactionEndpoint) _context.Database.BeginTransaction(IsolationLevel.Serializable);
-            try
+            if (Reservation.Validate(obj))
             {
-                var compareCount = _context.Reservation
-                    .Include(r => r.ReservationsTables)
+                //Sanity check here, ensure unique tables etc.
+                if (transactionEndpoint) _context.Database.BeginTransaction(IsolationLevel.Serializable);
+                try
+                {
+
+                    var compareCount = _context.Reservation
+                        .Include(r => r.ReservationsTables)
                         .ThenInclude(r => r.RestaurantTables)
-                    .Where(r =>
-                        r.ReservationTime <= obj.ReservationTime.AddMinutes(90) &&
-                        r.ReservationTime.AddMinutes(90) >= obj.ReservationTime)
-                    .Select(r => r.ReservationsTables
-                        .Where(t => t.RestaurantTablesId
-                            .Equals(obj.Tables.Select(table => table.Id).Any()))).Count();
+                        .Where(r =>
+                            r.ReservationTime <= obj.ReservationTime.AddMinutes(90) &&
+                            r.ReservationTime.AddMinutes(90) >= obj.ReservationTime)
+                        .Select(r => r.ReservationsTables
+                            .Where(t => t.RestaurantTablesId
+                                .Equals(obj.Tables.Select(table => table.Id).Any()))).Count();
 
-                if (compareCount == 0)
-                {
-
-                    var toAdd = Converter.Convert(obj);
-                    if (obj.Customer.Id == 0)
+                    if (compareCount == 0)
                     {
-                        //TODO does this need be here ?  is there better place for it ?
-                        var isCustomer = _context.Customer.Include(c => c.Person)
-                            .ThenInclude(c => c.Location)
-                            .ThenInclude(c => c.ZipCodeNavigation)
-                            .Where(c => c.Person.Phone
-                                .Equals(obj.Customer.Phone))
-                            .FirstOrDefault();
-                        if (isCustomer == null)
+
+
+
+
+                        var reservation = Converter.Convert(obj);
+                        reservation.ReservationDate = DateTime.Now;
+                        if (obj.Customer.Id == 0)
                         {
-                            var customerToAdd = new CustomerRepository(_context).CreateCustomer(obj.Customer);
-                            toAdd.Customer = customerToAdd.Entity;
-                        }
-                        else
-                        {
-                            toAdd.Customer = isCustomer;
+                            //TODO does this need be here ?  is there better place for it ?
+                            var isCustomer = _context.Customer.Include(c => c.Person)
+                                .ThenInclude(c => c.Location)
+                                .ThenInclude(c => c.ZipCodeNavigation)
+                                .Where(c => c.Person.Phone
+                                    .Equals(obj.Customer.Phone))
+                                .FirstOrDefault();
+
+                            if (isCustomer == null)
+                            {
+                                var customerToAdd = new CustomerRepository(_context).CreateCustomer(obj.Customer);
+                                reservation.Customer = customerToAdd.Entity;
+                            }
+                            else
+                            {
+                                reservation.Customer = isCustomer;
+                            }
+
                         }
 
+                        _context.Reservation.Add(reservation);
+                        foreach (RestaurantTablesDTO rt in obj.Tables)
+                        {
+                            _context.Add<ReservationsTables>(new ReservationsTables
+                            {
+                                Reservation = reservation,
+                                RestaurantTablesId = rt.Id
+                            });
+                        }
+
+                        _context.SaveChanges();
+                        if (transactionEndpoint) _context.Database.CommitTransaction();
+                        _context.Entry(reservation).GetDatabaseValues();
+                        return GetById(reservation.Id);
+                    }
+                    else
+                    {
+                        if (transactionEndpoint) _context.Database.RollbackTransaction();
                     }
 
-                    _context.Reservation.Add(toAdd);
-                    foreach (RestaurantTablesDTO rt in obj.Tables)
-                    {
-                        _context.Add<ReservationsTables>(new ReservationsTables
-                        {
-                            Reservation = toAdd,
-                            RestaurantTablesId = rt.Id
-                        });
-                    }
-                    _context.SaveChanges();
-                    if (transactionEndpoint) _context.Database.CommitTransaction();
-                    _context.Entry(toAdd).GetDatabaseValues();
-                    return GetById(toAdd.Id);
                 }
-                else
+                catch (Exception)
                 {
-                    if (transactionEndpoint) _context.Database.RollbackTransaction();
+                    _context.Database.RollbackTransaction();
+                    throw;
                 }
             }
-            catch (Exception)
-            {
-                _context.Database.RollbackTransaction();
-                throw;
-            }
+
             return null;
         }
 
