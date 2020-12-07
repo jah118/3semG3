@@ -14,7 +14,7 @@ namespace RestaurantDesktopClient.Reservation
 {
     public class ReservationRepository : IRepository<ReservationDTO>
     {
-        private string _constring;
+        private readonly string _constring;
 
         public ReservationRepository()
         {

@@ -7,6 +7,9 @@ using System.Collections.ObjectModel;
 using System.Data;
 using System.Linq;
 using GalaSoft.MvvmLight;
+using GalaSoft.MvvmLight.CommandWpf;
+using GalaSoft.MvvmLight.Messaging;
+using RestaurantDesktopClient.Messages;
 using RestaurantDesktopClient.Views.ManageReservation;
 
 namespace RestaurantDesktopClient.Views.ViewModels
@@ -45,8 +48,8 @@ namespace RestaurantDesktopClient.Views.ViewModels
             }
             set { }
         }
-        private IRepository<FoodDTO> _foodRepository;
-        private IRepository<OrderDTO> _orderRepository;
+        private readonly IRepository<FoodDTO> _foodRepository;
+        private readonly IRepository<OrderDTO> _orderRepository;
         public FoodDTO SelectedFood
         {
             get { return null; }
@@ -80,11 +83,16 @@ namespace RestaurantDesktopClient.Views.ViewModels
 
         public OrderFoodViewModel(IRepository<FoodDTO> foodRepository, IRepository<OrderDTO> orderRepository)
         {
-            _reservationId = new ViewModelLocator().ManageReservation.SelectedReservation.Id;
+            Messenger.Default.Register<ReservationSelection>(this, ChangeReservation);
             BtnCancelClicked = new RelayCommand(CancelClicked);
             BtnSaveClicked = new RelayCommand(SaveClicked);
             _foodRepository =foodRepository;
             _orderRepository = orderRepository;
+        }
+
+        public void ChangeReservation(ReservationSelection message)
+        {
+            _reservationId = message.Selected;
             var order = _orderRepository.GetAll()
                 .Where(x => x.ReservationID == _reservationId)
                 .OrderBy(x => x.OrderDate)
@@ -94,7 +102,9 @@ namespace RestaurantDesktopClient.Views.ViewModels
             {
                 SelectedPaymentCondition = (PaymentCondition)Enum.Parse(typeof(PaymentCondition), order.PaymentCondition);
             }
+            RaisePropertyChanged();
         }
+
         private void CancelClicked()
         {
             MainWindow.ChangeFrame(new ManageReservationView());
@@ -117,6 +127,7 @@ namespace RestaurantDesktopClient.Views.ViewModels
             if (found == null)
             {
                 SummaryFoods.Add(new OrderLineDTO{  Food = obj, Quantity = 1 });
+                RaisePropertyChanged(string.Empty);
             }
             else
             {
@@ -135,6 +146,7 @@ namespace RestaurantDesktopClient.Views.ViewModels
                 obj.Quantity = 0;
                 SummaryFoods.Remove(obj);
             }
+            RaisePropertyChanged(string.Empty);
         }
 
     }

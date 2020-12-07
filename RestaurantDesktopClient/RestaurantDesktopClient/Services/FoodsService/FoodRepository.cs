@@ -8,7 +8,7 @@ namespace RestaurantDesktopClient.Views.ViewModels
 {
     internal class FoodRepository : IRepository<FoodDTO>
     {
-        private string _constring;
+        private readonly string _constring;
 
         public FoodRepository()
         {

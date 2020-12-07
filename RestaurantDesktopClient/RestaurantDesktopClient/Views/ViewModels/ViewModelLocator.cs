@@ -12,6 +12,7 @@
   See http://www.galasoft.ch/mvvm
 */
 
+using System;
 using System.Configuration;
 using CommonServiceLocator;
 using DataAccess.DataTransferObjects;
@@ -36,27 +37,34 @@ namespace RestaurantDesktopClient.Views.ViewModels
         /// </summary>
         public ViewModelLocator()
         {
-            ServiceLocator.SetLocatorProvider(() => SimpleIoc.Default);
+            try
+            {
+                ServiceLocator.SetLocatorProvider(() => SimpleIoc.Default);
 
-            //if (ViewModelBase.IsInDesignModeStatic)
-            //{
-            //    // Create design time view services and models
-            //    SimpleIoc.Default.Register<IDataService, DesignDataService>();
-            //}
-            //else
-            //{
-            //    // Create run time view services and models
-            //    SimpleIoc.Default.Register<IDataService, DataService>();
-            //}
-            string constring = ConfigurationManager.ConnectionStrings["ServiceConString"].ConnectionString;
-            SimpleIoc.Default.Register<MainMenuViewModel>();
-            SimpleIoc.Default.Register<ManageReservationViewModel>();
-            SimpleIoc.Default.Register<OrderFoodViewModel>();
-            SimpleIoc.Default.Register<IRepository<ReservationDTO>>(() => new ReservationRepository(constring));
-            SimpleIoc.Default.Register<IRepository<OrderDTO>>(() => new OrderRepository(constring));
-            SimpleIoc.Default.Register<IRepository<CustomerDTO>>(() => new CustomerRepository(constring));
-            SimpleIoc.Default.Register<IRepository<FoodDTO>>(() => new FoodRepository(constring));
-            SimpleIoc.Default.Register<IRepository<TablesDTO>>(() => new TableRepository(constring));
+                //if (ViewModelBase.IsInDesignModeStatic)
+                //{
+                //    // Create design time view services and models
+                //    SimpleIoc.Default.Register<IDataService, DesignDataService>();
+                //}
+                //else
+                //{
+                //    // Create run time view services and models
+                //    SimpleIoc.Default.Register<IDataService, DataService>();
+                //}
+                string constring = ConfigurationManager.ConnectionStrings["ServiceConString"].ConnectionString;
+                SimpleIoc.Default.Register<MainMenuViewModel>();
+                SimpleIoc.Default.Register<ManageReservationViewModel>();
+                SimpleIoc.Default.Register<OrderFoodViewModel>();
+                SimpleIoc.Default.Register<IRepository<ReservationDTO>>(() => new ReservationRepository(constring));
+                SimpleIoc.Default.Register<IRepository<OrderDTO>>(() => new OrderRepository(constring));
+                SimpleIoc.Default.Register<IRepository<CustomerDTO>>(() => new CustomerRepository(constring));
+                SimpleIoc.Default.Register<IRepository<FoodDTO>>(() => new FoodRepository(constring));
+                SimpleIoc.Default.Register<IRepository<TablesDTO>>(() => new TableRepository(constring));
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
         }
 
         public MainMenuViewModel Main => ServiceLocator.Current.GetInstance<MainMenuViewModel>();

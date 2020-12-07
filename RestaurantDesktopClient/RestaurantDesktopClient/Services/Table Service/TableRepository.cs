@@ -13,7 +13,7 @@ namespace RestaurantDesktopClient.Services.Table_Service
 {
     class TableRepository : IRepository<TablesDTO>
     {
-        private string _constring;
+        private readonly string _constring;
 
         public TableRepository(string constring)
         {

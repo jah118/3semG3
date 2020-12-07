@@ -10,6 +10,9 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using GalaSoft.MvvmLight;
+using GalaSoft.MvvmLight.CommandWpf;
+using GalaSoft.MvvmLight.Messaging;
+using RestaurantDesktopClient.Messages;
 
 namespace RestaurantDesktopClient.Views.ManageReservation
 {
@@ -202,11 +205,7 @@ namespace RestaurantDesktopClient.Views.ManageReservation
             ClearValuesCommand = new RelayCommand(ClearValues);
         }
 
-        public event PropertyChangedEventHandler PropertyChanged;
-        protected void OnPropertyChanged([CallerMemberName] string name = null)
-        {
-            this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
-        }
+
         private List<ReservationDTO> _reservationSearchList;
         public List<ReservationDTO> ReservationSearchList
         {
@@ -225,32 +224,26 @@ namespace RestaurantDesktopClient.Views.ManageReservation
         {
             if (SelectedReservation != null) SelectedReservation.ReservationTime = TrimDateTime(SelectedReservation.ReservationTime.AddHours(-1));
 
-            this.OnPropertyChanged("GetReservationTimeDate");
-            this.OnPropertyChanged("GetReservationTimeHours");
+            RaisePropertyChanged(string.Empty);
         }
         private void AddHoursFromReservationTime()
         {
             if (SelectedReservation != null) SelectedReservation.ReservationTime = TrimDateTime(SelectedReservation.ReservationTime.AddHours(1));
 
-            this.OnPropertyChanged("GetReservationTimeDate");
-            this.OnPropertyChanged("GetReservationTimeHours");
+            RaisePropertyChanged(string.Empty);
 
         }
         private void AddMinutsToReservationTime()
         {
             if (SelectedReservation != null) SelectedReservation.ReservationTime = TrimDateTime(SelectedReservation.ReservationTime.AddMinutes(15));
 
-            this.OnPropertyChanged("GetReservationTimeDate");
-            this.OnPropertyChanged("GetReservationTimeMinuts");
-            this.OnPropertyChanged("GetReservationTimeHours");
+            RaisePropertyChanged(string.Empty);
 
         }
         private void MinMinutsFromReservationTime()
         {
             if (SelectedReservation != null) SelectedReservation.ReservationTime = TrimDateTime(SelectedReservation.ReservationTime.AddMinutes(-15));
-            this.OnPropertyChanged("GetReservationTimeDate");
-            this.OnPropertyChanged("GetReservationTimeMinuts");
-            this.OnPropertyChanged("GetReservationTimeHours");
+            RaisePropertyChanged(string.Empty);
         }
         private DateTime TrimDateTime(DateTime dt)
         {
@@ -282,7 +275,7 @@ namespace RestaurantDesktopClient.Views.ManageReservation
                     dt = dt.AddMinutes(-1);
                 }
                 SelectedReservation.ReservationTime = SelectedReservation.ReservationTime.AddHours(1);
-                OnPropertyChanged("GetReservationTimeHours");
+                RaisePropertyChanged(string.Empty);
             }
             return dt;
         }
@@ -310,18 +303,10 @@ namespace RestaurantDesktopClient.Views.ManageReservation
         }
         private void UpdateSelectedReservation(ReservationDTO reservation)
         {
+            var message = new ReservationSelection() {Selected = reservation.Id};
             _selectedReservation = reservation;
-            OnPropertyChanged("ReservationComment");
-            OnPropertyChanged("ReservationNumber");
-            OnPropertyChanged("ReservationTables");
-            OnPropertyChanged("ReservationNumOfPersons");
-            OnPropertyChanged("ReservationDate");
-            OnPropertyChanged("ReservationTime");
-            OnPropertyChanged("GetReservationTimeDate");
-            OnPropertyChanged("ReservationDeposit");
-            OnPropertyChanged("ReservationCustomer");
-            OnPropertyChanged("GetReservationTimeMinuts");
-            OnPropertyChanged("GetReservationTimeHours");
+            Messenger.Default.Send(message);
+            RaisePropertyChanged(string.Empty);
         }
         public void CreateAndExitReservation()
         {

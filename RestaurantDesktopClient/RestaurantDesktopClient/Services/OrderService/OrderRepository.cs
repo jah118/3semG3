@@ -13,7 +13,7 @@ namespace RestaurantDesktopClient.Services.OrderService
 {
     class OrderRepository : IRepository<OrderDTO>
     {
-        private string _constring;
+        private readonly string _constring;
 
         public OrderRepository()
         {

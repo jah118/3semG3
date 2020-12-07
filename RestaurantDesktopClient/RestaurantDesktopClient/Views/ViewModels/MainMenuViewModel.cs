@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using GalaSoft.MvvmLight;
+using GalaSoft.MvvmLight.CommandWpf;
 
 namespace RestaurantDesktopClient.Views.ViewModels
 {
@@ -13,6 +14,7 @@ namespace RestaurantDesktopClient.Views.ViewModels
         public MainMenuViewModel()
         {
             BtnManageReservationClicked = new RelayCommand(ManageReservation_Clicked);
+            
         }
 
         private void ManageReservation_Clicked()
