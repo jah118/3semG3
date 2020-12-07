@@ -137,49 +137,25 @@ namespace DataAccess.Repositories
             foreach (var table in tables)
             {
                 var tableTime = new AvailableTimesDTO.TableTimes() {Table = table};
-                var timesAvailable = new List<(TimeSpan start, TimeSpan end)>();
+                var timesAvailable = new List<AvailableTimesDTO.TableTimes.TimePair>();
                 var times = all.Where(r => r.ReservationsTables.Any(t => t.RestaurantTablesId == table.Id))
                     .Select(r => r.ReservationTime).OrderBy(t => t.TimeOfDay);
-                var lastTime = startTime;
+                var lastTime = startDateTime;
                 foreach (var time in times)
                 {
-                    timesAvailable.Add((lastTime, time.TimeOfDay));
-                    lastTime = time.TimeOfDay.Add(TimeSpan.FromMinutes(90));
+                    timesAvailable.Add(new AvailableTimesDTO.TableTimes.TimePair() {Start = lastTime, End = time});
+                    lastTime = time.AddMinutes(90);
                 }
-                timesAvailable.Add((lastTime, endTime));
+
+                if (lastTime.AddMinutes(90) <= endDateTime)
+                    timesAvailable.Add(
+                        new AvailableTimesDTO.TableTimes.TimePair() {Start = lastTime, End = endDateTime});
                 tableTime.Openings = timesAvailable;
                 availabilityList.Add(tableTime);
             }
 
             timeSlots.TableOpenings = availabilityList;
 
-
-            //IList<ReservationTimeSlots> res = null;
-            //var availableTimes = _context.Reservation
-            //    .Include(r => r.ReservationsTables)
-            //    .ThenInclude(r => r.RestaurantTables)
-            //    .Where(r => 
-            //        r.ReservationTime <= dateTime.AddMinutes(90) &&
-            //        r.ReservationTime.AddMinutes(90) >= dateTime).Select(r => r.ReservationsTables).Where(t=>t.)
-            //    //.Where(t => t.RestaurantTablesId
-            //    //    .Equals(obj.Tables.Select(table => table.Id).Any()))).Count(); ;
-
-
-            //var reservationsInDB = _context.Reservation.Where(d => d.ReservationTime >= startDateTime && d.ReservationTime <= endDateTime)
-            //    .Include(c => c.Customer)
-            //    .ThenInclude(c => c.Person)
-            //    .ThenInclude(c => c.Location)
-            //    .ThenInclude(c => c.ZipCodeNavigation)
-            //    .Include(rt => rt.ReservationsTables)
-            //    .ThenInclude(t => t.RestaurantTables).AsNoTracking().ToList();
-
-
-            ////.Select(r => r.ReservationsTables
-            ////    .Where(t => t.RestaurantTablesId
-            ////        .Equals(obj.Tables.Select(table => table.Id).Any())));
-
-            ////if (reservations != null) res = Converter.Convert(reservations);
-            ////res = AvailableTimes;
             return timeSlots;
         }
 

@@ -16,7 +16,13 @@ namespace DataAccess.DataTransferObjects
         {
             public RestaurantTablesDTO Table { get; set; }
 
-            public IEnumerable<(TimeSpan start, TimeSpan end)> Openings { get; set; }
+            public IEnumerable<TimePair> Openings { get; set; }
+
+            public class TimePair
+            {
+                public DateTime Start { get; set; }
+                public DateTime End { get; set; }
+            }
         }
 
     }
