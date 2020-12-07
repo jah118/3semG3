@@ -147,7 +147,7 @@ namespace DataAccess.Repositories
                     lastTime = time.TimeOfDay.Add(TimeSpan.FromMinutes(90));
                 }
                 timesAvailable.Add((lastTime, endTime));
-
+                tableTime.Openings = timesAvailable;
                 availabilityList.Add(tableTime);
             }
 
