@@ -35,7 +35,14 @@ namespace DataAccess.Repositories
 
         public IEnumerable<RestaurantTablesDTO> GetAll()
         {
-            return Converter.Convert(_context.RestaurantTables.AsNoTracking().ToList());
+            IEnumerable<RestaurantTablesDTO> res = null;
+            var restaurantTables = _context.RestaurantTables.Include(rt => rt.ReservationsTables).AsNoTracking().ToList();
+            if (restaurantTables != null)
+            {
+                res = Converter.Convert(restaurantTables);
+            }
+
+            return res;
         }
 
         public RestaurantTablesDTO GetById(int id)

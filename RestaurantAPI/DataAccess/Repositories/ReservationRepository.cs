@@ -31,7 +31,9 @@ namespace DataAccess.Repositories
                     .Where(r =>
                         r.ReservationTime <= obj.ReservationTime.AddMinutes(90) &&
                         r.ReservationTime.AddMinutes(90) >= obj.ReservationTime)
-                    .Select(r => r.ReservationsTables.Where(t => t.RestaurantTablesId.Equals(obj.Tables.Select(table => table.Id).Any()))).Count();
+                    .Select(r => r.ReservationsTables
+                        .Where(t => t.RestaurantTablesId
+                            .Equals(obj.Tables.Select(table => table.Id).Any()))).Count();
 
                 if (compareCount == 0)
                 {
@@ -39,8 +41,23 @@ namespace DataAccess.Repositories
                     var toAdd = Converter.Convert(obj);
                     if (obj.Customer.Id == 0)
                     {
-                        var customerToAdd = new CustomerRepository(_context).CreateCustomer(obj.Customer);
-                        toAdd.Customer = customerToAdd.Entity;
+                        //TODO does this need be here ?  is there better place for it ?
+                        var isCustomer = _context.Customer.Include(c => c.Person)
+                            .ThenInclude(c => c.Location)
+                            .ThenInclude(c => c.ZipCodeNavigation)
+                            .Where(c => c.Person.Phone
+                                .Equals(obj.Customer.Phone))
+                            .FirstOrDefault();
+                        if (isCustomer == null)
+                        {
+                            var customerToAdd = new CustomerRepository(_context).CreateCustomer(obj.Customer);
+                            toAdd.Customer = customerToAdd.Entity;
+                        }
+                        else
+                        {
+                            toAdd.Customer = isCustomer;
+                        }
+
                     }
 
                     _context.Reservation.Add(toAdd);
@@ -53,7 +70,7 @@ namespace DataAccess.Repositories
                         });
                     }
                     _context.SaveChanges();
-                    if (transactionEndpoint)_context.Database.CommitTransaction();
+                    if (transactionEndpoint) _context.Database.CommitTransaction();
                     _context.Entry(toAdd).GetDatabaseValues();
                     return GetById(toAdd.Id);
                 }
@@ -80,7 +97,7 @@ namespace DataAccess.Repositories
             if (transactionEndpoint) _context.Database.BeginTransaction(IsolationLevel.Serializable);
             //insert logic here
             if (transactionEndpoint) _context.SaveChanges();
-            if (transactionEndpoint)_context.Database.CommitTransaction();
+            if (transactionEndpoint) _context.Database.CommitTransaction();
             throw new NotImplementedException();
         }
 
