@@ -60,7 +60,7 @@ namespace RestaurantAPI
             services.AddScoped<IRepository<RestaurantTablesDTO>, TableRepository>();
             services.AddScoped<IRepository<CustomerDTO>, CustomerRepository>();
             services.AddScoped<IRepository<EmployeeDTO>, EmployeeRepository>();
-            services.AddScoped<IRepository<ReservationDTO>, ReservationRepository>();
+            services.AddScoped<IReservationRepository, ReservationRepository>();
             services.AddScoped<IRepository<UserDTO>, UserRepository>();
             services.AddScoped<IRepository<FoodDTO>, FoodRepository>();
             services.AddScoped<IRepository<OrderDTO>, OrderRepository>();
