@@ -6,10 +6,8 @@
       xmlns:local="clr-namespace:RestaurantDesktopClient.Views.ViewModels"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
-      Title="MainMenu">
-    <Page.DataContext>
-        <local:MainMenuViewModel/>
-    </Page.DataContext>
+      Title="MainMenu"
+      DataContext="{Binding Main, Source={StaticResource Locator}}">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="6*"/>
