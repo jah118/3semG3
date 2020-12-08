@@ -291,7 +291,8 @@ namespace RestaurantDesktopClient.Views.ManageReservation
         }
         public void CreateAndExitReservation()
         {
-            CreateReservation();
+            var newReservation = CreateReservation();
+            UpdateSelectedReservation(newReservation);
         }
         public ReservationDTO CreateReservation()
         {
