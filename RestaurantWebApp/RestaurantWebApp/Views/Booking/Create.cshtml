@@ -24,7 +24,7 @@
                     <div class="col-md-10">
                         @Html.TextBoxFor(model => model.ReservationTime, new { @class = "form-control" })
                         @Html.ValidationMessageFor(model => model.ReservationTime, "", new { @class = "text-danger" })
-                        <input class="timepicker form-control" id="timepicker" name="timepicker" />
+                        <input class="timepicker form-control" id="timepicker" name="timepicker" autocomplete="false" />
                         <input type="hidden" id="ReservationTimeHid" name="ReservationTimeHid" />
                         @*@Html.HiddenFor(model => model.ReservationTime)*@
                         @*@Html.DropDownListFor(m => m.TimeSlots, new SelectList(Model.TimeSlots, "Date", "Time"), "Vælg tidspunkt", new { @class = "form-control" })*@
@@ -174,141 +174,61 @@
         $(document).on('input',
             '#ReservationTime',
             function () {
-                console.log($('#ReservationTime').val());
+                console.log("dasdasdadasdasdasd");
             });
 
 
     </script>
 
-    @*<script>
-        var obj;
-        $(document).ready(function () {
-            $('#timepicker').change(function () {
-                //var date = this.value;
-                var time = this.value;
-                var date = document.getElementById("ReservationTime").value;
-                var d1 = new Date(date).toLocaleDateString("en-US").split("/");
-                var datetime = dt + " " + time;
-                //alert(datetime);
-              
-
-                var get = $.getJSON(url,
-                    function (data) {
-                        console.log(typeof data);
-                    });
-                get.done(function (data) {
-                    //alert("next");
-                    console.log(typeof data);
-                    obj = data;
-
-                    console.log(data[1]);
-                    console.log(JSON.stringify(obj));
-
-
-                    var content = $(data).find("#content");
-                    $("#result").empty().append(content);
-                });
-            });
-        });
-    </script>*@
-
-
     <script>
-        var notFirstRun = false;
-
+        //setup for timepicker and uses its change event to
         $(document).ready(function () {
-            var dt = new Date();
-            var time = dt.getHours() + ":" + dt.getMinutes() + ":" + dt.getSeconds();
             $('input.timepicker').timepicker({
                 timeFormat: 'HH:mm',
                 interval: 15,
                 minTime: '12',
                 maxTime: '11:00pm',
-                defaultTime: time,
-                startTime: '12:00',
+                //defaultTime: time,
+                //startTime: '12:00',
                 dynamic: false,
                 dropdown: true,
                 scrollbar: true,
                 change: function () {
-                    if (notFirstRun) {
-                        var time1 = document.getElementById("timepicker").value;
-                        var date = document.getElementById("ReservationTime").value;
-                        console.log(date);
-                        var date2 = date.replaceAll("-", "/");
-                        console.log(date2);
-                        var d1 = new Date(date).toLocaleDateString("en-US").split("/");
-                        var datetime = date + " " + time1;
-                        var dateTimeFormated = date2 + " " + time1+":00";
-                        //alert(datetime);
-                        alert(dateTimeFormated);
-                        getTablesByDateTime(datetime);
-                        updatePostReservationTime(dateTimeFormated);
-                    } else {
-                        notFirstRun = true;
-                    }
+                    var time1 = document.getElementById("timepicker").value;
+                    var date = document.getElementById("ReservationTime").value;
+                    console.log(date);
+                    var datetime = date + " " + time1;
+                    var date2 = date.replaceAll("-", "/");
+                    console.log(date2);
+                    var dateTimeFormated = date2 + " " + time1 + ":00";
+                    //alert(datetime);
+                    //alert(dateTimeFormated);
+                    getTablesByDateTime(datetime);
+                    updatePostReservationTime(dateTimeFormated);
                 }
             });
         });
 
-        function updatePostReservationTime(val)
-        {
-            document.getElementById('ReservationTimeHid').value = val;
-        }
 
+        //sets up  datepicker and clears table and time each time a new date is selected
         $(document).ready(function () {
+            $("#ReservationTime").val("klik for at vælge tidspunkt");
             $("#ReservationTime").datepicker({
-                //buttonImageOnly: true,
-                //showOn: "both",
                 autoHide: true,
                 autoPick: true,
-                dateFormat : "mm-dd-yy",
+                dateFormat: "mm-dd-yy",
                 language: '',
                 maxDate: '+3m +15d',
-                minDate: 0
+                minDate: 0,
+                onSelect: function (dateText) {
+                    $('#Tables2').empty();
+                    $("#timepicker").val("klik for at vælge tidspunkt");
+                }
             });
         });
 
-        function testtocon(datetime) {
-            var url = "/Booking/TablesAjaxGetCal";
-            //$.post('/Booking/TablesAjaxGetCall', {datetime},
-            //    function(returnedData){
-            //        console.log(returnedData);
-            //    });
-
-            //var get = $.getJSON(url, datetime,
-            //    function (data) {
-            //        console.log(typeof data);
-            //    });
-            //get.done(function (data) {
-            //    //alert("next");
-            //    console.log(typeof data);
-            //    obj = data;
-            //    console.log(JSON.stringify(obj));
-            //});
-            alert(datetime);
-            var f = { date: datetime }
-            $.ajax({
-                type: "POST",
-                url: "/Booking/TablesAjaxGetCall",
-                data: JSON.stringify(f),
-                contentType: "application/json; charset=utf-8",
-                dataType: "json",
-                success: function (response) {
-                    if (response != null) {
-                        alert(response);
-                        //alert("Name : " + response.Id + ", Designation : " + response.NoOfSeats + ", Location :" + response.TableNumber);
-                    } else {
-                        alert("Something went wrong");
-                    }
-                },
-                failure: function (response) {
-                    alert(response.responseText);
-                },
-                error: function (response) {
-                    alert(response.responseText);
-                }
-            });
-
+        function updatePostReservationTime(val) {
+            document.getElementById('ReservationTimeHid').value = val;
         }
 
         //ask the api for tables.
@@ -328,22 +248,16 @@
                 console.log(JSON.stringify(obj));
             });
         }
-
+        //sets tables from json array objects as option tag for each object
         function ChangeTablesList(tables) {
-
             for (var key in tables) {
                 var option = tables[key];
                 var newOption = $('<option/>');
-
                 newOption.val(option.id);
-                newOption.text(option.tableNumber );
-
+                newOption.text(option.tableNumber);
                 $('#Tables2').append(newOption);
             }
-
         }
-
-
 
         function myFunction() {
             // Get the checkbox

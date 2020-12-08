@@ -92,6 +92,10 @@ namespace RestaurantWebApp.Controllers
             {
                 reservation.ReservationTime = dateTime;
             }
+            else
+            {
+                return View(reservation);
+            }
 
 
             //if (time.Length > 0)
