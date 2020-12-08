@@ -274,7 +274,7 @@ namespace RestaurantDesktopClient.Views.ManageReservation
             if (SelectedReservation.Id == 0)
             {
                 ReservationDTO _reservation = CreateReservation();
-                if (_reservation == null) return;
+                if (_reservation == null || _reservation.Id == 0) return;
                 UpdateSelectedReservation(_reservation);
             }
             var orderFoodVieModel = new OrderFood();

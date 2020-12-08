@@ -45,7 +45,7 @@
         <Label Content="Antal personer: " Grid.Row="2" Grid.Column="1" HorizontalAlignment="Right"/>
         <TextBox x:Name="txtNumOfPersons" Text="{Binding ReservationNumOfPersons}" Grid.Row="2" Margin="0,2,0,2" Grid.Column="2" Grid.ColumnSpan="2"/>
         <Label Content="Reservations dato: " Grid.Row="3" Grid.Column="1" HorizontalAlignment="Right"/>
-        <DatePicker x:Name="dpReservationDate"  Grid.Row="3" SelectedDate="{Binding ReservationDate, Mode=TwoWay}" Margin="0,2,0,2" Grid.Column="2" Grid.ColumnSpan="2"  IsEnabled="False" />
+        <DatePicker x:Name="dpReservationDate"  Grid.Row="3" SelectedDate="{Binding ReservationDate, Mode=OneWay}" Margin="0,2,0,2" Grid.Column="2" Grid.ColumnSpan="2"  IsEnabled="False" />
         <Label Content="Reservations tidspunkt: " Grid.Row="4" Grid.Column="1" HorizontalAlignment="Right"/>
         <Label Content="Depositum betalt: " HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="5" Grid.Column="1"/>
         <local:DateTimePicker x:Name="dtpReservationTime"  Margin="0,2,0,0" Grid.Row="4" Grid.Column="2" Grid.ColumnSpan="2"/>
