@@ -147,6 +147,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\BookingController.cs" />
+    <Compile Include="DataTransferObject\AvailableTimesDTO.cs" />
     <Compile Include="DataTransferObject\UserRoles.cs" />
     <Compile Include="DataTransferObject\CustomerDTO.cs" />
     <Compile Include="DataTransferObject\EmployeeDTO.cs" />

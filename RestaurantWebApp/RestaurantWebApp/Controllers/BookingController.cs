@@ -42,29 +42,37 @@ namespace RestaurantWebApp.Controllers
         public ActionResult Create()
         {
             //TODO her skal laves så den kan tage begge former for login Username/Email
-
-            var rv = new ReservationDTO { Tables = _tableService.GetAll() };
-            if (rv.Tables == null)
+            var availableTimes = _reservationService.GetReservationTimeByDate(DateTime.Now.Date);
+            if (availableTimes == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.ServiceUnavailable);
             }
 
+
+            var reservation = new ReservationDTO();
+            reservation.TimeSlots = availableTimes;
+            //if (rv.Tables == null)
+            //{
+            //    return new HttpStatusCodeResult(HttpStatusCode.ServiceUnavailable);
+            //}
+
             //rv.TimeSlots = _reservationService
             //TODO  dette er temp  her skal være
 
-            var ls = new List<ReservationTimesDTO>();
-            var dateToDay = DateTime.Now;
-            var ts = new TimeSpan(17, 30, 0);
-            dateToDay = dateToDay.Date + ts;
-            for (int i = 0; i < 5; i++)
-            {
-                ts += TimeSpan.FromHours(1);
-                dateToDay.AddHours(1);
-                ls.Add(new ReservationTimesDTO(dateToDay, ts));
-            }
+            //var ls = new List<ReservationTimesDTO>();
+            //var dateToDay = DateTime.Now;
+            //var ts = new TimeSpan(17, 30, 0);
+            //dateToDay = dateToDay.Date + ts;
+            //for (int i = 0; i < 5; i++)
+            //{
+            //    ts += TimeSpan.FromHours(1);
+            //    dateToDay.AddHours(1);
+            //    ls.Add(new ReservationTimesDTO(dateToDay, ts));
+            //}
 
-            rv.TimeSlots = ls;
-            return View(rv);
+            //rv.TimeSlots = ls;
+            //return View(rv);
+            return View(reservation);
             //}
             //else
             //{

@@ -7,18 +7,8 @@
 <hr />
 @section Styles {
     @Styles.Render("~/Content/createView")
-    
-
-    <link href="https://code.jquery.com/ui/1.12.1/themes/smoothness/jquery-ui.css" rel="stylesheet" type="text/css">
+    <link href="https://ajax.aspnetcdn.com/ajax/jquery.ui/1.10.4/themes/dot-luv/jquery-ui.css" rel="stylesheet" type="text/css">
 }
-
-@*<link href="https://code.jquery.com/ui/1.12.1/themes/smoothness/jquery-ui.css" rel="stylesheet" type="text/css">*@
-@*<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/css/bootstrap-datepicker3.css" />*@
-
-@*<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.38.0/css/tempusdominus-bootstrap-4.min.css" crossorigin="anonymous" />*@
-
-
-
 
 <div class="container">
     @using (Html.BeginForm())
@@ -29,10 +19,26 @@
                 <div class="form-group">
                     @Html.LabelFor(model => model.ReservationTime, new { @class = "control-label col-md-5" })
                     <div class="col-md-10">
-                        @Html.TextBoxFor(model => model.ReservationTime, new { @class = "form-control", placeholder = "klik for at vælge dato" })
+                        @Html.TextBoxFor(model => model.ReservationTime, new { @class = "form-control" })
                         @Html.ValidationMessageFor(model => model.ReservationTime, "", new { @class = "text-danger" })
 
-                        @Html.DropDownListFor(m => m.TimeSlots, new SelectList(Model.TimeSlots, "Date", "Time"), "Vælg tidspunkt", new { @class = "form-control" })
+                        @*<div class="form-group">
+                                @Html.LabelFor(model => model.Tables, new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    <select name="Tables" id="Tables2" class="form-control" multiple>
+                                        @if (Model.Tables != null)
+                                        {
+                                            foreach (var x in Model.Tables)
+                                            {
+                                                <option value="@x.Id">Bord: @x.TableNumber </option>
+                                            }
+                                        }
+                                    </select>
+                                </div>
+                            </div>*@
+
+
+                        @*@Html.DropDownListFor(m => m.TimeSlots, new SelectList(Model.TimeSlots, "Date", "Time"), "Vælg tidspunkt", new { @class = "form-control" })*@
                     </div>
                 </div>
 
@@ -153,7 +159,7 @@
             <div class="col-md-offset-2 col-md-10">
                 <!--<a href="/Booking/OrderFood" class="btn btn-primary">
                     Bestil Mad-->
-                    @* //TODO Mangler implmentation *@
+                @* //TODO Mangler implmentation *@
                 <!--</a>-->
                 <input type="submit" value="Gem og afslut" class="btn btn-primary" />
             </div>
@@ -176,15 +182,119 @@
 
 
     <script>
-        $(function () {
+        $(document).on('input',
+            '#ReservationTime',
+            function() {
+                console.log($('#ReservationTime').val());
+            });
+
+
+        function search(source, name) {
+            var results = [];
+            var index;
+            var entry;
+
+            name = name.toUpperCase();
+            for (index = 0; index < source.length; ++index) {
+                entry = source[index];
+                if (entry && entry.name && entry.name.toUpperCase().indexOf(name) !== -1) {
+                    results.push(entry);
+                }
+            }
+
+            return results;
+        }
+    </script>
+
+    <script>
+        var obj;
+        $(document).ready(function() {
+            $('#ReservationTime').change(function() {
+                //this.value.format('mm-dd-yyyy');
+                var date = this.value;
+                var d1 = new Date(date).toLocaleDateString("en-US").split("/");
+                //alert(date);
+                //alert(d1);
+                var $form = $(this),
+                    term = $form.find("input[name='ReservationTime']").val(),
+                    url = "https://localhost:44386/api/Reservation/timeSlot/" + d1;
+
+                var get = $.getJSON(url, function(data) {
+                    console.log(typeof data);
+                });
+                get.done(function (data) {
+                    //alert("next");
+                    console.log(typeof data);
+                    obj = data;
+
+
+                    console.log(data[1]);
+                    console.log(JSON.stringify(obj));
+                    //var results =data;
+                    //var searchField = "openings";
+                    //var searchVal = "my Name";
+                    //for (var i=0 ; i < obj.list.length ; i++)
+                    //{
+                    //    if (obj.list[i][searchField] == searchVal) {
+                    //        results.push(obj.list[i]);
+                    //    }
+                    //}
+
+                    var content = $(data).find("#content");
+                    $("#result").empty().append(content);
+                });
+            });
+        });
+
+        //selectedDate = document.getElementById("ReservationTime").value,
+        //$("#searchForm").submit(function(event) {
+        //    event.preventDefault();
+
+        //    var $form = $(this),
+        //        term = $form.find("input[name='ReservationTime']").val(),
+        //        url = $form.attr("/Reservation/timeSlot/" + term);
+
+        //});
+
+
+        //$.ajax({
+        //    type: "POST",
+        //    url: "https://localhost:44386/api/User/Authenticate",
+        //    dataType: 'application/json',
+        //    data: selectedDate,
+        //    success: function (data) {
+        //        console.log('Submission was a suc.');
+        //        console.log(data);
+
+
+        //    },
+        //    error: function (data) {
+        //        console.log('Submission was a fail.');
+        //        console.log(data);
+        //        alert("prøv en and dato");
+        //    }
+
+        //});
+
+
+    </script>
+
+
+    <script>
+
+        $(function() {
 
             $("#ReservationTime").datepicker({
-                dateFormat: "dd-mm-yy",
+                autoHide: true,
+                autoPick: true,
+                format: "mm/dd/yyyy",
+                language: '',
                 maxDate: '+3m +15d',
                 minDate: 0
             });
         });
 
+        //dateFormat: "dd-mm-yy",
         function myFunction() {
             // Get the checkbox
             var checkBox = document.getElementById("check");

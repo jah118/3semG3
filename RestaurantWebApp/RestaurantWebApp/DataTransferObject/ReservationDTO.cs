@@ -37,7 +37,7 @@ namespace RestaurantWebApp.DataTransferObject
         [Required] public CustomerDTO Customer { get; set; }
 
         [Required]
-        [Display(Name = "Reservationstidspunkt")]
+        [Display(Name = "Reservationstidspunkt   ")]
         [DisplayFormat(DataFormatString = "{dd-MM-yyyy HH:mm:ss}")]
         public DateTime ReservationTime { get; set; }
 
@@ -52,7 +52,9 @@ namespace RestaurantWebApp.DataTransferObject
 
         [Required] [Display(Name = "Borde ")] public IEnumerable<RestaurantTablesDTO> Tables { get; set; }
 
-        public IEnumerable<ReservationTimesDTO> TimeSlots { get; set; }
+        //public IEnumerable<ReservationTimesDTO> TimeSlots { get; set; }
+        //public IEnumerable<AvailableTimesDTO> TimeSlots { get; set; }
+        public AvailableTimesDTO TimeSlots { get; set; }
         public bool OrderingFood { get; set; }
     }
 }
