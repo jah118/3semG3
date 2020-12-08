@@ -37,7 +37,7 @@ namespace DataAccess.Repositories
                 _context.Entry(order).GetDatabaseValues();
                 return GetById(order.OrderNo);
             }
-            catch (Exception)
+            catch (Exception e)
             {
                 _context.Database.RollbackTransaction();
                 throw;

@@ -22,7 +22,7 @@ namespace DataAccess.DataTransferObjects.Converters
         {
             return new RestaurantOrder
             {
-                OrderNo = obj.OrderNo,
+                OrderNo = obj.OrderNo ?? 0,
                 ReservationId = obj.ReservationID,
                 EmployeeId = obj.EmployeeID,
                 OrderDate = obj.OrderDate,

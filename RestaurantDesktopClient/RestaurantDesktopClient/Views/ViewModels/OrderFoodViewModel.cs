@@ -86,7 +86,7 @@ namespace RestaurantDesktopClient.Views.ViewModels
             Messenger.Default.Register<ReservationSelection>(this, ChangeReservation);
             BtnCancelClicked = new RelayCommand(CancelClicked);
             BtnSaveClicked = new RelayCommand(SaveClicked);
-            _foodRepository =foodRepository;
+            _foodRepository = foodRepository;
             _orderRepository = orderRepository;
         }
 
@@ -102,7 +102,7 @@ namespace RestaurantDesktopClient.Views.ViewModels
             {
                 SelectedPaymentCondition = (PaymentCondition)Enum.Parse(typeof(PaymentCondition), order.PaymentCondition);
             }
-            RaisePropertyChanged();
+            RaisePropertyChanged("SummaryFoods");
         }
 
         private void CancelClicked()
@@ -111,14 +111,15 @@ namespace RestaurantDesktopClient.Views.ViewModels
         }
         private void SaveClicked()
         {
-            _orderRepository.Create(new OrderDTO()
-            {
-                EmployeeID = 2, //TODO change when login are ready
-                OrderLines = _ordersFood.ToList(),
-                OrderDate = DateTime.Now,
-                ReservationID = _reservationId,
-                PaymentCondition = SelectedPaymentCondition.ToString(),
-            });
+                _orderRepository.Create(new OrderDTO()
+                {
+                    EmployeeID = 2, //TODO change when login are ready
+                    OrderLines = _ordersFood.ToList(),
+                    OrderDate = DateTime.Now,
+                    PaymentCondition = SelectedPaymentCondition.ToString(),
+                    ReservationID = _reservationId,
+                });
+            
             MainWindow.ChangeFrame(new ManageReservationView());
         }
         private void AddToSummary(FoodDTO obj)
@@ -126,7 +127,7 @@ namespace RestaurantDesktopClient.Views.ViewModels
             var found = SummaryFoods.FirstOrDefault(x => x.Food.Id == obj.Id);
             if (found == null)
             {
-                SummaryFoods.Add(new OrderLineDTO{  Food = obj, Quantity = 1 });
+                SummaryFoods.Add(new OrderLineDTO { Food = obj, Quantity = 1 });
                 RaisePropertyChanged(string.Empty);
             }
             else
