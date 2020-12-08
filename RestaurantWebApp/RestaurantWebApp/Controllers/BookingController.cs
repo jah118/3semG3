@@ -42,15 +42,15 @@ namespace RestaurantWebApp.Controllers
         public ActionResult Create()
         {
             //TODO her skal laves så den kan tage begge former for login Username/Email
-            var availableTimes = _reservationService.GetReservationTimeByDate(DateTime.Now.Date);
-            if (availableTimes == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.ServiceUnavailable);
-            }
+            //var availableTimes = _reservationService.GetReservationTimeByDate(DateTime.Now.Date);
+            //if (availableTimes == null)
+            //{
+            //    return new HttpStatusCodeResult(HttpStatusCode.ServiceUnavailable);
+            //}
 
 
             var reservation = new ReservationDTO();
-            reservation.TimeSlots = availableTimes;
+            //reservation.TimeSlots = availableTimes;
             //if (rv.Tables == null)
             //{
             //    return new HttpStatusCodeResult(HttpStatusCode.ServiceUnavailable);
@@ -87,14 +87,18 @@ namespace RestaurantWebApp.Controllers
         {
             //TODO senere når api virker ville der bar kunne bruges uden at kunne konverter
             //bruge timeslot
-            var date = Request.Form["ReservationTime"];
-            var time = Request.Form["Timeslots"];
-
-            if (time.Length > 0)
+            var date = Request.Form["ReservationTimeHid"];
+            if (DateTime.TryParse(date, out var dateTime))
             {
-                DateTime datetime = FormatTime.FormatterForReservationTimeFromString(date, time);
-                reservation.ReservationTime = datetime;
+                reservation.ReservationTime = dateTime;
             }
+
+
+            //if (time.Length > 0)
+            //{
+            //    DateTime datetime = FormatTime.FormatterForReservationTimeFromString(date, time);
+            //    reservation.ReservationTime = datetime;
+            //}
 
             var r = Request.Form["Tables"];
             if (!string.IsNullOrEmpty(r))

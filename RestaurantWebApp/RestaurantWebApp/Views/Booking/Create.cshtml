@@ -5,9 +5,12 @@
 }
 <h2>Bordbestilling</h2>
 <hr />
+
 @section Styles {
     @Styles.Render("~/Content/createView")
-    <link href="https://ajax.aspnetcdn.com/ajax/jquery.ui/1.10.4/themes/dot-luv/jquery-ui.css" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/timepicker/1.3.5/jquery.timepicker.min.css">
+    <link href="https://ajax.aspnetcdn.com/ajax/jquery.ui/1.10.4/themes/flick/jquery-ui.css" rel="stylesheet" type="text/css">
+
 }
 
 <div class="container">
@@ -21,23 +24,9 @@
                     <div class="col-md-10">
                         @Html.TextBoxFor(model => model.ReservationTime, new { @class = "form-control" })
                         @Html.ValidationMessageFor(model => model.ReservationTime, "", new { @class = "text-danger" })
-
-                        @*<div class="form-group">
-                                @Html.LabelFor(model => model.Tables, new { @class = "control-label col-md-2" })
-                                <div class="col-md-10">
-                                    <select name="Tables" id="Tables2" class="form-control" multiple>
-                                        @if (Model.Tables != null)
-                                        {
-                                            foreach (var x in Model.Tables)
-                                            {
-                                                <option value="@x.Id">Bord: @x.TableNumber </option>
-                                            }
-                                        }
-                                    </select>
-                                </div>
-                            </div>*@
-
-
+                        <input class="timepicker form-control" id="timepicker" name="timepicker" />
+                        <input type="hidden" id="ReservationTimeHid" name="ReservationTimeHid" />
+                        @*@Html.HiddenFor(model => model.ReservationTime)*@
                         @*@Html.DropDownListFor(m => m.TimeSlots, new SelectList(Model.TimeSlots, "Date", "Time"), "Vælg tidspunkt", new { @class = "form-control" })*@
                     </div>
                 </div>
@@ -158,7 +147,7 @@
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
                 <!--<a href="/Booking/OrderFood" class="btn btn-primary">
-                    Bestil Mad-->
+                Bestil Mad-->
                 @* //TODO Mangler implmentation *@
                 <!--</a>-->
                 <input type="submit" value="Gem og afslut" class="btn btn-primary" />
@@ -179,108 +168,183 @@
     @*//TODO for dette virker skal valdiation slået fra , der en fejl i opsetning der gør man ikke kan komme vidre fordi den mener dette ikke er en vaild date i reservation time.*@
     @*@Scripts.Render("~/bundles/jqueryval")*@
     @Scripts.Render("~/bundles/jqueryui")
-
+    <script src="//cdnjs.cloudflare.com/ajax/libs/timepicker/1.3.5/jquery.timepicker.min.js"></script>
 
     <script>
         $(document).on('input',
             '#ReservationTime',
-            function() {
+            function () {
                 console.log($('#ReservationTime').val());
             });
 
 
-
     </script>
 
-    <script>
+    @*<script>
         var obj;
-        $(document).ready(function() {
-            $('#ReservationTime').change(function() {
-                //this.value.format('mm-dd-yyyy');
-                var date = this.value;
+        $(document).ready(function () {
+            $('#timepicker').change(function () {
+                //var date = this.value;
+                var time = this.value;
+                var date = document.getElementById("ReservationTime").value;
                 var d1 = new Date(date).toLocaleDateString("en-US").split("/");
-                //alert(date);
-                //alert(d1);
-                var $form = $(this),
-                    term = $form.find("input[name='ReservationTime']").val(),
-                    url = "https://localhost:44386/api/Reservation/timeSlot/" + d1;
+                var datetime = dt + " " + time;
+                //alert(datetime);
+              
 
-                var get = $.getJSON(url, function(data) {
-                    console.log(typeof data);
-                });
+                var get = $.getJSON(url,
+                    function (data) {
+                        console.log(typeof data);
+                    });
                 get.done(function (data) {
                     //alert("next");
                     console.log(typeof data);
                     obj = data;
 
-
                     console.log(data[1]);
                     console.log(JSON.stringify(obj));
-                    //var results =data;
-                    //var searchField = "openings";
-                    //var searchVal = "my Name";
-                    //for (var i=0 ; i < obj.list.length ; i++)
-                    //{
-                    //    if (obj.list[i][searchField] == searchVal) {
-                    //        results.push(obj.list[i]);
-                    //    }
-                    //}
+
 
                     var content = $(data).find("#content");
                     $("#result").empty().append(content);
                 });
             });
         });
-
-        //selectedDate = document.getElementById("ReservationTime").value,
-        //$("#searchForm").submit(function(event) {
-        //    event.preventDefault();
-
-        //    var $form = $(this),
-        //        term = $form.find("input[name='ReservationTime']").val(),
-        //        url = $form.attr("/Reservation/timeSlot/" + term);
-
-        //});
-
-
-        //$.ajax({
-        //    type: "POST",
-        //    url: "https://localhost:44386/api/User/Authenticate",
-        //    dataType: 'application/json',
-        //    data: selectedDate,
-        //    success: function (data) {
-        //        console.log('Submission was a suc.');
-        //        console.log(data);
-
-
-        //    },
-        //    error: function (data) {
-        //        console.log('Submission was a fail.');
-        //        console.log(data);
-        //        alert("prøv en and dato");
-        //    }
-
-        //});
-
-
-    </script>
+    </script>*@
 
 
     <script>
+        var notFirstRun = false;
 
-        $(function() {
+        $(document).ready(function () {
+            var dt = new Date();
+            var time = dt.getHours() + ":" + dt.getMinutes() + ":" + dt.getSeconds();
+            $('input.timepicker').timepicker({
+                timeFormat: 'HH:mm',
+                interval: 15,
+                minTime: '12',
+                maxTime: '11:00pm',
+                defaultTime: time,
+                startTime: '12:00',
+                dynamic: false,
+                dropdown: true,
+                scrollbar: true,
+                change: function () {
+                    if (notFirstRun) {
+                        var time1 = document.getElementById("timepicker").value;
+                        var date = document.getElementById("ReservationTime").value;
+                        console.log(date);
+                        var date2 = date.replaceAll("-", "/");
+                        console.log(date2);
+                        var d1 = new Date(date).toLocaleDateString("en-US").split("/");
+                        var datetime = date + " " + time1;
+                        var dateTimeFormated = date2 + " " + time1+":00";
+                        //alert(datetime);
+                        alert(dateTimeFormated);
+                        getTablesByDateTime(datetime);
+                        updatePostReservationTime(dateTimeFormated);
+                    } else {
+                        notFirstRun = true;
+                    }
+                }
+            });
+        });
 
+        function updatePostReservationTime(val)
+        {
+            document.getElementById('ReservationTimeHid').value = val;
+        }
+
+        $(document).ready(function () {
             $("#ReservationTime").datepicker({
+                //buttonImageOnly: true,
+                //showOn: "both",
                 autoHide: true,
                 autoPick: true,
-                format: "mm/dd/yyyy",
+                dateFormat : "mm-dd-yy",
                 language: '',
                 maxDate: '+3m +15d',
                 minDate: 0
             });
         });
 
-        //dateFormat: "dd-mm-yy",
+        function testtocon(datetime) {
+            var url = "/Booking/TablesAjaxGetCal";
+            //$.post('/Booking/TablesAjaxGetCall', {datetime},
+            //    function(returnedData){
+            //        console.log(returnedData);
+            //    });
+
+            //var get = $.getJSON(url, datetime,
+            //    function (data) {
+            //        console.log(typeof data);
+            //    });
+            //get.done(function (data) {
+            //    //alert("next");
+            //    console.log(typeof data);
+            //    obj = data;
+            //    console.log(JSON.stringify(obj));
+            //});
+            alert(datetime);
+            var f = { date: datetime }
+            $.ajax({
+                type: "POST",
+                url: "/Booking/TablesAjaxGetCall",
+                data: JSON.stringify(f),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (response) {
+                    if (response != null) {
+                        alert(response);
+                        //alert("Name : " + response.Id + ", Designation : " + response.NoOfSeats + ", Location :" + response.TableNumber);
+                    } else {
+                        alert("Something went wrong");
+                    }
+                },
+                failure: function (response) {
+                    alert(response.responseText);
+                },
+                error: function (response) {
+                    alert(response.responseText);
+                }
+            });
+
+        }
+
+        //ask the api for tables.
+        function getTablesByDateTime(datetime) {
+            var url = "https://localhost:44386/api/Table/OpenTables/" + datetime;
+            var get = $.getJSON(url,
+                function (data) {
+                    console.log("sd");
+                    console.log(typeof data);
+                    console.log("sdd");
+                });
+            get.done(function (data) {
+                //alert("next");
+                console.log(typeof data);
+                obj = data;
+                ChangeTablesList(obj);
+                console.log(JSON.stringify(obj));
+            });
+        }
+
+        function ChangeTablesList(tables) {
+
+            for (var key in tables) {
+                var option = tables[key];
+                var newOption = $('<option/>');
+
+                newOption.val(option.id);
+                newOption.text(option.tableNumber );
+
+                $('#Tables2').append(newOption);
+            }
+
+        }
+
+
+
         function myFunction() {
             // Get the checkbox
             var checkBox = document.getElementById("check");
