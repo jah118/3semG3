@@ -57,7 +57,7 @@ namespace RestaurantAPI
 
         //Dependency inject repositories, so Controller constructors can be called from the web.
             services.AddScoped<IAuthRepository, AuthRepository>();
-            services.AddScoped<IRepository<RestaurantTablesDTO>, TableRepository>();
+            services.AddScoped<ITableRepository, TableRepository>();
             services.AddScoped<IRepository<CustomerDTO>, CustomerRepository>();
             services.AddScoped<IRepository<EmployeeDTO>, EmployeeRepository>();
             services.AddScoped<IReservationRepository, ReservationRepository>();

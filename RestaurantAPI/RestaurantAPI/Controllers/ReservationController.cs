@@ -32,13 +32,6 @@ namespace RestaurantAPI.Controllers
             return res != null ? (IActionResult) Ok(res) : NotFound(id);
         }
 
-        [HttpGet("timeSlot/{date}")]
-        public IActionResult Get(DateTime date)
-        {
-            var res = _reservationRepository.GetReservationTimeByDate(date);
-            return res != null ? (IActionResult)Ok(res) : NotFound(date);
-        }
-
         [HttpPost]
         public IActionResult Post([FromBody] ReservationDTO value)
         {
@@ -46,7 +39,7 @@ namespace RestaurantAPI.Controllers
             return res != null ? (IActionResult) Ok(res) : Conflict(value);
         }   
 
-        [HttpPut]
+        [HttpPut("{id}")]
         public IActionResult Put(int id, [FromBody] ReservationDTO value)
         {
             return NotFound();
