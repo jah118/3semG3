@@ -39,11 +39,8 @@
         </Grid.RowDefinitions>
 
         <controls:HeadLineControl x:Name="Headline" Grid.ColumnSpan="10" Grid.RowSpan="2">
-            <!--<UserControl.DataContext>
-                <local:ManageReservationViewModel/>
-            </UserControl.DataContext>-->
         </controls:HeadLineControl>
-        <ListView x:Name="lvReservationSearch" ItemsSource="{Binding ReservationSearchList}" SelectedItem="{Binding SelectedReservation}"  Grid.Column="0" Grid.ColumnSpan="4" Grid.Row="2" Grid.RowSpan="6"  Margin="15,0,0,0">
+        <ListView x:Name="lvReservationSearch" ItemsSource="{Binding ReservationSearchList}" SelectedItem="{Binding SelectedReservation, Mode=TwoWay }"  Grid.Column="0" Grid.ColumnSpan="4" Grid.Row="2" Grid.RowSpan="6"  Margin="15,0,0,0">
             <ListView.View>
                 <GridView>
                     <GridViewColumn DisplayMemberBinding="{Binding Path=ReservationTime}" Header="Tidspunkt" Width="Auto"/>

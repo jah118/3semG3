@@ -34,10 +34,10 @@
         </Grid.RowDefinitions>
         <Button x:Name="btnPlusHours" Content="▲" VerticalAlignment="Top" VerticalContentAlignment="Top" Grid.RowSpan="5" Command="{Binding ReservationTimeAddHours}"/>
         <Button x:Name="btnMinHours" Content="▼" VerticalContentAlignment="Top" Grid.Row="5" Grid.RowSpan="5" Command="{Binding ReservationTimeMinHours}"/>
-        <TextBlock x:Name="tbHours" Text="{Binding GetReservationTimeHours, Mode=TwoWay}" IsEnabled="False" Grid.Column="1" Grid.RowSpan="10" VerticalAlignment="Center" HorizontalAlignment="Center" />
+        <TextBlock x:Name="tbHours" Text="{Binding GetReservationTimeHours, Mode=OneWay}" IsEnabled="False" Grid.Column="1" Grid.RowSpan="10" VerticalAlignment="Center" HorizontalAlignment="Center" />
         <Button x:Name="btnPlusMin" Content="▲" VerticalAlignment="Top" VerticalContentAlignment="Top" Grid.Column="2" Grid.RowSpan="5" Command="{Binding ReservationTimeAddMin}"/>
         <Button x:Name="btnMinMin" Content="▼" VerticalContentAlignment="Top" Grid.Column="2" Grid.Row="5" Grid.RowSpan="5" Command="{Binding ReservationTimeMinMinuts}"/>
-        <TextBlock x:Name="tbMin" Text="{Binding GetReservationTimeMinuts, Mode=TwoWay}" IsEnabled="false" Grid.Column="3" Grid.RowSpan="10" VerticalAlignment="Center" HorizontalAlignment="Center" />
+        <TextBlock x:Name="tbMin" Text="{Binding GetReservationTimeMinuts, Mode=OneWay}" IsEnabled="false" Grid.Column="3" Grid.RowSpan="10" VerticalAlignment="Center" HorizontalAlignment="Center" />
         <DatePicker x:Name="dpDate" SelectedDate="{Binding GetReservationTimeDate, Mode=TwoWay}" Grid.Column="5" Grid.ColumnSpan="5" Grid.RowSpan="10" VerticalAlignment="Stretch" VerticalContentAlignment="Stretch" TextBlock.TextAlignment="Justify" />
         <!--<Button x:Name="btnPlusHours" Content="▲" VerticalAlignment="Top" VerticalContentAlignment="Top" Grid.RowSpan="5" Click="btnPlusHours_Click"/>
         <Button x:Name="btnMinHours" Content="▼" VerticalContentAlignment="Top" Grid.Row="5" Grid.RowSpan="5" Click="btnMinHours_Click"/>

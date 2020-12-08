@@ -102,7 +102,7 @@ namespace RestaurantDesktopClient.Views.ViewModels
             {
                 SelectedPaymentCondition = (PaymentCondition)Enum.Parse(typeof(PaymentCondition), order.PaymentCondition);
             }
-            RaisePropertyChanged("SummaryFoods");
+            RaisePropertyChanged(() => SummaryFoods);
         }
 
         private void CancelClicked()
@@ -127,7 +127,7 @@ namespace RestaurantDesktopClient.Views.ViewModels
             if (found == null)
             {
                 SummaryFoods.Add(new OrderLineDTO{  Food = obj, Quantity = 1 });
-                RaisePropertyChanged(string.Empty);
+                RaisePropertyChanged(() => SummaryFoods);
             }
             else
             {
@@ -146,7 +146,7 @@ namespace RestaurantDesktopClient.Views.ViewModels
                 obj.Quantity = 0;
                 SummaryFoods.Remove(obj);
             }
-            RaisePropertyChanged(string.Empty);
+            RaisePropertyChanged(() => SummaryFoods);
         }
 
     }
