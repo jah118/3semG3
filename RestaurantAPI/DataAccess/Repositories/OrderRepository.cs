@@ -1,10 +1,11 @@
-﻿using System;
+﻿using DataAccess.DataTransferObjects;
+using DataAccess.DataTransferObjects.Converters;
+using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
-using DataAccess.DataTransferObjects;
-using DataAccess.DataTransferObjects.Converters;
-using Microsoft.EntityFrameworkCore;
+using DataAccess.Models;
 
 namespace DataAccess.Repositories
 {
@@ -23,19 +24,26 @@ namespace DataAccess.Repositories
             if (transactionEndpoint) _context.Database.BeginTransaction(IsolationLevel.Serializable);
             try
             {
-                var order = Converter.Convert(obj);
-                order.Employee = _context.Employee.FirstOrDefault(e => e.Id.Equals(obj.EmployeeID));
-                order.Reservation = _context.Reservation.FirstOrDefault(r => r.Id.Equals(obj.ReservationID));
-                order.PaymentConditionId = _context.PaymentCondition
-                    .Where(x => x.Condition.Equals(obj.PaymentCondition)).FirstOrDefault().Id;
-                order.PaymentCondition =
-                    _context.PaymentCondition.FirstOrDefault(pc => pc.Id.Equals(order.PaymentConditionId));
+                if (RestaurantOrder.Validate(obj))
+                {
+                    var order = Converter.Convert(obj);
+                    order.OrderDate = DateTime.Now;
+                    order.Employee = _context.Employee.FirstOrDefault(e => e.Id.Equals(obj.EmployeeID));
+                    order.Reservation = _context.Reservation.FirstOrDefault(r => r.Id.Equals(obj.ReservationID));
+                    var tempPaymentCondition = _context.PaymentCondition.FirstOrDefault(x => x.Condition.Equals(obj.PaymentCondition)).Id;
+                    if (tempPaymentCondition > 0)
+                    {
+                        order.PaymentConditionId = tempPaymentCondition;
+                        order.PaymentCondition =
+                            _context.PaymentCondition.FirstOrDefault(pc => pc.Id.Equals(order.PaymentConditionId));
+                    }
 
-                var added = _context.RestaurantOrder.Add(order);
-                _context.SaveChanges();
-                if (transactionEndpoint) _context.Database.CommitTransaction();
-                _context.Entry(order).GetDatabaseValues();
-                return GetById(order.OrderNo);
+                    var added = _context.RestaurantOrder.Add(order);
+                    _context.SaveChanges();
+                    if (transactionEndpoint) _context.Database.CommitTransaction();
+                    _context.Entry(order).GetDatabaseValues();
+                    return GetById(order.OrderNo);
+                }
             }
             catch (Exception)
             {
@@ -69,7 +77,6 @@ namespace DataAccess.Repositories
                 .Include(e => e.Employee.Title)
                 .Include(r => r.Reservation)
                 .Include(pc => pc.PaymentCondition).ToList();
-
 
             if (orders != null) res = Converter.Convert(orders);
             return res;
