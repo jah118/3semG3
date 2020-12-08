@@ -102,7 +102,7 @@ namespace RestaurantDesktopClient.Views.ViewModels
             {
                 SelectedPaymentCondition = (PaymentCondition)Enum.Parse(typeof(PaymentCondition), order.PaymentCondition);
             }
-            RaisePropertyChanged();
+            RaisePropertyChanged("SummaryFoods");
         }
 
         private void CancelClicked()
