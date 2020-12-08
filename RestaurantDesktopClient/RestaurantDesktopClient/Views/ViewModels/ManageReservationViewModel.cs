@@ -30,10 +30,7 @@ namespace RestaurantDesktopClient.Views.ManageReservation
         public ReservationDTO SelectedReservation
         {
             get { return _selectedReservation ?? (_selectedReservation = new ReservationDTO()); }
-            set { if (value != null)
-                {
-                    UpdateSelectedReservation(value); 
-                } }
+            set { UpdateSelectedReservation(value); _selectedReservation = value; }
         }
         public DateTime GetReservationTimeDate
         {
@@ -278,7 +275,7 @@ namespace RestaurantDesktopClient.Views.ManageReservation
                     dt = dt.AddMinutes(-1);
                 }
                 SelectedReservation.ReservationTime = SelectedReservation.ReservationTime.AddHours(1);
-                RaisePropertyChanged("ReservationTime");
+                RaisePropertyChanged(string.Empty);
             }
             return dt;
         }
@@ -292,23 +289,24 @@ namespace RestaurantDesktopClient.Views.ManageReservation
         }
         public void OrderFood()
         {
-            if (SelectedReservation.Id < 0)
+            if (SelectedReservation.Id > 0)
+            {
+                MainWindow.ChangeFrame(new OrderFood());
+            }
+            else
             {
                 ReservationDTO _reservation = CreateReservation();
                 if (_reservation == null) return;
                 UpdateSelectedReservation(_reservation);
+                MainWindow.ChangeFrame(new OrderFood());
             }
-            var orderFoodVieModel = new OrderFood();
-            MainWindow.ChangeFrame(orderFoodVieModel);
-            var message = new ReservationSelection() { Selected = _selectedReservation.Id };
-            Messenger.Default.Send(message);
         }
         private void UpdateSelectedReservation(ReservationDTO reservation)
         {
             var message = new ReservationSelection() {Selected = reservation.Id};
             _selectedReservation = reservation;
             Messenger.Default.Send(message);
-            RaisePropertyChanged(String.Empty);
+            RaisePropertyChanged(string.Empty);
         }
         public void CreateAndExitReservation()
         {

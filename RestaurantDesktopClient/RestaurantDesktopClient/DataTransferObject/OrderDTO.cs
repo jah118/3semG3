@@ -7,7 +7,7 @@ namespace DataAccess.DataTransferObjects
 {
     public class OrderDTO
     {
-        public Nullable<int> OrderNo { get; set; }
+        public int OrderNo { get; set; }
         public int ReservationID { get; set; }
         public int EmployeeID { get; set; }
         public DateTime OrderDate { get; set; }
