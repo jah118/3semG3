@@ -2,6 +2,7 @@
 {
     public class CustomerDTO
     {
+
         public int Id { get; init; }
         public string Phone { get; set; }
         public string Email { get; set; }

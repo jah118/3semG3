@@ -6,11 +6,12 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using DataAccess.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace DataAccess.Repositories
 {
-    public class ReservationRepository : IRepository<ReservationDTO>
+    public class ReservationRepository : IReservationRepository
     {
         private readonly RestaurantContext _context;
 
