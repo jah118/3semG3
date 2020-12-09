@@ -121,14 +121,13 @@
     <Compile Include="DataTransferObject\ReservationDTO.cs" />
     <Compile Include="DataTransferObject\RestaurantOrderDTO.cs" />
     <Compile Include="DataTransferObject\TablesDTO.cs" />
-    <Compile Include="RelayCommand.cs" />
+    <Compile Include="Messages\ReservationSelection.cs" />
     <Compile Include="Services\CustomerService\CustomerRepository.cs" />
     <Compile Include="Services\OrderService\OrderRepository.cs" />
     <Compile Include="Services\ReservationService\ReservationRepository.cs" />
     <Compile Include="Services\Table Service\ITableRepository.cs" />
     <Compile Include="Services\Table Service\TableRepository.cs" />
     <Compile Include="Views\ViewModels\MainMenuViewModel.cs" />
-    <Compile Include="Views\ViewModels\MainViewModel.cs" />
     <Compile Include="Views\ViewModels\ViewModelLocator.cs" />
     <Compile Include="Views\Controls\BackControl.xaml.cs">
       <DependentUpon>BackControl.xaml</DependentUpon>
@@ -172,7 +171,7 @@
     <Compile Include="Services\FoodsService\FoodRepository.cs" />
     <Compile Include="Services\IRepository.cs" />
     <Compile Include="Views\ViewModels\ManageReservationViewModel.cs" />
-    <Compile Include="Views\ViewModels\OrderFoodModelView.cs" />
+    <Compile Include="Views\ViewModels\OrderFoodViewModel.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

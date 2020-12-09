@@ -5,7 +5,8 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:RestaurantDesktopClient.Views.Controls"
              mc:Ignorable="d" 
-             d:DesignHeight="31.738" d:DesignWidth="233.249">
+             d:DesignHeight="31.738" d:DesignWidth="233.249"
+             DataContext="{Binding ManageReservation, Source={StaticResource Locator}}">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="10*"/>
@@ -33,10 +34,10 @@
         </Grid.RowDefinitions>
         <Button x:Name="btnPlusHours" Content="▲" VerticalAlignment="Top" VerticalContentAlignment="Top" Grid.RowSpan="5" Command="{Binding ReservationTimeAddHours}"/>
         <Button x:Name="btnMinHours" Content="▼" VerticalContentAlignment="Top" Grid.Row="5" Grid.RowSpan="5" Command="{Binding ReservationTimeMinHours}"/>
-        <TextBlock x:Name="tbHours" Text="{Binding GetReservationTimeHours, Mode=TwoWay}" IsEnabled="False" Grid.Column="1" Grid.RowSpan="10" VerticalAlignment="Center" HorizontalAlignment="Center" />
+        <TextBlock x:Name="tbHours" Text="{Binding GetReservationTimeHours, Mode=OneWay}" IsEnabled="False" Grid.Column="1" Grid.RowSpan="10" VerticalAlignment="Center" HorizontalAlignment="Center" />
         <Button x:Name="btnPlusMin" Content="▲" VerticalAlignment="Top" VerticalContentAlignment="Top" Grid.Column="2" Grid.RowSpan="5" Command="{Binding ReservationTimeAddMin}"/>
         <Button x:Name="btnMinMin" Content="▼" VerticalContentAlignment="Top" Grid.Column="2" Grid.Row="5" Grid.RowSpan="5" Command="{Binding ReservationTimeMinMinuts}"/>
-        <TextBlock x:Name="tbMin" Text="{Binding GetReservationTimeMinuts, Mode=TwoWay}" IsEnabled="false" Grid.Column="3" Grid.RowSpan="10" VerticalAlignment="Center" HorizontalAlignment="Center" />
+        <TextBlock x:Name="tbMin" Text="{Binding GetReservationTimeMinuts, Mode=OneWay}" IsEnabled="false" Grid.Column="3" Grid.RowSpan="10" VerticalAlignment="Center" HorizontalAlignment="Center" />
         <DatePicker x:Name="dpDate" SelectedDate="{Binding GetReservationTimeDate, Mode=TwoWay}" Grid.Column="5" Grid.ColumnSpan="5" Grid.RowSpan="10" VerticalAlignment="Stretch" VerticalContentAlignment="Stretch" TextBlock.TextAlignment="Justify" />
     </Grid>
 </UserControl>

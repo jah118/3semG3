@@ -5,22 +5,24 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:RestaurantDesktopClient.Views.Controls"
              mc:Ignorable="d" 
-                    d:DesignHeight="450" d:DesignWidth="800">
+                    d:DesignHeight="450" d:DesignWidth="800"
+             DataContext="{Binding ManageReservation, Source={StaticResource Locator}}">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="0"/>
             <ColumnDefinition Width="5*"/>
+            <ColumnDefinition Width="1*"/>
             <ColumnDefinition Width="5*"/>
-            <ColumnDefinition Width="5*"/>
+            <ColumnDefinition Width="0"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
+            <RowDefinition Height="15*" />
+            <RowDefinition Height="20*" />
             <RowDefinition Height="10*" />
-            <RowDefinition Height="10*" />
-            <RowDefinition Height="10*" />
-            <RowDefinition Height="14*" />
-            <RowDefinition Height="35*" />
-            <RowDefinition Height="10*" />
-            <RowDefinition Height="10*" />
+            <RowDefinition Height="15*" />
+            <RowDefinition Height="15*" />
+            <RowDefinition Height="15*" />
+            <RowDefinition Height="15*" />
             <RowDefinition Height="15*" />
             <RowDefinition Height="15*" />
             <RowDefinition Height="15*" />
@@ -29,9 +31,8 @@
         </Grid.RowDefinitions>
         <Label Content="Reservations nummer" Grid.Column="1" HorizontalAlignment="Right"/>
         <TextBlock x:Name="txtReservationNumber" Text="{Binding ReservationNumber, Mode=TwoWay}" VerticalAlignment="Center" Margin="0,2,0,2" Grid.Column="2"/>
-        <Label Content="Valgte/ledige Borde: " Grid.Column="1" HorizontalAlignment="Right" Grid.Row="4"/>
-        <ListView x:Name="lvTableNames" SelectionMode="Single" ItemsSource="{Binding ReservationTables, Mode=TwoWay}"
-                  SelectedItem="{Binding SetSelectedTables, Mode=TwoWay}" Margin="0,0,0,2" Grid.Column="2" Grid.Row="4">
+        <Label Content="Borde: " Grid.Column="1" HorizontalAlignment="Right" Grid.Row="1"/>
+        <ListView x:Name="lvTableNames" SelectionMode="Multiple" ItemsSource="{Binding ReservationTables, Mode=TwoWay}" SelectedItem="{Binding SetSelectedTables, Mode=TwoWay}" Margin="0,0,0,2" Grid.Column="2" Grid.ColumnSpan="2" Grid.Row="1">
             <ListView.View>
                 <GridView>
                     <GridView.Columns>
@@ -41,24 +42,13 @@
                 </GridView>
             </ListView.View>
         </ListView>
-        <ListView x:Name="lvAvailableTables" SelectionMode="Single" ItemsSource="{Binding AvailableTables, Mode=TwoWay}"
-                  SelectedItem="{Binding AvailableTablesSelected, Mode=TwoWay}" Margin="0,0,0,2" Grid.Column="3" Grid.Row="4">
-            <ListView.View>
-                <GridView>
-                    <GridView.Columns>
-                        <GridViewColumn Header="Nummer" Width="Auto" DisplayMemberBinding="{Binding TableNumber}"/>
-                        <GridViewColumn Header="Stole" Width="Auto" DisplayMemberBinding="{Binding NoOfSeats}"/>
-                    </GridView.Columns>
-                </GridView>
-            </ListView.View>
-        </ListView>
-        <Label Content="Antal personer: " Grid.Row="1" Grid.Column="1" HorizontalAlignment="Right"/>
-        <TextBox x:Name="txtNumOfPersons" Text="{Binding ReservationNumOfPersons}" Grid.Row="1" Margin="0,2,0,2" Grid.Column="2" Grid.ColumnSpan="2"/>
-        <Label Content="Reservations dato: " Grid.Row="2" Grid.Column="1" HorizontalAlignment="Right"/>
-        <DatePicker x:Name="dpReservationDate"  Grid.Row="2" SelectedDate="{Binding ReservationDate, Mode=TwoWay}" Margin="0,2,0,2" Grid.Column="2" Grid.ColumnSpan="2"  IsEnabled="False" />
-        <Label Content="Reservations tidspunkt: " Grid.Row="3" Grid.Column="1" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+        <Label Content="Antal personer: " Grid.Row="2" Grid.Column="1" HorizontalAlignment="Right"/>
+        <TextBox x:Name="txtNumOfPersons" Text="{Binding ReservationNumOfPersons}" Grid.Row="2" Margin="0,2,0,2" Grid.Column="2" Grid.ColumnSpan="2"/>
+        <Label Content="Reservations dato: " Grid.Row="3" Grid.Column="1" HorizontalAlignment="Right"/>
+        <DatePicker x:Name="dpReservationDate"  Grid.Row="3" SelectedDate="{Binding ReservationDate, Mode=OneWay}" Margin="0,2,0,2" Grid.Column="2" Grid.ColumnSpan="2"  IsEnabled="False" />
+        <Label Content="Reservations tidspunkt: " Grid.Row="4" Grid.Column="1" HorizontalAlignment="Right"/>
         <Label Content="Depositum betalt: " HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="5" Grid.Column="1"/>
-        <local:DateTimePicker x:Name="dtpReservationTime"  Margin="0,2,0,0" Grid.Row="3" Grid.Column="2" Grid.ColumnSpan="2"/>
+        <local:DateTimePicker x:Name="dtpReservationTime"  Margin="0,2,0,0" Grid.Row="4" Grid.Column="2" Grid.ColumnSpan="2"/>
         <CheckBox x:Name="cbDepositPayed" IsChecked="{Binding ReservationDeposit, Mode=TwoWay}"  Grid.Row="5" Grid.Column="2" VerticalAlignment="Center" />
         <Label Content="Kunde nummer: " VerticalAlignment="Center" Grid.Row="6" Grid.Column="1" HorizontalAlignment="Right"/>
         <TextBox x:Name="txtCustomerNumber" Text="{Binding ReservationCustomer, Mode=TwoWay}" Grid.Row="6" Grid.Column="2" Grid.ColumnSpan="2"/>

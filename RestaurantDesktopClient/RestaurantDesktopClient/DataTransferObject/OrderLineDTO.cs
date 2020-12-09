@@ -4,7 +4,7 @@ using System.ComponentModel;
 
 namespace RestaurantDesktopClient.DataTransferObject
 {
-    class OrderLineDTO : INotifyPropertyChanged
+    public class OrderLineDTO : INotifyPropertyChanged
     {
         private int _quantity = 0;
         [JsonProperty("quantity")]

@@ -13,6 +13,5 @@ namespace DataAccess.DataTransferObjects
         public string ZipCode { get; set; }
         public string City { get; set; }
         public string FullName { get { return FirstName + " " + LastName; } }
-        public virtual ICollection<ReservationDTO> Reservation { get; set; }
     }
 }

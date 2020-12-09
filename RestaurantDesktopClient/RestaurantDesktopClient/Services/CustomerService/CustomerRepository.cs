@@ -13,6 +13,13 @@ namespace RestaurantDesktopClient.Services.CustomerService
 {
     class CustomerRepository : IRepository<CustomerDTO>
     {
+        private readonly string _constring;
+
+        public CustomerRepository(string constring)
+        {
+            this._constring = constring;
+        }
+
         public CustomerDTO Create(CustomerDTO t)
         {
             throw new NotImplementedException();
@@ -20,8 +27,7 @@ namespace RestaurantDesktopClient.Services.CustomerService
 
         public CustomerDTO Get(int customerId)
         {
-            string constring = ConfigurationManager.ConnectionStrings["ServiceConString"].ConnectionString;
-            var client = new RestClient(constring);
+            var client = new RestClient(_constring);
 
             var request = new RestRequest("/customer/{Id}", Method.GET);
             request.AddUrlSegment("Id", customerId);
