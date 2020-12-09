@@ -49,16 +49,19 @@ namespace RestaurantWebApp.Test.Service
 
                 };
 
-
+				
 				mock.Mock<IOrderService>().Setup(x => x.GetById(orderId)).Returns(orderDto);
-                var sut = mock.Create<OrderDTO>();
+                var sut = mock.Create<OrderService>();
 
-                // Act
-                var actual = sut.OrderNo;
+
+				// Act
+				sut.Create(orderDto);
+                var actual = sut.GetById(orderId);
+				
 
                 // Assert - assert on the mock
                 mock.Mock<IOrderService>().Verify(x => x.GetById(orderId));
-                Assert.AreEqual(4, actual);
+                Assert.AreEqual(4, actual.OrderNo);
             }
 		}
 

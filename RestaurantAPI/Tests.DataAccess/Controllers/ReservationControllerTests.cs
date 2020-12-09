@@ -15,14 +15,14 @@ using Moq;
 
 namespace RestaurantAPI.Controllers.Tests
 {
-    [TestClass()]
+    [TestClass]
     public class ReservationControllerTests
     {
        
 
 
 
-        [TestMethod()]
+        [TestMethod]
         public void GetByIDTest()
         {
             var mock = new Mock<IReservationRepository>();
@@ -47,7 +47,7 @@ namespace RestaurantAPI.Controllers.Tests
             Assert.IsNotNull(value);
             Assert.AreEqual(obj.Id, value.Id);
             Assert.IsNotNull(actionResult);
-            //Assert.AreEqual(okResult.StatusCode, HttpStatusCode.OK); //TODO fix so type comapre match
+            Assert.AreEqual(okResult.StatusCode, (int)HttpStatusCode.OK); //TODO fix so type comapre match
 
         }
 

@@ -531,13 +531,14 @@ namespace DataAccess.Tests
             //Arrange
             List<FoodCategoryDTO> foodCategoriesDTO = GetFoodCategoriesDTO();
             //Act
-            List<FoodCategory> foodCategorys = Converter.Convert(foodCategoriesDTO).ToList();
+            var foodCategorys = Converter.Convert(foodCategoriesDTO);
             //Assert
+            Assert.AreEqual(foodCategoriesDTO.Count, foodCategorys.Count());
             for (int i = 0; i < foodCategoriesDTO.Count; i++)
             {
-                Assert.AreEqual(foodCategoriesDTO.Count, foodCategorys.Count);
-                Assert.AreEqual(foodCategoriesDTO[i].Id, foodCategorys[i].Id);
-                Assert.AreEqual(foodCategoriesDTO[i].Name, foodCategorys[i].Name);
+                
+                Assert.AreEqual(foodCategoriesDTO[i].Id, foodCategorys.ElementAt(i).Id);
+                Assert.AreEqual(foodCategoriesDTO[i].Name, foodCategorys.ElementAt(i).Name);
             }
         }
         [TestMethod, TestCategory("Integration"), TestCategory("Converters")]
@@ -546,13 +547,14 @@ namespace DataAccess.Tests
             //Arrange
             List<FoodCategory> foodCategories = GetFoodCategories();
             //Act
-            List<FoodCategoryDTO> foodCategoryDTOs = Converter.Convert(foodCategories).ToList();
+            var foodCategoryDTOs = Converter.Convert(foodCategories);
             //Assert
+            Assert.AreEqual(foodCategories.Count, foodCategoryDTOs.Count());
             for (int i = 0; i < foodCategories.Count; i++)
             {
-                Assert.AreEqual(foodCategories.Count, foodCategoryDTOs.Count);
-                Assert.AreEqual(foodCategories[i].Id, foodCategoryDTOs[i].Id);
-                Assert.AreEqual(foodCategories[i].Name, foodCategoryDTOs[i].Name);
+                
+                Assert.AreEqual(foodCategories[i].Id, foodCategoryDTOs.ElementAt(i).Id);
+                Assert.AreEqual(foodCategories[i].Name, foodCategoryDTOs.ElementAt(i).Name);
             }
         }
         #endregion
@@ -564,14 +566,15 @@ namespace DataAccess.Tests
             //Arrange
             List<RestaurantTables> tables = GetRestaurantTables();
             //Act
-            List<RestaurantTablesDTO> tablesDTO = Converter.Convert(tables).ToList();
+             var tablesDTOs = Converter.Convert(tables);
             //Assert
-            for (int i = 0; i < tablesDTO.Count; i++)
+            Assert.AreEqual(tables.Count, tablesDTOs.Count());
+            for (int i = 0; i < tables.Count; i++)
             {
-                Assert.AreEqual(tables.Count, tablesDTO.Count);
-                Assert.AreEqual(tablesDTO[i].Id, tables[i].Id);
-                Assert.AreEqual(tablesDTO[i].NoOfSeats, tables[i].NoOfSeats);
-                Assert.AreEqual(tablesDTO[i].TableNumber, tables[i].TableNumber);
+               
+                Assert.AreEqual(tablesDTOs.ElementAt(i).Id, tables[i].Id);
+                Assert.AreEqual(tablesDTOs.ElementAt(i).NoOfSeats, tables[i].NoOfSeats);
+                Assert.AreEqual(tablesDTOs.ElementAt(i).TableNumber, tables[i].TableNumber);
             }
         }
         [TestMethod, TestCategory("Unit"), TestCategory("Converters")]
@@ -597,18 +600,19 @@ namespace DataAccess.Tests
             //Arrange
             List<Reservation> reservations = GetReservations();
             //Act
-            List<ReservationDTO> reservationDTOs = Converter.Convert(reservations).ToList();
+            var reservationDTOs = Converter.Convert(reservations);
             //Assert
+            Assert.AreEqual(reservations.Count, reservationDTOs.Count());
             for (int i = 0; i < reservations.Count; i++)
             {
-                Assert.AreEqual(reservations.Count, reservationDTOs.Count);
+               
 
-                Assert.AreEqual(reservations[i].Id, reservationDTOs[i].Id);
-                Assert.AreEqual(reservations[i].Note, reservationDTOs[i].Note);
-                Assert.AreEqual(reservations[i].Deposit, reservationDTOs[i].Deposit);
-                Assert.AreEqual(reservations[i].NoOfPeople, reservationDTOs[i].NoOfPeople);
-                Assert.AreEqual(reservations[i].ReservationDate, reservationDTOs[i].ReservationDate);
-                Assert.AreEqual(reservations[i].ReservationTime, reservationDTOs[i].ReservationTime);
+                Assert.AreEqual(reservations[i].Id, reservationDTOs.ElementAt(i).Id);
+                Assert.AreEqual(reservations[i].Note, reservationDTOs.ElementAt(i).Note);
+                Assert.AreEqual(reservations[i].Deposit, reservationDTOs.ElementAt(i).Deposit);
+                Assert.AreEqual(reservations[i].NoOfPeople, reservationDTOs.ElementAt(i).NoOfPeople);
+                Assert.AreEqual(reservations[i].ReservationDate, reservationDTOs.ElementAt(i).ReservationDate);
+                Assert.AreEqual(reservations[i].ReservationTime, reservationDTOs.ElementAt(i).ReservationTime);
             }
         }
 
@@ -639,20 +643,23 @@ namespace DataAccess.Tests
             //Arrange
             List<RestaurantOrder> orders = GetRestaurantOrder();
             //Act
-            List<OrderDTO> orderDTOs = Converter.Convert(orders).ToList();
+            var orderDTOs = Converter.Convert(orders);
             //Assert
+            Assert.AreEqual(orderDTOs.Count(), orders.Count);
             for (int i = 0; i < orders.Count; i++)
             {
-                Assert.AreEqual(orderDTOs.Count, orders.Count);
-                Assert.AreEqual(orders[i].OrderNo, orderDTOs[i].OrderNo);
-                Assert.AreEqual(orders[i].PaymentCondition.Condition, orderDTOs[i].PaymentCondition);
-                Assert.AreEqual(orders[i].EmployeeId, orderDTOs[i].EmployeeID);
-                Assert.AreEqual(orders[i].OrderDate, orderDTOs[i].OrderDate);
-                Assert.AreEqual(orders[i].ReservationId, orderDTOs[i].ReservationID);
+                
+
+                Assert.AreEqual(orders[i].OrderNo, orderDTOs.ElementAt(i).OrderNo);
+                Assert.AreEqual(orders[i].PaymentCondition.Condition, orderDTOs.ElementAt(i).PaymentCondition);
+                Assert.AreEqual(orders[i].EmployeeId, orderDTOs.ElementAt(i).EmployeeID);
+                Assert.AreEqual(orders[i].OrderDate, orderDTOs.ElementAt(i).OrderDate);
+                Assert.AreEqual(orders[i].ReservationId, orderDTOs.ElementAt(i).ReservationID);
                 orders[i].OrderLine.ToList().ForEach((x) =>
                 {
-                    Assert.IsNotNull(orderDTOs[i].OrderLines.Where(o => o.Food.Id == x.Food.Id && o.Quantity == x.Quantity).FirstOrDefault());
+                    Assert.IsNotNull(orderDTOs.ElementAt(i).OrderLines.Where(o => o.Food.Id == x.Food.Id && o.Quantity == x.Quantity).FirstOrDefault());
                 });
+
             }
         }
 
@@ -665,17 +672,16 @@ namespace DataAccess.Tests
             //Arrange
             List<Food> foods = GetFood();
             //Act
-            List<FoodDTO> foodDTOs = Converter.Convert(foods).ToList();
+            var foodDTOs = Converter.Convert(foods);
             //Assert
             for (int i = 0; i < foods.Count; i++)
             {
-                var tempFoodDTO = foodDTOs.Where(x => x.Id == foods[i].Id).FirstOrDefault();
                 double expectedPriceValue = Decimal.ToDouble(foods[i].Price.Where(p => p.Food.Id == foods[i].Id).FirstOrDefault().PriceValue);
-                Assert.AreEqual(tempFoodDTO.Id, foods[i].Id);
-                Assert.AreEqual(tempFoodDTO.Description, foods[i].Description);
-                Assert.AreEqual(tempFoodDTO.Name, foods[i].Name);
-                Assert.AreEqual(tempFoodDTO.Price, expectedPriceValue);
-                Assert.AreEqual(tempFoodDTO.FoodCategoryName, foods[i].FoodCategory.Name);
+                Assert.AreEqual(foodDTOs.ElementAt(i).Id, foods[i].Id);
+                Assert.AreEqual(foodDTOs.ElementAt(i).Description, foods[i].Description);
+                Assert.AreEqual(foodDTOs.ElementAt(i).Name, foods[i].Name);
+                Assert.AreEqual(foodDTOs.ElementAt(i).Price, expectedPriceValue);
+                Assert.AreEqual(foodDTOs.ElementAt(i).FoodCategoryName, foods[i].FoodCategory.Name);
             }
         }
         [TestMethod, TestCategory("Unit"), TestCategory("Converters")]
@@ -737,25 +743,26 @@ namespace DataAccess.Tests
             //Act
             var prices = Converter.Convert(priceDTOs);
             //Assert
-            //for (int i = 0; i < priceDTOs.Count; i++)
-            //{
-            //    Assert.AreEqual(priceDTOs[i].Id, prices.g.Id);
-            //    Assert.AreEqual(priceDTOs[i].PriceValue, prices[i].PriceValue);
-            //}
+            for (int i = 0; i < priceDTOs.Count; i++)
+            {
+                Assert.AreEqual(priceDTOs[i].Id, prices.ElementAt(i).Id);
+                Assert.AreEqual(priceDTOs[i].PriceValue, prices.ElementAt(i).PriceValue);
+            }
         }
         [TestMethod, TestCategory("Integration"), TestCategory("Converters")]
         public void PriceConversionPriceListToPriceDTOList()
         {
-            //    //Arrange
-            //    List<Price> prices = GetPrice();
-            //    //Act
-            //    var priceDTOs = Converter.Convert(prices);
-            //    //Assert
-            //    for (int i = 0; i < priceDTOs.Count; i++)
-            //    {
-            //        Assert.AreEqual(prices[i].Id, priceDTOs[i].Id);
-            //        Assert.AreEqual(prices[i].PriceValue, priceDTOs[i].PriceValue);
-            //    }
+            //Arrange
+            List<Price> prices = GetPrice();
+            //Act
+             var  priceDTOs = Converter.Convert(prices);
+            //Assert
+
+            for (int i = 0; i < priceDTOs.Count; i++)
+            {
+                Assert.AreEqual(prices[i].Id, priceDTOs.ElementAt(i).Id);
+                Assert.AreEqual(prices[i].PriceValue, priceDTOs.ElementAt(i).PriceValue);
+            }
         }
         #endregion
 
