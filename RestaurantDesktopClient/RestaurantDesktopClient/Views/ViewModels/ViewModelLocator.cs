@@ -17,6 +17,7 @@ using DataAccess.DataTransferObjects;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Ioc;
 using RestaurantDesktopClient.Reservation;
+using RestaurantDesktopClient.Services;
 using RestaurantDesktopClient.Services.CustomerService;
 using RestaurantDesktopClient.Services.OrderService;
 using RestaurantDesktopClient.Services.Table_Service;
@@ -52,7 +53,7 @@ namespace RestaurantDesktopClient.Views.ViewModels
             SimpleIoc.Default.Register<IRepository<OrderDTO>, OrderRepository>();
             SimpleIoc.Default.Register<IRepository<CustomerDTO>, CustomerRepository>();
             SimpleIoc.Default.Register<IRepository<FoodDTO>, FoodRepository>();
-            SimpleIoc.Default.Register<IRepository<TablesDTO>, TableRepository>();
+            SimpleIoc.Default.Register<IRepository<TablesDTO>, Services.Table_Service.TableRepository>();
         }
 
         public MainViewModel Main

@@ -8,10 +8,11 @@ using System.Configuration;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using RestaurantDesktopClient.DataTransferObject;
 
 namespace RestaurantDesktopClient.Services.Table_Service
 {
-    class TableRepository : IRepository<TablesDTO>
+    class TableRepository : ITableRepository<TablesDTO>
     {
         public IEnumerable<TablesDTO> GetAll()
         {
@@ -63,6 +64,16 @@ namespace RestaurantDesktopClient.Services.Table_Service
         public TablesDTO Create(TablesDTO t)
         {
             throw new NotImplementedException();
+        }
+        public AvailableTimesDTO GetReservationTimeByDate(DateTime date)
+        {
+            var constring = ConfigurationManager.ConnectionStrings["ServiceConString"].ConnectionString;
+            var client = new RestClient(constring);
+            var request = new RestRequest("/Table/timeSlot/{date}", Method.GET);
+            request.AddUrlSegment("date", date.ToString("MM-dd-yy HH:mm:ss"));
+            var content = client.Execute(request).Content;
+            var res = JsonConvert.DeserializeObject<AvailableTimesDTO>(content);
+            return res;
         }
     }
 }
