@@ -1,13 +1,12 @@
-﻿using DataAccess.DataTransferObjects;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using DataAccess.DataTransferObjects;
 using DataAccess.DataTransferObjects.Converters;
 using DataAccess.Models;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using SemanticComparison;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
-namespace DataAccess.Tests
+namespace Tests.DataAccess.DataTransferObjects.Converters
 {
     [TestClass, TestCategory("Converters")]
     public class ConversionTest
@@ -350,7 +349,7 @@ namespace DataAccess.Tests
                     EmployeeId = 1,
                     OrderDate = DateTime.Now,
                     OrderNo = 1,
-                    PaymentCondition = new Models.PaymentCondition{ Condition = "Betalt", Id = 4},
+                    PaymentCondition = new global::DataAccess.Models.PaymentCondition{ Condition = "Betalt", Id = 4},
                     ReservationId = 1,
                     Reservation = new Reservation{ Id = 1},
                     OrderLine = new List<OrderLine>()
@@ -372,7 +371,7 @@ namespace DataAccess.Tests
                     EmployeeId = 2,
                     OrderDate = DateTime.Now.AddDays(1),
                     OrderNo = 2,
-                    PaymentCondition = new Models.PaymentCondition{ Condition = "Leveret", Id = 3},
+                    PaymentCondition = new global::DataAccess.Models.PaymentCondition{ Condition = "Leveret", Id = 3},
                     ReservationId = 2,
                     Reservation = new Reservation{Id = 2 },
                     OrderLine = new List<OrderLine>()
