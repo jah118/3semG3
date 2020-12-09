@@ -4,10 +4,7 @@ using RestaurantWebApp.Service.Interfaces;
 using RestSharp;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Net;
 using System.Threading.Tasks;
-using System.Web;
 
 namespace RestaurantWebApp.Service
 {
@@ -44,10 +41,9 @@ namespace RestaurantWebApp.Service
                 res = null;
             }
 
-
             return res;
         }
-        //todo clean up and test
+
         public async Task<IRestResponse> CreateAsync(OrderDTO obj)
         {
             var client = new RestClient(_conString);

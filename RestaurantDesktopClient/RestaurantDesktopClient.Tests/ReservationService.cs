@@ -12,7 +12,7 @@ namespace RestaurantDesktopClient.Tests
         //[TestMethod, TestCategory("Integration")]
         //public void GetAllReservationPositiv()
         //{
-        //    IReservationRepository _reservationRepository = new ReservationRepository();
+        //    IReservationRepository _reservationRepository = new TableRepository();
         //    List<ReservationDTO> _result = _reservationRepository.GetAllReservations();
 
         //    Assert.IsNotNull(_result);
@@ -21,7 +21,7 @@ namespace RestaurantDesktopClient.Tests
         //public void GetReservationByIdPositiv()
         //{
         //    int id = 1;
-        //    IReservationRepository _reservationRepository = new ReservationRepository();
+        //    IReservationRepository _reservationRepository = new TableRepository();
         //    ReservationDTO _result = _reservationRepository.GetReservation(id);
         //    Assert.IsTrue(_result.Id == id);
         //}
@@ -29,7 +29,7 @@ namespace RestaurantDesktopClient.Tests
         //public void GetReservationByIdNegativ()
         //{
         //    int id = 1;
-        //    IReservationRepository _reservationRepository = new ReservationRepository();
+        //    IReservationRepository _reservationRepository = new TableRepository();
         //    ReservationDTO _result = _reservationRepository.GetReservation(id);
         //    Assert.IsFalse(_result.Id != id);
         //}
@@ -57,7 +57,7 @@ namespace RestaurantDesktopClient.Tests
         //        ReservationTime = DateTime.Now.AddDays(1),
         //        Tables = new List<TablesDTO> { new TablesDTO { NoOfSeats = 4, TableNumber = 2 }, new TablesDTO { NoOfSeats = 4, TableNumber = 3 } },
         //    };
-        //    IReservationRepository _reservationRepository = new ReservationRepository();
+        //    IReservationRepository _reservationRepository = new TableRepository();
         //    ReservationDTO res = _reservationRepository.CreateReservation(_reservation);
 
         //    Assert.IsNotNull(res);

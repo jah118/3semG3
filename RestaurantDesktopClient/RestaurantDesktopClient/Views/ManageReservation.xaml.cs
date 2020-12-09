@@ -12,10 +12,6 @@ namespace RestaurantDesktopClient.Views
         public ManageReservationView()
         {
             InitializeComponent();
-            ManageReservationViewModel mrvm = new ManageReservationViewModel();
-            this.DataContext = mrvm;
-            ReservationViewControl.dtpReservationTime.DataContext = mrvm;
-            ReservationViewControl.DataContext = mrvm;
         }
     }
 }

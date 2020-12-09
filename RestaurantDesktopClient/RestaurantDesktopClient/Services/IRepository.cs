@@ -1,9 +1,9 @@
 ﻿using DataAccess.DataTransferObjects;
 using System.Collections.Generic;
 
-namespace RestaurantDesktopClient.Views.ViewModels
+namespace RestaurantDesktopClient.Services
 {
-    internal interface IRepository<T>
+    public interface IRepository<T>
     {
         IEnumerable<T> GetAll();
         T Get(int id);
