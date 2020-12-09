@@ -34,27 +34,23 @@ namespace RestaurantWebApp.DataTransferObject
         public int Id { get; set; }
         public DateTime ReservationDate { get; }
 
-        [Required] public CustomerDTO Customer { get; set; }
-
         [Required]
-        [Display(Name = "Reservationstidspunkt   ")]
-        [DisplayFormat(DataFormatString = "{dd-MM-yyyy HH:mm:ss}")]
+        public CustomerDTO Customer { get; set; }
+
         public DateTime ReservationTime { get; set; }
 
-        [Required]
-        [Range(1, 25)]
-        [Display(Name = "Antal Personer")]
+        [Required, Range(1, 25), Display(Name = "Antal Personer")]
         public int NoOfPeople { get; set; }
 
         public bool? Deposit { get; }
 
-        [Display(Name = "Evt Notat")] public string Note { get; set; }
+        [Display(Name = "Evt Notat")] 
+        public string Note { get; set; }
 
-        [Required] [Display(Name = "Borde ")] public IEnumerable<RestaurantTablesDTO> Tables { get; set; }
+        [Required]
+        [Display(Name = "Borde ")]
+        public IEnumerable<RestaurantTablesDTO> Tables { get; set; }
 
-        //public IEnumerable<ReservationTimesDTO> TimeSlots { get; set; }
-        //public IEnumerable<AvailableTimesDTO> TimeSlots { get; set; }
-        public AvailableTimesDTO TimeSlots { get; set; }
         public bool OrderingFood { get; set; }
     }
 }
