@@ -8,6 +8,8 @@ using System.Configuration;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web.UI.WebControls;
+using System.Windows;
 using RestaurantDesktopClient.DataTransferObject;
 
 namespace RestaurantDesktopClient.Services.Table_Service
@@ -73,6 +75,26 @@ namespace RestaurantDesktopClient.Services.Table_Service
             request.AddUrlSegment("date", date.ToString("MM-dd-yy HH:mm:ss"));
             var content = client.Execute(request).Content;
             var res = JsonConvert.DeserializeObject<AvailableTimesDTO>(content);
+            return res;
+        }
+        public List<TablesDTO> GetFreeTables(DateTime date)
+        {
+            List<TablesDTO> res = new List<TablesDTO>();
+            string content = "Connention failure";
+            try
+            {
+                var constring = ConfigurationManager.ConnectionStrings["ServiceConString"].ConnectionString;
+                var client = new RestClient(constring);
+                var request = new RestRequest("/Table/OpenTables/{date}", Method.GET);
+                request.AddUrlSegment("date", date.ToString("MM-dd-yy HH:mm:ss")); 
+                content = client.Execute(request).Content;
+                res = JsonConvert.DeserializeObject<List<TablesDTO>>(content);
+            }
+            catch
+            {
+                MessageBox.Show(content);
+            }
+
             return res;
         }
     }
