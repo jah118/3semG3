@@ -17,7 +17,7 @@ namespace DataAccess.Models
         [Column("price_value", TypeName = "decimal(19, 4)")]
         public decimal PriceValue { get; set; }
         [Column("food_id")]
-        internal int FoodId { get; set; }
+        public int FoodId { get; set; }
 
         [ForeignKey(nameof(FoodId))]
         [InverseProperty("Price")]
