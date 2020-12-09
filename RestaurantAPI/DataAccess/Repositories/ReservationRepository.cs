@@ -43,13 +43,11 @@ namespace DataAccess.Repositories
                     {
 
 
-
-
                         var reservation = Converter.Convert(obj);
                         reservation.ReservationDate = DateTime.Now;
                         if (obj.Customer.Id == 0)
                         {
-                            //TODO does this need be here ?  is there better place for it ?
+     
                             var isCustomer = _context.Customer.Include(c => c.Person)
                                 .ThenInclude(c => c.Location)
                                 .ThenInclude(c => c.ZipCodeNavigation)
