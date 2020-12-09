@@ -44,7 +44,7 @@ namespace RestaurantWebApp.DataTransferObject
 
         public bool? Deposit { get; }
 
-        [Display(Name = "Evt Notat")] 
+        [Display(Name = "Evt Notat")]
         public string Note { get; set; }
 
         [Required]

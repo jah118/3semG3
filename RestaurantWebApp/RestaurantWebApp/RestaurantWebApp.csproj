@@ -171,9 +171,6 @@
     <Compile Include="DataTransferObject\PaymentConditionDTO.cs" />
     <Compile Include="DataTransferObject\PriceDTO.cs" />
     <Compile Include="DataTransferObject\ReservationDTO.cs" />
-    <Compile Include="DataTransferObject\ReservationsTablesDTO.cs" />
-    <Compile Include="DataTransferObject\ReservationTimesDTO.cs" />
-    <Compile Include="DataTransferObject\RestaurantOrderDTO.cs" />
     <Compile Include="DataTransferObject\RestaurantTablesDTO.cs" />
     <Compile Include="DataTransferObject\UserDTO.cs" />
     <Compile Include="Global.asax.cs">
@@ -373,7 +370,7 @@
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Booking\Index.cshtml" />
-    <Content Include="Views\Booking\Create.cshtml" />
+    <Content Include="Views\Booking\Reservation.cshtml" />
     <Content Include="Scripts\umd\popper.min.js.map" />
     <Content Include="Scripts\umd\popper.js.map" />
     <Content Include="Scripts\umd\popper.js.flow" />
