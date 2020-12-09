@@ -33,9 +33,7 @@ namespace RestaurantDesktopClient.Views.ManageReservation
             }
         }
         public ObservableCollection<TablesDTO> AvailableTables { get; set; }
-        private AvailableTimesDTO AvailableTimes { get; set; }
         public string Headline { get { return "Reservationer"; } }
-        public TablesDTO SelectedTables { get; set; }
         public ReservationDTO SelectedReservation
         {
             get { return _selectedReservation != null ? _selectedReservation : _selectedReservation = new ReservationDTO(); }
@@ -110,6 +108,7 @@ namespace RestaurantDesktopClient.Views.ManageReservation
                 {
                     int.TryParse(value, out int no);
                     SelectedReservation.NoOfPeople = no;
+                    UpdateAvailableTables();
                 }
             }
         }
@@ -176,7 +175,7 @@ namespace RestaurantDesktopClient.Views.ManageReservation
         public ManageReservationViewModel()
         {
             InitRelayCommands();
-            SelectedTables = new TablesDTO();
+            UpdateAvailableTables();
         }
 
         private void InitRelayCommands()
@@ -213,7 +212,10 @@ namespace RestaurantDesktopClient.Views.ManageReservation
         #region manageReservationControlBindings
         private void UpdateAvailableTables()
         {
-            AvailableTables = new ObservableCollection<TablesDTO>(_tablesRepository.GetFreeTables(SelectedReservation.ReservationTime));
+            var tempTables = _tablesRepository.GetFreeTables(SelectedReservation.ReservationTime)
+                .Where(x => x.NoOfSeats > SelectedReservation.NoOfPeople);
+            AvailableTables = new ObservableCollection<TablesDTO>(tempTables);
+            ReservationTables.Clear();
             OnPropertyChanged("AvailableTables");
         }
         private void MinusHoursFromReservationTime()
