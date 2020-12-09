@@ -39,7 +39,7 @@ namespace RestaurantAPI.Controllers
         }
 
         [AllowAnonymous]
-        //[EnableCors("PublicApi")]
+        [EnableCors("PublicApi")]
         [HttpPost("Post")]
         public IActionResult Post([FromBody] LoginInfo user)
         {
@@ -52,7 +52,7 @@ namespace RestaurantAPI.Controllers
         [AllowAnonymous]
         [RestrictHttps]
         [HttpPost("Authenticate")]
-        //[EnableCors("PublicApi")]
+        [EnableCors("PublicApi")]
         public IActionResult Authenticate([FromBody] LoginInfo login)
         {
             var token = _authManager.Authenticate(login.Username, login.Password, login.Role);
