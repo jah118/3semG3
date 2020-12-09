@@ -24,6 +24,7 @@ namespace DataAccess.DataTransferObjects.Converters
         {
             return new Employee()
             {
+                Id = c.Id,
                 Title = new EmployeeTitle()
                 {
                     Title = c.Title
