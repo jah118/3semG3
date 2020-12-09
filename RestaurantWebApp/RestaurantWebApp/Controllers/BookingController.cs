@@ -33,71 +33,34 @@ namespace RestaurantWebApp.Controllers
         }
 
         // GET: Booking
+        [HttpGet]
         [AllowAnonymous]
         public ActionResult Index()
         {
             return View();
         }
 
-        // GET: Booking/Create
-        public ActionResult Create()
+        // GET: Booking/Reservation
+        [HttpGet]
+        public ActionResult Reservation()
         {
-            //TODO her skal laves så den kan tage begge former for login Username/Email
-            //var availableTimes = _reservationService.GetReservationTimeByDate(DateTime.Now.Date);
-            //if (availableTimes == null)
-            //{
-            //    return new HttpStatusCodeResult(HttpStatusCode.ServiceUnavailable);
-            //}
-
+            var tables = _tableService.GetAll();
+            if (tables == null) return new HttpStatusCodeResult(HttpStatusCode.ServiceUnavailable);
 
             var reservation = new ReservationDTO();
-            //reservation.TimeSlots = availableTimes;
-            //if (rv.Tables == null)
-            //{
-            //    return new HttpStatusCodeResult(HttpStatusCode.ServiceUnavailable);
-            //}
-
-            //rv.TimeSlots = _reservationService
-            //TODO  dette er temp  her skal være
-
-            //var ls = new List<ReservationTimesDTO>();
-            //var dateToDay = DateTime.Now;
-            //var ts = new TimeSpan(17, 30, 0);
-            //dateToDay = dateToDay.Date + ts;
-            //for (int i = 0; i < 5; i++)
-            //{
-            //    ts += TimeSpan.FromHours(1);
-            //    dateToDay.AddHours(1);
-            //    ls.Add(new ReservationTimesDTO(dateToDay, ts));
-            //}
-
-            //rv.TimeSlots = ls;
-            //return View(rv);
             return View(reservation);
-            //}
-            //else
-            //{
-            //    return RedirectToAction("Login");
-            //}
         }
 
-        // POST: Booking/Create
+        // POST: Booking/Reservation
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create(ReservationDTO reservation)
+        public async Task<ActionResult> Reservation(ReservationDTO reservation)
         {
-            //bruge timeslot
             var date = Request.Form["ReservationTimeHid"];
-            var date2 = Request.Form["ReservationTimeHid2"];
-
-            //TODO Double up er fordi sometime only gods knows vil den første fejle men den næste virker med samme date string....
-            if (DateTime.TryParse(date2, out var dt2))
-                reservation.ReservationTime = dt2;
-            else if (DateTime.TryParse(date, out var dt3))
+            if (DateTime.TryParse(date, out var dt3))
                 reservation.ReservationTime = dt3;
             else
                 return View(reservation);
-
 
             var r = Request.Form["Tables"];
             if (!string.IsNullOrEmpty(r))
@@ -106,6 +69,7 @@ namespace RestaurantWebApp.Controllers
                 try
                 {
                     var tables = ConvertStringToTables.StringOfIdToTables(r);
+                    if (tables.Count() <= 0) return View(reservation);
                     reservation.Tables = tables;
                 }
                 catch (FormatException e)
@@ -137,9 +101,9 @@ namespace RestaurantWebApp.Controllers
 
         [HttpGet]
         public ActionResult OrderFood(ReservationDTO reservation)
-            //public ActionResult OrderFood()
         {
-            if (reservation == null || reservation.Id <= 0) return new HttpStatusCodeResult(HttpStatusCode.BadRequest, "no valid reservaion");
+            if (reservation == null || reservation.Id <= 0)
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest, "no valid reservaion");
 
             var fdto = _foodService.GetAll();
             if (fdto == null) return new HttpStatusCodeResult(HttpStatusCode.ServiceUnavailable);
@@ -174,15 +138,17 @@ namespace RestaurantWebApp.Controllers
 
         // POST: Booking/OrderFoods
         [HttpPost]
-        public async Task<ActionResult> OrderFood(List<string> Item3, string ReservationNumber)
-            //public async Task<ActionResult> OrderFood(string testhej)
+        public async Task<ActionResult> OrderFood()
         {
             //var data = res;
             //var data = Request.Form["Item1"];
             //var data1 = Request.Form["Item2"];
-            //var data2 = Request.Form["Item3"];
+            var l = Request.Form["Item3"];
+
+            var Item3 = l.Split(',').ToList();
+
             var data3 = Request.Form["ReservationNumber"];
-            //var date22 = Request.Form["VmOrderFoodAndDrinks"];
+            var ReservationNumber = data3;
 
             var foodsListFromApi = _foodService.GetAll().ToList();
             var allGood = int.TryParse(data3, out var ReservationId);
@@ -217,10 +183,9 @@ namespace RestaurantWebApp.Controllers
                 return View(ReservationNumber);
             }
 
-            //TODO add so same view return on fail  with same reservaion id.
+            //TODO add so same view return on fail  with same reservaion id. maybe just give a reservation 
 
             return View(ReservationNumber);
-            //return View();
         }
     }
 }

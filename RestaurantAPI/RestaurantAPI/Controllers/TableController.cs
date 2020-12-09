@@ -2,6 +2,7 @@
 using DataAccess;
 using DataAccess.DataTransferObjects;
 using DataAccess.Repositories.Interfaces;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 
 namespace RestaurantAPI.Controllers
@@ -23,7 +24,7 @@ namespace RestaurantAPI.Controllers
         {
             return Ok(_tableRepository.GetAll());
         }
-
+        [EnableCors("PublicApi")]
         [HttpGet("OpenTables/{date}")]
         public IActionResult GetOpenTables(DateTime date)
         {
@@ -31,7 +32,7 @@ namespace RestaurantAPI.Controllers
             if (response == null) return BadRequest("Requested time outside opening hours");
             return Ok(response);
         }
-
+        [EnableCors("PublicApi")]
         [HttpGet("timeSlot/{date}")]
         public IActionResult Get(DateTime date)
         {
