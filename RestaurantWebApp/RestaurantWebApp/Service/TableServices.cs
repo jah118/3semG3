@@ -11,16 +11,16 @@ namespace RestaurantWebApp.Service
 {
     public class TableServices : ITableService
     {
-        private readonly string _constring;
+        private readonly string _connectionString;
 
-        public TableServices(string constring)
+        public TableServices(string connectionString)
         {
-            _constring = constring;
+            _connectionString = connectionString;
         }
 
         public IEnumerable<RestaurantTablesDTO> GetAll()
         {
-            var client = new RestClient(_constring);
+            var client = new RestClient(_connectionString);
             var request = new RestRequest("/Table", Method.GET);
             var content = client.Execute(request).Content;
             var res = JsonConvert.DeserializeObject<IEnumerable<RestaurantTablesDTO>>(content);
@@ -49,7 +49,7 @@ namespace RestaurantWebApp.Service
 
         public async Task<IEnumerable<RestaurantTablesDTO>> GetAllAsync()
         {
-            var client = new RestClient(_constring);
+            var client = new RestClient(_connectionString);
             var request = new RestRequest("/Table", Method.GET);
             var content = (await client.ExecuteAsync(request)).Content;
             var res = JsonConvert.DeserializeObject<IEnumerable<RestaurantTablesDTO>>(content);
@@ -74,6 +74,16 @@ namespace RestaurantWebApp.Service
         public Task<bool> DeleteAsync(RestaurantTablesDTO obj)
         {
             throw new NotImplementedException();
+        }
+
+        public IEnumerable<RestaurantTablesDTO> GetTablesByDateTime(DateTime dateTime)
+        {
+            var client = new RestClient(_connectionString);
+            var request = new RestRequest("/Table/OpenTables/{date}", Method.GET);
+            request.AddUrlSegment("date", dateTime);
+            var content = client.Execute(request).Content;
+            var res = JsonConvert.DeserializeObject<IEnumerable<RestaurantTablesDTO>>(content);
+            return res;
         }
     }
 }

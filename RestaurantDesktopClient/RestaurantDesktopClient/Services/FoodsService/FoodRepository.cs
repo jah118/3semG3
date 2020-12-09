@@ -3,6 +3,7 @@ using Newtonsoft.Json;
 using RestSharp;
 using System.Collections.Generic;
 using System.Configuration;
+using RestaurantDesktopClient.Services;
 
 namespace RestaurantDesktopClient.Views.ViewModels
 {

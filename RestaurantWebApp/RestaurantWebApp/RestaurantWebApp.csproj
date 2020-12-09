@@ -34,6 +34,19 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <TypeScriptTarget>ES2018</TypeScriptTarget>
+    <TypeScriptJSXEmit>React</TypeScriptJSXEmit>
+    <TypeScriptModuleKind>ES6</TypeScriptModuleKind>
+    <TypeScriptCompileOnSaveEnabled>True</TypeScriptCompileOnSaveEnabled>
+    <TypeScriptNoImplicitAny>False</TypeScriptNoImplicitAny>
+    <TypeScriptRemoveComments>False</TypeScriptRemoveComments>
+    <TypeScriptOutFile />
+    <TypeScriptOutDir />
+    <TypeScriptGeneratesDeclarations>False</TypeScriptGeneratesDeclarations>
+    <TypeScriptNoEmitOnError>True</TypeScriptNoEmitOnError>
+    <TypeScriptSourceMap>True</TypeScriptSourceMap>
+    <TypeScriptMapRoot />
+    <TypeScriptSourceRoot />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -147,6 +160,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\BookingController.cs" />
+    <Compile Include="DataTransferObject\AvailableTimesDTO.cs" />
     <Compile Include="DataTransferObject\UserRoles.cs" />
     <Compile Include="DataTransferObject\CustomerDTO.cs" />
     <Compile Include="DataTransferObject\EmployeeDTO.cs" />
@@ -157,9 +171,6 @@
     <Compile Include="DataTransferObject\PaymentConditionDTO.cs" />
     <Compile Include="DataTransferObject\PriceDTO.cs" />
     <Compile Include="DataTransferObject\ReservationDTO.cs" />
-    <Compile Include="DataTransferObject\ReservationsTablesDTO.cs" />
-    <Compile Include="DataTransferObject\ReservationTimesDTO.cs" />
-    <Compile Include="DataTransferObject\RestaurantOrderDTO.cs" />
     <Compile Include="DataTransferObject\RestaurantTablesDTO.cs" />
     <Compile Include="DataTransferObject\UserDTO.cs" />
     <Compile Include="Global.asax.cs">
@@ -359,7 +370,7 @@
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Booking\Index.cshtml" />
-    <Content Include="Views\Booking\Create.cshtml" />
+    <Content Include="Views\Booking\Reservation.cshtml" />
     <Content Include="Scripts\umd\popper.min.js.map" />
     <Content Include="Scripts\umd\popper.js.map" />
     <Content Include="Scripts\umd\popper.js.flow" />

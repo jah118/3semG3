@@ -1,3 +1,5 @@
+using System.Text;
+using System.Text.Json.Serialization;
 using DataAccess;
 using DataAccess.DataTransferObjects;
 using DataAccess.Repositories;
@@ -12,9 +14,6 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using RestaurantAPI.Authentication;
-using System.Text;
-using System.Text.Json.Serialization;
-using DataAccess.Models;
 
 namespace RestaurantAPI
 {
@@ -51,16 +50,26 @@ namespace RestaurantAPI
             var allowedOrigins = Configuration.GetValue<string>("AllowedOrigins")?.Split(",") ?? new string[0];
             services.AddCors(options =>
             {
-                options.AddPolicy("mvcLoginPolicy", builder => builder.WithOrigins(allowedOrigins).AllowAnyHeader().AllowAnyMethod());
-                options.AddPolicy("PublicApi", builder => builder.AllowAnyOrigin().WithMethods("Post").WithExposedHeaders("Content-Type"));
+                //options.AddPolicy("mvcLoginPolicy",
+                //    builder => builder.WithOrigins(allowedOrigins).AllowAnyHeader().AllowAnyMethod());
+                //options.AddPolicy("PublicApi1",
+                //    builder => builder.AllowAnyOrigin().WithMethods("Post").WithExposedHeaders("Content-Type")); 
+                options.AddPolicy("PublicApi",
+                    builder => builder.WithOrigins("https://localhost:44325").WithMethods("Get","Post"));
+                options.AddPolicy("MyAllowJWTCredentialsPolicy",
+                    builder =>
+                    {
+                        builder.WithOrigins("https://localhost:44325/")
+                            .AllowCredentials();
+                    });
             });
 
-        //Dependency inject repositories, so Controller constructors can be called from the web.
+            //Dependency inject repositories, so Controller constructors can be called from the web.
             services.AddScoped<IAuthRepository, AuthRepository>();
-            services.AddScoped<IRepository<RestaurantTablesDTO>, TableRepository>();
+            services.AddScoped<ITableRepository, TableRepository>();
             services.AddScoped<IRepository<CustomerDTO>, CustomerRepository>();
             services.AddScoped<IRepository<EmployeeDTO>, EmployeeRepository>();
-            services.AddScoped<IRepository<ReservationDTO>, ReservationRepository>();
+            services.AddScoped<IReservationRepository, ReservationRepository>();
             services.AddScoped<IRepository<UserDTO>, UserRepository>();
             services.AddScoped<IRepository<FoodDTO>, FoodRepository>();
             services.AddScoped<IRepository<OrderDTO>, OrderRepository>();
@@ -77,7 +86,7 @@ namespace RestaurantAPI
 
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "RestaurantAPI", Version = "v1" });
+                c.SwaggerDoc("v1", new OpenApiInfo {Title = "RestaurantAPI", Version = "v1"});
             });
         }
 
@@ -92,17 +101,14 @@ namespace RestaurantAPI
             }
 
             app.UseHttpsRedirection();
-            
+
             app.UseRouting();
-            app.UseCors("mvcLoginPolicy");
+            app.UseCors();
 
             app.UseAuthentication();
             app.UseAuthorization();
 
-            app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapControllers();
-            });
+            app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
         }
     }
 }

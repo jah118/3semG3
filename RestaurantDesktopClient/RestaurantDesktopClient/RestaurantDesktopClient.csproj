@@ -109,6 +109,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="DataTransferObject\AvailableTimesDTO.cs" />
     <Compile Include="DataTransferObject\CustomerDTO.cs" />
     <Compile Include="DataTransferObject\EmployeeDTO.cs" />
     <Compile Include="DataTransferObject\FoodCategoryDTO.cs" />
@@ -124,6 +125,7 @@
     <Compile Include="Services\CustomerService\CustomerRepository.cs" />
     <Compile Include="Services\OrderService\OrderRepository.cs" />
     <Compile Include="Services\ReservationService\ReservationRepository.cs" />
+    <Compile Include="Services\Table Service\ITableRepository.cs" />
     <Compile Include="Services\Table Service\TableRepository.cs" />
     <Compile Include="Views\ViewModels\MainMenuViewModel.cs" />
     <Compile Include="Views\ViewModels\ViewModelLocator.cs" />

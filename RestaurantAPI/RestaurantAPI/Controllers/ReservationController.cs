@@ -1,5 +1,7 @@
-﻿using DataAccess;
+﻿using System;
+using DataAccess;
 using DataAccess.DataTransferObjects;
+using DataAccess.Repositories.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
 namespace RestaurantAPI.Controllers
@@ -9,9 +11,9 @@ namespace RestaurantAPI.Controllers
     [ApiConventionType(typeof(DefaultApiConventions))]
     public class ReservationController : ControllerBase
     {
-        private readonly IRepository<ReservationDTO> _reservationRepository;
+        private readonly IReservationRepository _reservationRepository;
 
-        public ReservationController(IRepository<ReservationDTO> reservationRepository)
+        public ReservationController(IReservationRepository reservationRepository)
         {
             _reservationRepository = reservationRepository;
         }
@@ -37,7 +39,7 @@ namespace RestaurantAPI.Controllers
             return res != null ? (IActionResult) Ok(res) : Conflict(value);
         }   
 
-        [HttpPut]
+        [HttpPut("{id}")]
         public IActionResult Put(int id, [FromBody] ReservationDTO value)
         {
             return NotFound();
