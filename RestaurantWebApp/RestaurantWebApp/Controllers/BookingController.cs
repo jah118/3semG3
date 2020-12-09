@@ -56,13 +56,7 @@ namespace RestaurantWebApp.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Reservation(ReservationDTO reservation)
         {
-
             var date = Request.Form["ReservationTimeHid"];
-            //var date2 = Request.Form["ReservationTimeHid2"];
-
-            ////TODO Double up er fordi sometime only gods knows vil den første fejle men den næste virker med samme date string....
-            //if (DateTime.TryParse(date2, out var dt2))
-            //    reservation.ReservationTime = dt2;
             if (DateTime.TryParse(date, out var dt3))
                 reservation.ReservationTime = dt3;
             else
@@ -75,10 +69,7 @@ namespace RestaurantWebApp.Controllers
                 try
                 {
                     var tables = ConvertStringToTables.StringOfIdToTables(r);
-                    if (tables.Count() <= 0)
-                    {
-                        return View(reservation);
-                    }
+                    if (tables.Count() <= 0) return View(reservation);
                     reservation.Tables = tables;
                 }
                 catch (FormatException e)
@@ -111,7 +102,8 @@ namespace RestaurantWebApp.Controllers
         [HttpGet]
         public ActionResult OrderFood(ReservationDTO reservation)
         {
-            if (reservation == null || reservation.Id <= 0) return new HttpStatusCodeResult(HttpStatusCode.BadRequest, "no valid reservaion");
+            if (reservation == null || reservation.Id <= 0)
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest, "no valid reservaion");
 
             var fdto = _foodService.GetAll();
             if (fdto == null) return new HttpStatusCodeResult(HttpStatusCode.ServiceUnavailable);
@@ -156,7 +148,7 @@ namespace RestaurantWebApp.Controllers
             var Item3 = l.Split(',').ToList();
 
             var data3 = Request.Form["ReservationNumber"];
-            string ReservationNumber = data3;
+            var ReservationNumber = data3;
 
             var foodsListFromApi = _foodService.GetAll().ToList();
             var allGood = int.TryParse(data3, out var ReservationId);
@@ -194,49 +186,6 @@ namespace RestaurantWebApp.Controllers
             //TODO add so same view return on fail  with same reservaion id. maybe just give a reservation 
 
             return View(ReservationNumber);
-        }
-    }
-
-    internal struct NewStruct
-    {
-        public object Item1;
-        public object Item2;
-
-        public NewStruct(object item1, object item2)
-        {
-            Item1 = item1;
-            Item2 = item2;
-        }
-
-        public override bool Equals(object obj)
-        {
-            return obj is NewStruct other &&
-                   EqualityComparer<object>.Default.Equals(Item1, other.Item1) &&
-                   EqualityComparer<object>.Default.Equals(Item2, other.Item2);
-        }
-
-        public override int GetHashCode()
-        {
-            int hashCode = -1030903623;
-            hashCode = hashCode * -1521134295 + EqualityComparer<object>.Default.GetHashCode(Item1);
-            hashCode = hashCode * -1521134295 + EqualityComparer<object>.Default.GetHashCode(Item2);
-            return hashCode;
-        }
-
-        public void Deconstruct(out object item1, out object item2)
-        {
-            item1 = Item1;
-            item2 = Item2;
-        }
-
-        public static implicit operator (object, object)(NewStruct value)
-        {
-            return (value.Item1, value.Item2);
-        }
-
-        public static implicit operator NewStruct((object, object) value)
-        {
-            return new NewStruct(value.Item1, value.Item2);
         }
     }
 }
