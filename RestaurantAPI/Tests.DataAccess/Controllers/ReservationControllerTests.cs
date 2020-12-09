@@ -126,7 +126,94 @@ namespace RestaurantAPI.Controllers.Tests
 
         #region Posts
 
-        
+        [TestMethod]
+        public void Create_WhenReservationIsValid_ShouldReturnOK()
+        {
+
+
+            // arrange
+            var mock = new Mock<IReservationRepository>();
+            var obj = new ReservationDTO(
+                41,
+                DateTime.Now,
+                new CustomerDTO(),
+                DateTime.Now,
+                5,
+                false,
+                "TEST",
+                new List<RestaurantTablesDTO> { new RestaurantTablesDTO(), new RestaurantTablesDTO() }
+            );
+
+            ReservationDTO obj1 = new ReservationDTO(
+                0,
+                DateTime.Now,
+                new CustomerDTO(), 
+                DateTime.Now,
+                5,
+                false,
+                "TEST",
+                new List<RestaurantTablesDTO> { new RestaurantTablesDTO(), new RestaurantTablesDTO() }
+            );
+
+            // act
+            mock.Setup(x => x.Create(obj1,true)).Returns(obj);
+            var controller = new ReservationController(mock.Object);
+            var value = mock.Object.Create(obj1,true);
+            var actionResult = controller.Post(obj1);
+            var okResult = actionResult as OkObjectResult;
+
+
+            // assert
+            Assert.IsNotNull(value);
+            Assert.IsTrue(value.Id == 41);
+            Assert.IsNotNull(actionResult);
+            Assert.AreEqual(okResult.StatusCode, (int)HttpStatusCode.OK); //TODO fix so type comapre match
+        }
+
+
+        //[TestMethod]
+        //public void Create_WhenReservationIsNotValid_ShouldReturnConflict()
+        //{
+
+
+        //    // arrange
+        //    var mock = new Mock<IReservationRepository>();
+        //    var obj = new ReservationDTO(
+        //        41,
+        //        DateTime.Now,
+        //        new CustomerDTO(),
+        //        DateTime.Now,
+        //        5,
+        //        false,
+        //        "TEST",
+        //        new List<RestaurantTablesDTO> { new RestaurantTablesDTO(), new RestaurantTablesDTO() }
+        //    );
+
+        //    ReservationDTO obj1 = new ReservationDTO(
+        //        0,
+        //        DateTime.Now,
+        //        new CustomerDTO(),
+        //        DateTime.Now,
+        //        5,
+        //        false,
+        //        "TEST",
+        //        new List<RestaurantTablesDTO> { new RestaurantTablesDTO(), new RestaurantTablesDTO() }
+        //    );
+
+        //    // act
+        //    mock.Setup(x => x.Create(obj1, true)).Returns(obj);
+        //    var controller = new ReservationController(mock.Object);
+        //    var value = mock.Object.Create(obj1, true);
+        //    var actionResult = controller.Post(obj1);
+        //    var okResult = actionResult as OkObjectResult;
+
+
+        //    // assert
+        //    Assert.IsNotNull(value);
+        //    Assert.IsTrue(value.Id == 41);
+        //    Assert.IsNotNull(actionResult);
+        //    Assert.AreEqual(okResult.StatusCode, (int)HttpStatusCode.OK); //TODO fix so type comapre match
+        //}
 
         #endregion
     }
