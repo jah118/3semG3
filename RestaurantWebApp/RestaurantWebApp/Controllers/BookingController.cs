@@ -44,8 +44,6 @@ namespace RestaurantWebApp.Controllers
         [HttpGet]
         public ActionResult Reservation()
         {
-
-            //TODO her skal laves så den kan tage begge former for login Username/Email
             var tables = _tableService.GetAll();
             if (tables == null) return new HttpStatusCodeResult(HttpStatusCode.ServiceUnavailable);
 
@@ -59,18 +57,17 @@ namespace RestaurantWebApp.Controllers
         public async Task<ActionResult> Reservation(ReservationDTO reservation)
         {
 
-            //bruge timeslot
             var date = Request.Form["ReservationTimeHid"];
-            var date2 = Request.Form["ReservationTimeHid2"];
+            //var date2 = Request.Form["ReservationTimeHid2"];
 
-            //TODO Double up er fordi sometime only gods knows vil den første fejle men den næste virker med samme date string....
-            if (DateTime.TryParse(date2, out var dt2))
-                reservation.ReservationTime = dt2;
-            else if (DateTime.TryParse(date, out var dt3))
+            ////TODO Double up er fordi sometime only gods knows vil den første fejle men den næste virker med samme date string....
+            //if (DateTime.TryParse(date2, out var dt2))
+            //    reservation.ReservationTime = dt2;
+            if (DateTime.TryParse(date, out var dt3))
                 reservation.ReservationTime = dt3;
             else
                 return View(reservation);
-            
+
             var r = Request.Form["Tables"];
             if (!string.IsNullOrEmpty(r))
 
@@ -78,7 +75,7 @@ namespace RestaurantWebApp.Controllers
                 try
                 {
                     var tables = ConvertStringToTables.StringOfIdToTables(r);
-                    if (tables.Count()<=0)
+                    if (tables.Count() <= 0)
                     {
                         return View(reservation);
                     }
@@ -113,7 +110,6 @@ namespace RestaurantWebApp.Controllers
 
         [HttpGet]
         public ActionResult OrderFood(ReservationDTO reservation)
-            //public ActionResult OrderFood()
         {
             if (reservation == null || reservation.Id <= 0) return new HttpStatusCodeResult(HttpStatusCode.BadRequest, "no valid reservaion");
 
@@ -150,16 +146,16 @@ namespace RestaurantWebApp.Controllers
 
         // POST: Booking/OrderFoods
         [HttpPost]
-        public async Task<ActionResult> OrderFood(List<string> Item3)
-        //public async Task<ActionResult> OrderFood(string testhej)
+        public async Task<ActionResult> OrderFood()
         {
             //var data = res;
             //var data = Request.Form["Item1"];
             //var data1 = Request.Form["Item2"];
-            //var data2 = Request.Form["Item3"];
-             
+            var l = Request.Form["Item3"];
+
+            var Item3 = l.Split(',').ToList();
+
             var data3 = Request.Form["ReservationNumber"];
-            //var date22 = Request.Form["VmOrderFoodAndDrinks"];
             string ReservationNumber = data3;
 
             var foodsListFromApi = _foodService.GetAll().ToList();
@@ -195,10 +191,52 @@ namespace RestaurantWebApp.Controllers
                 return View(ReservationNumber);
             }
 
-            //TODO add so same view return on fail  with same reservaion id.
+            //TODO add so same view return on fail  with same reservaion id. maybe just give a reservation 
 
             return View(ReservationNumber);
-            //return View();
+        }
+    }
+
+    internal struct NewStruct
+    {
+        public object Item1;
+        public object Item2;
+
+        public NewStruct(object item1, object item2)
+        {
+            Item1 = item1;
+            Item2 = item2;
+        }
+
+        public override bool Equals(object obj)
+        {
+            return obj is NewStruct other &&
+                   EqualityComparer<object>.Default.Equals(Item1, other.Item1) &&
+                   EqualityComparer<object>.Default.Equals(Item2, other.Item2);
+        }
+
+        public override int GetHashCode()
+        {
+            int hashCode = -1030903623;
+            hashCode = hashCode * -1521134295 + EqualityComparer<object>.Default.GetHashCode(Item1);
+            hashCode = hashCode * -1521134295 + EqualityComparer<object>.Default.GetHashCode(Item2);
+            return hashCode;
+        }
+
+        public void Deconstruct(out object item1, out object item2)
+        {
+            item1 = Item1;
+            item2 = Item2;
+        }
+
+        public static implicit operator (object, object)(NewStruct value)
+        {
+            return (value.Item1, value.Item2);
+        }
+
+        public static implicit operator NewStruct((object, object) value)
+        {
+            return new NewStruct(value.Item1, value.Item2);
         }
     }
 }
