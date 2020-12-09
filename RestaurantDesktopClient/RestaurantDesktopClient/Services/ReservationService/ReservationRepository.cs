@@ -1,5 +1,6 @@
 ﻿using DataAccess.DataTransferObjects;
 using Newtonsoft.Json;
+using RestaurantDesktopClient.DataTransferObject;
 using RestaurantDesktopClient.Views.ViewModels;
 using RestSharp;
 using System;
@@ -9,6 +10,7 @@ using System.Configuration;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using RestaurantDesktopClient.Services;
 
 namespace RestaurantDesktopClient.Reservation
 {
@@ -60,7 +62,7 @@ namespace RestaurantDesktopClient.Reservation
             List<ReservationDTO> res = null;
             try
             {
-                string constring = ConfigurationManager.ConnectionStrings["ServiceConString"].ConnectionString;
+                var constring = ConfigurationManager.ConnectionStrings["ServiceConString"].ConnectionString;
                 var client = new RestClient(constring);
                 var request = new RestRequest("/reservation", Method.GET);
                 var content = client.Execute(request).Content;
