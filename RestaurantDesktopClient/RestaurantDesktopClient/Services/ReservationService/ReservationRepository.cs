@@ -16,15 +16,12 @@ namespace RestaurantDesktopClient.Reservation
     public class ReservationRepository : IRepository<ReservationDTO>
     {
         private readonly string _constring;
+        private readonly IAuthRepository _authRepository;
 
-        public ReservationRepository()
-        {
-
-        }
-
-        public ReservationRepository(string constring)
+        public ReservationRepository(string constring, IAuthRepository authRepository)
         {
             this._constring = constring;
+            _authRepository = authRepository;
         }
 
         public ReservationDTO Create(ReservationDTO reservation)

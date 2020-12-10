@@ -14,10 +14,12 @@ namespace RestaurantDesktopClient.Services.CustomerService
     class CustomerRepository : IRepository<CustomerDTO>
     {
         private readonly string _constring;
+        private readonly IAuthRepository _authRepository;
 
-        public CustomerRepository(string constring)
+        public CustomerRepository(string constring, IAuthRepository authRepository)
         {
             this._constring = constring;
+            _authRepository = authRepository;
         }
 
         public CustomerDTO Create(CustomerDTO t)

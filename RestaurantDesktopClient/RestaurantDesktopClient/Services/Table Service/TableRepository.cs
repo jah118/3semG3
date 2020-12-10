@@ -16,10 +16,12 @@ namespace RestaurantDesktopClient.Services.Table_Service
 {
     class TableRepository : ITableRepository<TablesDTO>
     {
+        private readonly IAuthRepository _authRepository;
         private readonly string _constring;
 
-        public TableRepository(string constring)
+        public TableRepository(string constring, IAuthRepository authRepository)
         {
+            _authRepository = authRepository;
             this._constring = constring;
         }
 
