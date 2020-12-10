@@ -209,10 +209,10 @@ namespace Tests.DataAccess.Models.ModelValidation
             Assert.IsFalse(pass);
         }
 
-        [TestMethod]
-        public void UservalidationWrongTypeFail()
-        {
+        //[TestMethod]
+        //public void UservalidationWrongTypeFail() //TODO
+        //{
 
-        }
+        //}
     }
 }
