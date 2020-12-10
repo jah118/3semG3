@@ -177,6 +177,7 @@
     <Compile Include="Service\Interfaces\IReservationService.cs" />
     <Compile Include="Service\Interfaces\IService.cs" />
     <Compile Include="Service\Interfaces\ITableService.cs" />
+    <Compile Include="Util\ConvertStringToFoodLists.cs" />
     <Compile Include="Util\ConvertStringToOrderLines.cs" />
     <Compile Include="Util\ConvertStringToTables.cs" />
     <Compile Include="Util\FormatTime.cs" />

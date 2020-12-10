@@ -10,6 +10,15 @@ using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using System.Web.Mvc;
+<<<<<<< Updated upstream
+=======
+using Castle.Core.Internal;
+using Newtonsoft.Json;
+using RestaurantWebApp.DataTransferObject;
+using RestaurantWebApp.Model;
+using RestaurantWebApp.Service.Interfaces;
+using RestaurantWebApp.Util;
+>>>>>>> Stashed changes
 
 namespace RestaurantWebApp.Controllers
 {
@@ -20,8 +29,11 @@ namespace RestaurantWebApp.Controllers
 
         private readonly IReservationService _reservationService;
         private readonly ITableService _tableService;
+<<<<<<< Updated upstream
         private readonly IFoodService _foodService;
         private readonly IOrderService _orderService;
+=======
+>>>>>>> Stashed changes
 
         public BookingController(IReservationService reservationService, ITableService tableService, IFoodService foodService, IOrderService orderService)
         {
@@ -220,24 +232,24 @@ namespace RestaurantWebApp.Controllers
 
             CustomViewModel cvm = new CustomViewModel();
 
-            // //cvm.listDrink = Drinks;
-            // IEnumerable<FoodDTO> d;
 
-            // model.VmFoods = Foods;
-            // model.VmDrinks = Drinks;
-            // model.Slf = GetSelectListItems(Foods);
-            // model.Sld = GetSelectListItems(Drinks);
-            // model.VmOrderFoodAndDrinks = new List<SelectList>();
+            cvm.ListDrink = Foods;
+            cvm.ListFood = Drinks;
+            cvm.OrderSummary = new List<FoodDTO>();
+            cvm.Reservation = reservation;
+
 
             var lsback = new List<FoodDTO>();
 
             Tuple<List<FoodDTO>, List<FoodDTO>, List<FoodDTO>, ReservationDTO> res = Tuple.Create(Foods, Drinks, lsback, reservation);
 
-            return View(res);
+            //return View(res);
+            return View(cvm);
         }
 
         // POST: Booking/OrderFoods
         [HttpPost]
+<<<<<<< Updated upstream
         public async Task<ActionResult> OrderFood(List<string> Item3, string ReservationNumber)
         //public async Task<ActionResult> OrderFood(string testhej)
         {
@@ -249,15 +261,49 @@ namespace RestaurantWebApp.Controllers
             //var date22 = Request.Form["VmOrderFoodAndDrinks"];
 
             List<FoodDTO> foodsListFromApi = _foodService.GetAll().ToList();
+=======
+        //public async Task<ActionResult> OrderFood(Tuple<List<FoodDTO>, List<FoodDTO>, List<FoodDTO>, ReservationDTO> dTuple )
+        public async Task<ActionResult> OrderFood(CustomViewModel cvm)
+        {
+            //  data from view
+            var foods = Request.Form["listFood"];
+            var drinks = Request.Form["listDrink"];
+            var orders = Request.Form["OrderSummary"];
+            var data3 = Request.Form["ReservationNumber"];
+
+            var orderSummaryListOfStrings = orders?.Split(',').ToList();
+            var foodListOfStrings = foods?.Split(',').ToList();
+            var drinkListOfStrings = drinks?.Split(',').ToList();
+            var foodsListFromApi = _foodService.GetAll().ToList();
+
+            var foodList = ConvertStringToFoodLists.ListOfFoodsIdStringsToFoodList(foodListOfStrings, foodsListFromApi);
+            var drinkList = ConvertStringToFoodLists.ListOfFoodsIdStringsToFoodList(drinkListOfStrings, foodsListFromApi);
+
+
+>>>>>>> Stashed changes
             var allGood = int.TryParse(data3, out var ReservationId);
-            if (Item3.Count > 0 && allGood)
+
+            cvm.ListFood = foodList;
+            cvm.ListDrink = drinkList;
+            cvm.Reservation = new ReservationDTO(ReservationId);
+            cvm.OrderSummary = new List<FoodDTO>();
+
+
+            if (!orderSummaryListOfStrings.IsNullOrEmpty() && allGood)
             {
-                var orderLineList = ConvertStringToOrderLines.ListOfFoodsIdToOrderLines(Item3, foodsListFromApi);
+
+                var orderLineList = ConvertStringToOrderLines.ListOfFoodsIdToOrderLines(orderSummaryListOfStrings, foodsListFromApi);
                 var r = new ReservationDTO(ReservationId);
+<<<<<<< Updated upstream
                 OrderDTO order = _orderService.GetAll().Where(x => x.ReservationID == r.Id).OrderBy(x => x.OrderDate).FirstOrDefault();
                 if (order == null)
                 {
                     order = new OrderDTO
+=======
+                //if order is null -> then everything after ??(null-coalescing) runs
+                var order = _orderService.GetAll().Where(x => x.ReservationID == r.Id).OrderBy(x => x.OrderDate)
+                    .FirstOrDefault() ?? new OrderDTO
+>>>>>>> Stashed changes
                     {
                         ReservationID = r.Id,
                         OrderDate = DateTime.Today,
@@ -286,13 +332,17 @@ namespace RestaurantWebApp.Controllers
                 //TODO add error msg to view
                 //NO Food were selected
                 //throw new NotImplementedException("NO Food were selected or no food return from post");
-                return View(ReservationNumber);
+                return View(cvm);
             }
 
             //TODO add so same view return on fail  with same reservaion id.
 
+<<<<<<< Updated upstream
             return View(ReservationNumber);
             //return View();
+=======
+            return View(cvm);
+>>>>>>> Stashed changes
         }
     }
 }

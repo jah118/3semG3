@@ -6,6 +6,7 @@ namespace RestaurantWebApp.DataTransferObject
 {
     public class ReservationDTO
     {
+
         public ReservationDTO()
         {
             ReservationDate = DateTime.Now;
