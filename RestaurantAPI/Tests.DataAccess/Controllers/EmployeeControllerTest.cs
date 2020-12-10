@@ -13,7 +13,7 @@ using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Tests.DataAccess
+namespace RestaurantAPI.Controllers.Tests
 {
     [TestClass]
    public class EmployeeControllerTest
