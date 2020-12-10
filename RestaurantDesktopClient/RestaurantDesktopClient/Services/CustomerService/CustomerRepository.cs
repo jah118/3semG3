@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -31,9 +32,9 @@ namespace RestaurantDesktopClient.Services.CustomerService
 
             var request = new RestRequest("/customer/{Id}", Method.GET);
             request.AddUrlSegment("Id", customerId);
-            var content = client.Execute(request).Content;
+            var response = client.Execute(request);
 
-            CustomerDTO res = JsonConvert.DeserializeObject<CustomerDTO>(content);
+            CustomerDTO res = response.StatusCode == HttpStatusCode.OK ? JsonConvert.DeserializeObject<CustomerDTO>(response.Content) : null;
 
             return res;
         }
