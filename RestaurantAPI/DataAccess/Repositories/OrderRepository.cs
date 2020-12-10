@@ -6,10 +6,11 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using DataAccess.Models;
+using DataAccess.Repositories.Interfaces;
 
 namespace DataAccess.Repositories
 {
-    public class OrderRepository : IRepository<OrderDTO>
+    public class OrderRepository : IOrderRepository
     {
         private readonly RestaurantContext _context;
 

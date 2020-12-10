@@ -127,6 +127,7 @@
     <Compile Include="Services\ReservationService\ReservationRepository.cs" />
     <Compile Include="Services\Table Service\ITableRepository.cs" />
     <Compile Include="Services\Table Service\TableRepository.cs" />
+    <Compile Include="Helpers\Validation.cs" />
     <Compile Include="Views\ViewModels\MainMenuViewModel.cs" />
     <Compile Include="Views\ViewModels\ViewModelLocator.cs" />
     <Compile Include="Views\Controls\BackControl.xaml.cs">

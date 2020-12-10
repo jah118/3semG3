@@ -9,7 +9,6 @@ using RestaurantWebApp.Service.Interfaces;
 using RichardSzalay.MockHttp;
 using System;
 using System.Collections.Generic;
-using System.Net;
 using System.Text;
 using System.Web.Mvc;
 
@@ -21,7 +20,11 @@ namespace RestaurantWebApp.Test.Service
     [TestClass]
     public class BookingControllerTest
     {
-       
+        //public BookingControllerTest()
+        //{
+
+        //}
+
         //TODO testmetode mangler at orderfood er færdig
         //[TestMethod]
         //public void OrderFoodSuccesTest()
@@ -83,103 +86,63 @@ namespace RestaurantWebApp.Test.Service
             //     cb.Build();
             // };
 
-            //using (var mock = AutoMock.GetLoose())
-            //mock.Mock<IReservationService>().Setup(x => x.Create(ReservationService()))
-            //    .Returns(() => new ReservationService());
+            using (var mock = AutoMock.GetLoose())
+            {
+                //mock.Mock<IReservationService>().Setup(x => x.Create(ReservationService()))
+                //    .Returns(() => new ReservationService());
 
-            //var mockReservation = new Mock<ReservationDTO>();
-            //mockReservation.SetupAllProperties();
-            //mockReservation.SetupGet(p => p.NoOfPeople).Returns(5);
-            //mockReservation.SetupGet(p => p.Note).Returns("Vigtig Info");
-            //mockReservation.SetupGet(p => p.ReservationTime).Returns(new DateTime(12, 12, 2020, 18, 30, 00));
-            //mockReservation.SetupGet(p => p.Customer).Returns(getCustomer());
-            //mockReservation.SetupGet(p => p.Deposit).Returns(false);
-            //mockReservation.SetupGet(p => p.OrderingFood).Returns(false);
-            //mockReservation.SetupGet(p => p.Tables).Returns(new List<RestaurantTablesDTO> { new RestaurantTablesDTO(97, 2, 97), new RestaurantTablesDTO(98, 4, 98) });
-            //mockReservation.SetupGet<IList<ReservationDTO>>(p => p.TimeSlots()).Returns<IEnumerable<ReservationDTO> ({});
+                //var mockReservation = new Mock<ReservationDTO>();
+                //mockReservation.SetupAllProperties();
+                //mockReservation.SetupGet(p => p.NoOfPeople).Returns(5);
+                //mockReservation.SetupGet(p => p.Note).Returns("Vigtig Info");
+                //mockReservation.SetupGet(p => p.ReservationTime).Returns(new DateTime(12, 12, 2020, 18, 30, 00));
+                //mockReservation.SetupGet(p => p.Customer).Returns(getCustomer());
+                //mockReservation.SetupGet(p => p.Deposit).Returns(false);
+                //mockReservation.SetupGet(p => p.OrderingFood).Returns(false);
+                //mockReservation.SetupGet(p => p.Tables).Returns(new List<RestaurantTablesDTO> { new RestaurantTablesDTO(97, 2, 97), new RestaurantTablesDTO(98, 4, 98) });
+                //mockReservation.SetupGet<IList<ReservationDTO>>(p => p.TimeSlots()).Returns<IEnumerable<ReservationDTO> ({});
 
-            //mockReservation.Object.NoOfPeople = 4;
-            //mockReservation.Object.Note = "Info";
-            //mockReservation.Object.OrderingFood = false;
-            //mockReservation.Object.ReservationTime = new DateTime(2020, 12, 12, 18, 30, 00);
-            //mockReservation.Object.Customer = getCustomer();
-            //mockReservation.Object.Tables = new List<RestaurantTablesDTO> { new RestaurantTablesDTO(97, 2, 97), new RestaurantTablesDTO(98, 4, 98) };
-
-
-            //Action act = () =>
-            //{
-            //   var reservation = new ReservationDTO (mockReservation.Object);
-            //   Assert.AreEqual("false", reservation.OrderingFood);
-            //   Assert.AreEqual("4", reservation.NoOfPeople);
-            //   Assert.AreEqual("Info", reservation.Note);
-            //   Assert.AreEqual("new DateTime(12, 12, 2020, 18, 30, 00)", reservation.ReservationTime);
-            //   Assert.AreEqual("getCustomer()", reservation.Customer);
-            //   Assert.AreEqual("new List<RestaurantTablesDTO> { new RestaurantTablesDTO(97, 2, 97), new RestaurantTablesDTO(98, 4, 98) })", reservation.Tables);
-
-            //};
+                //mockReservation.Object.NoOfPeople = 4;
+                //mockReservation.Object.Note = "Info";
+                //mockReservation.Object.OrderingFood = false;
+                //mockReservation.Object.ReservationTime = new DateTime(2020, 12, 12, 18, 30, 00);
+                //mockReservation.Object.Customer = getCustomer();
+                //mockReservation.Object.Tables = new List<RestaurantTablesDTO> { new RestaurantTablesDTO(97, 2, 97), new RestaurantTablesDTO(98, 4, 98) };
 
 
+                //Action act = () =>
+                //{
+                //   var reservation = new ReservationDTO (mockReservation.Object);
+                //   Assert.AreEqual("false", reservation.OrderingFood);
+                //   Assert.AreEqual("4", reservation.NoOfPeople);
+                //   Assert.AreEqual("Info", reservation.Note);
+                //   Assert.AreEqual("new DateTime(12, 12, 2020, 18, 30, 00)", reservation.ReservationTime);
+                //   Assert.AreEqual("getCustomer()", reservation.Customer);
+                //   Assert.AreEqual("new List<RestaurantTablesDTO> { new RestaurantTablesDTO(97, 2, 97), new RestaurantTablesDTO(98, 4, 98) })", reservation.Tables);
 
-            var mockHttp = new MockHttpMessageHandler();
-            var mockBase = new Mock<BookingController>() { CallBase = true };
-
-            mockHttp.When("https://localhost:44386/api").Respond("application/json", "{reservation");
+                //};
 
 
 
-            //mockTables.Setup(x => x.CreateAsync(It.IsAny<ReservationDTO>())).Returns(() => new id());
+                var mockHttp = new MockHttpMessageHandler();
+                var mockBase = new Mock<BookingController>() { CallBase = true };
 
-            var reservartionService = new ReservationDTO();
-            var cls = mock.Create<ReservationService>();
+                mockHttp.When("https://localhost:44386/api").Respond("application/json", "{reservation");
 
-            //act
-            cls.Create(reservartionService);
+                
 
-            //Assert
+                //mockTables.Setup(x => x.CreateAsync(It.IsAny<ReservationDTO>())).Returns(() => new id());
 
-            mock.Mock<IReservationService>().Verify(x => x.CreateAsync(reservartionService), Times.Exactly(1));
+               var reservartionService = new ReservationDTO();
+               var cls = mock.Create<ReservationService>();
+                
+                //act
+                cls.Create(reservartionService);
 
+                //Assert
 
-
-
-
-            //    // arrange
-            //    var mock = new Mock<IReservationService>();
-            //    var obj = new ReservationDTO(
-            //        41,
-            //        new CustomerDTO(),
-            //        DateTime.Now,
-            //        5,
-            //        false,
-            //        "TEST",
-            //        new List<RestaurantTablesDTO> { new RestaurantTablesDTO(1, 2, 1), new RestaurantTablesDTO(2, 2, 2) }
-            //    );
-
-            //IRestResponse
-            //ReservationDTO obj1 = new ReservationDTO(
-            //        0,
-            //        new CustomerDTO(),
-            //        DateTime.Now,
-            //        5,
-            //        false,
-            //        "TEST",
-            //        new List<RestaurantTablesDTO> { new RestaurantTablesDTO(1,2,1), new RestaurantTablesDTO(2,2,2) }
-            //    );
-
-            //    // act
-            //    mock.Setup(x => x.Create(obj))).;
-            //    var controller = new ReservationController(mock.Object);
-            //    var value = mock.Object.Create(obj1, true);
-            //    var actionResult = controller.Post(obj1);
-            //    var okResult = actionResult as OkObjectResult;
-
-
-            //    // assert
-            //    Assert.IsNotNull(value);
-            //    Assert.IsTrue(value.Id == 41);
-            //    Assert.IsNotNull(actionResult);
-            //    Assert.AreEqual(okResult.StatusCode, (int)HttpStatusCode.OK); //TODO fix so type comapre match
-            ////}
+                mock.Mock<IReservationService>().Verify(x => x.CreateAsync(reservartionService), Times.Exactly(1));
+            }
 
         }
 

@@ -9,6 +9,7 @@ using System.Configuration;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using RestaurantDesktopClient.Services;
 
 namespace RestaurantDesktopClient.Reservation
 {
