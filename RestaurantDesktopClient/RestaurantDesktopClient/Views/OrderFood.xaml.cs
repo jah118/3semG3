@@ -22,11 +22,9 @@ namespace RestaurantDesktopClient.Views
     /// </summary>
     public partial class OrderFood : Page
     {
-        public OrderFood(int id)
+        public OrderFood()
         {
-            InitializeComponent(); 
-            OrderFoodModelView ofmv = new OrderFoodModelView(id);
-            this.DataContext = ofmv;
+            InitializeComponent();
         }
 
     }

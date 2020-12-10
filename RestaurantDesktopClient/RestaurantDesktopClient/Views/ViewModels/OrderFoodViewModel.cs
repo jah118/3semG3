@@ -6,10 +6,15 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Data;
 using System.Linq;
+using GalaSoft.MvvmLight;
+using GalaSoft.MvvmLight.CommandWpf;
+using GalaSoft.MvvmLight.Messaging;
+using RestaurantDesktopClient.Messages;
+using RestaurantDesktopClient.Views.ManageReservation;
 
 namespace RestaurantDesktopClient.Views.ViewModels
 {
-    class OrderFoodModelView
+    public class OrderFoodViewModel : ViewModelBase
     {
         #region Fields
         private int _reservationId;
@@ -43,8 +48,8 @@ namespace RestaurantDesktopClient.Views.ViewModels
             }
             set { }
         }
-        private IRepository<FoodDTO> _foodRepository;
-        private IRepository<OrderDTO> _orderRepository;
+        private readonly IRepository<FoodDTO> _foodRepository;
+        private readonly IRepository<OrderDTO> _orderRepository;
         public FoodDTO SelectedFood
         {
             get { return null; }
@@ -76,15 +81,20 @@ namespace RestaurantDesktopClient.Views.ViewModels
 
         #endregion
 
-        public OrderFoodModelView(int reservationId)
+        public OrderFoodViewModel(IRepository<FoodDTO> foodRepository, IRepository<OrderDTO> orderRepository)
         {
-            _reservationId = reservationId;
+            Messenger.Default.Register<ReservationSelection>(this, ChangeReservation);
             BtnCancelClicked = new RelayCommand(CancelClicked);
             BtnSaveClicked = new RelayCommand(SaveClicked);
-            _foodRepository = new FoodRepository();
-            _orderRepository = new OrderRepository();
+            _foodRepository =foodRepository;
+            _orderRepository = orderRepository;
+        }
+
+        public void ChangeReservation(ReservationSelection message)
+        {
+            _reservationId = message.Selected;
             var order = _orderRepository.GetAll()
-                .Where(x => x.ReservationID == reservationId)
+                .Where(x => x.ReservationID == _reservationId)
                 .OrderBy(x => x.OrderDate)
                 .FirstOrDefault();
             _ordersFood = order != null ? new ObservableCollection<OrderLineDTO>(order.OrderLines) : new ObservableCollection<OrderLineDTO>();
@@ -92,7 +102,9 @@ namespace RestaurantDesktopClient.Views.ViewModels
             {
                 SelectedPaymentCondition = (PaymentCondition)Enum.Parse(typeof(PaymentCondition), order.PaymentCondition);
             }
+            RaisePropertyChanged(() => SummaryFoods);
         }
+
         private void CancelClicked()
         {
             MainWindow.ChangeFrame(new ManageReservationView());
@@ -111,10 +123,11 @@ namespace RestaurantDesktopClient.Views.ViewModels
         }
         private void AddToSummary(FoodDTO obj)
         {
-            var found = SummaryFoods.Where(x => x.Food.Id == obj.Id).FirstOrDefault();
+            var found = SummaryFoods.FirstOrDefault(x => x.Food.Id == obj.Id);
             if (found == null)
             {
                 SummaryFoods.Add(new OrderLineDTO{  Food = obj, Quantity = 1 });
+                RaisePropertyChanged(() => SummaryFoods);
             }
             else
             {
@@ -133,6 +146,7 @@ namespace RestaurantDesktopClient.Views.ViewModels
                 obj.Quantity = 0;
                 SummaryFoods.Remove(obj);
             }
+            RaisePropertyChanged(() => SummaryFoods);
         }
 
     }

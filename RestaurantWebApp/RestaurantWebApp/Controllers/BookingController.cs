@@ -5,6 +5,11 @@ using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using System.Web.Mvc;
+using Newtonsoft.Json;
+using RestaurantWebApp.DataTransferObject;
+using RestaurantWebApp.Model;
+using RestaurantWebApp.Service.Interfaces;
+using RestaurantWebApp.Util;
 using Microsoft.Ajax.Utilities;
 using Newtonsoft.Json;
 using RestaurantWebApp.DataTransferObject;
@@ -24,7 +29,6 @@ namespace RestaurantWebApp.Controllers
         private readonly ITableService _tableService;
         private ControllerContext _context = new ControllerContext();
 
-
         public BookingController(IReservationService reservationService, ITableService tableService,
             IFoodService foodService, IOrderService orderService)
         {
@@ -35,58 +39,34 @@ namespace RestaurantWebApp.Controllers
         }
 
         // GET: Booking
+        [HttpGet]
         [AllowAnonymous]
         public ActionResult Index()
         {
             return View();
         }
 
-        // GET: Booking/Create
-        public ActionResult Create()
+        // GET: Booking/Reservation
+        [HttpGet]
+        public ActionResult Reservation()
         {
-            //TODO her skal laves så den kan tage begge former for login Username/Email
+            var tables = _tableService.GetAll();
+            if (tables == null) return new HttpStatusCodeResult(HttpStatusCode.ServiceUnavailable);
 
-            var rv = new ReservationDTO {Tables = _tableService.GetAll()};
-            if (rv.Tables == null) return new HttpStatusCodeResult(HttpStatusCode.ServiceUnavailable);
-
-            //rv.TimeSlots = _reservationService
-            //TODO  dette er temp  her skal være
-
-            var ls = new List<ReservationTimesDTO>();
-            var dateToDay = DateTime.Now;
-            var ts = new TimeSpan(17, 30, 0);
-            dateToDay = dateToDay.Date + ts;
-            for (var i = 0; i < 5; i++)
-            {
-                ts += TimeSpan.FromHours(1);
-                dateToDay.AddHours(1);
-                ls.Add(new ReservationTimesDTO(dateToDay, ts));
-            }
-
-            rv.TimeSlots = ls;
-            return View(rv);
-            //}
-            //else
-            //{
-            //    return RedirectToAction("Login");
-            //}
+            var reservation = new ReservationDTO();
+            return View(reservation);
         }
 
-        // POST: Booking/Create
+        // POST: Booking/Reservation
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create(ReservationDTO reservation)
+        public async Task<ActionResult> Reservation(ReservationDTO reservation)
         {
-            //TODO senere når api virker ville der bar kunne bruges uden at kunne konverter
-            //bruge timeslot
-            var date = Request.Form["ReservationTime"];
-            var time = Request.Form["Timeslots"];
-
-            if (time.Length > 0)
-            {
-                var datetime = FormatTime.FormatterForReservationTimeFromString(date, time);
-                reservation.ReservationTime = datetime;
-            }
+            var date = Request.Form["ReservationTimeHid"];
+            if (DateTime.TryParse(date, out var dt3))
+                reservation.ReservationTime = dt3;
+            else
+                return View(reservation);
 
             var r = Request.Form["Tables"];
             if (!string.IsNullOrEmpty(r))
@@ -95,6 +75,7 @@ namespace RestaurantWebApp.Controllers
                 try
                 {
                     var tables = ConvertStringToTables.StringOfIdToTables(r);
+                    if (tables.Count() <= 0) return View(reservation);
                     reservation.Tables = tables;
                 }
                 catch (FormatException e)
@@ -124,69 +105,14 @@ namespace RestaurantWebApp.Controllers
             return View(reservation);
         }
 
-        // POST: Booking/Edit/5
-        [HttpPost]
-        public ActionResult Edit(int id, FormCollection collection)
-        {
-            try
-            {
-                // TODO: Add update logic here
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
-        // GET: Booking/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
-
-        // POST: Booking/Delete/5
-        [HttpPost]
-        public ActionResult Delete(int id, FormCollection collection)
-        {
-            try
-            {
-                // TODO: Add delete logic here
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
         [HttpGet]
         public ActionResult OrderFood(ReservationDTO reservation)
-            //public ActionResult OrderFood()
         {
-            //TODO remove this when test arf made for order or this not need any more
-            //this just makes it so u can skip reservation page 
-
-            //////////////////////////
-
-            //ReservationDTO reservation = new ReservationDTO(
-            //    41,
-            //    new CustomerDTO("88888888", "JensJensen@gmaiul.com", "jens", "jensen", "jensvej 2", "9000", "aalborg"),
-            //    DateTime.Now,
-            //    5,
-            //    false,
-            //    "TEST",
-            //    new List<RestaurantTablesDTO> { new RestaurantTablesDTO(97, 2, 97), new RestaurantTablesDTO(98, 4, 98) }
-
-            //    );
-            ///////////////////////////////
-
-
-            if (reservation == null) return new HttpStatusCodeResult(HttpStatusCode.Forbidden, "no valid reservaion");
+            if (reservation == null || reservation.Id <= 0)
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest, "no valid reservaion");
 
             var fdto = _foodService.GetAll();
             if (fdto == null) return new HttpStatusCodeResult(HttpStatusCode.ServiceUnavailable);
-
             var Foods = new List<FoodDTO>();
             //IEnumerable<FoodDTO> Drinks = new List<FoodDTO>();
             var Drinks = new List<FoodDTO>();
@@ -275,7 +201,7 @@ namespace RestaurantWebApp.Controllers
                 return View(cvm);
             }
 
-            //TODO add so same view return on fail  with same reservaion id.
+            //TODO add so same view return on fail  with same reservaion id. maybe just give a reservation 
 
 
             return View(cvm);
