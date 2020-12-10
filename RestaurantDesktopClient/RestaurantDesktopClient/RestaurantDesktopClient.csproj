@@ -122,7 +122,9 @@
     <Compile Include="DataTransferObject\RestaurantOrderDTO.cs" />
     <Compile Include="DataTransferObject\TablesDTO.cs" />
     <Compile Include="Messages\ReservationSelection.cs" />
+    <Compile Include="Services\AuthorizationService\AuthorizationRepository.cs" />
     <Compile Include="Services\CustomerService\CustomerRepository.cs" />
+    <Compile Include="Services\IAuthRepository.cs" />
     <Compile Include="Services\OrderService\OrderRepository.cs" />
     <Compile Include="Services\ReservationService\ReservationRepository.cs" />
     <Compile Include="Services\Table Service\ITableRepository.cs" />
