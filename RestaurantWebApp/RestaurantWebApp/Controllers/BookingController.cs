@@ -5,6 +5,7 @@ using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using System.Web.Mvc;
+using Microsoft.Ajax.Utilities;
 using Newtonsoft.Json;
 using RestaurantWebApp.DataTransferObject;
 using RestaurantWebApp.Model;
@@ -217,9 +218,6 @@ namespace RestaurantWebApp.Controllers
 
         // POST: Booking/OrderFoods
         [HttpPost]
-        public async Task<ActionResult> OrderFood(
-            Tuple<List<FoodDTO>, List<FoodDTO>, List<FoodDTO>, ReservationDTO> dTuple)
-
         public async Task<ActionResult> OrderFood(CustomViewModel cvm)
         {
             //  data from view
@@ -243,9 +241,8 @@ namespace RestaurantWebApp.Controllers
             cvm.ListDrink = drinkList;
             cvm.Reservation = new ReservationDTO(ReservationId);
             cvm.OrderSummary = new List<FoodDTO>();
-
-
-            if (!orderSummaryListOfStrings.IsNullOrEmpty() && allGood)
+            
+            if (orderSummaryListOfStrings != null && orderSummaryListOfStrings.Count > 0 && allGood)
             {
                 var orderLineList =
                     ConvertStringToOrderLines.ListOfFoodsIdToOrderLines(orderSummaryListOfStrings, foodsListFromApi);
