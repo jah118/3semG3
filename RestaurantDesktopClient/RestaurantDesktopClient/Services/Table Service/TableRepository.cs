@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web.UI.WebControls;
@@ -23,6 +24,10 @@ namespace RestaurantDesktopClient.Services.Table_Service
         {
             _authRepository = authRepository;
             this._constring = constring;
+        }
+
+        public TableRepository()
+        {
         }
 
         public IEnumerable<TablesDTO> GetAll()
@@ -86,15 +91,15 @@ namespace RestaurantDesktopClient.Services.Table_Service
         }
         public List<TablesDTO> GetFreeTables(DateTime date)
         {
-            List<TablesDTO> res = new List<TablesDTO>();
+            List<TablesDTO> res;
             try
             {
                 var constring = ConfigurationManager.ConnectionStrings["ServiceConString"].ConnectionString;
                 var client = new RestClient(constring);
                 var request = new RestRequest("/Table/OpenTables/{date}", Method.GET);
                 request.AddUrlSegment("date", date.ToString("MM-dd-yy HH:mm:ss")); 
-                var content = client.Execute(request).Content;
-                res = JsonConvert.DeserializeObject<List<TablesDTO>>(content);
+                var response = client.Execute(request);
+                res = response.StatusCode == HttpStatusCode.OK ? JsonConvert.DeserializeObject<List<TablesDTO>>(response.Content) : new List<TablesDTO>();
             }
             catch
             {
