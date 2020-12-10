@@ -140,6 +140,8 @@
     <Compile Include="Service\BookingServicesTests.cs" />
     <Compile Include="Service\OrderService.Moq.cs" />
     <Compile Include="Service\TableServicesTests.cs" />
+    <Compile Include="Util\ConvertStringToFoodListsTests.cs" />
+    <Compile Include="Util\ConvertStringToOrderLinesTests.cs" />
     <Compile Include="Util\FormatStringToTablesTests.cs" />
     <Compile Include="Util\FormatTimeTests.cs" />
   </ItemGroup>

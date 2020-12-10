@@ -7,12 +7,16 @@ namespace RestaurantWebApp.Util
 {
     public static class ConvertStringToOrderLines
     {
-        public static IEnumerable<OrderLineDTO> ListOfFoodsIdToOrderLines(List<string> item3,
+        public static IEnumerable<OrderLineDTO> ListOfFoodsIdToOrderLines(List<string> stringList,
             List<FoodDTO> foodsListFromApi)
         {
+            if (stringList == null || foodsListFromApi == null || stringList.Count <= 0)
+            {
+                throw new FormatException("Nothing to add or compare to");
+            }
             var orderLine = new List<OrderLineDTO>();
             var foods = new List<FoodDTO>();
-            foreach (var item in item3)
+            foreach (var item in stringList)
             {
                 if (int.TryParse(item, out var tempId))
                 {

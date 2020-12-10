@@ -10,12 +10,6 @@ using RestaurantWebApp.DataTransferObject;
 using RestaurantWebApp.Model;
 using RestaurantWebApp.Service.Interfaces;
 using RestaurantWebApp.Util;
-using Microsoft.Ajax.Utilities;
-using Newtonsoft.Json;
-using RestaurantWebApp.DataTransferObject;
-using RestaurantWebApp.Model;
-using RestaurantWebApp.Service.Interfaces;
-using RestaurantWebApp.Util;
 
 namespace RestaurantWebApp.Controllers
 {
@@ -157,9 +151,10 @@ namespace RestaurantWebApp.Controllers
             var drinkListOfStrings = drinks?.Split(',').ToList();
             var foodsListFromApi = _foodService.GetAll().ToList();
 
-            var foodList = ConvertStringToFoodLists.ListOfFoodsIdStringsToFoodList(foodListOfStrings, foodsListFromApi);
-            var drinkList =
-                ConvertStringToFoodLists.ListOfFoodsIdStringsToFoodList(drinkListOfStrings, foodsListFromApi);
+            var foodList = ConvertStringToFoodLists
+                .ListOfFoodsIdStringsToFoodList(foodListOfStrings, foodsListFromApi);
+            var drinkList = ConvertStringToFoodLists
+                .ListOfFoodsIdStringsToFoodList(drinkListOfStrings, foodsListFromApi);
 
             var allGood = int.TryParse(data3, out var ReservationId);
 
@@ -167,24 +162,28 @@ namespace RestaurantWebApp.Controllers
             cvm.ListDrink = drinkList;
             cvm.Reservation = new ReservationDTO(ReservationId);
             cvm.OrderSummary = new List<FoodDTO>();
-            
+
             if (orderSummaryListOfStrings != null && orderSummaryListOfStrings.Count > 0 && allGood)
             {
                 var orderLineList =
-                    ConvertStringToOrderLines.ListOfFoodsIdToOrderLines(orderSummaryListOfStrings, foodsListFromApi);
+                    ConvertStringToOrderLines
+                        .ListOfFoodsIdToOrderLines(orderSummaryListOfStrings, foodsListFromApi);
                 var r = new ReservationDTO(ReservationId);
 
                 //if order is null -> then everything after ??(null-coalescing) runs
-                var order = _orderService.GetAll().Where(x => x.ReservationID == r.Id).OrderBy(x => x.OrderDate)
-                    .FirstOrDefault() ?? new OrderDTO
-
-                {
-                    ReservationID = r.Id,
-                    OrderDate = DateTime.Today,
-                    EmployeeID = 1,
-                    PaymentCondition = PaymentCondition.Begyndt.ToString(),
-                    OrderLines = orderLineList
-                };
+                var order = _orderService
+                                .GetAll()
+                                .Where(x => x.ReservationID == r.Id)
+                                .OrderBy(x => x.OrderDate)
+                                .FirstOrDefault()
+                            ?? new OrderDTO
+                            {
+                                ReservationID = r.Id,
+                                OrderDate = DateTime.Today,
+                                EmployeeID = 1,
+                                PaymentCondition = PaymentCondition.Begyndt.ToString(),
+                                OrderLines = orderLineList
+                            };
 
                 var response = await _orderService.CreateAsync(order);
 

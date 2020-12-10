@@ -2,11 +2,24 @@
 
 namespace RestaurantWebApp.DataTransferObject
 {
-    public class FoodDTO : IEquatable<FoodDTO>
+    public class FoodDTO 
     {
+        public FoodDTO()
+        {
+        }
+
         public FoodDTO(int id)
         {
             Id = id;
+        }
+
+        public FoodDTO(int id, string name, string description, string foodCategoryName, double price)
+        {
+            Id = id;
+            Name = name;
+            Description = description;
+            FoodCategoryName = foodCategoryName;
+            Price = price;
         }
 
         public int Id { get; set; }
@@ -18,13 +31,13 @@ namespace RestaurantWebApp.DataTransferObject
         public bool Equals(FoodDTO other)
         {
             if (other == null) return false;
-            return (this.Id.Equals(other.Id));
+            return Id.Equals(other.Id);
         }
 
         public override bool Equals(object obj)
         {
             if (obj == null) return false;
-            FoodDTO objAsFoodDTO = obj as FoodDTO;
+            var objAsFoodDTO = obj as FoodDTO;
             if (objAsFoodDTO == null) return false;
             return Equals(objAsFoodDTO);
         }

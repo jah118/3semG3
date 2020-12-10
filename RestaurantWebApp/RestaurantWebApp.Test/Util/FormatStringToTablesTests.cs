@@ -1,8 +1,8 @@
-﻿using System;
-using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using RestaurantWebApp.DataTransferObject;
 using RestaurantWebApp.Util;
+using System;
+using System.Linq;
 
 namespace RestaurantWebApp.Test.Util
 {
@@ -12,14 +12,12 @@ namespace RestaurantWebApp.Test.Util
         [TestMethod]
         public void StringOfIdToTablesTestValid()
         {
-            //Arrange
             const string stringOfTables = "1,2,3,5,7";
 
             var firstTable = new RestaurantTablesDTO(1, 0, 0);
             var thirdTable = new RestaurantTablesDTO(3, 0, 0);
             var lastTable = new RestaurantTablesDTO(7, 0, 0);
 
-            //Act
             var tables = ConvertStringToTables.StringOfIdToTables(stringOfTables);
             var restaurantTables = tables.ToList();
 
