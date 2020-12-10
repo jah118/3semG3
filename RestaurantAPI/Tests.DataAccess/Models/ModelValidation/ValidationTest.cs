@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using DataAccess.DataTransferObjects;
+﻿using DataAccess.DataTransferObjects;
 using DataAccess.Models;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Tests.DataAccess
+namespace Tests.DataAccess.Models.ModelValidation
 {
     [TestClass, TestCategory("Validation")]
     public class ValidationTest
@@ -142,8 +137,7 @@ namespace Tests.DataAccess
             UserDTO u = new UserDTO()
             {
                 Username = "Alpha",
-                AccountType = UserRoles.Employee,
-                Employee = new EmployeeDTO()
+               Employee = new EmployeeDTO()
                 {
                     FirstName = "Alpha",
                     LastName = "Beta",
@@ -153,7 +147,9 @@ namespace Tests.DataAccess
                     ZipCode = "1234",
                     Phone = "88888888",
                     Title = "BobskiBuilder"
-                }
+                },
+               AccountType = UserRoles.Employee
+
             };
             //Act
             bool pass = User.Validate(u);
@@ -213,10 +209,10 @@ namespace Tests.DataAccess
             Assert.IsFalse(pass);
         }
 
-        [TestMethod]
-        public void UservalidationWrongTypeFail()
-        {
+        //[TestMethod]
+        //public void UservalidationWrongTypeFail() //TODO
+        //{
 
-        }
+        //}
     }
 }

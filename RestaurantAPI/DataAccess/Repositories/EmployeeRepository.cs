@@ -1,6 +1,7 @@
 ﻿using DataAccess.DataTransferObjects;
 using DataAccess.DataTransferObjects.Converters;
 using DataAccess.Models;
+using DataAccess.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using System;
@@ -10,7 +11,7 @@ using System.Linq;
 
 namespace DataAccess.Repositories
 {
-    public class EmployeeRepository : IRepository<EmployeeDTO>
+    public class EmployeeRepository : IEmployeeRepository
     {
         private readonly RestaurantContext _context;
 
