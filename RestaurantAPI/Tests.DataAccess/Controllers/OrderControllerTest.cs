@@ -21,7 +21,7 @@ namespace RestaurantAPI.Controllers.Tests
     {
 
         [TestMethod]
-        public void GetByIDTest()
+        public void GetByIDTest_Succes()
         {
             var mock = new Mock<IOrderRepository>();
             OrderDTO order = new OrderDTO
@@ -47,9 +47,37 @@ namespace RestaurantAPI.Controllers.Tests
             Assert.AreEqual(okResult.StatusCode, (int)HttpStatusCode.OK);
 
         }
+        [TestMethod]
+        public void GetByIDTest_Failed()
+        {
+            var mock = new Mock<IOrderRepository>();
+            OrderDTO order = new OrderDTO
+
+            {
+                OrderNo = 50,
+                ReservationID = 49,
+                EmployeeID = 80,
+                OrderDate = DateTime.Now,
+                PaymentCondition = "Betalt",
+                OrderLines = new List<OrderLineDTO>()
+
+            };
+            mock.Setup(x => x.GetById(50)).Returns(order);
+            var controller = new OrderController(mock.Object);
+
+
+            var o = mock.Object.GetById(55);
+            var result = controller.Get(55);
+            var okResult = result as NotFoundObjectResult;
+
+            Assert.IsNull(o);
+            Assert.AreEqual(okResult.StatusCode, (int)HttpStatusCode.NotFound);
+
+        }
+
 
         [TestMethod]
-        public void CreateOrderTest()
+        public void CreateOrderTest_Succes()
         {
             var mock = new Mock<IOrderRepository>();
             OrderDTO order = new OrderDTO
@@ -80,7 +108,32 @@ namespace RestaurantAPI.Controllers.Tests
         }
 
         [TestMethod]
-        public void GetAllOrdersTest()
+        public void CreateOrderTest_Failed()
+        {
+            OrderDTO o1 = null;
+            var mock = new Mock<IOrderRepository>();
+            OrderDTO order = new OrderDTO
+            {
+                OrderNo = 0,
+                ReservationID = 49,
+                EmployeeID = 80,
+                OrderDate = DateTime.Now,
+                PaymentCondition = "Betalt",
+                OrderLines = new List<OrderLineDTO>()
+            };
+
+            mock.Setup(x => x.Create(order, true)).Returns(o1);
+            var controller = new OrderController(mock.Object);
+            var o = mock.Object.Create(order, true);
+            var result = controller.Post(order);
+            var okResult = result as ConflictObjectResult;
+
+          
+            Assert.AreEqual(okResult.StatusCode, (int)HttpStatusCode.Conflict);
+        }
+
+        [TestMethod]
+        public void GetAllOrdersTest_Succes()
         {
             var mock = new Mock<IOrderRepository>();
             OrderDTO order = new OrderDTO
@@ -101,7 +154,7 @@ namespace RestaurantAPI.Controllers.Tests
                 PaymentCondition = "Begyndt",
                 OrderLines = new List<OrderLineDTO>()
             };
-            List<OrderDTO> orders = new List<OrderDTO>();
+            IList<OrderDTO> orders = new List<OrderDTO>();
             orders.Add(order);
             orders.Add(order1);
 
@@ -113,12 +166,12 @@ namespace RestaurantAPI.Controllers.Tests
             var okResult = result as OkObjectResult;
 
             Assert.IsNotNull(o);
-           // Assert.AreEqual(orders.OrderNo, o.Order);
+            Assert.IsTrue(o.Count() > 1);
+            Assert.AreEqual(order.OrderNo, o.ElementAt(0).OrderNo);  
+            Assert.AreEqual(order1.OrderNo, o.ElementAt(1).OrderNo);
+
             Assert.IsNotNull(result);
             Assert.AreEqual(okResult.StatusCode, (int)HttpStatusCode.OK);
-
-
-
 
         }
 

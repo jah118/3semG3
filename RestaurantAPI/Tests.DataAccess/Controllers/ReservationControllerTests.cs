@@ -55,7 +55,7 @@ namespace RestaurantAPI.Controllers.Tests
 
             // assert
             Assert.IsNotNull(value);
-            Assert.IsTrue(value.Count() > 0);
+            Assert.IsTrue(value.Count() > 1);
             Assert.AreEqual(obj.Id, value.ElementAt(0).Id);
             Assert.AreEqual(obj2.Id, value.ElementAt(1).Id);
 

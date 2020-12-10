@@ -7,10 +7,11 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
+using DataAccess.Repositories.Interfaces;
 
 namespace DataAccess.Repositories
 {
-    public class CustomerRepository : IRepository<CustomerDTO>
+    public class CustomerRepository : ICustomerRepository
     {
         private readonly RestaurantContext _context;
 
