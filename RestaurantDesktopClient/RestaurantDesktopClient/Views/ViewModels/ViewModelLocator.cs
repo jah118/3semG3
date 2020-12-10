@@ -19,6 +19,7 @@ using DataAccess.DataTransferObjects;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Ioc;
 using RestaurantDesktopClient.Reservation;
+using RestaurantDesktopClient.Services;
 using RestaurantDesktopClient.Services.CustomerService;
 using RestaurantDesktopClient.Services.OrderService;
 using RestaurantDesktopClient.Services.Table_Service;

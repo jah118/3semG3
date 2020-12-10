@@ -10,6 +10,7 @@ using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.CommandWpf;
 using GalaSoft.MvvmLight.Messaging;
 using RestaurantDesktopClient.Messages;
+using RestaurantDesktopClient.Services;
 using RestaurantDesktopClient.Views.ManageReservation;
 
 namespace RestaurantDesktopClient.Views.ViewModels

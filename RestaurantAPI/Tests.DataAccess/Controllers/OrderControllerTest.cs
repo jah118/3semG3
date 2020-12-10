@@ -21,7 +21,9 @@ namespace RestaurantAPI.Controllers.Tests
     {
 
         [TestMethod]
+
         public void GetByIDTest_Succes()
+
         {
             var mock = new Mock<IOrderRepository>();
             OrderDTO order = new OrderDTO
@@ -47,6 +49,7 @@ namespace RestaurantAPI.Controllers.Tests
             Assert.AreEqual(okResult.StatusCode, (int)HttpStatusCode.OK);
 
         }
+
         [TestMethod]
         public void GetByIDTest_Failed()
         {
@@ -108,6 +111,7 @@ namespace RestaurantAPI.Controllers.Tests
         }
 
         [TestMethod]
+
         public void CreateOrderTest_Failed()
         {
             OrderDTO o1 = null;
@@ -154,7 +158,9 @@ namespace RestaurantAPI.Controllers.Tests
                 PaymentCondition = "Begyndt",
                 OrderLines = new List<OrderLineDTO>()
             };
+
             IList<OrderDTO> orders = new List<OrderDTO>();
+
             orders.Add(order);
             orders.Add(order1);
 
@@ -166,12 +172,15 @@ namespace RestaurantAPI.Controllers.Tests
             var okResult = result as OkObjectResult;
 
             Assert.IsNotNull(o);
+
             Assert.IsTrue(o.Count() > 1);
             Assert.AreEqual(order.OrderNo, o.ElementAt(0).OrderNo);  
             Assert.AreEqual(order1.OrderNo, o.ElementAt(1).OrderNo);
 
             Assert.IsNotNull(result);
             Assert.AreEqual(okResult.StatusCode, (int)HttpStatusCode.OK);
+
+
 
         }
 
