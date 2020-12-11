@@ -62,7 +62,7 @@ namespace DataAccess.Repositories
             return null;
         }
 
-        public bool Delete(UserDTO obj, bool transactionEndpoint = true)
+        public bool Delete(int id, bool transactionEndpoint = true)
         {
             throw new NotImplementedException();
         }

@@ -15,6 +15,6 @@ namespace DataAccess
 
         TEntity Update(TEntity obj, bool transactionEndpoint = true);
 
-        bool Delete(TEntity obj, bool transactionEndpoint = true);
+        bool Delete(int id, bool transactionEndpoint = true);
     }
 }

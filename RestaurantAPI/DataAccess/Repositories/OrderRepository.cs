@@ -55,8 +55,9 @@ namespace DataAccess.Repositories
             return null;
         }
 
-        public bool Delete(OrderDTO obj, bool transactionEndpoint = true)
+        public bool Delete(int id, bool transactionEndpoint = true)
         {
+            
             throw new NotImplementedException();
         }
 

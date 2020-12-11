@@ -41,7 +41,7 @@ namespace DataAccess.Repositories
             return _context.Add(Converter.Convert(obj));
         }
 
-        public bool Delete(EmployeeDTO obj, bool transactionEndpoint = true)
+        public bool Delete(int id, bool transactionEndpoint = true)
         {
             if (transactionEndpoint) _context.Database.BeginTransaction(IsolationLevel.Serializable);
             //insert logic here
