@@ -24,6 +24,11 @@ namespace RestaurantDesktopClient.Views.ViewModels
             throw new NotImplementedException();
         }
 
-        public RelayCommand LoginCommand;
+        public RelayCommand LoginCommand { get; set; }
+
+        private void LoginPressed()
+        {
+
+        }
     }
 }
