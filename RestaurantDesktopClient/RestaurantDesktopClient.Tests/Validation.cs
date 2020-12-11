@@ -14,22 +14,23 @@ namespace RestaurantDesktopClient.Tests
     [TestClass]
     public class Validation
     {
-    private ReservationDTO GetReservation()
-    {
-    return new ReservationDTO
-    {
-        Tables = new List<TablesDTO>()
+        private ReservationDTO GetReservation()
+        {
+            return new ReservationDTO
+            {
+                Id = 1,
+                Tables = new List<TablesDTO>()
         {
             new TablesDTO {Id = 1, NoOfSeats = 3, TableNumber = 1},
             new TablesDTO {Id = 2, NoOfSeats = 3, TableNumber = 2},
         },
-        ReservationTime = new DateTime().AddMinutes(15),
-        Customer = new CustomerDTO(),
-        NoOfPeople = 2,
-        Deposit = true,
-        ReservationDate = DateTime.Now,
-    };
-    }
+                ReservationTime = DateTime.Now.AddMinutes(15),
+                Customer = new CustomerDTO(),
+                NoOfPeople = 2,
+                Deposit = true,
+                ReservationDate = DateTime.Now,
+            };
+        }
 
         [TestMethod]
         public void IsNumberSuccessOneNumber()
@@ -134,6 +135,7 @@ namespace RestaurantDesktopClient.Tests
         public void ReservationValidForCreateSeccessFullObject()
         {
             var reservation = GetReservation();
+            reservation.Id = 0;
             var result = Helpers.Validation.ReservationValidForCreate(reservation, false);
             Assert.IsTrue(result);
         }
@@ -159,6 +161,53 @@ namespace RestaurantDesktopClient.Tests
             var reservation = GetReservation();
             reservation.NoOfPeople = 0;
             var result = Helpers.Validation.ReservationValidForCreate(reservation, false);
+            Assert.IsFalse(result);
+        }
+        [TestMethod]
+        public void ReservationValidForUpdateSucess()
+        {
+            var reservation = GetReservation();
+            var result = Helpers.Validation.ReservationValidForUpdate(reservation, false);
+            Assert.IsTrue(result);
+        }
+        [TestMethod]
+        public void ReservationValidForUpdateFailMissingId()
+        {
+            var reservation = GetReservation();
+            reservation.Id = 0;
+            var result = Helpers.Validation.ReservationValidForUpdate(reservation, false);
+            Assert.IsFalse(result);
+        }
+        [TestMethod]
+        public void ReservationValidForUpdateFailMissingTables()
+        {
+            var reservation = GetReservation();
+            reservation.Tables.Clear();
+            var result = Helpers.Validation.ReservationValidForUpdate(reservation, false);
+            Assert.IsFalse(result);
+        }
+        [TestMethod]
+        public void ReservationValidForUpdateFailDateTimeBeforeNow()
+        {
+            var reservation = GetReservation();
+            reservation.ReservationTime = reservation.ReservationTime.AddDays(-16);
+            var result = Helpers.Validation.ReservationValidForUpdate(reservation, false);
+            Assert.IsFalse(result);
+        }
+        [TestMethod]
+        public void ReservationValidForUpdateFailMissingCustomer()
+        {
+            var reservation = GetReservation();
+            reservation.Customer = null;
+            var result = Helpers.Validation.ReservationValidForUpdate(reservation, false);
+            Assert.IsFalse(result);
+        }
+        [TestMethod]
+        public void ReservationValidForUpdateFailMissingNoOfPeople()
+        {
+            var reservation = GetReservation();
+            reservation.NoOfPeople = 0;
+            var result = Helpers.Validation.ReservationValidForUpdate(reservation, false);
             Assert.IsFalse(result);
         }
     }

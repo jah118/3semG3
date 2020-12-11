@@ -15,6 +15,7 @@ using RestaurantDesktopClient.Services;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.CommandWpf;
 using GalaSoft.MvvmLight.Messaging;
+using RestaurantDesktopClient.Helpers;
 using RestaurantDesktopClient.Messages;
 
 namespace RestaurantDesktopClient.Views.ManageReservation
@@ -23,11 +24,11 @@ namespace RestaurantDesktopClient.Views.ManageReservation
     {
         #region Fields
         private static ReservationDTO _selectedReservation;
-        private readonly IRepository<ReservationDTO> _reservationRepository = new ReservationRepository();
-        private ITableRepository<TablesDTO> _tablesRepository = new Services.Table_Service.TableRepository();
+        private readonly IRepository<ReservationDTO> _reservationRepository;
+        private readonly IRepository<OrderDTO> _orderRepository;
+        private ITableRepository<TablesDTO> _tableRepository;
         private ObservableCollection<TablesDTO> _selectedReservationTables = new ObservableCollection<TablesDTO>();
         private readonly IRepository<CustomerDTO> _customerRepository;
-        private readonly IRepository<TablesDTO> _tableRepository;
         #endregion
         #region Properties
 
@@ -44,7 +45,7 @@ namespace RestaurantDesktopClient.Views.ManageReservation
         public ReservationDTO SelectedReservation
         {
             get { return _selectedReservation ?? (_selectedReservation = new ReservationDTO()); }
-            set {if(value != _selectedReservation && value != null) UpdateSelectedReservation(value);}
+            set { if (value != _selectedReservation && value != null) UpdateSelectedReservation(value); }
         }
         public DateTime GetReservationTimeDate
         {
@@ -179,7 +180,7 @@ namespace RestaurantDesktopClient.Views.ManageReservation
         #endregion
 
         public ManageReservationViewModel(IRepository<ReservationDTO> reservationRepository, IRepository<CustomerDTO> customerRepository
-        , IRepository<TablesDTO> tableRepository)
+        , ITableRepository<TablesDTO> tableRepository)
         {
             _customerRepository = customerRepository;
             _tableRepository = tableRepository;
@@ -219,11 +220,10 @@ namespace RestaurantDesktopClient.Views.ManageReservation
         #region manageReservationControlBindings
         private void UpdateAvailableTables()
         {
-            var tempTables = _tablesRepository.GetFreeTables(SelectedReservation.ReservationTime)
-                .Where(x => x.NoOfSeats > SelectedReservation.NoOfPeople);
+            var tempTables = _tableRepository.GetFreeTables(SelectedReservation.ReservationTime);
             AvailableTables = new ObservableCollection<TablesDTO>(tempTables);
             ReservationTables.Clear();
-            RaisePropertyChanged(()=>AvailableTables);
+            RaisePropertyChanged(() => AvailableTables);
         }
         private void MinusHoursFromReservationTime()
         {
@@ -263,7 +263,7 @@ namespace RestaurantDesktopClient.Views.ManageReservation
         }
         public void UpdateReservation()
         {
-            if (SelectedReservation.Id > 0)
+            if (Validation.ReservationValidForUpdate(SelectedReservation))
             {
                 var res = _reservationRepository.Update(SelectedReservation);
                 if (res == null) MessageBox.Show("Fejl ved updatering af reservation");
@@ -271,22 +271,23 @@ namespace RestaurantDesktopClient.Views.ManageReservation
         }
         public void RemoveReservation()
         {
-            var message = "Vil du slette reservation med id: " + SelectedReservation.Id +
-                          " som er reserveret til " + SelectedReservation.Customer.FullName +
-                          " klokken " + SelectedReservation.ReservationTime.ToString("g") + " ?";
-            var result = MessageBox.Show(message, "Advarelse", MessageBoxButton.YesNo);
-            if (result == MessageBoxResult.Yes)
+            if (Validation.ReservationValidForDelete(SelectedReservation, _orderRepository))
             {
-                var res = _reservationRepository.Delete(SelectedReservation);
-                if (res == HttpStatusCode.OK)
+                var message = "Vil du slette reservation med id: " + SelectedReservation.Id +
+                              " som er reserveret til " + SelectedReservation.Customer.FullName +
+                              " klokken " + SelectedReservation.ReservationTime.ToString("g") + " ?";
+                var result = MessageBox.Show(message, "Advarsel", MessageBoxButton.YesNo);
+
+                if(result == MessageBoxResult.Yes)
                 {
-                    ClearValues();
-                }
-                else
-                {
-                    MessageBox.Show("Kunne ikke slette Reservationen, kontrollere reservation og prøv igen");
+                    var res = _reservationRepository.Delete(SelectedReservation);
+                    if (res == HttpStatusCode.OK)
+                    {
+                        ClearValues();
+                    }
                 }
             }
+
         }
         public void OrderFood()
         {
@@ -303,7 +304,7 @@ namespace RestaurantDesktopClient.Views.ManageReservation
         }
         private void UpdateSelectedReservation(ReservationDTO reservation)
         {
-            var message = new ReservationSelection() {Selected = reservation.Id};
+            var message = new ReservationSelection() { Selected = reservation.Id };
             _selectedReservation = reservation;
             Messenger.Default.Send(message);
             RaisePropertyChanged(string.Empty);

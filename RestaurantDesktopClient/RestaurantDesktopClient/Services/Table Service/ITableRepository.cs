@@ -6,7 +6,7 @@ using RestaurantDesktopClient.Views.ViewModels;
 
 namespace RestaurantDesktopClient.Services.Table_Service
 {
-    internal interface ITableRepository<T> : IRepository<T>
+    public interface ITableRepository<T> : IRepository<TablesDTO>
     {
         AvailableTimesDTO GetReservationTimeByDate(DateTime date);
         List<TablesDTO> GetFreeTables(DateTime date);
