@@ -15,15 +15,12 @@ namespace RestaurantDesktopClient.Services.OrderService
     class OrderRepository : IRepository<OrderDTO>
     {
         private readonly string _constring;
+        private readonly IAuthRepository _authRepository;
 
-        public OrderRepository()
-        {
-
-        }
-
-        public OrderRepository(string constring)
+        public OrderRepository(string constring, IAuthRepository authRepository)
         {
             this._constring = constring;
+            _authRepository = authRepository;
         }
 
         public OrderDTO Create(OrderDTO order)

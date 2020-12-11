@@ -11,15 +11,12 @@ namespace RestaurantDesktopClient.Views.ViewModels
     internal class FoodRepository : IRepository<FoodDTO>
     {
         private readonly string _constring;
+        private readonly IAuthRepository _authRepository;
 
-        public FoodRepository()
-        {
-
-        }
-
-        public FoodRepository(string constring)
+        public FoodRepository(string constring, IAuthRepository authRepository)
         {
             this._constring = constring;
+            _authRepository = authRepository;
         }
 
         public FoodDTO Create(FoodDTO t)

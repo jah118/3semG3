@@ -15,10 +15,12 @@ namespace RestaurantDesktopClient.Services.CustomerService
     class CustomerRepository : IRepository<CustomerDTO>
     {
         private readonly string _constring;
+        private readonly IAuthRepository _authRepository;
 
-        public CustomerRepository(string constring)
+        public CustomerRepository(string constring, IAuthRepository authRepository)
         {
             this._constring = constring;
+            _authRepository = authRepository;
         }
 
         public CustomerDTO Create(CustomerDTO t)
@@ -37,9 +39,9 @@ namespace RestaurantDesktopClient.Services.CustomerService
 
             var request = new RestRequest("/customer/{Id}", Method.GET);
             request.AddUrlSegment("Id", customerId);
-            var content = client.Execute(request).Content;
+            var response = client.Execute(request);
 
-            CustomerDTO res = JsonConvert.DeserializeObject<CustomerDTO>(content);
+            CustomerDTO res = response.StatusCode == HttpStatusCode.OK ? JsonConvert.DeserializeObject<CustomerDTO>(response.Content) : null;
 
             return res;
         }
