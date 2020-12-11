@@ -12,7 +12,6 @@ using System.Threading.Tasks;
 using System.Web.UI.WebControls;
 using System.Windows;
 using RestaurantDesktopClient.DataTransferObject;
-using System.Net;
 
 namespace RestaurantDesktopClient.Services.Table_Service
 {
