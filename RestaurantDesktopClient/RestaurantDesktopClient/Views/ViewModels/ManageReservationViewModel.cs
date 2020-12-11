@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
+using System.Net;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using RestaurantDesktopClient.DataTransferObject;
@@ -42,7 +43,7 @@ namespace RestaurantDesktopClient.Views.ManageReservation
         public string Headline { get { return "Reservationer"; } }
         public ReservationDTO SelectedReservation
         {
-            get { return _selectedReservation ?? (_selectedReservation = new ReservationDTO(); }
+            get { return _selectedReservation ?? (_selectedReservation = new ReservationDTO()); }
             set {if(value != _selectedReservation && value != null) UpdateSelectedReservation(value);}
         }
         public DateTime GetReservationTimeDate
@@ -222,7 +223,7 @@ namespace RestaurantDesktopClient.Views.ManageReservation
                 .Where(x => x.NoOfSeats > SelectedReservation.NoOfPeople);
             AvailableTables = new ObservableCollection<TablesDTO>(tempTables);
             ReservationTables.Clear();
-            OnPropertyChanged("AvailableTables");
+            RaisePropertyChanged(()=>AvailableTables);
         }
         private void MinusHoursFromReservationTime()
         {
@@ -262,11 +263,30 @@ namespace RestaurantDesktopClient.Views.ManageReservation
         }
         public void UpdateReservation()
         {
-
+            if (SelectedReservation.Id > 0)
+            {
+                var res = _reservationRepository.Update(SelectedReservation);
+                if (res == null) MessageBox.Show("Fejl ved updatering af reservation");
+            }
         }
         public void RemoveReservation()
         {
-
+            var message = "Vil du slette reservation med id: " + SelectedReservation.Id +
+                          " som er reserveret til " + SelectedReservation.Customer.FullName +
+                          " klokken " + SelectedReservation.ReservationTime.ToString("g") + " ?";
+            var result = MessageBox.Show(message, "Advarelse", MessageBoxButton.YesNo);
+            if (result == MessageBoxResult.Yes)
+            {
+                var res = _reservationRepository.Delete(SelectedReservation);
+                if (res == HttpStatusCode.OK)
+                {
+                    ClearValues();
+                }
+                else
+                {
+                    MessageBox.Show("Kunne ikke slette Reservationen, kontrollere reservation og prøv igen");
+                }
+            }
         }
         public void OrderFood()
         {
