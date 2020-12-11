@@ -4,6 +4,7 @@ using RestSharp;
 using System.Collections.Generic;
 using System.Configuration;
 using RestaurantDesktopClient.Services;
+using System.Net;
 
 namespace RestaurantDesktopClient.Views.ViewModels
 {
@@ -22,6 +23,11 @@ namespace RestaurantDesktopClient.Views.ViewModels
         }
 
         public FoodDTO Create(FoodDTO t)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public HttpStatusCode Delete(FoodDTO t)
         {
             throw new System.NotImplementedException();
         }
@@ -45,6 +51,11 @@ namespace RestaurantDesktopClient.Views.ViewModels
             {
             }
             return res ?? new List<FoodDTO>();
+        }
+
+        public FoodDTO Update(FoodDTO t)
+        {
+            throw new System.NotImplementedException();
         }
     }
 }

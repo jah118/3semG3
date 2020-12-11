@@ -75,12 +75,16 @@
                     <GridViewColumn DisplayMemberBinding="{Binding Path=Food.Name}" Header="Navn" Width="Auto"/>
                     <GridViewColumn DisplayMemberBinding="{Binding Path=Quantity}" Header="Antal" Width="Auto"/>
                     <GridViewColumn DisplayMemberBinding="{Binding Path=Food.Price}" Header="pris pr. stk" Width="Auto"/>
+                    <GridViewColumn DisplayMemberBinding="{Binding Path=TotalPrice}" Header="Total" Width="Auto"/>
                     <GridViewColumn DisplayMemberBinding="{Binding Path=Food.Description}" Header="Beskrivelse" Width="200"/>
                 </GridView>
             </ListView.View>
         </ListView>
-        <ComboBox Name="ccbPaymentCondition" ItemsSource="{Binding Source={StaticResource EnumPaymentCondition}}" SelectedItem="{Binding SelectedPaymentCondition, Mode=TwoWay}"  Grid.Column="0" Grid.Row="9" Height="20" />
-        <Button x:Name="btnCancel" Content="Tilbage" Command="{Binding BtnCancelClicked}" Grid.Column="8" Grid.Row="10" Margin="15" />
-        <Button x:Name="btnSave" Content="Gem" Command="{Binding BtnSaveClicked}" Grid.Column="9" Grid.Row="10" Margin="15" />
+        <Label Name="lblTotalPrice" Content="Total pris:" Grid.Column="2" Grid.Row="9" VerticalAlignment="Center" HorizontalAlignment="Right"/>
+        <TextBox Name="tbTotalPrice" Text="{Binding SummaryPrice, Mode=OneWay}" Grid.Column="3" Grid.Row="9" Height="20" />
+        <ComboBox Name="cbbPaymentCondition" ItemsSource="{Binding Source={StaticResource EnumPaymentCondition}}"
+                  SelectedItem="{Binding SelectedPaymentCondition, Mode=TwoWay}"  Grid.Column="0" Grid.Row="9" Height="20" />
+        <Button x:Name="btnCancel" Content="Tilbage" Command="{Binding BtnCancelClicked}" Grid.Column="8" Grid.Row="9" Margin="15" />
+        <Button x:Name="btnSave" Content="Gem" Command="{Binding BtnSaveClicked}" Grid.Column="9" Grid.Row="9" Margin="15" />
     </Grid>
 </Page>

@@ -22,6 +22,20 @@ namespace RestaurantDesktopClient.Views.ViewModels
         private ObservableCollection<OrderLineDTO> _ordersFood;
         #endregion
         #region Properties
+
+        public string SummaryPrice
+        {
+            get
+            {
+                double res = 0;
+                foreach (var orderline in _ordersFood)
+                {
+                    res += orderline.TotalPrice;
+                }
+
+                return res + " kr.";
+            }
+        }
         public PaymentCondition SelectedPaymentCondition { get; set; }
         public ObservableCollection<OrderLineDTO> SummaryFoods
         {
@@ -87,7 +101,7 @@ namespace RestaurantDesktopClient.Views.ViewModels
             Messenger.Default.Register<ReservationSelection>(this, ChangeReservation);
             BtnCancelClicked = new RelayCommand(CancelClicked);
             BtnSaveClicked = new RelayCommand(SaveClicked);
-            _foodRepository =foodRepository;
+            _foodRepository = foodRepository;
             _orderRepository = orderRepository;
         }
 
@@ -127,14 +141,14 @@ namespace RestaurantDesktopClient.Views.ViewModels
             var found = SummaryFoods.FirstOrDefault(x => x.Food.Id == obj.Id);
             if (found == null)
             {
-                SummaryFoods.Add(new OrderLineDTO{  Food = obj, Quantity = 1 });
+                SummaryFoods.Add(new OrderLineDTO { Food = obj, Quantity = 1 });
                 RaisePropertyChanged(() => SummaryFoods);
             }
             else
             {
                 found.Quantity++;
             }
-
+            RaisePropertyChanged(() => SummaryPrice);
         }
         private void RemoveFromSummary(OrderLineDTO obj)
         {
@@ -146,8 +160,9 @@ namespace RestaurantDesktopClient.Views.ViewModels
             {
                 obj.Quantity = 0;
                 SummaryFoods.Remove(obj);
+                RaisePropertyChanged(() => SummaryFoods);
             }
-            RaisePropertyChanged(() => SummaryFoods);
+            RaisePropertyChanged(() => SummaryPrice);
         }
 
     }

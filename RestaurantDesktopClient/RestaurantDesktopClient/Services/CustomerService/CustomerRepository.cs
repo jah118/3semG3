@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -25,6 +26,11 @@ namespace RestaurantDesktopClient.Services.CustomerService
             throw new NotImplementedException();
         }
 
+        public HttpStatusCode Delete(CustomerDTO t)
+        {
+            throw new NotImplementedException();
+        }
+
         public CustomerDTO Get(int customerId)
         {
             var client = new RestClient(_constring);
@@ -39,6 +45,11 @@ namespace RestaurantDesktopClient.Services.CustomerService
         }
 
         public IEnumerable<CustomerDTO> GetAll()
+        {
+            throw new NotImplementedException();
+        }
+
+        public CustomerDTO Update(CustomerDTO t)
         {
             throw new NotImplementedException();
         }

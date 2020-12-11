@@ -13,8 +13,7 @@ namespace DataAccess.DataTransferObjects
         public DateTime OrderDate { get; set; }
         public string PaymentCondition { get; set; }
         [JsonProperty("orderLines")]
-        internal List<OrderLineDTO> OrderLines { get; set; }
-
+        public List<OrderLineDTO> OrderLines { get; set; }
 
     }
 }

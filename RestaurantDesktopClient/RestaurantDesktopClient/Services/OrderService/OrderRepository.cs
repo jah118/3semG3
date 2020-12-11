@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -75,5 +76,14 @@ namespace RestaurantDesktopClient.Services.OrderService
             return res;
         }
 
+        public OrderDTO Update(OrderDTO t)
+        {
+            throw new NotImplementedException();
+        }
+
+        public HttpStatusCode Delete(OrderDTO t)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

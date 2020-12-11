@@ -7,13 +7,16 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using System.Net;
 using System.Runtime.CompilerServices;
 using System.Windows;
+using System.Windows.Controls;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.CommandWpf;
 using GalaSoft.MvvmLight.Messaging;
 using RestaurantDesktopClient.Messages;
 using RestaurantDesktopClient.Services;
+using RestSharp;
 
 namespace RestaurantDesktopClient.Views.ManageReservation
 {
@@ -264,11 +267,30 @@ namespace RestaurantDesktopClient.Views.ManageReservation
         }
         public void UpdateReservation()
         {
-
+            if (SelectedReservation.Id > 0)
+            {
+                var res = _reservationRepository.Update(SelectedReservation);
+                if (res == null) MessageBox.Show("Fejl ved updatering af reservation");
+            }
         }
         public void RemoveReservation()
         {
-
+            var message = "Vil du slette reservation med id: " + SelectedReservation.Id + 
+                          " som er reserveret til " + SelectedReservation.Customer.FullName +
+                          " klokken " + SelectedReservation.ReservationTime.ToString("g") + " ?";
+            var result = MessageBox.Show(message, "Advarelse", MessageBoxButton.YesNo);
+            if (result == MessageBoxResult.Yes)
+            {
+                var res = _reservationRepository.Delete(SelectedReservation);
+                if (res == HttpStatusCode.OK)
+                {
+                    ClearValues();
+                }
+                else
+                {
+                    MessageBox.Show("Kunne ikke slette Reservationen, kontrollere reservation og prøv igen");
+                }
+            }
         }
         public void OrderFood()
         {

@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using System.Web.UI.WebControls;
 using System.Windows;
 using RestaurantDesktopClient.DataTransferObject;
+using System.Net;
 
 namespace RestaurantDesktopClient.Services.Table_Service
 {
@@ -100,6 +101,16 @@ namespace RestaurantDesktopClient.Services.Table_Service
             }
 
             return res;
+        }
+
+        public TablesDTO Update(TablesDTO t)
+        {
+            throw new NotImplementedException();
+        }
+
+        public HttpStatusCode Delete(TablesDTO t)
+        {
+            throw new NotImplementedException();
         }
     }
 }
