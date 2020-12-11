@@ -24,14 +24,13 @@ namespace RestaurantDesktopClient.Services.AuthorizationService
         public bool Authenticate(string username, string password)
         {
             var client = new RestClient(_constring);
-
-            var request = new RestRequest("/user/authenticate", Method.POST);
-            request.AddParameter("username", username, ParameterType.RequestBody);
-            request.AddParameter("password", password, ParameterType.RequestBody);
-            request.AddParameter("role", "employee", ParameterType.RequestBody);
-            var content = client.Execute(request).Content;
-
-            var res = JsonConvert.DeserializeObject<string>(content);
+            var request = new RestRequest("/User/Authenticate", Method.POST);
+            request.AddJsonBody(new {Username = username, Password = password, Role = "Employee"});
+            var response = client.Execute(request);
+            if(response.IsSuccessful) {
+                _token = response.Content;
+                return true;
+            }
             return false;
         }
 
@@ -40,18 +39,20 @@ namespace RestaurantDesktopClient.Services.AuthorizationService
             var client = new RestClient(_constring);
 
             var request = new RestRequest("/user/post", Method.POST);
-            request.AddParameter("username", username, ParameterType.RequestBody);
-            request.AddParameter("password", password, ParameterType.RequestBody);
-            request.AddParameter("user", new UserDTO()
+            request.AddJsonBody(new
+            {
+                Username = username,
+                Password = password,
+                User = new UserDTO()
                 {
                     AccountType = "Employee",
                     Employee = employee,
                     Username = username,
-                }, ParameterType.RequestBody
-            );
+                }
+            });
             var response = client.Execute(request);
             if(response.IsSuccessful) {
-                _token = JsonConvert.DeserializeObject<string>(response.Content);
+                _token = response.Content;
                 return true;
             }
 
