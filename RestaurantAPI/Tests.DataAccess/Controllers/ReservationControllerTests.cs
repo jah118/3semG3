@@ -311,17 +311,6 @@ namespace RestaurantAPI.Controllers.Tests
         {
             // arrange
             var mock = new Mock<IReservationRepository>();
-            ReservationDTO nullObj = null;
-            ReservationDTO obj1 = new ReservationDTO(
-                0,  /// this 
-                DateTime.Now,
-                new CustomerDTO(),
-                DateTime.Now,
-                5,
-                false,
-                "TEST",
-                new List<RestaurantTablesDTO> { new RestaurantTablesDTO(), new RestaurantTablesDTO() }
-            );
 
             // act
             mock.Setup(x => x.Delete(41, true)).Returns(true);
@@ -340,18 +329,7 @@ namespace RestaurantAPI.Controllers.Tests
         {
             // arrange
             var mock = new Mock<IReservationRepository>();
-            ReservationDTO nullObj = null;
-            ReservationDTO obj1 = new ReservationDTO(
-                0,  /// this 
-                DateTime.Now,
-                new CustomerDTO(),
-                DateTime.Now,
-                5,
-                false,
-                "TEST",
-                new List<RestaurantTablesDTO> { new RestaurantTablesDTO(), new RestaurantTablesDTO() }
-            );
-
+           
             // act
             mock.Setup(x => x.Delete(0, true)).Returns(false);
             var controller = new ReservationController(mock.Object);

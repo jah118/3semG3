@@ -1,12 +1,13 @@
 ﻿using DataAccess.DataTransferObjects;
 using DataAccess.DataTransferObjects.Converters;
+using DataAccess.Models;
+using DataAccess.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Data;
 using System.Linq;
-using DataAccess.Models;
-using DataAccess.Repositories.Interfaces;
 
 namespace DataAccess.Repositories
 {
@@ -57,7 +58,6 @@ namespace DataAccess.Repositories
 
         public bool Delete(int id, bool transactionEndpoint = true)
         {
-            
             throw new NotImplementedException();
         }
 
@@ -111,9 +111,55 @@ namespace DataAccess.Repositories
             throw new NotImplementedException();
         }
 
+        //Denne her er kun til at update PaymentCondition og  employee
         public OrderDTO Update(OrderDTO obj, bool transactionEndpoint = true)
         {
-            throw new NotImplementedException();
+            if (!RestaurantOrder.Validate(obj))
+            {
+                throw new ValidationException("Bad input");
+            }
+            if (transactionEndpoint) _context.Database.BeginTransaction(IsolationLevel.Serializable);
+            try
+            {
+
+                var tempOrder = Converter.Convert(obj);
+
+                var order = _context.RestaurantOrder
+                    .Where(o => o.OrderNo == obj.OrderNo)
+                    .Include(f => f.OrderLine)
+                    .ThenInclude(f => f.Food)
+                    .ThenInclude(f => f.Price)
+                    .Include(f => f.OrderLine)
+                    .ThenInclude(f => f.Food.FoodCategory)
+                    .Include(e => e.Employee)
+                    .ThenInclude(e => e.Person)
+                    .ThenInclude(e => e.Location)
+                    .ThenInclude(e => e.ZipCodeNavigation)
+                    .Include(e => e.Employee.Title)
+                    .Include(r => r.Reservation)
+                    .Include(pc => pc.PaymentCondition).OrderBy(x => x.OrderDate).FirstOrDefault();
+
+                order.EmployeeId = tempOrder.EmployeeId;
+
+
+                order.PaymentConditionId = tempOrder.PaymentConditionId;
+                _context.Update(order);
+
+                if (transactionEndpoint)
+                {
+                    
+                    _context.SaveChanges();
+                    _context.Database.CommitTransaction();
+                    return GetById(order.OrderNo);
+                }
+            }
+            catch (Exception)
+            {
+                _context.Database.RollbackTransaction();
+                throw;
+            }
+
+            return null;
         }
     }
 }

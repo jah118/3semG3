@@ -3,7 +3,6 @@ using DataAccess.DataTransferObjects.Converters;
 using DataAccess.Models;
 using DataAccess.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.ChangeTracking;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -77,10 +76,8 @@ namespace DataAccess.Repositories
                         _context.Entry(reservation).GetDatabaseValues();
                         return GetById(reservation.Id);
                     }
-                    else
-                    {
-                        if (transactionEndpoint) _context.Database.RollbackTransaction();
-                    }
+
+                    if (transactionEndpoint) _context.Database.RollbackTransaction();
                 }
                 catch (Exception)
                 {
@@ -145,29 +142,6 @@ namespace DataAccess.Repositories
             }
 
             return false;
-        }
-
-        public IEnumerable<ReservationDTO> GetAll(DateTime startDate, DateTime endDate)
-        {
-            IEnumerable<ReservationDTO> res = null;
-            //TODO clear this and can this be made where only takes reservationdat
-            //startDate = DateTime.Now + new TimeSpan(08,00,00);
-            // endDate = startDate.AddDays(15);
-            //Where(p => p.ReservationDate.Date >= startDate && p.ReservationDate.Date <= endDate
-
-            var reservations = _context.Reservation.Where(d => d.ReservationTime >= startDate && d.ReservationTime <= endDate)
-                .Include(c => c.Customer)
-                .ThenInclude(c => c.Person)
-                .ThenInclude(c => c.Location)
-                .ThenInclude(c => c.ZipCodeNavigation)
-                .Include(rt => rt.ReservationsTables)
-                .ThenInclude(t => t.RestaurantTables).AsNoTracking().ToList();
-
-            if (reservations != null)
-            {
-                res = Converter.Convert(reservations);
-            }
-            return res;
         }
 
         public AvailableTimesDTO GetReservationTimeByDateAndTime(DateTime dateTime)
@@ -253,45 +227,48 @@ namespace DataAccess.Repositories
 
         public ReservationDTO Update(ReservationDTO obj, bool transactionEndpoint = true)
         {
-            if (transactionEndpoint) _context.Database.BeginTransaction(IsolationLevel.Serializable);
+            if (Reservation.Validate(obj))
             {
-                var refReservation = _context.ReservationsTables.Where(i => i.ReservationId == obj.Id).ToList();
-
-                //Dette tjekker båder efter om tid og bordet er ændre til et sted/tid der skaber conflict
-                var compareCount = _context.Reservation
-                    .Include(r => r.ReservationsTables)
-                    .ThenInclude(r => r.RestaurantTables)
-                    .Where(r =>
-                        r.ReservationTime <= obj.ReservationTime.AddMinutes(90) &&
-                        r.ReservationTime.AddMinutes(90) >= obj.ReservationTime
-                        && r.Id != obj.Id)
-                    .Select(r => r.ReservationsTables
-                        .Where(t => t.RestaurantTablesId
-                            .Equals(obj.Tables.Select(table => table.Id).Any()))).Count();
-
-                if (compareCount == 0)
+                if (transactionEndpoint) _context.Database.BeginTransaction(IsolationLevel.Serializable);
+                try
                 {
-                    var reservation = Converter.Convert(obj);
-                    var tablesToAdd = obj.Tables
-                        .Where(
-                            t => refReservation.All(rt => rt.RestaurantTablesId != t.Id)).ToList();
-                    var tablesToDelete =
-                        refReservation.Where(
-                            t => obj.Tables.All(td => t.RestaurantTablesId != td.Id)).ToList();
-                    foreach (var rt in tablesToDelete)
+                    var refReservation = _context.ReservationsTables.Where(i => i.ReservationId == obj.Id).ToList();
+
+                    //Dette tjekker båder efter om tid og bordet er ændre til et sted/tid der skaber conflict
+                    var compareCount = _context.Reservation
+                        .Include(r => r.ReservationsTables)
+                        .ThenInclude(r => r.RestaurantTables)
+                        .Where(r =>
+                            r.ReservationTime <= obj.ReservationTime.AddMinutes(90) &&
+                            r.ReservationTime.AddMinutes(90) >= obj.ReservationTime
+                            && r.Id != obj.Id)
+                        .Select(r => r.ReservationsTables
+                            .Where(t => t.RestaurantTablesId
+                                .Equals(obj.Tables.Select(table => table.Id).Any()))).Count();
+
+                    if (compareCount == 0)
                     {
-                        _context.ReservationsTables.Remove(rt);
-                    }
-                    foreach (var rt in tablesToAdd)
-                    {
-                        _context.Add<ReservationsTables>(new ReservationsTables
+                        var reservation = Converter.Convert(obj);
+                        var tablesToAdd = obj.Tables
+                            .Where(
+                                t => refReservation.All(rt => rt.RestaurantTablesId != t.Id)).ToList();
+                        var tablesToDelete =
+                            refReservation.Where(
+                                t => obj.Tables.All(td => t.RestaurantTablesId != td.Id)).ToList();
+                        foreach (var rt in tablesToDelete)
                         {
-                            Reservation = reservation,
-                            RestaurantTablesId = rt.Id
-                        });
-                    }
-                    try
-                    {
+                            _context.ReservationsTables.Remove(rt);
+                        }
+
+                        foreach (var rt in tablesToAdd)
+                        {
+                            _context.Add<ReservationsTables>(new ReservationsTables
+                            {
+                                Reservation = reservation,
+                                RestaurantTablesId = rt.Id
+                            });
+                        }
+
                         reservation.Id = obj.Id;
                         _context.Entry(reservation).State = EntityState.Modified;
 
@@ -301,15 +278,17 @@ namespace DataAccess.Repositories
                             _context.Entry(reservation).State = EntityState.Detached;
                             _context.Database.CommitTransaction();
                         }
+
                         return GetById(obj.Id);
                     }
-                    catch (Exception)
-                    {
-                        _context.Database.RollbackTransaction();
-                        throw;
-                    }
+                }
+                catch (Exception)
+                {
+                    _context.Database.RollbackTransaction();
+                    throw;
                 }
             }
+
             return null;
         }
     }
