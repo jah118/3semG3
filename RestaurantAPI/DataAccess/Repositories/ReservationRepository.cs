@@ -62,14 +62,12 @@ namespace DataAccess.Repositories
                         }
 
                         _context.Reservation.Add(reservation);
-                        foreach (RestaurantTablesDTO rt in obj.Tables)
-                        {
-                            _context.Add<ReservationsTables>(new ReservationsTables
+                        foreach (var rt in obj.Tables)
+                            _context.Add(new ReservationsTables
                             {
                                 Reservation = reservation,
                                 RestaurantTablesId = rt.Id
                             });
-                        }
 
                         _context.SaveChanges();
                         if (transactionEndpoint) _context.Database.CommitTransaction();
@@ -103,35 +101,42 @@ namespace DataAccess.Repositories
                     .ThenInclude(t => t.RestaurantTables)
                     .AsNoTracking()
                     .FirstOrDefault();
+
                 if (reservation != null)
                 {
-                    var order = _context.RestaurantOrder
-                    .Where(o => o.ReservationId == id)
-                    .Include(f => f.OrderLine)
-                    .ThenInclude(f => f.Food)
-                    .ThenInclude(f => f.Price)
-                    .Include(f => f.OrderLine)
-                    .ThenInclude(f => f.Food.FoodCategory)
-                    .Include(e => e.Employee)
-                    .ThenInclude(e => e.Person)
-                    .ThenInclude(e => e.Location)
-                    .ThenInclude(e => e.ZipCodeNavigation)
-                    .Include(e => e.Employee.Title)
-                    .Include(r => r.Reservation)
-                    .Include(pc => pc.PaymentCondition).OrderBy(x => x.OrderDate).FirstOrDefault();
-
-                    if (order != null)
-                    {
-                        //update order to annulert and remove tables
-                    }
-
+                    _context.Entry(reservation).State = EntityState.Modified;
+                    var order = _context.RestaurantOrder.FirstOrDefault(o => o.ReservationId == id);
                     try
                     {
+                        //update order to cancel and remove tables
+                        if (order != null)
+                        {
+                            var or = new OrderRepository(_context); //TODO er det dumt er der en bedre måde ?
+                            if (or.cancelOrder(order.OrderNo))
+                            {
+                                // remove tables
+                                _context.ReservationsTables.RemoveRange
+                                    (_context.ReservationsTables.Where(r => r.ReservationId == reservation.Id));
+                                if (transactionEndpoint)
+                                {
+                                    _context.SaveChanges();
+                                    _context.Database.CommitTransaction();
+                                    return true;
+                                }
+                            }
+                            return false;
+                        }
+
                         _context.Remove(reservation);
 
-                        if (transactionEndpoint) _context.SaveChanges();
-                        if (transactionEndpoint) _context.Database.CommitTransaction();
+                        if (transactionEndpoint)
+                        {
+                            _context.SaveChanges();
+                            _context.Database.CommitTransaction();
+                        }
+
                         return true;
+
                     }
                     catch (Exception)
                     {
@@ -142,48 +147,6 @@ namespace DataAccess.Repositories
             }
 
             return false;
-        }
-
-        public AvailableTimesDTO GetReservationTimeByDateAndTime(DateTime dateTime)
-        {
-            var timeSlots = new AvailableTimesDTO() { AvailabilityDate = dateTime.Date, TableOpenings = new List<AvailableTimesDTO.TableTimes>() };
-            var startTime = new TimeSpan(12, 00, 00);
-            var endTime = new TimeSpan(22, 00, 00);
-
-            var startDateTime = dateTime.Date + startTime;
-            var endDateTime = dateTime.Date + endTime;
-
-            var all = _context.Reservation
-                .Include(r => r.ReservationsTables)
-                .ThenInclude(r => r.RestaurantTables)
-                .Where(r =>
-                    r.ReservationTime <= endDateTime &&
-                    r.ReservationTime >= startDateTime).AsNoTracking();
-            var tables = new TableRepository(_context).GetAll();
-            var availabilityList = new List<AvailableTimesDTO.TableTimes>();
-            foreach (var table in tables)
-            {
-                var tableTime = new AvailableTimesDTO.TableTimes() { Table = table };
-                var timesAvailable = new List<AvailableTimesDTO.TableTimes.TimePair>();
-                var times = all.Where(r => r.ReservationsTables.Any(t => t.RestaurantTablesId == table.Id))
-                    .Select(r => r.ReservationTime).OrderBy(t => t.TimeOfDay);
-                var lastTime = startDateTime;
-                foreach (var time in times)
-                {
-                    timesAvailable.Add(new AvailableTimesDTO.TableTimes.TimePair() { Start = lastTime, End = time });
-                    lastTime = time.AddMinutes(90);
-                }
-
-                if (lastTime.AddMinutes(90) <= endDateTime)
-                    timesAvailable.Add(
-                        new AvailableTimesDTO.TableTimes.TimePair() { Start = lastTime, End = endDateTime });
-                tableTime.Openings = timesAvailable;
-                availabilityList.Add(tableTime);
-            }
-
-            timeSlots.TableOpenings = availabilityList;
-
-            return timeSlots;
         }
 
         public IEnumerable<ReservationDTO> GetAll()
@@ -255,19 +218,14 @@ namespace DataAccess.Repositories
                         var tablesToDelete =
                             refReservation.Where(
                                 t => obj.Tables.All(td => t.RestaurantTablesId != td.Id)).ToList();
-                        foreach (var rt in tablesToDelete)
-                        {
-                            _context.ReservationsTables.Remove(rt);
-                        }
+                        foreach (var rt in tablesToDelete) _context.ReservationsTables.Remove(rt);
 
                         foreach (var rt in tablesToAdd)
-                        {
-                            _context.Add<ReservationsTables>(new ReservationsTables
+                            _context.Add(new ReservationsTables
                             {
                                 Reservation = reservation,
                                 RestaurantTablesId = rt.Id
                             });
-                        }
 
                         reservation.Id = obj.Id;
                         _context.Entry(reservation).State = EntityState.Modified;
@@ -290,6 +248,49 @@ namespace DataAccess.Repositories
             }
 
             return null;
+        }
+
+        public AvailableTimesDTO GetReservationTimeByDateAndTime(DateTime dateTime)
+        {
+            var timeSlots = new AvailableTimesDTO
+            { AvailabilityDate = dateTime.Date, TableOpenings = new List<AvailableTimesDTO.TableTimes>() };
+            var startTime = new TimeSpan(12, 00, 00);
+            var endTime = new TimeSpan(22, 00, 00);
+
+            var startDateTime = dateTime.Date + startTime;
+            var endDateTime = dateTime.Date + endTime;
+
+            var all = _context.Reservation
+                .Include(r => r.ReservationsTables)
+                .ThenInclude(r => r.RestaurantTables)
+                .Where(r =>
+                    r.ReservationTime <= endDateTime &&
+                    r.ReservationTime >= startDateTime).AsNoTracking();
+            var tables = new TableRepository(_context).GetAll();
+            var availabilityList = new List<AvailableTimesDTO.TableTimes>();
+            foreach (var table in tables)
+            {
+                var tableTime = new AvailableTimesDTO.TableTimes { Table = table };
+                var timesAvailable = new List<AvailableTimesDTO.TableTimes.TimePair>();
+                var times = all.Where(r => r.ReservationsTables.Any(t => t.RestaurantTablesId == table.Id))
+                    .Select(r => r.ReservationTime).OrderBy(t => t.TimeOfDay);
+                var lastTime = startDateTime;
+                foreach (var time in times)
+                {
+                    timesAvailable.Add(new AvailableTimesDTO.TableTimes.TimePair { Start = lastTime, End = time });
+                    lastTime = time.AddMinutes(90);
+                }
+
+                if (lastTime.AddMinutes(90) <= endDateTime)
+                    timesAvailable.Add(
+                        new AvailableTimesDTO.TableTimes.TimePair { Start = lastTime, End = endDateTime });
+                tableTime.Openings = timesAvailable;
+                availabilityList.Add(tableTime);
+            }
+
+            timeSlots.TableOpenings = availabilityList;
+
+            return timeSlots;
         }
     }
 }
