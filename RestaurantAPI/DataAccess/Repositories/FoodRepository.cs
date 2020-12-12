@@ -24,7 +24,7 @@ namespace DataAccess.Repositories
             throw new NotImplementedException();
         }
 
-        public bool Delete(FoodDTO obj, bool transactionEndpoint = true)
+        public bool Delete(int id, bool transactionEndpoint = true)
         {
             throw new NotImplementedException();
         }

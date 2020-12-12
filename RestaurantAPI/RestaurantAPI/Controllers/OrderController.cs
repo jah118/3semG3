@@ -1,4 +1,5 @@
-﻿using DataAccess;
+﻿using System;
+using DataAccess;
 using DataAccess.DataTransferObjects;
 using Microsoft.AspNetCore.Mvc;
 
@@ -30,10 +31,25 @@ namespace RestaurantAPI.Controllers
             return res != null ? (IActionResult)Ok(res) : NotFound(id);
         }
 
-        [HttpPut]
-        public IActionResult Put(int id, [FromBody] ReservationDTO value)
+        [HttpPut("{orderNo}")]
+        public IActionResult Put(int orderNo, [FromBody] OrderDTO value)
         {
-            return NotFound();
+            if (orderNo == value.OrderNo)
+            {
+                try
+                {
+                    var res = _orderRepository.Update(value);
+                    return res != null ? (IActionResult)Ok(res) : Conflict(value);
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e);
+                    return BadRequest(value); 
+                }
+                
+            }
+
+            return BadRequest(value);
         }
 
         [HttpPost]

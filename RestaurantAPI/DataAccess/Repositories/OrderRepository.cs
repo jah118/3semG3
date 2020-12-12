@@ -1,12 +1,14 @@
 ﻿using DataAccess.DataTransferObjects;
 using DataAccess.DataTransferObjects.Converters;
+using DataAccess.Models;
+using DataAccess.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Data;
 using System.Linq;
-using DataAccess.Models;
-using DataAccess.Repositories.Interfaces;
+
 
 namespace DataAccess.Repositories
 {
@@ -55,7 +57,7 @@ namespace DataAccess.Repositories
             return null;
         }
 
-        public bool Delete(OrderDTO obj, bool transactionEndpoint = true)
+        public bool Delete(int id, bool transactionEndpoint = true)
         {
             throw new NotImplementedException();
         }
@@ -110,9 +112,84 @@ namespace DataAccess.Repositories
             throw new NotImplementedException();
         }
 
+        //Denne her er kun til at update PaymentCondition og  employee
         public OrderDTO Update(OrderDTO obj, bool transactionEndpoint = true)
         {
-            throw new NotImplementedException();
+            if (!RestaurantOrder.Validate(obj))
+            {
+                throw new ValidationException("Bad input");
+            }
+            if (transactionEndpoint) _context.Database.BeginTransaction(IsolationLevel.Serializable);
+            try
+            {
+                var tempOrder = Converter.Convert(obj);
+
+                var order = _context.RestaurantOrder
+                    .Where(o => o.OrderNo == obj.OrderNo)
+                    .Include(f => f.OrderLine)
+                    .ThenInclude(f => f.Food)
+                    .ThenInclude(f => f.Price)
+                    .Include(f => f.OrderLine)
+                    .ThenInclude(f => f.Food.FoodCategory)
+                    .Include(e => e.Employee)
+                    .ThenInclude(e => e.Person)
+                    .ThenInclude(e => e.Location)
+                    .ThenInclude(e => e.ZipCodeNavigation)
+                    .Include(e => e.Employee.Title)
+                    .Include(r => r.Reservation)
+                    .Include(pc => pc.PaymentCondition).OrderBy(x => x.OrderDate).FirstOrDefault();
+
+                order.EmployeeId = tempOrder.EmployeeId;
+
+                order.PaymentConditionId = tempOrder.PaymentConditionId;
+                _context.Update(order);
+
+                if (transactionEndpoint)
+                {
+                    _context.SaveChanges();
+                    _context.Database.CommitTransaction();
+                    return GetById(order.OrderNo);
+                }
+            }
+            catch (Exception)
+            {
+                _context.Database.RollbackTransaction();
+                throw;
+            }
+
+            return null;
+        }
+
+        //this for when you need to cancel a reservation that has become an order  and you needs to get table free
+        //and delete all the food and make order canceled
+        //this is being use when a waiter from desktop cancel a reservation with a order
+        internal bool cancelOrder(int orderNo, bool transactionEndpoint = true)
+        {
+            try
+            {
+                var order = _context.RestaurantOrder.FirstOrDefault(o => o.OrderNo == orderNo);
+                // delete orderlines
+                _context.OrderLine.RemoveRange
+                    (_context.OrderLine.Where(r => r.OrderNumber == orderNo));
+
+                //hard code to  (Annulleret) this maybe need to change in the future
+                order.PaymentConditionId = 5;
+
+                _context.Update(order);
+                _context.Entry(order).State = EntityState.Modified;
+                if (transactionEndpoint)
+                {
+                    _context.SaveChanges();
+                    return true;
+                }
+            }
+            catch (Exception)
+            {
+                _context.Database.RollbackTransaction();
+                throw;
+            }
+
+            return false;
         }
     }
 }
