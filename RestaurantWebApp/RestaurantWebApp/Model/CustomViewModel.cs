@@ -1,16 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+﻿using System.Collections.Generic;
 using System.Web.Mvc;
+using RestaurantWebApp.DataTransferObject;
 
 namespace RestaurantWebApp.Model
 {
     public class CustomViewModel
     {
-        public IEnumerable<SelectListItem> listFood { get; set; }
-        public IEnumerable<SelectListItem> listDrink { get; set; }
-        public IEnumerable<SelectListItem> sum { get; set; }
-
+        
+        public IList<FoodDTO> ListFood { get; set; }
+        public IList<FoodDTO> ListDrink { get; set; }
+        public IList<FoodDTO> OrderSummary { get; set; }
+        public ReservationDTO Reservation { get; set; }
     }
 }
