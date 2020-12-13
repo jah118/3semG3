@@ -120,53 +120,70 @@ namespace RestaurantWebApp.Controllers
 
             var cvm = new CustomViewModel();
 
-            // //cvm.listDrink = Drinks;
-            // IEnumerable<FoodDTO> d;
 
-            // model.VmFoods = Foods;
-            // model.VmDrinks = Drinks;
-            // model.Slf = GetSelectListItems(Foods);
-            // model.Sld = GetSelectListItems(Drinks);
-            // model.VmOrderFoodAndDrinks = new List<SelectList>();
+            cvm.ListDrink = Foods;
+            cvm.ListFood = Drinks;
+            cvm.OrderSummary = new List<FoodDTO>();
+            cvm.Reservation = reservation;
+
 
             var lsback = new List<FoodDTO>();
 
-            var res = Tuple.Create(Foods, Drinks, lsback, reservation);
+            var res =
+                Tuple.Create(Foods, Drinks, lsback, reservation);
 
-            return View(res);
+            //return View(res);
+            return View(cvm);
         }
 
         // POST: Booking/OrderFoods
         [HttpPost]
-        public async Task<ActionResult> OrderFood()
+        public async Task<ActionResult> OrderFood(CustomViewModel cvm)
         {
-            //var data = res;
-            //var data = Request.Form["Item1"];
-            //var data1 = Request.Form["Item2"];
-            var l = Request.Form["Item3"];
-
-            var Item3 = l.Split(',').ToList();
-
+            //  data from view
+            var foods = Request.Form["listFood"];
+            var drinks = Request.Form["listDrink"];
+            var orders = Request.Form["OrderSummary"];
             var data3 = Request.Form["ReservationNumber"];
-            var ReservationNumber = data3;
 
+            var orderSummaryListOfStrings = orders?.Split(',').ToList();
+            var foodListOfStrings = foods?.Split(',').ToList();
+            var drinkListOfStrings = drinks?.Split(',').ToList();
             var foodsListFromApi = _foodService.GetAll().ToList();
+
+            var foodList = ConvertStringToFoodLists
+                .ListOfFoodsIdStringsToFoodList(foodListOfStrings, foodsListFromApi);
+            var drinkList = ConvertStringToFoodLists
+                .ListOfFoodsIdStringsToFoodList(drinkListOfStrings, foodsListFromApi);
+
             var allGood = int.TryParse(data3, out var ReservationId);
-            if (Item3.Count > 0 && allGood)
+
+            cvm.ListFood = foodList;
+            cvm.ListDrink = drinkList;
+            cvm.Reservation = new ReservationDTO(ReservationId);
+            cvm.OrderSummary = new List<FoodDTO>();
+
+            if (orderSummaryListOfStrings != null && orderSummaryListOfStrings.Count > 0 && allGood)
             {
-                var orderLineList = ConvertStringToOrderLines.ListOfFoodsIdToOrderLines(Item3, foodsListFromApi);
+                var orderLineList =
+                    ConvertStringToOrderLines
+                        .ListOfFoodsIdToOrderLines(orderSummaryListOfStrings, foodsListFromApi);
                 var r = new ReservationDTO(ReservationId);
-                var order = _orderService.GetAll().Where(x => x.ReservationID == r.Id).OrderBy(x => x.OrderDate)
-                    .FirstOrDefault();
-                if (order == null)
-                    order = new OrderDTO
-                    {
-                        ReservationID = r.Id,
-                        OrderDate = DateTime.Today,
-                        EmployeeID = 1,
-                        PaymentCondition = PaymentCondition.Begyndt.ToString(),
-                        OrderLines = orderLineList
-                    };
+
+                //if order is null -> then everything after ??(null-coalescing) runs
+                var order = _orderService
+                                .GetAll()
+                                .Where(x => x.ReservationID == r.Id)
+                                .OrderBy(x => x.OrderDate)
+                                .FirstOrDefault()
+                            ?? new OrderDTO
+                            {
+                                ReservationID = r.Id,
+                                OrderDate = DateTime.Today,
+                                EmployeeID = 1,
+                                PaymentCondition = PaymentCondition.Begyndt.ToString(),
+                                OrderLines = orderLineList
+                            };
 
                 var response = await _orderService.CreateAsync(order);
 
@@ -180,12 +197,19 @@ namespace RestaurantWebApp.Controllers
                 //TODO add error msg to view
                 //NO Food were selected
                 //throw new NotImplementedException("NO Food were selected or no food return from post");
-                return View(ReservationNumber);
+                return View(cvm);
             }
 
             //TODO add so same view return on fail  with same reservaion id. maybe just give a reservation 
 
-            return View(ReservationNumber);
+
+            return View(cvm);
+        }
+
+        [HttpGet]
+        public ActionResult About()
+        {
+            return View();
         }
     }
 }

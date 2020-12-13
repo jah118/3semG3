@@ -212,6 +212,7 @@
     <Compile Include="Service\Interfaces\IReservationService.cs" />
     <Compile Include="Service\Interfaces\IService.cs" />
     <Compile Include="Service\Interfaces\ITableService.cs" />
+    <Compile Include="Util\ConvertStringToFoodLists.cs" />
     <Compile Include="Util\ConvertStringToOrderLines.cs" />
     <Compile Include="Util\ConvertStringToTables.cs" />
     <Compile Include="Util\FormatTime.cs" />
@@ -409,6 +410,8 @@
     <Content Include="Views\Account\Login.cshtml" />
     <Content Include="Views\Account\Register.cshtml" />
     <Content Include="Views\Booking\View.cshtml" />
+    <Content Include="Views\Booking\About.cshtml" />
+    <Content Include="Views\Shared\_LoginPartial.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

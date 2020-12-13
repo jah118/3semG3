@@ -1,9 +1,5 @@
-﻿@*@using System.Web.Mvc.Html
- 
-    @model Tuple<List<RestaurantWebApp.DataTransferObject.FoodDTO>, List<RestaurantWebApp.DataTransferObject.FoodDTO>, List<RestaurantWebApp.DataTransferObject.FoodDTO>>*@
-
-@*@model dynamic*@
-@model Tuple<List<RestaurantWebApp.DataTransferObject.FoodDTO>, List<RestaurantWebApp.DataTransferObject.FoodDTO>, List<RestaurantWebApp.DataTransferObject.FoodDTO>, RestaurantWebApp.DataTransferObject.ReservationDTO>
+﻿
+@model RestaurantWebApp.Model.CustomViewModel
 
 
 @section Styles {
@@ -12,20 +8,21 @@
 <div class="container">
     <h2>Madbestilling</h2>
     <hr />
-    @using (Html.BeginForm("OrderFood", "Booking", FormMethod.Post))
+    @*@using (Html.BeginForm("OrderFood", "Booking", FormMethod.Post))*@
+    @using (Html.BeginForm())
 
     {
         <div class="row">
-            
-            <input type="hidden" value="@Model.Item4.Id" name="ReservationNumber"/>
+
+            <input type="hidden" value="@Model.Reservation.Id" name="ReservationNumber" />
             <div class="col">
                 <div class="form-group">
 
                     <label class="col-md-5">Retter</label>
                     <div class="col-md-10">
-                        @Html.ListBoxFor(model => model.Item1, new SelectList(Model.Item1, "Id", "Name"), new {size = "20"})
+                        @Html.ListBoxFor(model => model.ListFood, new SelectList(Model.ListFood, "Id", "Name"), new { size = "20" })
                         @*@Html.ListBoxFor(m => m.Slf,Model.Slf, new { size = "20" })*@
-                        <input id="AddFoodsBtn" type="button" value="Vælg Madvarer"/>
+                        <input id="AddFoodsBtn" type="button" value="Vælg Madvarer" />
                     </div>
                 </div>
             </div>
@@ -34,8 +31,8 @@
                 <div class="form-group">
                     <label class="col-md-5"> Drikkevarer</label>
                     <div class="col-md-10">
-                        @Html.ListBoxFor(model => model.Item2, new SelectList(Model.Item2, "Id", "Name"), new {size = "20"})
-                        <input id="AddDrinksBtn" type="button" value="Vælg drikkevarer"/>
+                        @Html.ListBoxFor(model => model.ListDrink, new SelectList(Model.ListDrink, "Id", "Name"), new { size = "20" })
+                        <input id="AddDrinksBtn" type="button" value="Vælg drikkevarer" />
                     </div>
                 </div>
             </div>
@@ -49,14 +46,14 @@
             <div class="form-group">
                 <label class="col-md-5"> Valgt mad</label>
                 <div class="col-md-10">
-                    @Html.ListBoxFor(model => model.Item3, new SelectList(Model.Item3, "Id", "Name"), new { size = "20", style = "width:100%" })
+                    @Html.ListBoxFor(model => model.OrderSummary, new SelectList(Model.OrderSummary, "Id", "Name"), new { size = "20", style = "width:100%" })
                     <input id="RemoveFromSummaryList" type="button" value="Fjern ret/retter" />
                 </div>
             </div>
         </div>
 
         <div>
-            <input type="submit" value="Gem mad og drikke" onclick="selectAll();" class="btn btn-primary" />
+            <input type="submit" value="Gem mad og drikke" onclick="selectAllList();" class="btn btn-primary" />
         </div>
 
         <div>
@@ -75,8 +72,14 @@
     <script>
 
 
-        function selectAll() {
-            selectBox = document.getElementById("Item3");
+        function selectAllList() {
+            selectAll('OrderSummary');
+            selectAll('ListDrink');
+            selectAll('ListFood');
+        }
+
+        function selectAll(listName) {
+            var selectBox = document.getElementById(listName);
 
             for (var i = 0; i < selectBox.options.length; i++) {
                 selectBox.options[i].selected = true;
@@ -85,31 +88,31 @@
 
         $(document).ready(function () {
             $('#AddDrinksBtn').click(function () {
-                var txt = $("#Item2 option:selected").text();
-                var vale = $("#Item2").val();
+                var txt = $("#ListDrink option:selected").text();
+                var vale = $("#ListDrink").val();
                 $.each(vale,
                     function (key, val) {
-                        $('#Item3').append($("<option></option>").attr("value", val).text(txt));
+                        $('#OrderSummary').append($("<option></option>").attr("value", val).text(txt));
                     });
             });
         });
 
         $(document).ready(function () {
             $('#AddFoodsBtn').click(function () {
-                var txt = $("#Item1 option:selected").text();
-                var vale = $("#Item1").val();
+                var txt = $("#ListFood option:selected").text();
+                var vale = $("#ListFood").val();
                 $.each(vale,
                     function (key, val) {
-                        $('#Item3').append($("<option></option>").attr("value", val).text(txt));
+                        $('#OrderSummary').append($("<option></option>").attr("value", val).text(txt));
                     });
             });
         });
 
         $(document).ready(function () {
             $('#RemoveFromSummaryList').click(function () {
-                $('#Item3 option:selected').remove();
+                $('#OrderSummary option:selected').remove();
             });
         });
     </script>
-
+    
 }

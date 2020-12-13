@@ -13,10 +13,10 @@ namespace DataAccess.Models
             switch (toValidate.AccountType)
             {
                 case UserRoles.Customer:
-                    if (Customer.Validate(toValidate.Customer)) return false;
+                    if (!Customer.Validate(toValidate.Customer)) return false;
                     break;
                 case UserRoles.Employee:
-                    if (Employee.Validate(toValidate.Employee)) return false;
+                    if (!Employee.Validate(toValidate.Employee)) return false;
                     break;
                 default: return false;
             }

@@ -21,7 +21,7 @@ namespace RestaurantWebApp.DataTransferObject
 
         public int Id { get; }
 
-        [Required] //TODO lav bedre regex[RegularExpression("^([+](\\d{1,3})\\s?)?((\\(\\d{3,5}\\)|\\d{3,5})(\\s)?)\\d{3,8}$", ErrorMessage = "Tast")]
+        [Required] //TODO lav bedre regex[RegularExpression("^([+](\\d{1,3})\\s?)?((\\(\\d{3,5}\\)|\\d{3,5})(\\s)?)\\d{3,8}$", ErrorMessage = "Tast ")]
         [Display(Name = "Tlf")]
         public string Phone { get; set; }
 
