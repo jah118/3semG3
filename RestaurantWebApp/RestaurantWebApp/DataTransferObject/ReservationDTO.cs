@@ -6,7 +6,6 @@ namespace RestaurantWebApp.DataTransferObject
 {
     public class ReservationDTO
     {
-
         public ReservationDTO()
         {
             ReservationDate = DateTime.Now;
@@ -45,6 +44,7 @@ namespace RestaurantWebApp.DataTransferObject
 
         public bool? Deposit { get; }
 
+        [DataType(DataType.Text)]
         [Display(Name = "Evt Notat")]
         public string Note { get; set; }
 

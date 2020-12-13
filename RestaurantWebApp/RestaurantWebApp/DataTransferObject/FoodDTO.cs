@@ -1,8 +1,6 @@
-﻿using System;
-
-namespace RestaurantWebApp.DataTransferObject
+﻿namespace RestaurantWebApp.DataTransferObject
 {
-    public class FoodDTO 
+    public class FoodDTO
     {
         public FoodDTO()
         {
