@@ -1,6 +1,7 @@
 ﻿using DataAccess.DataTransferObjects;
 using DataAccess.DataTransferObjects.Converters;
 using DataAccess.Models;
+using DataAccess.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using System;
@@ -10,7 +11,7 @@ using System.Linq;
 
 namespace DataAccess.Repositories
 {
-    public class EmployeeRepository : IRepository<EmployeeDTO>
+    public class EmployeeRepository : IEmployeeRepository
     {
         private readonly RestaurantContext _context;
 
@@ -40,7 +41,7 @@ namespace DataAccess.Repositories
             return _context.Add(Converter.Convert(obj));
         }
 
-        public bool Delete(EmployeeDTO obj, bool transactionEndpoint = true)
+        public bool Delete(int id, bool transactionEndpoint = true)
         {
             if (transactionEndpoint) _context.Database.BeginTransaction(IsolationLevel.Serializable);
             //insert logic here

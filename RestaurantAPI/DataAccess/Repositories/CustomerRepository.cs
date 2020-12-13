@@ -7,10 +7,11 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
+using DataAccess.Repositories.Interfaces;
 
 namespace DataAccess.Repositories
 {
-    public class CustomerRepository : IRepository<CustomerDTO>
+    public class CustomerRepository : ICustomerRepository
     {
         private readonly RestaurantContext _context;
 
@@ -40,7 +41,7 @@ namespace DataAccess.Repositories
             return _context.Add(customer);
         }
 
-        public bool Delete(CustomerDTO obj, bool transactionEndpoint = true)
+        public bool Delete(int id, bool transactionEndpoint = true)
         {
             if (transactionEndpoint) _context.Database.BeginTransaction(IsolationLevel.Serializable);
             //insert logic here
