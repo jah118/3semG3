@@ -204,6 +204,13 @@ namespace RestaurantWebApp.Controllers
 
 
             return View(cvm);
+
+        }
+
+        [HttpGet]
+        public ActionResult About()
+        {
+            return View();
         }
     }
 }

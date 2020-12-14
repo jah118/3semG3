@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using RestaurantWebApp.DataTransferObject;
@@ -56,6 +57,16 @@ namespace RestaurantWebApp.Controllers
             //ControllerContext.HttpContext.Cache.Remove()
             return RedirectToAction("Login");
         }
+        //
+        // POST: /Account/LogOff
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult LogOff()
+        {
+            //AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
+            return RedirectToAction("Index", "Booking");
+        }
+
 
         //GET: Register
         [AllowAnonymous]
