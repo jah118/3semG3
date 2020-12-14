@@ -179,7 +179,7 @@ namespace RestaurantWebApp.Controllers
                                 ReservationID = r.Id,
                                 OrderDate = DateTime.Today,
                                 EmployeeID = 1,
-                                PaymentCondition = PaymentCondition.Begyndt.ToString(),
+                                PaymentCondition = PaymentCondition.Bestilt.ToString(),
                                 OrderLines = orderLineList
                             };
 
