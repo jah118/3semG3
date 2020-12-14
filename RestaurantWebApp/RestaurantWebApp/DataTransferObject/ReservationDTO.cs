@@ -6,7 +6,6 @@ namespace RestaurantWebApp.DataTransferObject
 {
     public class ReservationDTO
     {
-
         public ReservationDTO()
         {
             ReservationDate = DateTime.Now;
@@ -35,12 +34,13 @@ namespace RestaurantWebApp.DataTransferObject
         public int Id { get; set; }
         public DateTime ReservationDate { get; }
 
-        [Required]
-        public CustomerDTO Customer { get; set; }
+        [Required] public CustomerDTO Customer { get; set; }
 
         public DateTime ReservationTime { get; set; }
 
-        [Required, Range(1, 25), Display(Name = "Antal Personer")]
+        [Required]
+        [Range(1, 25)]
+        [Display(Name = "Antal Personer")]
         public int NoOfPeople { get; set; }
 
         public bool? Deposit { get; }
@@ -49,9 +49,7 @@ namespace RestaurantWebApp.DataTransferObject
         [Display(Name = "Evt Notat")]
         public string Note { get; set; }
 
-        [Required]
-        [Display(Name = "Borde ")]
-        public IEnumerable<RestaurantTablesDTO> Tables { get; set; }
+        [Required] [Display(Name = "Borde ")] public IEnumerable<RestaurantTablesDTO> Tables { get; set; }
 
         public bool OrderingFood { get; set; }
     }

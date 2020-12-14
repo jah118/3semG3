@@ -115,8 +115,6 @@ namespace RestaurantWebApp.Controllers
                     Foods.Add(item);
                 else if (item.FoodCategoryName.Equals("Drikkevare")) Drinks.Add(item);
 
-            //TODO at later time use Viewmodel for better MOdel binding or find the cause of bad binding with the use tuple
-            var model = new FoodViewModel();
 
             var cvm = new CustomViewModel();
 
