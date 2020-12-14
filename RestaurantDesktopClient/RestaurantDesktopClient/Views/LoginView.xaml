@@ -9,14 +9,14 @@
       Title="LoginView"
       DataContext="{Binding Login, Source={StaticResource Locator}}">
     <Viewbox Stretch="Uniform">
-        <Grid>
+        <Grid Width="435">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="6*"/>
-                <ColumnDefinition Width="6*" />
                 <ColumnDefinition Width="6*"/>
-                <ColumnDefinition Width="6*" />
                 <ColumnDefinition Width="6*"/>
-                <ColumnDefinition Width="6*" />
+                <ColumnDefinition Width="6*"/>
+                <ColumnDefinition Width="6*"/>
+                <ColumnDefinition Width="6*"/>
 
 
             </Grid.ColumnDefinitions>
@@ -26,15 +26,15 @@
                 <RowDefinition Height="6*" />
                 <RowDefinition Height="6*" />
                 <RowDefinition Height="6*" />
-                <RowDefinition Height="6*" /> 
+                <RowDefinition Height="6*" />
             </Grid.RowDefinitions>
 
-            <Label Name ="LblUsername"  Content="Username:" Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="1" FontSize="20" Margin="0,2,0,2" VerticalContentAlignment="Center"/>
-            <Label Name ="LblPassword"  Content="Password:" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="1" FontSize="20" Margin="0,2,0,2" VerticalContentAlignment="Center"/>
+            <Label Name ="LblUsername"  Content="Username:" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" FontSize="16" Margin="0,2,0,2" VerticalContentAlignment="Center" HorizontalAlignment="Right"/>
+            <Label Name ="LblPassword"  Content="Password:" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" FontSize="16" Margin="0,2,0,2" VerticalContentAlignment="Center" HorizontalAlignment="Right"/>
 
-            <TextBox Name="BoxUser" Grid.Row="0" Grid.Column="2" Grid.ColumnSpan="3" Text="{Binding Username, Mode=TwoWay}" Margin="0,2,0,2" VerticalContentAlignment="Center"/>
+            <TextBox Name="BoxUser" VerticalAlignment="Stretch" Grid.Row="0" Grid.Column="2" Grid.ColumnSpan="3" Text="{Binding Username, Mode=TwoWay}" Margin="0,2,0,2" VerticalContentAlignment="Center"/>
             <PasswordBox Name="BoxPass" Grid.Row="1" Grid.Column="2" Grid.ColumnSpan="3" VerticalContentAlignment="Center"/>
-            <Button Name="BtnLogin" Content="Login" Grid.Row="2" Grid.Column="2" Grid.ColumnSpan="2" Command="{Binding LoginCommand}" CommandParameter="{Binding ElementName=BoxPass}" Margin="0,2,0,2" VerticalContentAlignment="Center"/>
+            <Button Name="BtnLogin" Content="Login" Grid.Row="2" Grid.Column="2" Grid.ColumnSpan="3" Command="{Binding LoginCommand}" CommandParameter="{Binding ElementName=BoxPass}" Margin="0,2,0,2" VerticalContentAlignment="Center"/>
         </Grid>
     </Viewbox>
 </Page>

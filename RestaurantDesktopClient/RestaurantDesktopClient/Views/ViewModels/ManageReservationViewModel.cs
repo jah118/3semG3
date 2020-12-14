@@ -151,7 +151,6 @@ namespace RestaurantDesktopClient.Views.ManageReservation
                 {
                     int.TryParse(value, out int no);
                     SelectedReservation.NoOfPeople = no;
-                    UpdateAvailableTables();
                 }
             }
         }
@@ -275,7 +274,6 @@ namespace RestaurantDesktopClient.Views.ManageReservation
         {
             var tempTables = _tableRepository.GetFreeTables(SelectedReservation.ReservationTime);
             AvailableTables = new ObservableCollection<TablesDTO>(tempTables);
-            ReservationTables.Clear();
             RaisePropertyChanged(() => AvailableTables);
         }
         /// <summary>
@@ -314,12 +312,17 @@ namespace RestaurantDesktopClient.Views.ManageReservation
         /// <summary>
         /// Executes RaisePropertyChanged on related properties and execute UpdateAvailableTables
         /// </summary>
-        private void ChangePropertyTime()
+        private void ChangePropertyTime(bool clearSelectedTables = true)
         {
             RaisePropertyChanged(() => GetReservationTimeMinuts);
             RaisePropertyChanged(() => GetReservationTimeHours);
             RaisePropertyChanged(() => GetReservationTimeDate);
             UpdateAvailableTables();
+            if (clearSelectedTables)
+            {
+                ReservationTables.Clear();
+                RaisePropertyChanged(() => ReservationTables);
+            }
         }
         /// <summary>
         /// Trims DateTime to next quartar
@@ -355,7 +358,7 @@ namespace RestaurantDesktopClient.Views.ManageReservation
                               " klokken " + SelectedReservation.ReservationTime.ToString("g") + " ?";
                 var result = MessageBox.Show(message, "Advarsel", MessageBoxButton.YesNo);
 
-                if(result == MessageBoxResult.Yes)
+                if (result == MessageBoxResult.Yes)
                 {
                     var res = _reservationRepository.Delete(SelectedReservation);
                     if (res == HttpStatusCode.OK)
@@ -387,10 +390,12 @@ namespace RestaurantDesktopClient.Views.ManageReservation
         /// <param name="reservation" that you wish to set to selectedReservation></param>
         private void UpdateSelectedReservation(ReservationDTO reservation)
         {
-            var message = new ReservationSelection() { Selected = reservation.Id };
+            var message = new ReservationSelection { Selected = reservation.Id };
             _selectedReservation = reservation;
             Messenger.Default.Send(message);
-            RaisePropertyChanged();
+            ChangePropertyReservation();
+            ReservationTables = new ObservableCollection<TablesDTO>(reservation.Tables);
+            RaisePropertyChanged(()=>ReservationTables);
         }
         /// <summary>
         /// Create Reservation method without return type
@@ -416,12 +421,20 @@ namespace RestaurantDesktopClient.Views.ManageReservation
         /// </summary>
         private void ClearValues()
         {
-            UpdateSelectedReservation(new ReservationDTO()
-            {
-                ReservationDate = DateTime.Now,
-                ReservationTime = DateTime.Now,
-                Deposit = false,
-            });
+            UpdateSelectedReservation(new ReservationDTO());
+        }
+
+        private void ChangePropertyReservation()
+        {
+            RaisePropertyChanged(() => ReservationNumber);
+            RaisePropertyChanged(() => ReservationNumOfPersons);
+            RaisePropertyChanged(() => ReservationDate);
+            RaisePropertyChanged(() => ReservationDeposit);
+            RaisePropertyChanged(() => ReservationCustomer);
+            RaisePropertyChanged(() => ReservationComment);
+            RaisePropertyChanged(() => ReservationTables);
+            ChangePropertyTime(false);
+
         }
         #endregion
     }
