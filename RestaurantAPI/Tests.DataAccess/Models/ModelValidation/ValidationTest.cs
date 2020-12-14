@@ -4,14 +4,15 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Tests.DataAccess.Models.ModelValidation
 {
-    [TestClass, TestCategory("Validation")]
+    [TestClass]
+    [TestCategory("Validation")]
     public class ValidationTest
     {
         [TestMethod]
         public void CustomerValidationPass()
         {
             //Arrange
-            CustomerDTO c = new CustomerDTO()
+            var c = new CustomerDTO
             {
                 FirstName = "Alpha",
                 LastName = "Beta",
@@ -22,7 +23,7 @@ namespace Tests.DataAccess.Models.ModelValidation
                 Phone = "88888888"
             };
             //Act
-            bool pass = Customer.Validate(c);
+            var pass = Customer.Validate(c);
             //Assert
             Assert.IsTrue(pass);
         }
@@ -31,7 +32,7 @@ namespace Tests.DataAccess.Models.ModelValidation
         public void CustomerValidationWithNullFail()
         {
             //Arrange
-            CustomerDTO c = new CustomerDTO()
+            var c = new CustomerDTO
             {
                 FirstName = "Alpha",
                 LastName = "Beta",
@@ -42,7 +43,7 @@ namespace Tests.DataAccess.Models.ModelValidation
                 Phone = "88888888"
             };
             //Act
-            bool pass = Customer.Validate(c);
+            var pass = Customer.Validate(c);
             //Assert
             Assert.IsFalse(pass);
         }
@@ -51,7 +52,7 @@ namespace Tests.DataAccess.Models.ModelValidation
         public void CustomerValidationWithEmptyStringFail()
         {
             //Arrange
-            CustomerDTO c = new CustomerDTO()
+            var c = new CustomerDTO
             {
                 FirstName = "Alpha",
                 LastName = "Beta",
@@ -62,7 +63,7 @@ namespace Tests.DataAccess.Models.ModelValidation
                 Phone = "88888888"
             };
             //Act
-            bool pass = Customer.Validate(c);
+            var pass = Customer.Validate(c);
             //Assert
             Assert.IsFalse(pass);
         }
@@ -71,7 +72,7 @@ namespace Tests.DataAccess.Models.ModelValidation
         public void EmployeeValidationPass()
         {
             //Arrange
-            EmployeeDTO e = new EmployeeDTO()
+            var e = new EmployeeDTO
             {
                 FirstName = "Alpha",
                 LastName = "Beta",
@@ -83,7 +84,7 @@ namespace Tests.DataAccess.Models.ModelValidation
                 Title = "BobskiBuilder"
             };
             //Act
-            bool pass = Employee.Validate(e);
+            var pass = Employee.Validate(e);
             //Assert
             Assert.IsTrue(pass);
         }
@@ -92,7 +93,7 @@ namespace Tests.DataAccess.Models.ModelValidation
         public void EmployeeValidationNullFail()
         {
             //Arrange
-            EmployeeDTO e = new EmployeeDTO()
+            var e = new EmployeeDTO
             {
                 FirstName = "Alpha",
                 LastName = "Beta",
@@ -104,7 +105,7 @@ namespace Tests.DataAccess.Models.ModelValidation
                 Title = "BobskiBuilder"
             };
             //Act
-            bool pass = Employee.Validate(e);
+            var pass = Employee.Validate(e);
             //Assert
             Assert.IsFalse(pass);
         }
@@ -113,7 +114,7 @@ namespace Tests.DataAccess.Models.ModelValidation
         public void EmployeeValidationEmptyStringFail()
         {
             //Arrange
-            EmployeeDTO e = new EmployeeDTO()
+            var e = new EmployeeDTO
             {
                 FirstName = "Alpha",
                 LastName = "Beta",
@@ -125,7 +126,7 @@ namespace Tests.DataAccess.Models.ModelValidation
                 Title = "BobskiBuilder"
             };
             //Act
-            bool pass = Employee.Validate(e);
+            var pass = Employee.Validate(e);
             //Assert
             Assert.IsFalse(pass);
         }
@@ -134,10 +135,10 @@ namespace Tests.DataAccess.Models.ModelValidation
         public void UserValidationPass()
         {
             //Arrange
-            UserDTO u = new UserDTO()
+            var u = new UserDTO
             {
                 Username = "Alpha",
-               Employee = new EmployeeDTO()
+                Employee = new EmployeeDTO
                 {
                     FirstName = "Alpha",
                     LastName = "Beta",
@@ -148,11 +149,10 @@ namespace Tests.DataAccess.Models.ModelValidation
                     Phone = "88888888",
                     Title = "BobskiBuilder"
                 },
-               AccountType = UserRoles.Employee
-
+                AccountType = UserRoles.Employee
             };
             //Act
-            bool pass = User.Validate(u);
+            var pass = User.Validate(u);
             //Assert
             Assert.IsTrue(pass);
         }
@@ -161,11 +161,11 @@ namespace Tests.DataAccess.Models.ModelValidation
         public void UserValidationNullFail()
         {
             //Arrange
-            UserDTO u = new UserDTO()
+            var u = new UserDTO
             {
                 Username = null,
                 AccountType = UserRoles.Employee,
-                Employee = new EmployeeDTO()
+                Employee = new EmployeeDTO
                 {
                     FirstName = "Alpha",
                     LastName = "Beta",
@@ -178,7 +178,7 @@ namespace Tests.DataAccess.Models.ModelValidation
                 }
             };
             //Act
-            bool pass = User.Validate(u);
+            var pass = User.Validate(u);
             //Assert
             Assert.IsFalse(pass);
         }
@@ -187,11 +187,11 @@ namespace Tests.DataAccess.Models.ModelValidation
         public void UserValidationEmptyStringFail()
         {
             //Arrange
-            UserDTO u = new UserDTO()
+            var u = new UserDTO
             {
                 Username = "",
                 AccountType = UserRoles.Employee,
-                Employee = new EmployeeDTO()
+                Employee = new EmployeeDTO
                 {
                     FirstName = "Alpha",
                     LastName = "Beta",
@@ -204,7 +204,7 @@ namespace Tests.DataAccess.Models.ModelValidation
                 }
             };
             //Act
-            bool pass = User.Validate(u);
+            var pass = User.Validate(u);
             //Assert
             Assert.IsFalse(pass);
         }

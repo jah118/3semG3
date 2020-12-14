@@ -1,12 +1,12 @@
-﻿using DataAccess.DataTransferObjects;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Net;
+using DataAccess.DataTransferObjects;
 using DataAccess.Repositories.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
 
 namespace RestaurantAPI.Controllers.Tests
 {
@@ -29,7 +29,7 @@ namespace RestaurantAPI.Controllers.Tests
                 5,
                 false,
                 "TEST",
-                new List<RestaurantTablesDTO> { new RestaurantTablesDTO(), new RestaurantTablesDTO() }
+                new List<RestaurantTablesDTO> {new RestaurantTablesDTO(), new RestaurantTablesDTO()}
             );
             var obj2 = new ReservationDTO(
                 42,
@@ -39,7 +39,7 @@ namespace RestaurantAPI.Controllers.Tests
                 5,
                 false,
                 "TEST2",
-                new List<RestaurantTablesDTO> { new RestaurantTablesDTO(), new RestaurantTablesDTO() }
+                new List<RestaurantTablesDTO> {new RestaurantTablesDTO(), new RestaurantTablesDTO()}
             );
             objList.Add(obj);
             objList.Add(obj2);
@@ -61,7 +61,7 @@ namespace RestaurantAPI.Controllers.Tests
             Assert.AreEqual(obj2.Id, value.ElementAt(1).Id);
 
             Assert.IsNotNull(actionResult);
-            Assert.AreEqual(okResult.StatusCode, (int)HttpStatusCode.OK);
+            Assert.AreEqual(okResult.StatusCode, (int) HttpStatusCode.OK);
         }
 
         [TestMethod]
@@ -77,7 +77,7 @@ namespace RestaurantAPI.Controllers.Tests
                 5,
                 false,
                 "TEST",
-                new List<RestaurantTablesDTO> { new RestaurantTablesDTO(), new RestaurantTablesDTO() }
+                new List<RestaurantTablesDTO> {new RestaurantTablesDTO(), new RestaurantTablesDTO()}
             );
 
             // act
@@ -91,7 +91,7 @@ namespace RestaurantAPI.Controllers.Tests
             Assert.IsNotNull(value);
             Assert.AreEqual(obj.Id, value.Id);
             Assert.IsNotNull(actionResult);
-            Assert.AreEqual(okResult.StatusCode, (int)HttpStatusCode.OK); //TODO fix so type comapre match
+            Assert.AreEqual(okResult.StatusCode, (int) HttpStatusCode.OK); //TODO fix so type comapre match
         }
 
         [TestMethod]
@@ -107,7 +107,7 @@ namespace RestaurantAPI.Controllers.Tests
                 5,
                 false,
                 "TEST",
-                new List<RestaurantTablesDTO> { new RestaurantTablesDTO(), new RestaurantTablesDTO() }
+                new List<RestaurantTablesDTO> {new RestaurantTablesDTO(), new RestaurantTablesDTO()}
             );
             mock.Setup(x => x.GetById(40)).Returns(obj);
             var controller = new ReservationController(mock.Object);
@@ -119,7 +119,7 @@ namespace RestaurantAPI.Controllers.Tests
 
             // assert
             Assert.IsNull(value);
-            Assert.AreEqual(okResult.StatusCode, (int)HttpStatusCode.NotFound);
+            Assert.AreEqual(okResult.StatusCode, (int) HttpStatusCode.NotFound);
         }
 
         #endregion Getter
@@ -139,10 +139,10 @@ namespace RestaurantAPI.Controllers.Tests
                 5,
                 false,
                 "TEST",
-                new List<RestaurantTablesDTO> { new RestaurantTablesDTO(), new RestaurantTablesDTO() }
+                new List<RestaurantTablesDTO> {new RestaurantTablesDTO(), new RestaurantTablesDTO()}
             );
 
-            ReservationDTO obj1 = new ReservationDTO(
+            var obj1 = new ReservationDTO(
                 0,
                 DateTime.Now,
                 new CustomerDTO(),
@@ -150,13 +150,13 @@ namespace RestaurantAPI.Controllers.Tests
                 5,
                 false,
                 "TEST",
-                new List<RestaurantTablesDTO> { new RestaurantTablesDTO(), new RestaurantTablesDTO() }
+                new List<RestaurantTablesDTO> {new RestaurantTablesDTO(), new RestaurantTablesDTO()}
             );
 
             // act
             mock.Setup(x => x.Create(obj1, true)).Returns(obj);
             var controller = new ReservationController(mock.Object);
-            var value = mock.Object.Create(obj1, true);
+            var value = mock.Object.Create(obj1);
             var actionResult = controller.Post(obj1);
             var okResult = actionResult as OkObjectResult;
 
@@ -164,7 +164,7 @@ namespace RestaurantAPI.Controllers.Tests
             Assert.IsNotNull(value);
             Assert.IsTrue(value.Id == 41);
             Assert.IsNotNull(actionResult);
-            Assert.AreEqual(okResult.StatusCode, (int)HttpStatusCode.OK); //TODO fix so type comapre match
+            Assert.AreEqual(okResult.StatusCode, (int) HttpStatusCode.OK); //TODO fix so type comapre match
         }
 
         [TestMethod]
@@ -174,7 +174,7 @@ namespace RestaurantAPI.Controllers.Tests
             // arrange
             var mock = new Mock<IReservationRepository>();
 
-            ReservationDTO obj1 = new ReservationDTO(
+            var obj1 = new ReservationDTO(
                 0,
                 DateTime.Now,
                 new CustomerDTO(),
@@ -182,20 +182,20 @@ namespace RestaurantAPI.Controllers.Tests
                 5,
                 false,
                 "TEST",
-                new List<RestaurantTablesDTO> { new RestaurantTablesDTO(), new RestaurantTablesDTO() }
+                new List<RestaurantTablesDTO> {new RestaurantTablesDTO(), new RestaurantTablesDTO()}
             );
 
             // act
             mock.Setup(x => x.Create(obj1, true)).Returns(test);
             var controller = new ReservationController(mock.Object);
-            var value = mock.Object.Create(obj1, true);
+            var value = mock.Object.Create(obj1);
             var actionResult = controller.Post(obj1);
             var conflictObjectResult = actionResult as ConflictObjectResult;
 
             // assert
             Assert.IsNull(value);
             Assert.AreEqual(obj1, conflictObjectResult.Value);
-            Assert.AreEqual((int)HttpStatusCode.Conflict, conflictObjectResult.StatusCode);
+            Assert.AreEqual((int) HttpStatusCode.Conflict, conflictObjectResult.StatusCode);
         }
 
         #endregion Posts
@@ -215,10 +215,10 @@ namespace RestaurantAPI.Controllers.Tests
                 5,
                 false,
                 "TEST",
-                new List<RestaurantTablesDTO> { new RestaurantTablesDTO(), new RestaurantTablesDTO() }
+                new List<RestaurantTablesDTO> {new RestaurantTablesDTO(), new RestaurantTablesDTO()}
             );
 
-            ReservationDTO obj1 = new ReservationDTO(
+            var obj1 = new ReservationDTO(
                 41,
                 DateTime.Now,
                 new CustomerDTO(),
@@ -226,13 +226,13 @@ namespace RestaurantAPI.Controllers.Tests
                 5,
                 false,
                 "TEST",
-                new List<RestaurantTablesDTO> { new RestaurantTablesDTO(), new RestaurantTablesDTO() }
+                new List<RestaurantTablesDTO> {new RestaurantTablesDTO(), new RestaurantTablesDTO()}
             );
 
             // act
             mock.Setup(x => x.Update(obj1, true)).Returns(obj);
             var controller = new ReservationController(mock.Object);
-            var value = mock.Object.Update(obj1, true);
+            var value = mock.Object.Update(obj1);
             var actionResult = controller.Put(41, obj1);
             var okResult = actionResult as OkObjectResult;
 
@@ -240,7 +240,7 @@ namespace RestaurantAPI.Controllers.Tests
             Assert.IsNotNull(value);
             Assert.IsTrue(value.Id == 41);
             Assert.IsNotNull(okResult.Value);
-            Assert.AreEqual((int)HttpStatusCode.OK, okResult.StatusCode);
+            Assert.AreEqual((int) HttpStatusCode.OK, okResult.StatusCode);
         }
 
         [TestMethod]
@@ -249,28 +249,28 @@ namespace RestaurantAPI.Controllers.Tests
             // arrange
             var mock = new Mock<IReservationRepository>();
             ReservationDTO nullObj = null;
-            ReservationDTO obj1 = new ReservationDTO(
-                0,  /// this
+            var obj1 = new ReservationDTO(
+                0, /// this
                 DateTime.Now,
                 new CustomerDTO(),
                 DateTime.Now,
                 5,
                 false,
                 "TEST",
-                new List<RestaurantTablesDTO> { new RestaurantTablesDTO(), new RestaurantTablesDTO() }
+                new List<RestaurantTablesDTO> {new RestaurantTablesDTO(), new RestaurantTablesDTO()}
             );
 
             // act
             mock.Setup(x => x.Update(obj1, true)).Returns(nullObj);
             var controller = new ReservationController(mock.Object);
-            var value = mock.Object.Update(obj1, true);
+            var value = mock.Object.Update(obj1);
             var actionResult = controller.Put(0, obj1);
             var conflictObjectResult = actionResult as ConflictObjectResult;
 
             // assert
             Assert.IsNull(value);
             Assert.AreEqual(obj1, conflictObjectResult.Value);
-            Assert.AreEqual((int)HttpStatusCode.Conflict, conflictObjectResult.StatusCode);
+            Assert.AreEqual((int) HttpStatusCode.Conflict, conflictObjectResult.StatusCode);
         }
 
         [TestMethod]
@@ -279,33 +279,34 @@ namespace RestaurantAPI.Controllers.Tests
             // arrange
             var mock = new Mock<IReservationRepository>();
             ReservationDTO nullObj = null;
-            ReservationDTO obj1 = new ReservationDTO(
-                0,  /// this
+            var obj1 = new ReservationDTO(
+                0, /// this
                 DateTime.Now,
                 new CustomerDTO(),
                 DateTime.Now,
                 5,
                 false,
                 "TEST",
-                new List<RestaurantTablesDTO> { new RestaurantTablesDTO(), new RestaurantTablesDTO() }
+                new List<RestaurantTablesDTO> {new RestaurantTablesDTO(), new RestaurantTablesDTO()}
             );
 
             // act
             mock.Setup(x => x.Update(obj1, true)).Returns(nullObj);
             var controller = new ReservationController(mock.Object);
-            var value = mock.Object.Update(obj1, true);
+            var value = mock.Object.Update(obj1);
             var actionResult = controller.Put(41, obj1);
             var badRequestObjectResult = actionResult as BadRequestObjectResult;
 
             // assert
             Assert.IsNull(value);
             Assert.AreEqual(obj1, badRequestObjectResult.Value);
-            Assert.AreEqual((int)HttpStatusCode.BadRequest, badRequestObjectResult.StatusCode);
+            Assert.AreEqual((int) HttpStatusCode.BadRequest, badRequestObjectResult.StatusCode);
         }
 
         #endregion Put
 
         #region Delete
+
         [TestMethod]
         public void Delete_WhenReservationIdIsValid_ShouldReturnOkAndTrue()
         {
@@ -315,13 +316,12 @@ namespace RestaurantAPI.Controllers.Tests
             // act
             mock.Setup(x => x.Delete(41, true)).Returns(true);
             var controller = new ReservationController(mock.Object);
-            var value = mock.Object.Delete(41, true);
+            var value = mock.Object.Delete(41);
             var actionResult = controller.Delete(41);
             var okResult = actionResult as OkObjectResult;
             // assert
             Assert.IsTrue(value);
-            Assert.AreEqual((int)HttpStatusCode.OK, okResult.StatusCode);
-
+            Assert.AreEqual((int) HttpStatusCode.OK, okResult.StatusCode);
         }
 
         [TestMethod]
@@ -329,19 +329,19 @@ namespace RestaurantAPI.Controllers.Tests
         {
             // arrange
             var mock = new Mock<IReservationRepository>();
-           
+
             // act
             mock.Setup(x => x.Delete(0, true)).Returns(false);
             var controller = new ReservationController(mock.Object);
-            var value = mock.Object.Delete(0, true);
+            var value = mock.Object.Delete(0);
             var actionResult = controller.Delete(0);
             var conflictObjectResult = actionResult as ConflictObjectResult;
-            
+
             // assert
             Assert.IsFalse(value);
-            Assert.AreEqual((int)HttpStatusCode.Conflict, conflictObjectResult.StatusCode);
-
+            Assert.AreEqual((int) HttpStatusCode.Conflict, conflictObjectResult.StatusCode);
         }
+
         #endregion
     }
 }

@@ -1,16 +1,8 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using RestaurantAPI.Controllers;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Net;
 using DataAccess.DataTransferObjects;
-using DataAccess.Repositories;
 using DataAccess.Repositories.Interfaces;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
 namespace RestaurantAPI.Controllers.Tests
@@ -24,7 +16,7 @@ namespace RestaurantAPI.Controllers.Tests
             // using (var mock = AutoMock.GetLoose())
             var repository = new Mock<ICustomerRepository>();
 
-            CustomerDTO customer = new CustomerDTO
+            var customer = new CustomerDTO
             {
                 Id = 10,
                 FirstName = "Søren",
@@ -33,8 +25,7 @@ namespace RestaurantAPI.Controllers.Tests
                 Email = "Søren@larsen.dk",
                 Phone = "90876653",
                 ZipCode = "9000",
-                City = "Aalborg",
-
+                City = "Aalborg"
             };
 
 
@@ -47,8 +38,7 @@ namespace RestaurantAPI.Controllers.Tests
             Assert.IsNotNull(c);
             Assert.AreEqual(customer.Id, c.Id);
             Assert.IsNotNull(result);
-            Assert.AreEqual(okResult.StatusCode, (int)HttpStatusCode.OK);
+            Assert.AreEqual(okResult.StatusCode, (int) HttpStatusCode.OK);
         }
-
     }
 }

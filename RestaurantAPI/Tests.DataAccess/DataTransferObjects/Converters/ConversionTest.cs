@@ -12,6 +12,36 @@ namespace Tests.DataAccess.DataTransferObjects.Converters
     [TestCategory("Converters")]
     public class ConversionTest
     {
+        #region OrderConversion
+
+        [TestMethod]
+        [TestCategory("Integration")]
+        [TestCategory("Converters")]
+        public void OrderConversionOrderListToOrderDTOList()
+        {
+            //Arrange
+            var orders = GetRestaurantOrder();
+            //Act
+            var orderDTOs = Converter.Convert(orders);
+            //Assert
+            Assert.AreEqual(orderDTOs.Count(), orders.Count);
+            for (var i = 0; i < orders.Count; i++)
+            {
+                Assert.AreEqual(orders[i].OrderNo, orderDTOs.ElementAt(i).OrderNo);
+                Assert.AreEqual(orders[i].PaymentCondition.Condition, orderDTOs.ElementAt(i).PaymentCondition);
+                Assert.AreEqual(orders[i].EmployeeId, orderDTOs.ElementAt(i).EmployeeID);
+                Assert.AreEqual(orders[i].OrderDate, orderDTOs.ElementAt(i).OrderDate);
+                Assert.AreEqual(orders[i].ReservationId, orderDTOs.ElementAt(i).ReservationID);
+                orders[i].OrderLine.ToList().ForEach(x =>
+                {
+                    Assert.IsNotNull(orderDTOs.ElementAt(i).OrderLines
+                        .Where(o => o.Food.Id == x.Food.Id && o.Quantity == x.Quantity).FirstOrDefault());
+                });
+            }
+        }
+
+        #endregion
+
         #region TestDataMethods
 
         private List<Customer> GetCustomers()
@@ -269,13 +299,13 @@ namespace Tests.DataAccess.DataTransferObjects.Converters
                 {
                     Id = 1,
                     PriceValue = 218,
-                    FoodId = 1,
+                    FoodId = 1
                 },
                 new Price
                 {
                     Id = 2,
                     PriceValue = 202,
-                    FoodId = 2,
+                    FoodId = 2
                     //Food = new Food
                     //{
                     //    Description = "Some Test Description, for FoodDTO2",
@@ -440,9 +470,8 @@ namespace Tests.DataAccess.DataTransferObjects.Converters
                     ReservationDate = DateTime.Now,
                     ReservationTime = DateTime.Now.AddDays(2),
                     Note = "Some note for reservation1",
-                    Customer = GetCustomers()[0],
-
-        },
+                    Customer = GetCustomers()[0]
+                },
                 new Reservation
                 {
                     Deposit = false,
@@ -451,45 +480,14 @@ namespace Tests.DataAccess.DataTransferObjects.Converters
                     ReservationDate = DateTime.Now.AddDays(1),
                     ReservationTime = DateTime.Now.AddDays(2),
                     Note = "Some note for reservation2",
-                    Customer = GetCustomers()[1],
+                    Customer = GetCustomers()[1]
                 }
             };
         }
 
         #endregion
 
-        #region OrderConversion
 
-        [TestMethod]
-        [TestCategory("Integration")]
-        [TestCategory("Converters")]
-        public void OrderConversionOrderListToOrderDTOList()
-        {
-            //Arrange
-            var orders = GetRestaurantOrder();
-            //Act
-            var orderDTOs = Converter.Convert(orders);
-            //Assert
-            Assert.AreEqual(orderDTOs.Count(), orders.Count);
-            for (var i = 0; i < orders.Count; i++)
-            {
-                Assert.AreEqual(orders[i].OrderNo, orderDTOs.ElementAt(i).OrderNo);
-                Assert.AreEqual(orders[i].PaymentCondition.Condition, orderDTOs.ElementAt(i).PaymentCondition);
-                Assert.AreEqual(orders[i].EmployeeId, orderDTOs.ElementAt(i).EmployeeID);
-                Assert.AreEqual(orders[i].OrderDate, orderDTOs.ElementAt(i).OrderDate);
-                Assert.AreEqual(orders[i].ReservationId, orderDTOs.ElementAt(i).ReservationID);
-                orders[i].OrderLine.ToList().ForEach(x =>
-                {
-                    Assert.IsNotNull(orderDTOs.ElementAt(i).OrderLines
-                        .Where(o => o.Food.Id == x.Food.Id && o.Quantity == x.Quantity).FirstOrDefault());
-                });
-            }
-        }
-
-        #endregion
-
-
- 
         #region CustomerConversion
 
         [TestMethod]
@@ -716,8 +714,8 @@ namespace Tests.DataAccess.DataTransferObjects.Converters
             //Assert
             for (var i = 0; i < foods.Count; i++)
             {
-                var expectedPriceValue = 
-                   decimal.ToDouble(foods[i].Price.Where(p => p.FoodId == foods[i].Id).FirstOrDefault().PriceValue);
+                var expectedPriceValue =
+                    decimal.ToDouble(foods[i].Price.Where(p => p.FoodId == foods[i].Id).FirstOrDefault().PriceValue);
                 Assert.AreEqual(foodDTOs.ElementAt(i).Id, foods[i].Id);
                 Assert.AreEqual(foodDTOs.ElementAt(i).Description, foods[i].Description);
                 Assert.AreEqual(foodDTOs.ElementAt(i).Name, foods[i].Name);
