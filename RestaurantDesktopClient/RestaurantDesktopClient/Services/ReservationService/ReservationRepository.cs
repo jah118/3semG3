@@ -70,7 +70,7 @@ namespace RestaurantDesktopClient.Reservation
                 var client = new RestClient(_constring);
                 string json = JsonConvert.SerializeObject(reservation);
                 var request = new RestRequest("/reservation/{id}", Method.PUT);
-                request.AddUrlSegment("Id", reservation.Id);
+                request.AddUrlSegment("id", reservation.Id);
                 request.AddJsonBody(json);
                 if (_authRepository.AddTokenToRequest(request))
                 {
@@ -90,10 +90,8 @@ namespace RestaurantDesktopClient.Reservation
             try
             {
                 var client = new RestClient(_constring);
-                string json = JsonConvert.SerializeObject(reservation);
                 var request = new RestRequest("/reservation/{id}", Method.DELETE);
-                request.AddUrlSegment("Id", reservation.Id);
-                request.AddJsonBody(json);
+                request.AddUrlSegment("id", reservation.Id);
                 _authRepository.AddTokenToRequest(request);
                 res = client.Execute(request).StatusCode;
             }

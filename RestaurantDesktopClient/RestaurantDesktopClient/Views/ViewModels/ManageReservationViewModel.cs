@@ -206,8 +206,19 @@ namespace RestaurantDesktopClient.Views.ManageReservation
             {
                 if (SelectedReservation != null)
                 {
-                    int.TryParse(value, out int id);
-                    SelectedReservation.Customer = _customerRepository.Get(id);
+                    if (Validation.IsNumber(value))
+                    {
+                        var id = int.Parse(value);
+                        var customer = _customerRepository.Get(id);
+                        if (customer != null)
+                        {
+                            SelectedReservation.Customer = customer;
+                        }
+                        else
+                        {
+                            MessageBox.Show("kunde ikke fundet med dette id");
+                        }
+                    }
                 }
             }
         }
@@ -218,7 +229,7 @@ namespace RestaurantDesktopClient.Views.ManageReservation
         {
             get
             {
-                return _reservationSearchList ?? _reservationRepository.GetAll().ToList();
+                return _reservationRepository.GetAll().OrderByDescending(dto => dto.ReservationTime).ToList();
             }
             set
             {
@@ -242,8 +253,9 @@ namespace RestaurantDesktopClient.Views.ManageReservation
         /// Constructor for ManageReservationViewModel
         /// </summary>
         public ManageReservationViewModel(IRepository<ReservationDTO> reservationRepository, IRepository<CustomerDTO> customerRepository
-        , ITableRepository tableRepository)
+        , ITableRepository tableRepository, IRepository<OrderDTO> orderRepository)
         {
+            _orderRepository = orderRepository;
             _customerRepository = customerRepository;
             _tableRepository = tableRepository;
             _reservationRepository = reservationRepository;
@@ -343,7 +355,12 @@ namespace RestaurantDesktopClient.Views.ManageReservation
             if (Validation.ReservationValidForUpdate(SelectedReservation))
             {
                 var res = _reservationRepository.Update(SelectedReservation);
-                if (res == null) MessageBox.Show("Fejl ved updatering af reservation");
+                if (res == null || res.Id == 0) MessageBox.Show("Fejl ved updatering af reservation");
+                else
+                {
+                    UpdateSelectedReservation(res);
+                    RaisePropertyChanged(() => ReservationSearchList);
+                }
             }
         }
         /// <summary>
@@ -364,6 +381,11 @@ namespace RestaurantDesktopClient.Views.ManageReservation
                     if (res == HttpStatusCode.OK)
                     {
                         ClearValues();
+                        RaisePropertyChanged(() => ReservationSearchList);
+                    }
+                    else if (res == HttpStatusCode.MethodNotAllowed)
+                    {
+                        MessageBox.Show("Du har ikke tilladelse til at slette en reservation");
                     }
                 }
             }
@@ -395,7 +417,7 @@ namespace RestaurantDesktopClient.Views.ManageReservation
             Messenger.Default.Send(message);
             ChangePropertyReservation();
             ReservationTables = new ObservableCollection<TablesDTO>(reservation.Tables);
-            RaisePropertyChanged(()=>ReservationTables);
+            RaisePropertyChanged(() => ReservationTables);
         }
         /// <summary>
         /// Create Reservation method without return type
@@ -410,10 +432,16 @@ namespace RestaurantDesktopClient.Views.ManageReservation
         /// <returns>return created reservation with Id if create success, if failed returning SelectedReservation</returns>
         public ReservationDTO CreateReservation()
         {
+            ReservationDTO res = null;
             SelectedReservation.Tables = ReservationTables.ToList();
-            var res = _reservationRepository.Create(SelectedReservation);
-            if (res == null) MessageBox.Show("Fejl ved oprettelse af reservation");
-            UpdateSelectedReservation(res);
+            if (Validation.ReservationValidForCreate(SelectedReservation))
+            {
+                res = _reservationRepository.Create(SelectedReservation);
+                if (res == null) MessageBox.Show("Fejl ved oprettelse af reservation");
+                UpdateSelectedReservation(res);
+                RaisePropertyChanged(() => ReservationSearchList);
+            }
+
             return res;
         }
         /// <summary>
