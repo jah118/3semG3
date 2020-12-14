@@ -60,10 +60,10 @@ namespace RestaurantDesktopClient.Views.ViewModels
                 SimpleIoc.Default.Register<IRepository<OrderDTO>>(() => new OrderRepository(constring, SimpleIoc.Default.GetInstance<IAuthRepository>()));
                 SimpleIoc.Default.Register<IRepository<CustomerDTO>>(() => new CustomerRepository(constring, SimpleIoc.Default.GetInstance<IAuthRepository>()));
                 SimpleIoc.Default.Register<IRepository<FoodDTO>>(() => new FoodRepository(constring, SimpleIoc.Default.GetInstance<IAuthRepository>()));
-                SimpleIoc.Default.Register<IRepository<TablesDTO>>(() => new TableRepository(constring, SimpleIoc.Default.GetInstance<IAuthRepository>()));
+                SimpleIoc.Default.Register<ITableRepository>(() => new TableRepository(constring, SimpleIoc.Default.GetInstance<IAuthRepository>()));
                 SimpleIoc.Default.Register<LoginViewModel>(true);
-                SimpleIoc.Default.Register<MainMenuViewModel>();
-                SimpleIoc.Default.Register<ManageReservationViewModel>();
+                SimpleIoc.Default.Register<MainMenuViewModel>(true);
+                SimpleIoc.Default.Register<ManageReservationViewModel>(true);
                 SimpleIoc.Default.Register<OrderFoodViewModel>(true);
                 
             }

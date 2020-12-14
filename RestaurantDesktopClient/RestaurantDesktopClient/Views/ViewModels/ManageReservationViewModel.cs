@@ -25,7 +25,7 @@ namespace RestaurantDesktopClient.Views.ManageReservation
         #region Fields
         private readonly IRepository<ReservationDTO> _reservationRepository;
         private readonly IRepository<OrderDTO> _orderRepository;
-        private ITableRepository<TablesDTO> _tableRepository;
+        private ITableRepository _tableRepository;
         private readonly IRepository<CustomerDTO> _customerRepository;
         private ObservableCollection<TablesDTO> _selectedReservationTables = new ObservableCollection<TablesDTO>();
         private List<ReservationDTO> _reservationSearchList;
@@ -243,7 +243,7 @@ namespace RestaurantDesktopClient.Views.ManageReservation
         /// Constructor for ManageReservationViewModel
         /// </summary>
         public ManageReservationViewModel(IRepository<ReservationDTO> reservationRepository, IRepository<CustomerDTO> customerRepository
-        , ITableRepository<TablesDTO> tableRepository)
+        , ITableRepository tableRepository)
         {
             _customerRepository = customerRepository;
             _tableRepository = tableRepository;

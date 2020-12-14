@@ -15,7 +15,7 @@ using RestaurantDesktopClient.DataTransferObject;
 
 namespace RestaurantDesktopClient.Services.Table_Service
 {
-    class TableRepository : ITableRepository<TablesDTO>
+    class TableRepository : ITableRepository
     {
         private readonly IAuthRepository _authRepository;
         private readonly string _constring;
