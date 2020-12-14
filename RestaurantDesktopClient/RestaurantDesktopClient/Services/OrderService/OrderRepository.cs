@@ -47,8 +47,11 @@ namespace RestaurantDesktopClient.Services.OrderService
             {
                 var client = new RestClient(_constring);
                 var request = new RestRequest("/order", Method.GET);
-                var response = client.Execute(request).Content;
-                res = JsonConvert.DeserializeObject<IEnumerable<OrderDTO>>(response);
+                if (_authRepository.AddTokenToRequest(request))
+                {
+                    var response = client.Execute(request).Content;
+                    res = JsonConvert.DeserializeObject<IEnumerable<OrderDTO>>(response);
+                }
             }
             catch
             {
@@ -64,8 +67,11 @@ namespace RestaurantDesktopClient.Services.OrderService
                 var client = new RestClient(_constring);
                 var request = new RestRequest("/order/{Id}", Method.GET);
                 request.AddUrlSegment("Id", id);
-                var response = client.Execute(request).Content;
-                res = JsonConvert.DeserializeObject<OrderDTO>(response);
+                if (_authRepository.AddTokenToRequest(request))
+                {
+                    var response = client.Execute(request).Content;
+                    res = JsonConvert.DeserializeObject<OrderDTO>(response);
+                }
             }
             catch
             {

@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -38,6 +39,7 @@ namespace RestaurantAPI.Controllers
         }
 
         // POST api/<FoodController>
+        [Authorize]
         [HttpPost]
         public IActionResult Post([FromBody] string value)
         {
@@ -45,6 +47,7 @@ namespace RestaurantAPI.Controllers
         }
 
         // PUT api/<FoodController>/5
+        [Authorize]
         [HttpPut("{id}")]
         public IActionResult Put(int id, [FromBody] string value)
         {
@@ -52,6 +55,7 @@ namespace RestaurantAPI.Controllers
         }
 
         // DELETE api/<FoodController>/5
+        [Authorize]
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {

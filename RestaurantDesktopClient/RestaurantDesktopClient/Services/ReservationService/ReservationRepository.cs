@@ -51,8 +51,11 @@ namespace RestaurantDesktopClient.Reservation
                 var client = new RestClient(_constring);
                 var request = new RestRequest("/reservation/{Id}", Method.GET);
                 request.AddUrlSegment("Id", id);
-                var response = client.Execute(request).Content;
-                res = JsonConvert.DeserializeObject<ReservationDTO>(response);
+                if (_authRepository.AddTokenToRequest(request))
+                {
+                    var response = client.Execute(request).Content;
+                    res = JsonConvert.DeserializeObject<ReservationDTO>(response);
+                }
             }
             catch
             {
@@ -69,8 +72,12 @@ namespace RestaurantDesktopClient.Reservation
                 var request = new RestRequest("/reservation/{id}", Method.PUT);
                 request.AddUrlSegment("Id", reservation.Id);
                 request.AddJsonBody(json);
-                var response = client.Execute(request).Content;
-                res = JsonConvert.DeserializeObject<ReservationDTO>(response);
+                if (_authRepository.AddTokenToRequest(request))
+                {
+
+                    var response = client.Execute(request).Content;
+                    res = JsonConvert.DeserializeObject<ReservationDTO>(response);
+                }
             }
             catch
             {
@@ -87,6 +94,7 @@ namespace RestaurantDesktopClient.Reservation
                 var request = new RestRequest("/reservation/{id}", Method.DELETE);
                 request.AddUrlSegment("Id", reservation.Id);
                 request.AddJsonBody(json);
+                _authRepository.AddTokenToRequest(request);
                 res = client.Execute(request).StatusCode;
             }
             catch
@@ -101,8 +109,11 @@ namespace RestaurantDesktopClient.Reservation
             {
                 var client = new RestClient(_constring);
                 var request = new RestRequest("/reservation", Method.GET);
-                var content = client.Execute(request).Content;
-                res = JsonConvert.DeserializeObject<List<ReservationDTO>>(content);
+                if (_authRepository.AddTokenToRequest(request))
+                {
+                    var content = client.Execute(request).Content;
+                    res = JsonConvert.DeserializeObject<List<ReservationDTO>>(content);
+                }
             }
             catch
             {

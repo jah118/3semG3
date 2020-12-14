@@ -39,6 +39,7 @@ namespace RestaurantDesktopClient.Services.CustomerService
 
             var request = new RestRequest("/customer/{Id}", Method.GET);
             request.AddUrlSegment("Id", customerId);
+            _authRepository.AddTokenToRequest(request);
             var response = client.Execute(request);
 
             CustomerDTO res = response.StatusCode == HttpStatusCode.OK ? JsonConvert.DeserializeObject<CustomerDTO>(response.Content) : null;

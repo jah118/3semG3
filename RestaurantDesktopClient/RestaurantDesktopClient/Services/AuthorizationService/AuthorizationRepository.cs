@@ -28,7 +28,8 @@ namespace RestaurantDesktopClient.Services.AuthorizationService
             request.AddJsonBody(new {Username = username, Password = password, Role = "Employee"});
             var response = client.Execute(request);
             if(response.IsSuccessful) {
-                _token = response.Content;
+                //Set token field, substring is because the returned json is in quotes, 
+                _token = response.Content.Substring(1, response.Content.Length-2);
                 return true;
             }
             return false;
