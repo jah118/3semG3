@@ -171,7 +171,7 @@ namespace DataAccess.Repositories
                 _context.OrderLine.RemoveRange
                     (_context.OrderLine.Where(r => r.OrderNumber == orderNo));
 
-                //hard code to  (Annulleret) this maybe need to change in the future
+                //TODO Hard code to  (Annulleret) this maybe need to change in the future
                 order.PaymentConditionId = 5;
 
                 _context.Update(order);
