@@ -54,7 +54,7 @@ namespace RestaurantAPI.Controllers
         }
 
         [Authorize]
-        [HttpDelete]
+        [HttpDelete("{id}"]
         public IActionResult Delete(int id)
         {
             var res = _reservationRepository.Delete(id);
