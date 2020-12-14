@@ -15,13 +15,20 @@ namespace RestaurantDesktopClient.Services.CustomerService
     class CustomerRepository : IRepository<CustomerDTO>
     {
         private readonly string _constring;
+        private readonly IAuthRepository _authRepository;
 
-        public CustomerRepository(string constring)
+        public CustomerRepository(string constring, IAuthRepository authRepository)
         {
             this._constring = constring;
+            _authRepository = authRepository;
         }
 
         public CustomerDTO Create(CustomerDTO t)
+        {
+            throw new NotImplementedException();
+        }
+
+        public HttpStatusCode Delete(CustomerDTO t)
         {
             throw new NotImplementedException();
         }
@@ -32,6 +39,7 @@ namespace RestaurantDesktopClient.Services.CustomerService
 
             var request = new RestRequest("/customer/{Id}", Method.GET);
             request.AddUrlSegment("Id", customerId);
+            _authRepository.AddTokenToRequest(request);
             var response = client.Execute(request);
 
             CustomerDTO res = response.StatusCode == HttpStatusCode.OK ? JsonConvert.DeserializeObject<CustomerDTO>(response.Content) : null;
@@ -40,6 +48,11 @@ namespace RestaurantDesktopClient.Services.CustomerService
         }
 
         public IEnumerable<CustomerDTO> GetAll()
+        {
+            throw new NotImplementedException();
+        }
+
+        public CustomerDTO Update(CustomerDTO t)
         {
             throw new NotImplementedException();
         }

@@ -20,6 +20,7 @@ using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Ioc;
 using RestaurantDesktopClient.Reservation;
 using RestaurantDesktopClient.Services;
+using RestaurantDesktopClient.Services.AuthorizationService;
 using RestaurantDesktopClient.Services.CustomerService;
 using RestaurantDesktopClient.Services.OrderService;
 using RestaurantDesktopClient.Services.Table_Service;
@@ -54,14 +55,17 @@ namespace RestaurantDesktopClient.Views.ViewModels
                 //}
                 string constring = ConfigurationManager.ConnectionStrings["ServiceConString"].ConnectionString;
 
-                SimpleIoc.Default.Register<IRepository<ReservationDTO>>(() => new ReservationRepository(constring));
-                SimpleIoc.Default.Register<IRepository<OrderDTO>>(() => new OrderRepository(constring));
-                SimpleIoc.Default.Register<IRepository<CustomerDTO>>(() => new CustomerRepository(constring));
-                SimpleIoc.Default.Register<IRepository<FoodDTO>>(() => new FoodRepository(constring));
-                SimpleIoc.Default.Register<IRepository<TablesDTO>>(() => new TableRepository(constring));
+                SimpleIoc.Default.Register<IAuthRepository>(() => new AuthorizationRepository(constring));
+                SimpleIoc.Default.Register<IRepository<ReservationDTO>>(() => new ReservationRepository(constring, SimpleIoc.Default.GetInstance<IAuthRepository>()));
+                SimpleIoc.Default.Register<IRepository<OrderDTO>>(() => new OrderRepository(constring, SimpleIoc.Default.GetInstance<IAuthRepository>()));
+                SimpleIoc.Default.Register<IRepository<CustomerDTO>>(() => new CustomerRepository(constring, SimpleIoc.Default.GetInstance<IAuthRepository>()));
+                SimpleIoc.Default.Register<IRepository<FoodDTO>>(() => new FoodRepository(constring, SimpleIoc.Default.GetInstance<IAuthRepository>()));
+                SimpleIoc.Default.Register<ITableRepository>(() => new TableRepository(constring, SimpleIoc.Default.GetInstance<IAuthRepository>()));
+                SimpleIoc.Default.Register<LoginViewModel>(true);
                 SimpleIoc.Default.Register<MainMenuViewModel>(true);
                 SimpleIoc.Default.Register<ManageReservationViewModel>(true);
                 SimpleIoc.Default.Register<OrderFoodViewModel>(true);
+                
             }
             catch (Exception e)
             {
@@ -75,9 +79,11 @@ namespace RestaurantDesktopClient.Views.ViewModels
 
         public OrderFoodViewModel OrderFood => ServiceLocator.Current.GetInstance<OrderFoodViewModel>();
 
+        public LoginViewModel Login => ServiceLocator.Current.GetInstance<LoginViewModel>();
+
         public static void Cleanup()
         {
-            // TODO Clear the ViewModels
+            
         }
     }
 }

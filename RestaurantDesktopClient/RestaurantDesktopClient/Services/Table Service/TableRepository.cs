@@ -15,12 +15,14 @@ using RestaurantDesktopClient.DataTransferObject;
 
 namespace RestaurantDesktopClient.Services.Table_Service
 {
-    class TableRepository : ITableRepository<TablesDTO>
+    class TableRepository : ITableRepository
     {
+        private readonly IAuthRepository _authRepository;
         private readonly string _constring;
 
-        public TableRepository(string constring)
+        public TableRepository(string constring, IAuthRepository authRepository)
         {
+            _authRepository = authRepository;
             this._constring = constring;
         }
 
@@ -105,6 +107,16 @@ namespace RestaurantDesktopClient.Services.Table_Service
             }
 
             return res;
+        }
+
+        public TablesDTO Update(TablesDTO t)
+        {
+            throw new NotImplementedException();
+        }
+
+        public HttpStatusCode Delete(TablesDTO t)
+        {
+            throw new NotImplementedException();
         }
     }
 }

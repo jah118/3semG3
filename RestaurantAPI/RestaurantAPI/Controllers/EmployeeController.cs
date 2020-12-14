@@ -1,5 +1,6 @@
 ﻿using DataAccess;
 using DataAccess.DataTransferObjects;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace RestaurantAPI.Controllers
@@ -16,12 +17,14 @@ namespace RestaurantAPI.Controllers
             _employeeRepository = employeeRepository;
         }
 
+        [Authorize]
         [HttpGet]
         public IActionResult Get()
         {
             return Ok(_employeeRepository.GetAll());
         }
 
+        [Authorize]
         [HttpGet("{id}")]
         public IActionResult Get(int id)
         {
@@ -33,18 +36,21 @@ namespace RestaurantAPI.Controllers
             return Ok(employee);
         }
 
+        [Authorize]
         [HttpPost]
         public IActionResult Post([FromBody] EmployeeDTO employee)
         {
             return Ok(_employeeRepository.Create(employee));
         }
 
+        [Authorize]
         [HttpPut]
         public IActionResult Put(int id, [FromBody] EmployeeDTO employee)
         {
             return Ok(_employeeRepository.Update(employee));
         }
 
+        [Authorize]
         [HttpDelete]
         public IActionResult Delete(int id)
         {

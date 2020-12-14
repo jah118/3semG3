@@ -1,5 +1,4 @@
-﻿using RestaurantDesktopClient.Views;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -14,23 +13,16 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace RestaurantDesktopClient
+namespace RestaurantDesktopClient.Views
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    /// Interaction logic for LoginView.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class LoginView : Page
     {
-        private static Frame mainFrame;
-        public MainWindow()
+        public LoginView()
         {
             InitializeComponent();
-            mainFrame = MainFrame;
-            ChangeFrame(new LoginView());
-        }
-        public static void ChangeFrame(Page page)
-        {
-            mainFrame.Navigate(page);
         }
     }
 }

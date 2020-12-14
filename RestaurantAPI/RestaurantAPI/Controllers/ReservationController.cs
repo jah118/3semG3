@@ -1,5 +1,6 @@
 ﻿using DataAccess.DataTransferObjects;
 using DataAccess.Repositories.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace RestaurantAPI.Controllers
@@ -16,6 +17,7 @@ namespace RestaurantAPI.Controllers
             _reservationRepository = reservationRepository;
         }
 
+        [Authorize(Roles = "Employee")]
         [HttpGet]
         public IActionResult Get()
         {
@@ -23,6 +25,7 @@ namespace RestaurantAPI.Controllers
             return res != null ? (IActionResult)Ok(res) : NotFound();
         }
 
+        [Authorize]
         [HttpGet("{id}")]
         public IActionResult Get(int id)
         {
@@ -37,6 +40,7 @@ namespace RestaurantAPI.Controllers
             return res != null ? (IActionResult)Ok(res) : Conflict(value);
         }
 
+        [Authorize]
         [HttpPut("{id}")]
         public IActionResult Put(int id, [FromBody] ReservationDTO value)
         {
@@ -49,7 +53,8 @@ namespace RestaurantAPI.Controllers
             return BadRequest(value);
         }
 
-        [HttpDelete]
+        [Authorize]
+        [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
             var res = _reservationRepository.Delete(id);

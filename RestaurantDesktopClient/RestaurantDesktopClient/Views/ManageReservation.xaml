@@ -40,12 +40,14 @@
 
         <controls:HeadLineControl x:Name="Headline" Grid.ColumnSpan="10" Grid.RowSpan="2">
         </controls:HeadLineControl>
-        <ListView x:Name="lvReservationSearch" ItemsSource="{Binding ReservationSearchList}" SelectedItem="{Binding SelectedReservation, Mode=TwoWay }"  Grid.Column="0" Grid.ColumnSpan="4" Grid.Row="2" Grid.RowSpan="6"  Margin="15,0,0,0">
+        <ListView x:Name="lvReservationSearch"  ItemsSource="{Binding ReservationSearchList}"
+                  SelectedItem="{Binding SelectedReservation, Mode=TwoWay }" 
+                  Grid.Column="0" Grid.ColumnSpan="4" Grid.Row="2" Grid.RowSpan="6"  Margin="15,0,0,0">
             <ListView.View>
-                <GridView>
-                    <GridViewColumn DisplayMemberBinding="{Binding Path=ReservationTime}" Header="Tidspunkt" Width="Auto"/>
+                <GridView >
+                    <GridViewColumn DisplayMemberBinding="{Binding Path=ReservationTime, StringFormat='HH:mm dd/MM/yy'}" Header="Tidspunkt" Width="Auto" />
                     <GridViewColumn DisplayMemberBinding="{Binding Path=Customer.FullName}" Header="Kunde" Width="Auto"/>
-                    <GridViewColumn DisplayMemberBinding="{Binding Path=ReservationDate}" Header="Bookings dato" Width="Auto"/>
+                    <GridViewColumn DisplayMemberBinding="{Binding Path=ReservationDate , StringFormat='dd/MM/yy'}" Header="Bookings dato" Width="Auto"/>
                     <GridViewColumn DisplayMemberBinding="{Binding Path=NoOfPeople}" Header="Antal personer" Width="90"/>
                 </GridView>
             </ListView.View>

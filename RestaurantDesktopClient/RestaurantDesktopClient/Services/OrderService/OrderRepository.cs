@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -14,15 +15,12 @@ namespace RestaurantDesktopClient.Services.OrderService
     class OrderRepository : IRepository<OrderDTO>
     {
         private readonly string _constring;
+        private readonly IAuthRepository _authRepository;
 
-        public OrderRepository()
-        {
-
-        }
-
-        public OrderRepository(string constring)
+        public OrderRepository(string constring, IAuthRepository authRepository)
         {
             this._constring = constring;
+            _authRepository = authRepository;
         }
 
         public OrderDTO Create(OrderDTO order)
@@ -49,8 +47,11 @@ namespace RestaurantDesktopClient.Services.OrderService
             {
                 var client = new RestClient(_constring);
                 var request = new RestRequest("/order", Method.GET);
-                var response = client.Execute(request).Content;
-                res = JsonConvert.DeserializeObject<IEnumerable<OrderDTO>>(response);
+                if (_authRepository.AddTokenToRequest(request))
+                {
+                    var response = client.Execute(request).Content;
+                    res = JsonConvert.DeserializeObject<IEnumerable<OrderDTO>>(response);
+                }
             }
             catch
             {
@@ -66,8 +67,11 @@ namespace RestaurantDesktopClient.Services.OrderService
                 var client = new RestClient(_constring);
                 var request = new RestRequest("/order/{Id}", Method.GET);
                 request.AddUrlSegment("Id", id);
-                var response = client.Execute(request).Content;
-                res = JsonConvert.DeserializeObject<OrderDTO>(response);
+                if (_authRepository.AddTokenToRequest(request))
+                {
+                    var response = client.Execute(request).Content;
+                    res = JsonConvert.DeserializeObject<OrderDTO>(response);
+                }
             }
             catch
             {
@@ -75,5 +79,14 @@ namespace RestaurantDesktopClient.Services.OrderService
             return res;
         }
 
+        public OrderDTO Update(OrderDTO t)
+        {
+            throw new NotImplementedException();
+        }
+
+        public HttpStatusCode Delete(OrderDTO t)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

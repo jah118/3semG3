@@ -1,6 +1,7 @@
 ﻿using System;
 using DataAccess;
 using DataAccess.DataTransferObjects;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace RestaurantAPI.Controllers
@@ -17,6 +18,7 @@ namespace RestaurantAPI.Controllers
             _orderRepository = orderOrderRepository;
         }
 
+        [Authorize]
         [HttpGet]
         public IActionResult Get()
         {
@@ -24,6 +26,7 @@ namespace RestaurantAPI.Controllers
             return res != null ? (IActionResult)Ok(res) : NotFound();
         }
 
+        [Authorize]
         [HttpGet("{id}")]
         public IActionResult Get(int id)
         {
@@ -31,6 +34,7 @@ namespace RestaurantAPI.Controllers
             return res != null ? (IActionResult)Ok(res) : NotFound(id);
         }
 
+        [Authorize]
         [HttpPut("{orderNo}")]
         public IActionResult Put(int orderNo, [FromBody] OrderDTO value)
         {
