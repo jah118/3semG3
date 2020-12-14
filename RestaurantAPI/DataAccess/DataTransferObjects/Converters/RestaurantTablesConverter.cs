@@ -10,6 +10,7 @@ namespace DataAccess.DataTransferObjects.Converters
         {
             return new RestaurantTables()
             {
+                Id = obj.Id, //TODO check if this breaks things
                 NoOfSeats = obj.NoOfSeats,
                 TableNumber = obj.TableNumber
             };
@@ -27,6 +28,16 @@ namespace DataAccess.DataTransferObjects.Converters
         public static IEnumerable<RestaurantTablesDTO> Convert(IEnumerable<RestaurantTables> obj)
         {
             var list = new List<RestaurantTablesDTO>();
+            foreach (var t in obj)
+            {
+                list.Add(Convert(t));
+            }
+            return list;
+        }
+
+        public static IEnumerable<RestaurantTables> Convert(IEnumerable<RestaurantTablesDTO> obj)
+        {
+            var list = new List<RestaurantTables>();
             foreach (var t in obj)
             {
                 list.Add(Convert(t));

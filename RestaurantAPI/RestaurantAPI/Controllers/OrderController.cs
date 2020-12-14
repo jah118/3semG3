@@ -1,42 +1,66 @@
-﻿using DataAccess;
-using DataAccess.Repositories;
+﻿using System;
+using DataAccess;
 using DataAccess.DataTransferObjects;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace RestaurantAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
     [ApiConventionType(typeof(DefaultApiConventions))]
-    public class OrderController : Controller
+    public class OrderController : ControllerBase
     {
-        private IRepository<OrderDTO> _repository;
-        public OrderController(IRepository<OrderDTO> repo)
+        private readonly IRepository<OrderDTO> _orderRepository;
+
+        public OrderController(IRepository<OrderDTO> orderOrderRepository)
         {
-            _repository = repo;
+            _orderRepository = orderOrderRepository;
         }
+
+        [Authorize]
         [HttpGet]
         public IActionResult Get()
         {
-            return Ok(_repository.GetAll());
+            var res = _orderRepository.GetAll();
+            return res != null ? (IActionResult)Ok(res) : NotFound();
         }
 
+        [Authorize]
         [HttpGet("{id}")]
         public IActionResult Get(int id)
         {
-            return Ok(_repository.GetById(id));
+            var res = _orderRepository.GetById(id);
+            return res != null ? (IActionResult)Ok(res) : NotFound(id);
+        }
+
+        [Authorize]
+        [HttpPut("{orderNo}")]
+        public IActionResult Put(int orderNo, [FromBody] OrderDTO value)
+        {
+            if (orderNo == value.OrderNo)
+            {
+                try
+                {
+                    var res = _orderRepository.Update(value);
+                    return res != null ? (IActionResult)Ok(res) : Conflict(value);
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e);
+                    return BadRequest(value); 
+                }
+                
+            }
+
+            return BadRequest(value);
         }
 
         [HttpPost]
         public IActionResult Post([FromBody] OrderDTO value)
         {
-            var res = _repository.Create(value);
-
-            return res != null ? Ok(res) : Conflict(value);
+            var res = _orderRepository.Create(value);
+            return res != null ? (IActionResult)Ok(res) : Conflict(value);
         }
     }
 }

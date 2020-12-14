@@ -1,0 +1,165 @@
+﻿@model RestaurantWebApp.DataTransferObject.UserDTO
+
+@{
+    ViewBag.Title = "Login";
+}
+
+@Styles.Render("~/Content/login")
+
+<div class="row justify-content-md-center">
+    <div class="col-md-8">
+        <section id="loginForm">
+            <div class="card">
+                <div class="card-header">
+                    Login
+                </div>
+                <div class="card-body">
+                    @using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+                    {
+                        @Html.AntiForgeryToken()
+                        <div class="form-group">
+                            <label class="col-md-2 control-label" for="uname"><b>Username</b></label>
+                            <div class="col-md-10">
+                                <input class="form-control" type="text" placeholder="Enter Username" name="uname" id="uname" required>
+                                @*@Html.LabelFor(m => m.Customer.Email)
+                            @Html.TextBoxFor(m => m.Customer.Email, "", new {@class = "form-control", @id = "Email", @placeholder = "Email"})*@
+                            </div>
+
+
+                            <label class="col-md-2 control-label" for="psw"><b>Password</b></label>
+                            <div class="col-md-10">
+                                <input class="form-control" type="password" placeholder="Enter Password" name="psw" id="psw" required>
+                                @*@Html.LabelFor(m => m.Password)
+                            @Html.PasswordFor(m => m.Password, new {@class = "form-control", @id = "Password", @placeholder = "Password"})*@
+                            </div>
+
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-offset-2 col-md-10">
+                                <input type="submit" value="Log in" class="btn btn-primary" />
+                            </div>
+                        </div>
+                        <p>
+                            @Html.ActionLink("Register som en ny bruger", "Register")
+                        </p>
+                        <div class="form-group">
+                            @* //TODO mangler bedre implemtions *@
+                            @*<a href="/Account/Register" class="btn btn-primary">Opret login</a>*@
+                            @*<input type="submit" name="submit" class="btn btn-primary" value="Login" />
+                            <button class="btn btn-primary" onclick="sendData();">fddfdsf</button>*@
+                            @* <input id="submit" type="submit" value="Login" class="btn btn-primary" onclick="sendData();" />*@
+                        </div>
+                    }
+                </div>
+            </div>
+        </section>
+    </div>
+</div>
+
+@* used for clientside validation through jquery validation and jquery validation unobtrusive libs  *@
+@section Scripts {
+
+    @Scripts.Render("~/bundles/jqueryval")
+
+
+    <script>
+        function sendData() {
+
+            var loginData = {
+                username: document.getElementById("uname").value,
+                password: document.getElementById("psw").value,
+                role: "Customer"
+            };
+
+            console.log(loginData);
+
+            var x = false;
+            //var lData = { "username": "string", "password": "string", "role": "Customer" };
+            //var obj = JSON.parse(lData);
+            //console.log(lData);
+
+            $.ajax({
+                type: "POST",
+                url: "https://localhost:44386/api/User/Authenticate",
+                contentType: 'application/json',
+                data: JSON.stringify(loginData),
+                success: function (data) {
+                    console.log('Submission was a suc.');
+                    console.log(data);
+                    // Cache the access token in session storage.
+                    sessionStorage.setItem("token", data);
+
+                    //console.log('has it been sat ');
+                    //var temp = sessionStorage.token;
+                    //console.log(temp);
+                    //console.log( sessionStorage.token);
+                },
+                error: function (data) {
+                    console.log('Submission was a fail.');
+                    console.log(data);
+                }
+
+            });
+
+            //var username = "user";
+            //var password = "pwd";
+
+            //var url = 'https://localhost:44386/api/User/Authenticate';
+            //$.ajax({
+            //    url: url,
+            //    success: function(json) {
+            //        alert("Success", json);
+            //    }​​,
+            //    error: function(XMLHttpRequest, textStatus, errorThrown) {
+            //        alert(textStatus, errorThrown);
+            //    }​​,
+
+            //    //headers: {​​'Authorization': 'Bearer bWFkaHNvbWUxMjM='}​​,
+            //    beforeSend: function (xhr) {
+            //        xhr.setRequestHeader("Authorization", "Bearer" + btoa(username + ":" + password));
+            //    }​​,
+            //    type: 'GET',
+            //    contentType: 'json',
+            //}​​);
+
+
+
+        }
+
+        @*if (sessionStorage.token.length > 0) {
+
+            var u = " "+  document.getElementById("uname").value;
+            var t = " " +sessionStorage.token;
+            @Model.Username = u;
+            @Model.Token = t;
+        }*@
+
+        //function AddToken(id) {
+        //    $.ajax({
+        //        url: 'urlToController',
+        //        data: { id: id }
+        //    }).done(function () {
+        //        alert('Added');
+        //    });
+        //}
+
+    </script>
+
+    @*<script>
+            var lData = { "username": "string", "password": "string", "role": "Customer" };
+            var postSubmit = $.ajax({
+                type: "POST",
+                headers: { "RequestVerificationToken": $('input[name="__RequestVerificationToken"]').val() },
+                url: "https://localhost:44386/api/User/Authenticate",
+                data: JSON.stringify(lData),
+                contentType: "application/json",
+                dataType: 'json'
+            }).done(function (response) {
+                //...
+                console.log(response);
+            });
+
+
+        </script>*@
+
+}

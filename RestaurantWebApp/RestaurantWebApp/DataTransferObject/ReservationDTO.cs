@@ -13,10 +13,16 @@ namespace RestaurantWebApp.DataTransferObject
             OrderingFood = false;
         }
 
-        //for testing
-        public ReservationDTO(CustomerDTO customer, DateTime reservationTime, int noOfPeople,
-            bool deposit, string note, IEnumerable<RestaurantTablesDTO> restaurantTables) :this()
+        public ReservationDTO(int id)
         {
+            Id = id;
+        }
+
+        //for testing
+        public ReservationDTO(int id, CustomerDTO customer, DateTime reservationTime, int noOfPeople,
+            bool deposit, string note, IEnumerable<RestaurantTablesDTO> restaurantTables) : this()
+        {
+            Id = id;
             Customer = customer;
             ReservationTime = reservationTime;
             NoOfPeople = noOfPeople;
@@ -25,15 +31,12 @@ namespace RestaurantWebApp.DataTransferObject
             Tables = restaurantTables;
         }
 
-        public int Id { get; }
-        public DateTime ReservationDate { get;}
+        public int Id { get; set; }
+        public DateTime ReservationDate { get; }
 
         [Required] public CustomerDTO Customer { get; set; }
 
-        [Required]
-        [Display(Name = "Reservationstidspunkt")]
-        [DisplayFormat(DataFormatString = "{dd-MM-yyyy HH:mm:ss}", ApplyFormatInEditMode = true)]
-        public DateTime? ReservationTime { get; set; }
+        public DateTime ReservationTime { get; set; }
 
         [Required]
         [Range(1, 25)]
@@ -42,11 +45,12 @@ namespace RestaurantWebApp.DataTransferObject
 
         public bool? Deposit { get; }
 
-        [Display(Name = "Evt Notat")] public string Note { get; set; }
+        [DataType(DataType.Text)]
+        [Display(Name = "Evt Notat")]
+        public string Note { get; set; }
 
         [Required] [Display(Name = "Borde ")] public IEnumerable<RestaurantTablesDTO> Tables { get; set; }
 
-        public IEnumerable<ReservationTimesDTO> TimeSlots { get; set; }
         public bool OrderingFood { get; set; }
     }
 }

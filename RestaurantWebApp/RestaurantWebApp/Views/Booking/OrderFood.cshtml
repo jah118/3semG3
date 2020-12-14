@@ -1,58 +1,118 @@
-﻿@model Tuple<RestaurantWebApp.DataTransferObject.OrderDTO, RestaurantWebApp.Model.FoodViewModel>
-@using (Html.BeginForm())
-{
-    ViewBag.Title = "Madbestilling";
+﻿
+@model RestaurantWebApp.Model.CustomViewModel
+
+
+@section Styles {
 }
 
-<h2>Madbestilling</h2>
+<div class="container">
+    <h2>Madbestilling</h2>
+    <hr />
+    @*@using (Html.BeginForm("OrderFood", "Booking", FormMethod.Post))*@
+    @using (Html.BeginForm())
 
-<div class="form-horizontal">
-    <div class="form-group">
+    {
+        <div class="row">
 
-        <div class="col-md-5 float-left">
-            <label>Retter</label>
-            @Html.ListBoxFor(model => model.Item2.Foods, new SelectList(Model.Item2.Foods, "Id", "Name"), new { Id="foodList", style = "width:100%" })
+            <input type="hidden" value="@Model.Reservation.Id" name="ReservationNumber" />
+            <div class="col">
+                <div class="form-group">
 
-            <button onclick="AddFoods()" > vælg mad</button>
-            @*<input type="button" onclick="addFoods()" value="Vælg ret/retter" />*@
+                    <label class="col-md-5">Retter</label>
+                    <div class="col-md-10">
+                        @Html.ListBoxFor(model => model.ListFood, new SelectList(Model.ListFood, "Id", "Name"), new { size = "20" })
+                        @*@Html.ListBoxFor(m => m.Slf,Model.Slf, new { size = "20" })*@
+                        <input id="AddFoodsBtn" type="button" value="Vælg Madvarer" />
+                    </div>
+                </div>
+            </div>
+
+            <div class="col">
+                <div class="form-group">
+                    <label class="col-md-5"> Drikkevarer</label>
+                    <div class="col-md-10">
+                        @Html.ListBoxFor(model => model.ListDrink, new SelectList(Model.ListDrink, "Id", "Name"), new { size = "20" })
+                        <input id="AddDrinksBtn" type="button" value="Vælg drikkevarer" />
+                    </div>
+                </div>
+            </div>
+
+
+
         </div>
-        <div class="col-md-5 float-right">
-            <label> Drikkevarer</label>
-            @Html.ListBoxFor(model => model.Item2.Drinks, new SelectList(Model.Item2.Drinks, "Id", "Name"),new { @class = "control - label" })
-            <input type="button" value="Vælg drikkevarer" />
+
+        <div class="row">
+            <hr />
+            <div class="form-group">
+                <label class="col-md-5"> Valgt mad</label>
+                <div class="col-md-10">
+                    @Html.ListBoxFor(model => model.OrderSummary, new SelectList(Model.OrderSummary, "Id", "Name"), new { size = "20", style = "width:100%" })
+                    <input id="RemoveFromSummaryList" type="button" value="Fjern ret/retter" />
+                </div>
+            </div>
         </div>
-        <div id="summaryDiv" class="col-md-12 float-left">
-            @Html.ListBoxFor(model => model.Item1.Foods, new SelectList(Model.Item1.Foods, "Id", "Name"), new { Id="summaryList", style = "width:100%"})
-            <input id="RemoveFromSummaryList" type="button" accept="removeFoods" value="Fjern ret/retter" />
+
+        <div>
+            <input type="submit" value="Gem mad og drikke" onclick="selectAllList();" class="btn btn-primary" />
         </div>
-    </div>
-</div>
 
-
-<div>
-    <input type="submit" value="Gem mad og drikke " class="btn btn-primary" />
-</div>
-
-
-<script>
-    var foodList = document.getElementById("foodList");
-    function AddFoods() {
-        var x = foodList.selectedItem();
-    var foods = @Model.Item2;
-    var summaryList = @Model.Item1.Foods;
-    var selected = foodList.selectedItem;
-    summaryList.Add(selected);
-        var r = 1 + 1;
+        <div>
+            @Html.ValidationSummary()
+        </div>
 
     }
+</div>
+<div>
+    @Html.ActionLink("Gå til forside", "Index")
+</div>
 
 
-    function removeFoods() {
-        var foods = @Model.Item2;
-        var summaryList = @Model.Item1.Foods;
-        var selected = summaryList.selectedItem;
-        summaryList.Remove(selected);
 
-     }
-</script>
+@section Scripts {
+    <script>
 
+
+        function selectAllList() {
+            selectAll('OrderSummary');
+            selectAll('ListDrink');
+            selectAll('ListFood');
+        }
+
+        function selectAll(listName) {
+            var selectBox = document.getElementById(listName);
+
+            for (var i = 0; i < selectBox.options.length; i++) {
+                selectBox.options[i].selected = true;
+            }
+        }
+
+        $(document).ready(function () {
+            $('#AddDrinksBtn').click(function () {
+                var txt = $("#ListDrink option:selected").text();
+                var vale = $("#ListDrink").val();
+                $.each(vale,
+                    function (key, val) {
+                        $('#OrderSummary').append($("<option></option>").attr("value", val).text(txt));
+                    });
+            });
+        });
+
+        $(document).ready(function () {
+            $('#AddFoodsBtn').click(function () {
+                var txt = $("#ListFood option:selected").text();
+                var vale = $("#ListFood").val();
+                $.each(vale,
+                    function (key, val) {
+                        $('#OrderSummary').append($("<option></option>").attr("value", val).text(txt));
+                    });
+            });
+        });
+
+        $(document).ready(function () {
+            $('#RemoveFromSummaryList').click(function () {
+                $('#OrderSummary option:selected').remove();
+            });
+        });
+    </script>
+    
+}

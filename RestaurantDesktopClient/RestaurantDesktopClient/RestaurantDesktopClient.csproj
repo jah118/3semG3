@@ -59,6 +59,15 @@
     <Reference Include="Microsoft.Extensions.DependencyInjection.Abstractions, Version=5.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Extensions.DependencyInjection.Abstractions.5.0.0\lib\net461\Microsoft.Extensions.DependencyInjection.Abstractions.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.IdentityModel.JsonWebTokens, Version=6.8.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.IdentityModel.JsonWebTokens.6.8.0\lib\net461\Microsoft.IdentityModel.JsonWebTokens.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.IdentityModel.Logging, Version=6.8.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.IdentityModel.Logging.6.8.0\lib\net461\Microsoft.IdentityModel.Logging.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.IdentityModel.Tokens, Version=6.8.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.IdentityModel.Tokens.6.8.0\lib\net461\Microsoft.IdentityModel.Tokens.dll</HintPath>
+    </Reference>
     <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.12.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
@@ -73,6 +82,9 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Diagnostics.DiagnosticSource, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Diagnostics.DiagnosticSource.5.0.0\lib\net46\System.Diagnostics.DiagnosticSource.dll</HintPath>
+    </Reference>
+    <Reference Include="System.IdentityModel.Tokens.Jwt, Version=6.8.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.IdentityModel.Tokens.Jwt.6.8.0\lib\net461\System.IdentityModel.Tokens.Jwt.dll</HintPath>
     </Reference>
     <Reference Include="System.Memory, Version=4.0.1.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Memory.4.5.4\lib\net461\System.Memory.dll</HintPath>
@@ -109,22 +121,33 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="DataTransferObject\AvailableTimesDTO.cs" />
     <Compile Include="DataTransferObject\CustomerDTO.cs" />
     <Compile Include="DataTransferObject\EmployeeDTO.cs" />
     <Compile Include="DataTransferObject\FoodCategoryDTO.cs" />
     <Compile Include="DataTransferObject\FoodDTO.cs" />
     <Compile Include="DataTransferObject\OrderDTO.cs" />
+    <Compile Include="DataTransferObject\OrderLineDTO.cs" />
     <Compile Include="DataTransferObject\PaymentConditionDTO.cs" />
     <Compile Include="DataTransferObject\PriceDTO.cs" />
     <Compile Include="DataTransferObject\ReservationDTO.cs" />
     <Compile Include="DataTransferObject\RestaurantOrderDTO.cs" />
     <Compile Include="DataTransferObject\TablesDTO.cs" />
-    <Compile Include="RelayCommand.cs" />
+    <Compile Include="DataTransferObject\UserDTO.cs" />
+    <Compile Include="Messages\ReservationSelection.cs" />
+    <Compile Include="Services\AuthorizationService\AuthorizationRepository.cs" />
     <Compile Include="Services\CustomerService\CustomerRepository.cs" />
+    <Compile Include="Services\IAuthRepository.cs" />
     <Compile Include="Services\OrderService\OrderRepository.cs" />
     <Compile Include="Services\ReservationService\ReservationRepository.cs" />
+    <Compile Include="Services\Table Service\ITableRepository.cs" />
     <Compile Include="Services\Table Service\TableRepository.cs" />
-    <Compile Include="Views\ViewModels\MainViewModel.cs" />
+    <Compile Include="Views\LoginView.xaml.cs">
+      <DependentUpon>LoginView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ViewModels\LoginViewModel.cs" />
+    <Compile Include="Helpers\Validation.cs" />
+    <Compile Include="Views\ViewModels\MainMenuViewModel.cs" />
     <Compile Include="Views\ViewModels\ViewModelLocator.cs" />
     <Compile Include="Views\Controls\BackControl.xaml.cs">
       <DependentUpon>BackControl.xaml</DependentUpon>
@@ -140,9 +163,6 @@
     </Compile>
     <Compile Include="Views\Controls\HeadLineControl.xaml.cs">
       <DependentUpon>HeadLineControl.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\Controls\ListPageControl.xaml.cs">
-      <DependentUpon>ListPageControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Controls\ReservationViewControl.xaml.cs">
       <DependentUpon>ReservationViewControl.xaml</DependentUpon>
@@ -171,7 +191,7 @@
     <Compile Include="Services\FoodsService\FoodRepository.cs" />
     <Compile Include="Services\IRepository.cs" />
     <Compile Include="Views\ViewModels\ManageReservationViewModel.cs" />
-    <Compile Include="Views\ViewModels\OrderFoodModelView.cs" />
+    <Compile Include="Views\ViewModels\OrderFoodViewModel.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -204,15 +224,15 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\Controls\ListPageControl.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Views\Controls\ReservationViewControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Controls\TableViewControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\LoginView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -2,11 +2,38 @@
 {
     public class FoodDTO
     {
+        public FoodDTO()
+        {
+        }
+
+        public FoodDTO(int id)
+        {
+            Id = id;
+        }
+
         public int Id { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
         public string FoodCategoryName { get; set; }
         public double Price { get; set; }
-        public int Quantity { get; set; }
+
+        public bool Equals(FoodDTO other)
+        {
+            if (other == null) return false;
+            return Id.Equals(other.Id);
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (obj == null) return false;
+            var objAsFoodDTO = obj as FoodDTO;
+            if (objAsFoodDTO == null) return false;
+            return Equals(objAsFoodDTO);
+        }
+
+        public override int GetHashCode()
+        {
+            return Id;
+        }
     }
 }

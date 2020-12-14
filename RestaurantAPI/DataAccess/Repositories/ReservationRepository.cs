@@ -1,16 +1,16 @@
 ﻿using DataAccess.DataTransferObjects;
 using DataAccess.DataTransferObjects.Converters;
 using DataAccess.Models;
+using DataAccess.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
-using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace DataAccess.Repositories
 {
-    public class ReservationRepository : IRepository<ReservationDTO>
+    public class ReservationRepository : IReservationRepository
     {
         private readonly RestaurantContext _context;
 
@@ -21,67 +21,132 @@ namespace DataAccess.Repositories
 
         public ReservationDTO Create(ReservationDTO obj, bool transactionEndpoint = true)
         {
-            //Sanity check here, ensure unique tables etc.
-            if (transactionEndpoint) _context.Database.BeginTransaction(IsolationLevel.Serializable);
-            try
+            if (Reservation.Validate(obj))
             {
-                var compareCount = _context.Reservation
-                    .Include(r => r.ReservationsTables)
+                //Sanity check here, ensure unique tables etc.
+                if (transactionEndpoint) _context.Database.BeginTransaction(IsolationLevel.Serializable);
+                try
+                {
+                    var compareCount = _context.Reservation
+                        .Include(r => r.ReservationsTables)
                         .ThenInclude(r => r.RestaurantTables)
-                    .Where(r =>
-                        r.ReservationTime <= obj.ReservationTime.AddMinutes(90) &&
-                        r.ReservationTime.AddMinutes(90) >= obj.ReservationTime)
-                    .Select(r => r.ReservationsTables.Where(t => t.RestaurantTablesId.Equals(obj.Tables.Select(table => table.Id).Any()))).Count();
+                        .Where(r =>
+                            r.ReservationTime <= obj.ReservationTime.AddMinutes(90) &&
+                            r.ReservationTime.AddMinutes(90) >= obj.ReservationTime)
+                        .Select(r => r.ReservationsTables
+                            .Where(t => t.RestaurantTablesId
+                                .Equals(obj.Tables.Select(table => table.Id).Any()))).Count();
 
-                if (compareCount == 0)
-                {
-
-                    var toAdd = Converter.Convert(obj);
-                    if (obj.Customer.Id == 0)
+                    if (compareCount == 0)
                     {
-                        var customerToAdd = new CustomerRepository(_context).CreateCustomer(obj.Customer);
-                        toAdd.Customer = customerToAdd.Entity;
-                    }
-
-                    _context.Reservation.Add(toAdd);
-                    foreach (RestaurantTablesDTO rt in obj.Tables)
-                    {
-                        _context.Add<ReservationsTables>(new ReservationsTables
+                        var reservation = Converter.Convert(obj);
+                        reservation.ReservationDate = DateTime.Now;
+                        if (obj.Customer.Id == 0)
                         {
-                            Reservation = toAdd,
-                            RestaurantTablesId = rt.Id
-                        });
+                            var isCustomer = _context.Customer.Include(c => c.Person)
+                                .ThenInclude(c => c.Location)
+                                .ThenInclude(c => c.ZipCodeNavigation)
+                                .Where(c => c.Person.Phone
+                                    .Equals(obj.Customer.Phone))
+                                .FirstOrDefault();
+
+                            if (isCustomer == null)
+                            {
+                                var customerToAdd = new CustomerRepository(_context).CreateCustomer(obj.Customer);
+                                reservation.Customer = customerToAdd.Entity;
+                            }
+                            else
+                            {
+                                reservation.Customer = isCustomer;
+                            }
+                        }
+
+                        _context.Reservation.Add(reservation);
+                        foreach (var rt in obj.Tables)
+                            _context.Add(new ReservationsTables
+                            {
+                                Reservation = reservation,
+                                RestaurantTablesId = rt.Id
+                            });
+
+                        _context.SaveChanges();
+                        if (transactionEndpoint) _context.Database.CommitTransaction();
+                        _context.Entry(reservation).GetDatabaseValues();
+                        return GetById(reservation.Id);
                     }
-                    _context.SaveChanges();
-                    if (transactionEndpoint)_context.Database.CommitTransaction();
-                    _context.Entry(toAdd).GetDatabaseValues();
-                    return GetById(toAdd.Id);
-                }
-                else
-                {
+
                     if (transactionEndpoint) _context.Database.RollbackTransaction();
                 }
+                catch (Exception)
+                {
+                    _context.Database.RollbackTransaction();
+                    throw;
+                }
             }
-            catch (Exception)
-            {
-                _context.Database.RollbackTransaction();
-                throw;
-            }
+
             return null;
         }
 
-        internal EntityEntry<Reservation> CreateReservation(ReservationDTO obj)
+        public bool Delete(int id, bool transactionEndpoint = true)
         {
-            throw new NotImplementedException(); //Move logic from Create method to here and return method from the other
-        }
+            if (transactionEndpoint) _context.Database.BeginTransaction(IsolationLevel.RepeatableRead);
+            {
+                var reservation = _context.Reservation
+                    .Where(r => r.Id == id)
+                    .Include(c => c.Customer)
+                    .ThenInclude(c => c.Person)
+                    .ThenInclude(c => c.Location)
+                    .ThenInclude(c => c.ZipCodeNavigation)
+                    .Include(rt => rt.ReservationsTables)
+                    .ThenInclude(t => t.RestaurantTables)
+                    .AsNoTracking()
+                    .FirstOrDefault();
 
-        public bool Delete(ReservationDTO obj, bool transactionEndpoint = true)
-        {
-            if (transactionEndpoint) _context.Database.BeginTransaction(IsolationLevel.Serializable);
-            //insert logic here
-            if (transactionEndpoint) _context.SaveChanges();
-            if (transactionEndpoint)_context.Database.CommitTransaction();
-            throw new NotImplementedException();
+                if (reservation != null)
+                {
+                    _context.Entry(reservation).State = EntityState.Modified;
+                    var order = _context.RestaurantOrder.FirstOrDefault(o => o.ReservationId == id);
+                    try
+                    {
+                        //update order to cancel and remove tables
+                        if (order != null)
+                        {
+                            var or = new OrderRepository(_context); //TODO er det dumt er der en bedre måde ?
+                            if (or.cancelOrder(order.OrderNo))
+                            {
+                                // remove tables
+                                _context.ReservationsTables.RemoveRange
+                                    (_context.ReservationsTables.Where(r => r.ReservationId == reservation.Id));
+                                if (transactionEndpoint)
+                                {
+                                    _context.SaveChanges();
+                                    _context.Database.CommitTransaction();
+                                    return true;
+                                }
+                            }
+                            return false;
+                        }
+
+                        _context.Remove(reservation);
+
+                        if (transactionEndpoint)
+                        {
+                            _context.SaveChanges();
+                            _context.Database.CommitTransaction();
+                        }
+
+                        return true;
+
+                    }
+                    catch (Exception)
+                    {
+                        _context.Database.RollbackTransaction();
+                        throw;
+                    }
+                }
+            }
+
+            return false;
         }
 
         public IEnumerable<ReservationDTO> GetAll()
@@ -89,17 +154,14 @@ namespace DataAccess.Repositories
             IEnumerable<ReservationDTO> res = null;
 
             var reservations = _context.Reservation
-                            .Include(c => c.Customer)
-                                .ThenInclude(c => c.Person)
-                                    .ThenInclude(c => c.Location)
-                                        .ThenInclude(c => c.ZipCodeNavigation)
-                            .Include(rt => rt.ReservationsTables)
-                                .ThenInclude(t => t.RestaurantTables).AsNoTracking().ToList();
+                .Include(c => c.Customer)
+                .ThenInclude(c => c.Person)
+                .ThenInclude(c => c.Location)
+                .ThenInclude(c => c.ZipCodeNavigation)
+                .Include(rt => rt.ReservationsTables)
+                .ThenInclude(t => t.RestaurantTables).AsNoTracking().ToList();
 
-            if (reservations != null)
-            {
-                res = Converter.Convert(reservations);
-            }
+            if (reservations != null) res = Converter.Convert(reservations);
 
             return res;
         }
@@ -108,19 +170,16 @@ namespace DataAccess.Repositories
         {
             ReservationDTO res = null;
             var reservation = _context.Reservation
-                            .Where(r => r.Id == id)
-                            .Include(c => c.Customer)
-                                .ThenInclude(c => c.Person)
-                                    .ThenInclude(c => c.Location)
-                                        .ThenInclude(c => c.ZipCodeNavigation)
-                            .Include(rt => rt.ReservationsTables)
-                                .ThenInclude(t => t.RestaurantTables)
-                            .AsNoTracking()
-                            .FirstOrDefault();
-            if (reservation != null)
-            {
-                res = Converter.Convert(reservation);
-            }
+                .Where(r => r.Id == id)
+                .Include(c => c.Customer)
+                .ThenInclude(c => c.Person)
+                .ThenInclude(c => c.Location)
+                .ThenInclude(c => c.ZipCodeNavigation)
+                .Include(rt => rt.ReservationsTables)
+                .ThenInclude(t => t.RestaurantTables)
+                .AsNoTracking()
+                .FirstOrDefault();
+            if (reservation != null) res = Converter.Convert(reservation);
             return res;
         }
 
@@ -131,10 +190,107 @@ namespace DataAccess.Repositories
 
         public ReservationDTO Update(ReservationDTO obj, bool transactionEndpoint = true)
         {
-            if (transactionEndpoint) _context.Database.BeginTransaction(IsolationLevel.Serializable);
-            //insert logic here
-            if (transactionEndpoint) _context.SaveChanges();
-            throw new NotImplementedException();
+            if (Reservation.Validate(obj))
+            {
+                if (transactionEndpoint) _context.Database.BeginTransaction(IsolationLevel.Serializable);
+                try
+                {
+                    var refReservation = _context.ReservationsTables.Where(i => i.ReservationId == obj.Id).ToList();
+
+                    //Dette tjekker båder efter om tid og bordet er ændre til et sted/tid der skaber conflict
+                    var compareCount = _context.Reservation
+                        .Include(r => r.ReservationsTables)
+                        .ThenInclude(r => r.RestaurantTables)
+                        .Where(r =>
+                            r.ReservationTime <= obj.ReservationTime.AddMinutes(90) &&
+                            r.ReservationTime.AddMinutes(90) >= obj.ReservationTime
+                            && r.Id != obj.Id)
+                        .Select(r => r.ReservationsTables
+                            .Where(t => t.RestaurantTablesId
+                                .Equals(obj.Tables.Select(table => table.Id).Any()))).Count();
+
+                    if (compareCount == 0)
+                    {
+                        var reservation = Converter.Convert(obj);
+                        var tablesToAdd = obj.Tables
+                            .Where(
+                                t => refReservation.All(rt => rt.RestaurantTablesId != t.Id)).ToList();
+                        var tablesToDelete =
+                            refReservation.Where(
+                                t => obj.Tables.All(td => t.RestaurantTablesId != td.Id)).ToList();
+                        foreach (var rt in tablesToDelete) _context.ReservationsTables.Remove(rt);
+
+                        foreach (var rt in tablesToAdd)
+                            _context.Add(new ReservationsTables
+                            {
+                                Reservation = reservation,
+                                RestaurantTablesId = rt.Id
+                            });
+
+                        reservation.Id = obj.Id;
+                        _context.Entry(reservation).State = EntityState.Modified;
+
+                        if (transactionEndpoint)
+                        {
+                            _context.SaveChanges();
+                            _context.Entry(reservation).State = EntityState.Detached;
+                            _context.Database.CommitTransaction();
+                        }
+
+                        return GetById(obj.Id);
+                    }
+                }
+                catch (Exception)
+                {
+                    _context.Database.RollbackTransaction();
+                    throw;
+                }
+            }
+
+            return null;
+        }
+
+        public AvailableTimesDTO GetReservationTimeByDateAndTime(DateTime dateTime)
+        {
+            var timeSlots = new AvailableTimesDTO
+            { AvailabilityDate = dateTime.Date, TableOpenings = new List<AvailableTimesDTO.TableTimes>() };
+            var startTime = new TimeSpan(12, 00, 00);
+            var endTime = new TimeSpan(22, 00, 00);
+
+            var startDateTime = dateTime.Date + startTime;
+            var endDateTime = dateTime.Date + endTime;
+
+            var all = _context.Reservation
+                .Include(r => r.ReservationsTables)
+                .ThenInclude(r => r.RestaurantTables)
+                .Where(r =>
+                    r.ReservationTime <= endDateTime &&
+                    r.ReservationTime >= startDateTime).AsNoTracking();
+            var tables = new TableRepository(_context).GetAll();
+            var availabilityList = new List<AvailableTimesDTO.TableTimes>();
+            foreach (var table in tables)
+            {
+                var tableTime = new AvailableTimesDTO.TableTimes { Table = table };
+                var timesAvailable = new List<AvailableTimesDTO.TableTimes.TimePair>();
+                var times = all.Where(r => r.ReservationsTables.Any(t => t.RestaurantTablesId == table.Id))
+                    .Select(r => r.ReservationTime).OrderBy(t => t.TimeOfDay);
+                var lastTime = startDateTime;
+                foreach (var time in times)
+                {
+                    timesAvailable.Add(new AvailableTimesDTO.TableTimes.TimePair { Start = lastTime, End = time });
+                    lastTime = time.AddMinutes(90);
+                }
+
+                if (lastTime.AddMinutes(90) <= endDateTime)
+                    timesAvailable.Add(
+                        new AvailableTimesDTO.TableTimes.TimePair { Start = lastTime, End = endDateTime });
+                tableTime.Openings = timesAvailable;
+                availabilityList.Add(tableTime);
+            }
+
+            timeSlots.TableOpenings = availabilityList;
+
+            return timeSlots;
         }
     }
 }

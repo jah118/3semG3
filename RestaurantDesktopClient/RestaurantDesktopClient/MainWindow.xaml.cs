@@ -26,7 +26,7 @@ namespace RestaurantDesktopClient
         {
             InitializeComponent();
             mainFrame = MainFrame;
-            ChangeFrame(new MainMenu());
+            ChangeFrame(new LoginView());
         }
         public static void ChangeFrame(Page page)
         {

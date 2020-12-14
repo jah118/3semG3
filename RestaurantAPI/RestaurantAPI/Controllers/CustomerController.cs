@@ -1,5 +1,6 @@
 ﻿using DataAccess;
 using DataAccess.DataTransferObjects;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace RestaurantAPI.Controllers
@@ -18,12 +19,14 @@ namespace RestaurantAPI.Controllers
 
         // GET: api/Customer
         [HttpGet]
+        [Authorize]
         public IActionResult Get()
         {
             return Ok(_customerRepository.GetAll());
         }
 
         // GET: api/Customer/5
+        [Authorize]
         [HttpGet("{id}")]
         public IActionResult Get(int id)   //Customer --> Get
         {
@@ -43,6 +46,7 @@ namespace RestaurantAPI.Controllers
         }
 
         // PUT: api/Customer/5
+        [Authorize]
         [HttpPut]
         public IActionResult Put(int id, [FromBody] CustomerDTO customer)
         {
@@ -50,6 +54,7 @@ namespace RestaurantAPI.Controllers
         }
 
         // DELETE: api/Customer/5
+        [Authorize]
         [HttpDelete]
         public IActionResult Delete(int id)
         {

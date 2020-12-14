@@ -7,7 +7,9 @@
       xmlns:local="clr-namespace:RestaurantDesktopClient.Views.ManageReservation"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
-      Title="ManageReservation">
+      Title="ManageReservation"
+      DataContext="{Binding ManageReservation, Source={StaticResource Locator}}">
+    
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="10*" />
@@ -37,16 +39,19 @@
         </Grid.RowDefinitions>
 
         <controls:HeadLineControl x:Name="Headline" Grid.ColumnSpan="10" Grid.RowSpan="2">
-            <UserControl.DataContext>
-                <local:ManageReservationViewModel/>
-            </UserControl.DataContext>
         </controls:HeadLineControl>
-        <controls:ListPageControl x:Name="ListPageControl" Grid.Column="0" Grid.ColumnSpan="4" Grid.Row="2" Grid.RowSpan="6"  Margin="15,0,0,0">
-        </controls:ListPageControl>
-        <controls:ReservationViewControl x:Name="ReservationViewControl" Grid.Column="5" Grid.ColumnSpan="4" Grid.Row="3" Grid.RowSpan="6">
-        </controls:ReservationViewControl>
-        
-        <controls:BackControl Grid.Column="7" Grid.Row="9" Grid.ColumnSpan="2" VerticalAlignment="Top"/>
-
+        <ListView x:Name="lvReservationSearch"  ItemsSource="{Binding ReservationSearchList}"
+                  SelectedItem="{Binding SelectedReservation, Mode=TwoWay }" 
+                  Grid.Column="0" Grid.ColumnSpan="4" Grid.Row="2" Grid.RowSpan="6"  Margin="15,0,0,0">
+            <ListView.View>
+                <GridView >
+                    <GridViewColumn DisplayMemberBinding="{Binding Path=ReservationTime, StringFormat='HH:mm dd/MM/yy'}" Header="Tidspunkt" Width="Auto" />
+                    <GridViewColumn DisplayMemberBinding="{Binding Path=Customer.FullName}" Header="Kunde" Width="Auto"/>
+                    <GridViewColumn DisplayMemberBinding="{Binding Path=ReservationDate , StringFormat='dd/MM/yy'}" Header="Bookings dato" Width="Auto"/>
+                    <GridViewColumn DisplayMemberBinding="{Binding Path=NoOfPeople}" Header="Antal personer" Width="90"/>
+                </GridView>
+            </ListView.View>
+        </ListView>
+        <controls:ReservationViewControl x:Name="ReservationViewControl" Grid.Column="5" Grid.ColumnSpan="4" Grid.Row="3" Grid.RowSpan="6"/>
     </Grid>
 </Page>

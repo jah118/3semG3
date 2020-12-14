@@ -4,16 +4,20 @@ using RestaurantWebApp.Service.Interfaces;
 using RestSharp;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Net;
 using System.Threading.Tasks;
-using System.Web;
 
 namespace RestaurantWebApp.Service
 {
     public class OrderService : IOrderService
     {
         private string _conString;
+
+       
+
+        public OrderService(IOrderService configString)
+        {
+            
+        }
 
         public OrderService(string configString)
         {
@@ -37,13 +41,16 @@ namespace RestaurantWebApp.Service
                 res = null;
             }
 
-
             return res;
         }
 
-        public Task<IRestResponse> CreateAsync(OrderDTO obj)
+        public async Task<IRestResponse> CreateAsync(OrderDTO obj)
         {
-            throw new NotImplementedException();
+            var client = new RestClient(_conString);
+            var request = new RestRequest("/Order", Method.POST);
+            request.AddJsonBody(obj);
+            var response = (await client.ExecuteAsync(request));
+            return response;
         }
 
         public bool Delete(OrderDTO obj)
