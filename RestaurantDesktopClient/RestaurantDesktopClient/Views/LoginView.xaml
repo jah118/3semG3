@@ -8,32 +8,33 @@
       d:DesignHeight="450" d:DesignWidth="800"
       Title="LoginView"
       DataContext="{Binding Login, Source={StaticResource Locator}}">
+    <Viewbox Stretch="Uniform">
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="6*"/>
+                <ColumnDefinition Width="6*" />
+                <ColumnDefinition Width="6*"/>
+                <ColumnDefinition Width="6*" />
+                <ColumnDefinition Width="6*"/>
+                <ColumnDefinition Width="6*" />
 
-    <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="6*"/>
-            <ColumnDefinition Width="6*" />
-            <ColumnDefinition Width="6*"/>
-            <ColumnDefinition Width="6*" />
-            <ColumnDefinition Width="6*"/>
-            <ColumnDefinition Width="6*" />
 
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="6*" />
+                <RowDefinition Height="6*" />
+                <RowDefinition Height="6*" />
+                <RowDefinition Height="6*" />
+                <RowDefinition Height="6*" />
+                <RowDefinition Height="6*" /> 
+            </Grid.RowDefinitions>
 
-        </Grid.ColumnDefinitions>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="6*" />
-            <RowDefinition Height="6*" />
-            <RowDefinition Height="6*" />
-            <RowDefinition Height="6*" />
-            <RowDefinition Height="6*" />
-            <RowDefinition Height="6*" /> 
-        </Grid.RowDefinitions>
+            <Label Name ="LblUsername"  Content="Username:" Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="1" FontSize="20" Margin="0,2,0,2" VerticalContentAlignment="Center"/>
+            <Label Name ="LblPassword"  Content="Password:" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="1" FontSize="20" Margin="0,2,0,2" VerticalContentAlignment="Center"/>
 
-        <Label Name ="LblUsername"  Content="Username:" Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="1" FontSize="20" Margin="0,2,0,2"/>
-        <Label Name ="LblPassword"  Content="Password:" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="1" FontSize="20" Margin="0,2,0,2"/>
-
-        <TextBox Name="BoxUser" Grid.Row="0" Grid.Column="2" Grid.ColumnSpan="3" Text="{Binding Username, Mode=TwoWay}" Margin="0,2,0,2"/>
-        <PasswordBox Name="BoxPass" Grid.Row="1" Grid.Column="2" Grid.ColumnSpan="3"/>
-        <Button Name="BtnLogin" Content="Login" Grid.Row="2" Grid.Column="2" Grid.ColumnSpan="2" Command="{Binding LoginCommand}" CommandParameter="{Binding ElementName=BoxPass}" Margin="0,2,0,2"/>
-    </Grid>
+            <TextBox Name="BoxUser" Grid.Row="0" Grid.Column="2" Grid.ColumnSpan="3" Text="{Binding Username, Mode=TwoWay}" Margin="0,2,0,2" VerticalContentAlignment="Center"/>
+            <PasswordBox Name="BoxPass" Grid.Row="1" Grid.Column="2" Grid.ColumnSpan="3" VerticalContentAlignment="Center"/>
+            <Button Name="BtnLogin" Content="Login" Grid.Row="2" Grid.Column="2" Grid.ColumnSpan="2" Command="{Binding LoginCommand}" CommandParameter="{Binding ElementName=BoxPass}" Margin="0,2,0,2" VerticalContentAlignment="Center"/>
+        </Grid>
+    </Viewbox>
 </Page>
