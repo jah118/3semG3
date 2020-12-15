@@ -73,12 +73,21 @@ namespace DataAccess.Repositories
             var startDateTime = dateTime;
             var endDateTime = dateTime.AddHours(1).AddMinutes(30);
 
+            //TODO lige snakke den her over
+
+            //var reservedInTime = _context.Reservation
+            //    .Include(r => r.ReservationsTables)
+            //    .ThenInclude(r => r.RestaurantTables)
+            //    .Where(r =>
+            //        r.ReservationTime <= endDateTime &&
+            //        r.ReservationTime >= startDateTime).AsNoTracking();
+
             var reservedInTime = _context.Reservation
                 .Include(r => r.ReservationsTables)
                 .ThenInclude(r => r.RestaurantTables)
                 .Where(r =>
-                    r.ReservationTime <= endDateTime &&
-                    r.ReservationTime >= startDateTime).AsNoTracking();
+                    r.ReservationTime <= dateTime.AddMinutes(90) &&
+                    r.ReservationTime.AddMinutes(89) >= dateTime).AsNoTracking();
 
             var tables = GetAll();
             var res = new List<RestaurantTablesDTO>();

@@ -28,20 +28,33 @@ namespace DataAccess.Repositories
             {
                 if (RestaurantOrder.Validate(obj))
                 {
-                    var order = Converter.Convert(obj);
-                    order.OrderDate = DateTime.Now;
-                    order.Employee = _context.Employee.FirstOrDefault(e => e.Id.Equals(obj.EmployeeID));
-                    order.Reservation = _context.Reservation.FirstOrDefault(r => r.Id.Equals(obj.ReservationID));
-                    var tempPaymentCondition = _context.PaymentCondition.FirstOrDefault(x => x.Condition.Equals(obj.PaymentCondition)).Id;
-                    if (tempPaymentCondition > 0)
+                    RestaurantOrder order = null;
+                    var notNewOrder = _context.RestaurantOrder.FirstOrDefault(o => o.ReservationId == obj.ReservationID);
+                    if (notNewOrder != null)
                     {
-                        order.PaymentConditionId = tempPaymentCondition;
-                        order.PaymentCondition =
-                            _context.PaymentCondition.FirstOrDefault(pc => pc.Id.Equals(order.PaymentConditionId));
+                       var orderDto = Update(obj, false);
+                       order = Converter.Convert(orderDto);
+
+                    }
+                    else
+                    {
+                        order = Converter.Convert(obj);
+                        order.OrderDate = DateTime.Now;
+                        order.Employee = _context.Employee.FirstOrDefault(e => e.Id.Equals(obj.EmployeeID));
+                        order.Reservation = _context.Reservation.FirstOrDefault(r => r.Id.Equals(obj.ReservationID));
+                        var tempPaymentCondition = _context.PaymentCondition.FirstOrDefault(x => x.Condition.Equals(obj.PaymentCondition)).Id;
+                        if (tempPaymentCondition > 0)
+                        {
+                            order.PaymentConditionId = tempPaymentCondition;
+                            order.PaymentCondition =
+                                _context.PaymentCondition.FirstOrDefault(pc => pc.Id.Equals(order.PaymentConditionId));
+                        }
+
+                        var added = _context.RestaurantOrder.Add(order);
+                        _context.SaveChanges();
                     }
 
-                    var added = _context.RestaurantOrder.Add(order);
-                    _context.SaveChanges();
+
                     if (transactionEndpoint) _context.Database.CommitTransaction();
                     _context.Entry(order).GetDatabaseValues();
                     return GetById(order.OrderNo);
@@ -112,6 +125,7 @@ namespace DataAccess.Repositories
         }
 
         //Denne her er kun til at update PaymentCondition og  employee
+        //TODO add so it handles change in food (update food).
         public OrderDTO Update(OrderDTO obj, bool transactionEndpoint = true)
         {
             if (!RestaurantOrder.Validate(obj))
