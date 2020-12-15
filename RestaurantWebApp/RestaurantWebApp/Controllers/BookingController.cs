@@ -54,7 +54,7 @@ namespace RestaurantWebApp.Controllers
         // POST: Booking/Reservation
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Reservation(ReservationDTO reservation)
+        public ActionResult Reservation(ReservationDTO reservation)
         {
             var date = Request.Form["ReservationTimeHid"];
             if (DateTime.TryParse(date, out var dt3))
@@ -63,6 +63,7 @@ namespace RestaurantWebApp.Controllers
                 return View(reservation);
 
             var r = Request.Form["Tables"];
+            //var r = "6,7";
             if (!string.IsNullOrEmpty(r))
 
                 //dette tager tables som kommer som en lang string og laver dem om til en liste
@@ -83,18 +84,14 @@ namespace RestaurantWebApp.Controllers
             //    return View(reservation);
             //}
 
-            var response = await _reservationService.CreateAsync(reservation);
+            var response = _reservationService.Create(reservation);
 
-            if (response.StatusCode == HttpStatusCode.OK && reservation.OrderingFood == false)
+            if (response != null && reservation.OrderingFood == false && response.Id > 0)
                 return RedirectToAction("Index");
 
-            if (response.StatusCode == HttpStatusCode.OK && reservation.OrderingFood)
-            {
-                var res = JsonConvert.DeserializeObject<ReservationDTO>(response.Content);
-                if (res != null)
-                    //return OrderFood(res);
-                    return RedirectToAction("OrderFood", res);
-            }
+            if (response != null && reservation.OrderingFood && response.Id > 0)
+                return RedirectToAction("OrderFood", response);
+
 
             return View(reservation);
         }
@@ -107,36 +104,28 @@ namespace RestaurantWebApp.Controllers
 
             var fdto = _foodService.GetAll();
             if (fdto == null) return new HttpStatusCodeResult(HttpStatusCode.ServiceUnavailable);
-            var Foods = new List<FoodDTO>();
-            //IEnumerable<FoodDTO> Drinks = new List<FoodDTO>();
-            var Drinks = new List<FoodDTO>();
+            var foods = new List<FoodDTO>();
+            var drinks = new List<FoodDTO>();
             foreach (var item in fdto)
                 if (item.FoodCategoryName.Equals("Mad"))
-                    Foods.Add(item);
-                else if (item.FoodCategoryName.Equals("Drikkevare")) Drinks.Add(item);
+                    foods.Add(item);
+                else if (item.FoodCategoryName.Equals("Drikkevare")) drinks.Add(item);
 
 
-            var cvm = new CustomViewModel();
+            var cvm = new CustomViewModel
+            {
+                ListDrink = foods,
+                ListFood = drinks,
+                OrderSummary = new List<FoodDTO>(),
+                Reservation = reservation
+            };
 
-
-            cvm.ListDrink = Foods;
-            cvm.ListFood = Drinks;
-            cvm.OrderSummary = new List<FoodDTO>();
-            cvm.Reservation = reservation;
-
-
-            var lsback = new List<FoodDTO>();
-
-            var res =
-                Tuple.Create(Foods, Drinks, lsback, reservation);
-
-            //return View(res);
             return View(cvm);
         }
 
         // POST: Booking/OrderFoods
         [HttpPost]
-        public async Task<ActionResult> OrderFood(CustomViewModel cvm)
+        public ActionResult OrderFood(CustomViewModel cvm)
         {
             //  data from view
             var foods = Request.Form["listFood"];
@@ -168,24 +157,20 @@ namespace RestaurantWebApp.Controllers
                         .ListOfFoodsIdToOrderLines(orderSummaryListOfStrings, foodsListFromApi);
                 var r = new ReservationDTO(ReservationId);
 
-                //if order is null -> then everything after ??(null-coalescing) runs
-                var order = _orderService
-                                .GetAll()
-                                .Where(x => x.ReservationID == r.Id)
-                                .OrderBy(x => x.OrderDate)
-                                .FirstOrDefault()
-                            ?? new OrderDTO
-                            {
-                                ReservationID = r.Id,
-                                OrderDate = DateTime.Today,
-                                EmployeeID = 1,
-                                PaymentCondition = PaymentCondition.Bestilt.ToString(),
-                                OrderLines = orderLineList
-                            };
 
-                var response = await _orderService.CreateAsync(order);
+                var order = new OrderDTO
+                {
+                    ReservationID = r.Id,
+                    OrderDate = DateTime.Today,
+                    EmployeeID = 1,
+                    PaymentCondition = PaymentCondition.Bestilt.ToString(),
+                    OrderLines = orderLineList
+                };
 
-                if (response.StatusCode == HttpStatusCode.OK) return RedirectToAction("Index");
+
+                var response = _orderService.Create(order);
+
+                if (response != null) return RedirectToAction("Index");
             }
             else
             {
