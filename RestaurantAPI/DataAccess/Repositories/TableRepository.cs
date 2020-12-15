@@ -87,7 +87,7 @@ namespace DataAccess.Repositories
                 .ThenInclude(r => r.RestaurantTables)
                 .Where(r =>
                     r.ReservationTime <= dateTime.AddMinutes(90) &&
-                    r.ReservationTime.AddMinutes(89) >= dateTime).AsNoTracking();
+                    r.ReservationTime.AddMinutes(90) >= dateTime).AsNoTracking();
 
             var tables = GetAll();
             var res = new List<RestaurantTablesDTO>();

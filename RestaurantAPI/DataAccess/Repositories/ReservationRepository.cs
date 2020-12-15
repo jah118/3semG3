@@ -34,8 +34,11 @@ namespace DataAccess.Repositories
                         .ThenInclude(r => r.RestaurantTables)
                         .Where(r =>
                             r.ReservationTime <= obj.ReservationTime.AddMinutes(90) &&
-                            r.ReservationTime.AddMinutes(89) >= obj.ReservationTime &&
+                            r.ReservationTime.AddMinutes(90) >= obj.ReservationTime &&
                             r.ReservationsTables.Any(i => tables.Contains(i.RestaurantTablesId)));
+
+                    ////if (compareCount.Count() == 0)
+                    //if (res.Count() == 0)
 
                     if (compare.Count() == 0)
                     {
