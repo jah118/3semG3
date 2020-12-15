@@ -26,21 +26,12 @@ namespace RestaurantWebApp.Service
 
         public OrderDTO Create(OrderDTO obj)
         {
-            OrderDTO res;
-            try
-            {
-                var client = new RestClient(_conString);
-                string json = JsonConvert.SerializeObject(obj);
-                var request = new RestRequest("/Order", Method.POST);
-                request.AddJsonBody(json);
-                var content = client.Execute(request).Content;
-                res = JsonConvert.DeserializeObject<OrderDTO>(content);
-            }
-            catch
-            {
-                res = null;
-            }
-
+            var client = new RestClient(_conString);
+            var request = new RestRequest("/Order", Method.POST);
+            string json = JsonConvert.SerializeObject(obj);
+            request.AddJsonBody(json);
+            var response =  client.Execute(request).Content;
+            var res = JsonConvert.DeserializeObject<OrderDTO>(response);
             return res;
         }
 
