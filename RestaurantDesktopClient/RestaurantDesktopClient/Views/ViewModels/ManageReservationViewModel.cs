@@ -147,10 +147,9 @@ namespace RestaurantDesktopClient.Views.ManageReservation
             get { return SelectedReservation != null ? SelectedReservation.NoOfPeople + "" : ""; }
             set
             {
-                if (SelectedReservation != null)
+                if (value!= null && Validation.IsNumber(value))
                 {
-                    int.TryParse(value, out int no);
-                    SelectedReservation.NoOfPeople = no;
+                    SelectedReservation.NoOfPeople = int.Parse(value);
                 }
             }
         }
@@ -176,7 +175,7 @@ namespace RestaurantDesktopClient.Views.ManageReservation
             get { return SelectedReservation != null ? SelectedReservation.ReservationTime : DateTime.Now; }
             set
             {
-                if (SelectedReservation != null)
+                if (value != null && Validation.IsUpcomingDateTime(value))
                 {
                     SelectedReservation.ReservationTime = value;
                 }
