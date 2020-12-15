@@ -65,7 +65,14 @@ namespace RestaurantDesktopClient.Views.ManageReservation
         public DateTime GetReservationTimeDate
         {
             get => SelectedReservation != null ? SelectedReservation.ReservationTime : DateTime.Now;
-            set { if (SelectedReservation != null) { SelectedReservation.ReservationTime = value + SelectedReservation.ReservationTime.TimeOfDay; }; }
+            set
+            {
+                if (SelectedReservation != null)
+                {
+                    SelectedReservation.ReservationTime = value + SelectedReservation.ReservationTime.TimeOfDay;
+                    ChangePropertyTime();
+                };
+            }
         }
         /// <summary>
         /// Property for SelectedReservation's reservationtime minuts
@@ -147,7 +154,7 @@ namespace RestaurantDesktopClient.Views.ManageReservation
             get { return SelectedReservation != null ? SelectedReservation.NoOfPeople + "" : ""; }
             set
             {
-                if (value!= null && Validation.IsNumber(value))
+                if (value != null && Validation.IsNumber(value))
                 {
                     SelectedReservation.NoOfPeople = int.Parse(value);
                 }
