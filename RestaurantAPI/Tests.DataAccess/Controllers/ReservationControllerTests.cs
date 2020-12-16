@@ -115,11 +115,11 @@ namespace RestaurantAPI.Controllers.Tests
             // act
             var value = mock.Object.GetById(41);
             var actionResult = controller.Get(41);
-            var okResult = actionResult as NotFoundObjectResult;
+            var NotFound = actionResult as NotFoundObjectResult;
 
             // assert
             Assert.IsNull(value);
-            Assert.AreEqual(okResult.StatusCode, (int) HttpStatusCode.NotFound);
+            Assert.AreEqual(NotFound.StatusCode, (int) HttpStatusCode.NotFound);
         }
 
         #endregion Getter
