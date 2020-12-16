@@ -1,5 +1,4 @@
-﻿using System.Web;
-using System.Web.Optimization;
+﻿using System.Web.Optimization;
 
 namespace RestaurantWebApp
 {
@@ -13,7 +12,7 @@ namespace RestaurantWebApp
 
             bundles.Add(new ScriptBundle("~/bundles/jqueryval").Include(
                         "~/Scripts/jquery.validate*"));
-          
+
             //bundles.Add(new StyleBundle("~/Content/css").Include(
             //                 "~/Content/bootstrap.css"));
 
@@ -31,7 +30,7 @@ namespace RestaurantWebApp
                       "~/Content/simple-sidebar.css"));
 
             bundles.Add(new StyleBundle("~/Content/login").Include(
-                "~/Content/login.css")); 
+                "~/Content/login.css"));
             bundles.Add(new StyleBundle("~/Content/createView").Include(
                 "~/Content/createView.css"));
 
@@ -51,7 +50,6 @@ namespace RestaurantWebApp
                 "~/Content/themes/base/jquery.ui.datepicker.css",
                 "~/Content/themes/base/jquery.ui.progressbar.css",
                 "~/Content/themes/base/jquery.ui.theme.css"));
-
         }
     }
 }

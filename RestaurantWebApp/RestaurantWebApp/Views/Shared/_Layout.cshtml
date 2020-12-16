@@ -7,7 +7,6 @@
     <meta name="author" content="">
     <title>@ViewBag.Title - Restaurant</title>
 
-
     <!-- Custom styles for this template -->
 
     @Styles.Render("~/Content/css")
@@ -22,10 +21,10 @@
         <div class="bg-light border-right" id="sidebar-wrapper">
             <div class="list-group list-group-flush">
                 <p></p>
-                @Html.ActionLink("Hjem", "Index", "Booking", new {area = ""}, new {@class = "list-group-item list-group-item-action bg-light"})
-                @Html.ActionLink("Bestil bord", "Reservation", "Booking", new {area = ""}, new {@class = "list-group-item list-group-item-action bg-light"})
-                @Html.ActionLink("MenuKort", "Index", "Booking", new {area = ""}, new {@class = "list-group-item list-group-item-action bg-light"})
-                @Html.ActionLink("Om os", "About", "Booking", new {area = ""}, new {@class = "list-group-item list-group-item-action bg-light"})
+                @Html.ActionLink("Hjem", "Index", "Booking", new { area = "" }, new { @class = "list-group-item list-group-item-action bg-light" })
+                @Html.ActionLink("Bestil bord", "Reservation", "Booking", new { area = "" }, new { @class = "list-group-item list-group-item-action bg-light" })
+                @Html.ActionLink("MenuKort", "Index", "Booking", new { area = "" }, new { @class = "list-group-item list-group-item-action bg-light" })
+                @Html.ActionLink("Om os", "About", "Booking", new { area = "" }, new { @class = "list-group-item list-group-item-action bg-light" })
             </div>
         </div>
         <div id="page-content-wrapper">
@@ -64,7 +63,7 @@
                             </li>
                         </ul>
                     }
-                   </div>
+                </div>
             </nav>
 
             <div class="container-fluid">
@@ -86,6 +85,5 @@
         });
     </script>
     @RenderSection("scripts", required: false)
-
 </body>
 </html>

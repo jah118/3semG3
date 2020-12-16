@@ -1,15 +1,13 @@
+using RestaurantWebApp.DataTransferObject;
+using RestaurantWebApp.Model;
+using RestaurantWebApp.Service.Interfaces;
+using RestaurantWebApp.Util;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Net;
-using System.Threading.Tasks;
 using System.Web.Mvc;
-using Newtonsoft.Json;
-using RestaurantWebApp.DataTransferObject;
-using RestaurantWebApp.Model;
-using RestaurantWebApp.Service.Interfaces;
-using RestaurantWebApp.Util;
 
 namespace RestaurantWebApp.Controllers
 {
@@ -92,7 +90,6 @@ namespace RestaurantWebApp.Controllers
             if (response != null && reservation.OrderingFood && response.Id > 0)
                 return RedirectToAction("OrderFood", response);
 
-
             return View(reservation);
         }
 
@@ -110,7 +107,6 @@ namespace RestaurantWebApp.Controllers
                 if (item.FoodCategoryName.Equals("Mad"))
                     foods.Add(item);
                 else if (item.FoodCategoryName.Equals("Drikkevare")) drinks.Add(item);
-
 
             var cvm = new CustomViewModel
             {
@@ -157,7 +153,6 @@ namespace RestaurantWebApp.Controllers
                         .ListOfFoodsIdToOrderLines(orderSummaryListOfStrings, foodsListFromApi);
                 var r = new ReservationDTO(ReservationId);
 
-
                 var order = new OrderDTO
                 {
                     ReservationID = r.Id,
@@ -166,7 +161,6 @@ namespace RestaurantWebApp.Controllers
                     PaymentCondition = PaymentCondition.Bestilt.ToString(),
                     OrderLines = orderLineList
                 };
-
 
                 var response = _orderService.Create(order);
 
@@ -183,11 +177,9 @@ namespace RestaurantWebApp.Controllers
                 return View(cvm);
             }
 
-            //TODO add so same view return on fail  with same reservaion id. maybe just give a reservation 
-
+            //TODO add so same view return on fail  with same reservaion id. maybe just give a reservation
 
             return View(cvm);
-
         }
 
         [HttpGet]
