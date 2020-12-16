@@ -44,7 +44,6 @@ namespace RestaurantWebApp.DataTransferObject
         public int NoOfPeople { get; set; }
 
         public bool? Deposit { get; }
-
         [DataType(DataType.Text)]
         [Display(Name = "Evt Notat")]
         public string Note { get; set; }

@@ -1,4 +1,6 @@
-﻿@model RestaurantWebApp.Model.CustomViewModel
+﻿
+@model RestaurantWebApp.Model.CustomViewModel
+
 
 @section Styles {
 }
@@ -34,6 +36,9 @@
                     </div>
                 </div>
             </div>
+
+
+
         </div>
 
         <div class="row">
@@ -61,8 +66,11 @@
     @Html.ActionLink("Gå til forside", "Index")
 </div>
 
+
+
 @section Scripts {
     <script>
+
 
         function selectAllList() {
             selectAll('OrderSummary');
@@ -106,5 +114,5 @@
             });
         });
     </script>
-
+    
 }

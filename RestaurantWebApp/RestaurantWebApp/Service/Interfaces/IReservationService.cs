@@ -1,10 +1,10 @@
-﻿using RestaurantWebApp.DataTransferObject;
-using System;
+﻿using System;
+using RestaurantWebApp.DataTransferObject;
 
 namespace RestaurantWebApp.Service.Interfaces
 {
     public interface IReservationService : IService<ReservationDTO>
     {
-        AvailableTimesDTO GetReservationTimeByDate(DateTime dateTime);
+         AvailableTimesDTO GetReservationTimeByDate(DateTime dateTime);
     }
 }

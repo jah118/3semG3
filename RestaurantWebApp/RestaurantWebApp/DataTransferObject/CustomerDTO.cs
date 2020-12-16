@@ -10,7 +10,7 @@ namespace RestaurantWebApp.DataTransferObject
 
         public int Id { get; }
 
-        [Required]
+        [Required] 
         [Display(Name = "Tlf")]
         public string Phone { get; set; }
 

@@ -1,9 +1,10 @@
 ﻿using Autofac;
-using Autofac.Integration.Mvc;
 using RestaurantWebApp.Service;
 using RestaurantWebApp.Service.Interfaces;
 using System.Configuration;
 using System.Web.Mvc;
+using Autofac.Integration.Mvc;
+using RestaurantWebApp.DataTransferObject;
 
 namespace RestaurantWebApp
 {
@@ -21,9 +22,11 @@ namespace RestaurantWebApp
             builder.Register(c => new TableServices(ConfigurationManager.AppSettings["ServiceApi"])).As<ITableService>();
             builder.Register(c => new FoodService(ConfigurationManager.AppSettings["ServiceApi"])).As<IFoodService>();
             builder.Register(c => new OrderService(ConfigurationManager.AppSettings["ServiceApi"])).As<IOrderService>();
+           
 
             var container = builder.Build();
             DependencyResolver.SetResolver(new AutofacDependencyResolver(container));
+      
         }
     }
 }

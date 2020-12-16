@@ -12,8 +12,11 @@ namespace RestaurantWebApp.Service
     {
         private string _conString;
 
+       
+
         public OrderService(IOrderService configString)
         {
+            
         }
 
         public OrderService(string configString)
@@ -27,7 +30,7 @@ namespace RestaurantWebApp.Service
             var request = new RestRequest("/Order", Method.POST);
             string json = JsonConvert.SerializeObject(obj);
             request.AddJsonBody(json);
-            var response = client.Execute(request).Content;
+            var response =  client.Execute(request).Content;
             var res = JsonConvert.DeserializeObject<OrderDTO>(response);
             return res;
         }
