@@ -392,6 +392,9 @@ namespace RestaurantDesktopClient.Views.ManageReservation
                     else if (res == HttpStatusCode.MethodNotAllowed)
                     {
                         MessageBox.Show("Du har ikke tilladelse til at slette en reservation");
+                    }else if (res == HttpStatusCode.BadRequest)
+                    {
+                        MessageBox.Show("Forbindelsen til serveren fejlede");
                     }
                 }
             }
@@ -424,6 +427,7 @@ namespace RestaurantDesktopClient.Views.ManageReservation
             ChangePropertyReservation();
             ReservationTables = new ObservableCollection<TablesDTO>(reservation.Tables);
             RaisePropertyChanged(() => ReservationTables);
+            RaisePropertyChanged(() => SelectedReservation);
         }
         /// <summary>
         /// Create Reservation method without return type

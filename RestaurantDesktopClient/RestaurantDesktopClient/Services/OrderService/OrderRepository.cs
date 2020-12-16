@@ -25,7 +25,6 @@ namespace RestaurantDesktopClient.Services.OrderService
 
         public OrderDTO Create(OrderDTO order)
         {
-            OrderDTO res = null;
             try
             {
                 var client = new RestClient(_constring);
@@ -33,18 +32,18 @@ namespace RestaurantDesktopClient.Services.OrderService
                 var request = new RestRequest("/order", Method.POST);
                 request.AddJsonBody(json);
                 var response = client.Execute(request).Content;
-                res = JsonConvert.DeserializeObject<OrderDTO>(response);
+                return JsonConvert.DeserializeObject<OrderDTO>(response);
             }
             catch
-            {}
-            return res;
+            {
+                return null;
+            }
         }
-
         public IEnumerable<OrderDTO> GetAll()
         {
-            IEnumerable<OrderDTO> res = new List<OrderDTO>();
             try
             {
+                IEnumerable<OrderDTO> res = null;
                 var client = new RestClient(_constring);
                 var request = new RestRequest("/order", Method.GET);
                 if (_authRepository.AddTokenToRequest(request))
@@ -52,18 +51,20 @@ namespace RestaurantDesktopClient.Services.OrderService
                     var response = client.Execute(request).Content;
                     res = JsonConvert.DeserializeObject<IEnumerable<OrderDTO>>(response);
                 }
+
+                return res;
             }
             catch
             {
+                return new List<OrderDTO>();
             }
-            return res;
         }
-
+        //TODO: not used
         public OrderDTO Get(int id)
         {
-            OrderDTO res = null;
             try
             {
+                OrderDTO res = null;
                 var client = new RestClient(_constring);
                 var request = new RestRequest("/order/{Id}", Method.GET);
                 request.AddUrlSegment("Id", id);
@@ -72,11 +73,13 @@ namespace RestaurantDesktopClient.Services.OrderService
                     var response = client.Execute(request).Content;
                     res = JsonConvert.DeserializeObject<OrderDTO>(response);
                 }
+
+                return res;
             }
             catch
             {
+                return null;
             }
-            return res;
         }
 
         public OrderDTO Update(OrderDTO t)

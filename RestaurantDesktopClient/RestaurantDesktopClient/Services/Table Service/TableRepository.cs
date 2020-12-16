@@ -25,14 +25,9 @@ namespace RestaurantDesktopClient.Services.Table_Service
             _authRepository = authRepository;
             this._constring = constring;
         }
-
-        public TableRepository()
-        {
-        }
-
+        //TODO not used
         public IEnumerable<TablesDTO> GetAll()
         {
-            List<TablesDTO> res = null;
             try
             {
                 var client = new RestClient(_constring);
@@ -41,20 +36,16 @@ namespace RestaurantDesktopClient.Services.Table_Service
 
                 var content = client.Execute(request).Content;
 
-                res = JsonConvert.DeserializeObject<List<TablesDTO>>(content);
+                return JsonConvert.DeserializeObject<List<TablesDTO>>(content);
             }
             catch
             {
-
+                return new List<TablesDTO>();
             }
-
-
-            return res ?? new List<TablesDTO>();
         }
-
+        //TODO not Used
         public TablesDTO Get(int number)
         {
-            TablesDTO res = null;
             try
             {
                 var client = new RestClient(_constring);
@@ -64,34 +55,20 @@ namespace RestaurantDesktopClient.Services.Table_Service
 
                 var content = client.Execute(request).Content;
 
-                res = (TablesDTO)JsonConvert.DeserializeObject(content);
+                return JsonConvert.DeserializeObject<TablesDTO>(content);
             }
             catch
             {
-
+                return null;
             }
-
-
-            return res;
         }
 
         public TablesDTO Create(TablesDTO t)
         {
             throw new NotImplementedException();
         }
-        public AvailableTimesDTO GetReservationTimeByDate(DateTime date)
-        {
-            var constring = ConfigurationManager.ConnectionStrings["ServiceConString"].ConnectionString;
-            var client = new RestClient(constring);
-            var request = new RestRequest("/Table/timeSlot/{date}", Method.GET);
-            request.AddUrlSegment("date", date.ToString("MM-dd-yy HH:mm:ss"));
-            var content = client.Execute(request).Content;
-            var res = JsonConvert.DeserializeObject<AvailableTimesDTO>(content);
-            return res;
-        }
         public List<TablesDTO> GetFreeTables(DateTime date)
         {
-            List<TablesDTO> res;
             try
             {
                 var constring = ConfigurationManager.ConnectionStrings["ServiceConString"].ConnectionString;
@@ -99,14 +76,12 @@ namespace RestaurantDesktopClient.Services.Table_Service
                 var request = new RestRequest("/Table/OpenTables/{date}", Method.GET);
                 request.AddUrlSegment("date", date.ToString("MM-dd-yy HH:mm:ss")); 
                 var response = client.Execute(request);
-                res = response.StatusCode == HttpStatusCode.OK ? JsonConvert.DeserializeObject<List<TablesDTO>>(response.Content) : new List<TablesDTO>();
+                return response.StatusCode == HttpStatusCode.OK ? JsonConvert.DeserializeObject<List<TablesDTO>>(response.Content) : new List<TablesDTO>();
             }
             catch
             {
-                res = new List<TablesDTO>();
+                return new List<TablesDTO>();
             }
-
-            return res;
         }
 
         public TablesDTO Update(TablesDTO t)

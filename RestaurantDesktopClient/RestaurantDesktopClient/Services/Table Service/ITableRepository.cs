@@ -8,7 +8,6 @@ namespace RestaurantDesktopClient.Services.Table_Service
 {
     public interface ITableRepository : IRepository<TablesDTO>
     {
-        AvailableTimesDTO GetReservationTimeByDate(DateTime date);
         List<TablesDTO> GetFreeTables(DateTime date);
     }
 }

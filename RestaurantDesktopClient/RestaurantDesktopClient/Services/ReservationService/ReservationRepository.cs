@@ -27,7 +27,6 @@ namespace RestaurantDesktopClient.Reservation
 
         public ReservationDTO Create(ReservationDTO reservation)
         {
-            ReservationDTO res = null;
             try
             {
                 var client = new RestClient(_constring);
@@ -35,19 +34,19 @@ namespace RestaurantDesktopClient.Reservation
                 var request = new RestRequest("/reservation", Method.POST);
                 request.AddJsonBody(json);
                 var response = client.Execute(request).Content;
-                res = JsonConvert.DeserializeObject<ReservationDTO>(response);
+                return JsonConvert.DeserializeObject<ReservationDTO>(response);
             }
             catch
             {
+                return null;
             }
-            return res;
         }
-
+        //TODO not used?
         public ReservationDTO Get(int id)
         {
-            ReservationDTO res = null;
             try
             {
+                ReservationDTO res = null;
                 var client = new RestClient(_constring);
                 var request = new RestRequest("/reservation/{Id}", Method.GET);
                 request.AddUrlSegment("Id", id);
@@ -56,17 +55,19 @@ namespace RestaurantDesktopClient.Reservation
                     var response = client.Execute(request).Content;
                     res = JsonConvert.DeserializeObject<ReservationDTO>(response);
                 }
+
+                return res;
             }
             catch
             {
+                return null;
             }
-            return res;
         }
         public ReservationDTO Update(ReservationDTO reservation)
         {
-            ReservationDTO res = null;
             try
             {
+                ReservationDTO res = null;
                 var client = new RestClient(_constring);
                 string json = JsonConvert.SerializeObject(reservation);
                 var request = new RestRequest("/reservation/{id}", Method.PUT);
@@ -78,33 +79,33 @@ namespace RestaurantDesktopClient.Reservation
                     var response = client.Execute(request).Content;
                     res = JsonConvert.DeserializeObject<ReservationDTO>(response);
                 }
+                return res;
             }
             catch
             {
+                return null;
             }
-            return res;
         }
         public HttpStatusCode Delete(ReservationDTO reservation)
         {
-            HttpStatusCode res = HttpStatusCode.Unused;
             try
             {
                 var client = new RestClient(_constring);
                 var request = new RestRequest("/reservation/{id}", Method.DELETE);
                 request.AddUrlSegment("id", reservation.Id);
                 _authRepository.AddTokenToRequest(request);
-                res = client.Execute(request).StatusCode;
+                return client.Execute(request).StatusCode;
             }
             catch
             {
+                return HttpStatusCode.BadRequest;
             }
-            return res;
         }
         public IEnumerable<ReservationDTO> GetAll()
         {
-            List<ReservationDTO> res = null;
             try
             {
+                List<ReservationDTO> res = null;
                 var client = new RestClient(_constring);
                 var request = new RestRequest("/reservation", Method.GET);
                 if (_authRepository.AddTokenToRequest(request))
@@ -112,11 +113,13 @@ namespace RestaurantDesktopClient.Reservation
                     var content = client.Execute(request).Content;
                     res = JsonConvert.DeserializeObject<List<ReservationDTO>>(content);
                 }
+
+                return res;
             }
             catch
             {
+                return new List<ReservationDTO>();
             }
-            return res ?? new List<ReservationDTO>();
         }
     }
 }

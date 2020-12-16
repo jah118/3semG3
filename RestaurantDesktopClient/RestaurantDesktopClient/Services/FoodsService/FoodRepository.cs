@@ -36,18 +36,17 @@ namespace RestaurantDesktopClient.Views.ViewModels
 
         public IEnumerable<FoodDTO> GetAll()
         {
-            List<FoodDTO> res = null;
             try
             {
                 var client = new RestClient(_constring);
                 var request = new RestRequest("/Food", Method.GET);
                 var content = client.Execute(request).Content;
-                res = JsonConvert.DeserializeObject<List<FoodDTO>>(content);
+                return JsonConvert.DeserializeObject<List<FoodDTO>>(content);
             }
             catch
             {
+                return new List<FoodDTO>();
             }
-            return res ?? new List<FoodDTO>();
         }
 
         public FoodDTO Update(FoodDTO t)

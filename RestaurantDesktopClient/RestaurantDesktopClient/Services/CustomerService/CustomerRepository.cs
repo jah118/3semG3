@@ -35,16 +35,22 @@ namespace RestaurantDesktopClient.Services.CustomerService
 
         public CustomerDTO Get(int customerId)
         {
-            var client = new RestClient(_constring);
+            try
+            {
+                var client = new RestClient(_constring);
+                var request = new RestRequest("/customer/{Id}", Method.GET);
+                request.AddUrlSegment("Id", customerId);
+                _authRepository.AddTokenToRequest(request);
+                var response = client.Execute(request);
 
-            var request = new RestRequest("/customer/{Id}", Method.GET);
-            request.AddUrlSegment("Id", customerId);
-            _authRepository.AddTokenToRequest(request);
-            var response = client.Execute(request);
-
-            CustomerDTO res = response.StatusCode == HttpStatusCode.OK ? JsonConvert.DeserializeObject<CustomerDTO>(response.Content) : null;
-
-            return res;
+                return response.StatusCode == HttpStatusCode.OK
+                    ? JsonConvert.DeserializeObject<CustomerDTO>(response.Content)
+                    : null;
+            }
+            catch
+            {
+                return null;
+            }
         }
 
         public IEnumerable<CustomerDTO> GetAll()
