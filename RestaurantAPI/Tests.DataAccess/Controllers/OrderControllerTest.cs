@@ -17,6 +17,7 @@ namespace RestaurantAPI.Controllers.Tests
         public void GetByIDTest_Succes()
 
         {
+            //Arrange
             var mock = new Mock<IOrderRepository>();
             var order = new OrderDTO
 
@@ -30,10 +31,11 @@ namespace RestaurantAPI.Controllers.Tests
             };
             mock.Setup(x => x.GetById(It.IsAny<int>())).Returns(order);
             var controller = new OrderController(mock.Object);
+            //Act
             var o = mock.Object.GetById(50);
             var result = controller.Get(50);
             var okResult = result as OkObjectResult;
-
+            //Assert
             Assert.IsNotNull(o);
             Assert.AreEqual(order.OrderNo, o.OrderNo);
             Assert.IsNotNull(result);
@@ -43,6 +45,7 @@ namespace RestaurantAPI.Controllers.Tests
         [TestMethod]
         public void GetByIDTest_Failed()
         {
+            //Arrange
             var mock = new Mock<IOrderRepository>();
             var order = new OrderDTO
 
@@ -56,12 +59,11 @@ namespace RestaurantAPI.Controllers.Tests
             };
             mock.Setup(x => x.GetById(50)).Returns(order);
             var controller = new OrderController(mock.Object);
-
-
+            //Act
             var o = mock.Object.GetById(55);
             var result = controller.Get(55);
             var okResult = result as NotFoundObjectResult;
-
+            //Assert
             Assert.IsNull(o);
             Assert.AreEqual(okResult.StatusCode, (int) HttpStatusCode.NotFound);
         }
@@ -70,6 +72,7 @@ namespace RestaurantAPI.Controllers.Tests
         [TestMethod]
         public void CreateOrderTest_Succes()
         {
+            //Arrange
             var mock = new Mock<IOrderRepository>();
             var order = new OrderDTO
             {
@@ -83,10 +86,11 @@ namespace RestaurantAPI.Controllers.Tests
 
             mock.Setup(x => x.Create(order, true)).Returns(order);
             var controller = new OrderController(mock.Object);
+            //Act
             var o = mock.Object.Create(order);
             var result = controller.Post(order);
             var okResult = result as OkObjectResult;
-
+            //Assert
             Assert.IsNotNull(o);
             Assert.AreEqual(order.OrderNo, o.OrderNo);
             Assert.AreEqual(order.ReservationID, o.ReservationID);
@@ -101,6 +105,7 @@ namespace RestaurantAPI.Controllers.Tests
         [TestMethod]
         public void CreateOrderTest_Failed()
         {
+            //Arrange
             OrderDTO o1 = null;
             var mock = new Mock<IOrderRepository>();
             var order = new OrderDTO
@@ -115,17 +120,19 @@ namespace RestaurantAPI.Controllers.Tests
 
             mock.Setup(x => x.Create(order, true)).Returns(o1);
             var controller = new OrderController(mock.Object);
+            //Act
             var o = mock.Object.Create(order);
             var result = controller.Post(order);
             var okResult = result as ConflictObjectResult;
 
-
+            //Assert
             Assert.AreEqual(okResult.StatusCode, (int) HttpStatusCode.Conflict);
         }
 
         [TestMethod]
         public void GetAllOrdersTest_Succes()
         {
+            //Arrange
             var mock = new Mock<IOrderRepository>();
             var order = new OrderDTO
             {
@@ -153,10 +160,11 @@ namespace RestaurantAPI.Controllers.Tests
 
             mock.Setup(x => x.GetAll()).Returns(orders);
             var controller = new OrderController(mock.Object);
+            //Act
             var o = mock.Object.GetAll();
             var result = controller.Get();
             var okResult = result as OkObjectResult;
-
+            //Arrange
             Assert.IsNotNull(o);
 
             Assert.IsTrue(o.Count() > 1);

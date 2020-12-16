@@ -16,6 +16,7 @@ namespace RestaurantAPI.Controllers.Tests
         [TestMethod]
         public void GetAll()
         {
+            //Arrange
             var mock = new Mock<ITableRepository>();
             var table1 = new RestaurantTablesDTO
             {
@@ -38,10 +39,11 @@ namespace RestaurantAPI.Controllers.Tests
 
             mock.Setup(x => x.GetAll()).Returns(tables);
             var controller = new TableController(mock.Object);
+            //Act
             var t = mock.Object.GetAll();
             var result = controller.Get();
             var okResult = result as OkObjectResult;
-
+            //Assert
             Assert.IsNotNull(t);
             Assert.IsTrue(t.Count() > 1);
             Assert.AreEqual(table1.Id, t.ElementAt(0).Id);
@@ -54,6 +56,7 @@ namespace RestaurantAPI.Controllers.Tests
         [TestMethod]
         public void GetOpenTablesTest()
         {
+            //Arrange
             var mock = new Mock<ITableRepository>();
             var table1 = new RestaurantTablesDTO
             {
@@ -76,11 +79,12 @@ namespace RestaurantAPI.Controllers.Tests
 
             mock.Setup(x => x.GetOpenTablesByDateAndTime(date)).Returns(tables);
             var controller = new TableController(mock.Object);
+            //Act
             var t = mock.Object.GetOpenTablesByDateAndTime(date);
 
             var result = controller.GetOpenTables(date);
             var okResult = result as OkObjectResult;
-
+            //Assert
             Assert.IsNotNull(t);
             Assert.IsTrue(t.Count() > 1);
             Assert.AreEqual(table1.Id, t.ElementAt(0).Id);
@@ -95,6 +99,7 @@ namespace RestaurantAPI.Controllers.Tests
         public void GetBydate()
 
         {
+            //Arrange
             var mock = new Mock<ITableRepository>();
 
             var timePairList = new List<AvailableTimesDTO.TableTimes.TimePair>();
@@ -129,11 +134,12 @@ namespace RestaurantAPI.Controllers.Tests
 
             mock.Setup(x => x.GetReservationTimeByDate(date)).Returns(available);
             var controller = new TableController(mock.Object);
+            //Act
             var t = mock.Object.GetReservationTimeByDate(date);
 
             var result = controller.Get(date);
             var okResult = result as OkObjectResult;
-
+            //Assert
             Assert.IsNotNull(t);
             Assert.IsTrue(t.TableOpenings.Count() > 0);
 
