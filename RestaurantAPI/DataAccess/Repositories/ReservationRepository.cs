@@ -27,18 +27,14 @@ namespace DataAccess.Repositories
                 if (transactionEndpoint) _context.Database.BeginTransaction(IsolationLevel.Serializable);
                 try
                 {
-
-                    var tables = obj.Tables.Select(t => t.Id);
+                    var tableIDs = obj.Tables.Select(t => t.Id);
                     var compare = _context.Reservation
                         .Include(r => r.ReservationsTables)
                         .ThenInclude(r => r.RestaurantTables)
                         .Where(r =>
                             r.ReservationTime <= obj.ReservationTime.AddMinutes(90) &&
                             r.ReservationTime.AddMinutes(90) >= obj.ReservationTime &&
-                            r.ReservationsTables.Any(i => tables.Contains(i.RestaurantTablesId)));
-
-                    ////if (compareCount.Count() == 0)
-                    //if (res.Count() == 0)
+                            r.ReservationsTables.Any(i => tableIDs.Contains(i.RestaurantTablesId)));
 
                     if (compare.Count() == 0)
                     {
@@ -86,7 +82,6 @@ namespace DataAccess.Repositories
                     throw;
                 }
             }
-
             return null;
         }
 
