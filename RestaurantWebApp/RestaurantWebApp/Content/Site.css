@@ -9,8 +9,8 @@
     padding-right: 15px;
 }
 
-/* Override the default bootstrap behavior where horizontal description lists 
-   will truncate terms that are too long to fit in the left column 
+/* Override the default bootstrap behavior where horizontal description lists
+   will truncate terms that are too long to fit in the left column
 */
 .dl-horizontal dt {
     white-space: normal;
@@ -22,8 +22,6 @@ select,
 textarea {
     max-width: 280px;
 }
-
-
 
 /*li {
     display: list-item;
@@ -40,7 +38,6 @@ textarea {
     overflow-x: hidden;
     padding-top: 20px;
 }
-
 
 .sidebar .nav-link {
     font-weight: 500;
@@ -64,13 +61,12 @@ textarea {
         color: pink;
     }
 
-
 @media screen and (max-height: 450px) {
     .sidenav {
         padding-top: 15px;
     }
+
         .sidenav a {
             font-size: 18px;
         }
 }
-

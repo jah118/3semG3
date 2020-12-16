@@ -4,7 +4,7 @@
     ViewBag.Title = "Bordbestilling";
 }
 <h2>Bordbestilling</h2>
-<hr/>
+<hr />
 
 @section Styles {
     @Styles.Render("~/Content/createView")
@@ -23,9 +23,9 @@
                     <div class="col-md-10">
                         @Html.TextBoxFor(model => model.ReservationTime, new {@class = "form-control"})
                         @*@Html.ValidationMessageFor(model => model.ReservationTime, "", new { @class = "text-danger" })*@
-                        <input class="timepicker form-control" id="timepicker" name="timepicker" autocomplete="false"/>
-                        <input type="hidden" id="ReservationTimeHid" name="ReservationTimeHid"/>
-                        <input type="hidden" id="ReservationTimeHid2" name="ReservationTimeHid2"/>
+                        <input class="timepicker form-control" id="timepicker" name="timepicker" autocomplete="false" />
+                        <input type="hidden" id="ReservationTimeHid" name="ReservationTimeHid" />
+                        <input type="hidden" id="ReservationTimeHid2" name="ReservationTimeHid2" />
                     </div>
                 </div>
 
@@ -143,7 +143,7 @@
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Gem og afslut" class="btn btn-primary"/>
+                <input type="submit" value="Gem og afslut" class="btn btn-primary" />
             </div>
         </div>
 
@@ -188,7 +188,7 @@
                 }
             });
         });
-        
+
         //sets up  datepicker and clears table and time each time a new date is selected
         $(document).ready(function() {
             $("#ReservationTime").val("klik for at vælge tidspunkt");
@@ -232,7 +232,7 @@
         function ChangeTablesList(tables) {
             for (let key in tables) {
                 const option = tables[key];
-                const newOption = $('<option/>');
+                const newOption = $('<option />');
                 newOption.val(option.id);
                 newOption.text(option.tableNumber);
                 $('#Tables2').append(newOption);

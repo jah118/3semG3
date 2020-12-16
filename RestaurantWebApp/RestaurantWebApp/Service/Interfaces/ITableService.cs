@@ -1,6 +1,6 @@
-﻿using System;
+﻿using RestaurantWebApp.DataTransferObject;
+using System;
 using System.Collections.Generic;
-using RestaurantWebApp.DataTransferObject;
 
 namespace RestaurantWebApp.Service.Interfaces
 {
