@@ -61,7 +61,6 @@ namespace RestaurantWebApp.Controllers
                 return View(reservation);
 
             var r = Request.Form["Tables"];
-            //var r = "6,7";
             if (!string.IsNullOrEmpty(r))
 
                 //dette tager tables som kommer som en lang string og laver dem om til en liste
@@ -89,6 +88,8 @@ namespace RestaurantWebApp.Controllers
 
             if (response != null && reservation.OrderingFood && response.Id > 0)
                 return RedirectToAction("OrderFood", response);
+
+
 
             return View(reservation);
         }
@@ -176,8 +177,6 @@ namespace RestaurantWebApp.Controllers
                 //throw new NotImplementedException("NO Food were selected or no food return from post");
                 return View(cvm);
             }
-
-            //TODO add so same view return on fail  with same reservaion id. maybe just give a reservation
 
             return View(cvm);
         }
