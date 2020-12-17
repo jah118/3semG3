@@ -11,7 +11,7 @@ using System.Web.Mvc;
 
 namespace RestaurantWebApp.Controllers
 {
-    //[Authorize]
+    [Authorize]
     public class BookingController : Controller
     {
         private readonly IFoodService _foodService;
