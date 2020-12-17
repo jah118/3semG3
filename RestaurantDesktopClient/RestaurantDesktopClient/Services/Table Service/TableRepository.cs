@@ -28,26 +28,19 @@ namespace RestaurantDesktopClient.Services.Table_Service
         //TODO not used
         public IEnumerable<TablesDTO> GetAll()
         {
-            try
-            {
                 var client = new RestClient(_constring);
 
                 var request = new RestRequest("/Table", Method.GET);
 
-                var content = client.Execute(request).Content;
+                var response = client.Execute(request);
 
-                return JsonConvert.DeserializeObject<List<TablesDTO>>(content);
-            }
-            catch
-            {
-                return new List<TablesDTO>();
-            }
+                return response.StatusCode== HttpStatusCode.OK ?
+                    JsonConvert.DeserializeObject<List<TablesDTO>>(response.Content) :
+                    new List<TablesDTO>();
         }
         //TODO not Used
         public TablesDTO Get(int number)
         {
-            try
-            {
                 var client = new RestClient(_constring);
 
                 var request = new RestRequest("Tables/{Id}", Method.GET);
@@ -56,11 +49,6 @@ namespace RestaurantDesktopClient.Services.Table_Service
                 var content = client.Execute(request).Content;
 
                 return JsonConvert.DeserializeObject<TablesDTO>(content);
-            }
-            catch
-            {
-                return null;
-            }
         }
 
         public TablesDTO Create(TablesDTO t)
@@ -69,19 +57,14 @@ namespace RestaurantDesktopClient.Services.Table_Service
         }
         public List<TablesDTO> GetFreeTables(DateTime date)
         {
-            try
-            {
                 var constring = ConfigurationManager.ConnectionStrings["ServiceConString"].ConnectionString;
                 var client = new RestClient(constring);
                 var request = new RestRequest("/Table/OpenTables/{date}", Method.GET);
                 request.AddUrlSegment("date", date.ToString("MM-dd-yy HH:mm:ss")); 
                 var response = client.Execute(request);
-                return response.StatusCode == HttpStatusCode.OK ? JsonConvert.DeserializeObject<List<TablesDTO>>(response.Content) : new List<TablesDTO>();
-            }
-            catch
-            {
-                return new List<TablesDTO>();
-            }
+                return response.StatusCode == HttpStatusCode.OK ? 
+                    JsonConvert.DeserializeObject<List<TablesDTO>>(response.Content) : new List<TablesDTO>();
+
         }
 
         public TablesDTO Update(TablesDTO t)

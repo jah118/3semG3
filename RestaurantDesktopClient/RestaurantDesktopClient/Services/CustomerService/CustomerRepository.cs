@@ -35,8 +35,6 @@ namespace RestaurantDesktopClient.Services.CustomerService
 
         public CustomerDTO Get(int customerId)
         {
-            try
-            {
                 var client = new RestClient(_constring);
                 var request = new RestRequest("/customer/{Id}", Method.GET);
                 request.AddUrlSegment("Id", customerId);
@@ -46,11 +44,6 @@ namespace RestaurantDesktopClient.Services.CustomerService
                 return response.StatusCode == HttpStatusCode.OK
                     ? JsonConvert.DeserializeObject<CustomerDTO>(response.Content)
                     : null;
-            }
-            catch
-            {
-                return null;
-            }
         }
 
         public IEnumerable<CustomerDTO> GetAll()

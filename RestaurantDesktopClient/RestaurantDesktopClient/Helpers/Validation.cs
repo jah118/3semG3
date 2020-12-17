@@ -104,12 +104,12 @@ namespace RestaurantDesktopClient.Helpers
                 res = false;
                 message = "Ingen reservation valgt, ";
             }
-            if(orderRepository.GetAll().Any(x => x.ReservationID == reservation.Id))
+            var orders = orderRepository.GetAll();
+            if (orders.FirstOrDefault() != null && orders.Any(x => x.ReservationID == reservation.Id))
             {
                 res = false;
                 message = "Reservationen indholder en order og kan derfor ikke slettes, ";
             }
-
 
             if (!res && showMessage) MessageBox.Show(message.Remove(message.Length - 2, 2) + ".");
             return res;

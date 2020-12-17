@@ -27,46 +27,31 @@ namespace RestaurantDesktopClient.Reservation
 
         public ReservationDTO Create(ReservationDTO reservation)
         {
-            try
-            {
                 var client = new RestClient(_constring);
                 string json = JsonConvert.SerializeObject(reservation);
                 var request = new RestRequest("/reservation", Method.POST);
                 request.AddJsonBody(json);
-                var response = client.Execute(request).Content;
-                return JsonConvert.DeserializeObject<ReservationDTO>(response);
-            }
-            catch
-            {
-                return null;
-            }
+                var response = client.Execute(request);
+                return response.StatusCode == HttpStatusCode.OK ? JsonConvert.DeserializeObject<ReservationDTO>(response.Content) : null;
         }
         //TODO not used?
         public ReservationDTO Get(int id)
         {
-            try
-            {
                 ReservationDTO res = null;
                 var client = new RestClient(_constring);
                 var request = new RestRequest("/reservation/{Id}", Method.GET);
                 request.AddUrlSegment("Id", id);
                 if (_authRepository.AddTokenToRequest(request))
                 {
-                    var response = client.Execute(request).Content;
-                    res = JsonConvert.DeserializeObject<ReservationDTO>(response);
+                    var response = client.Execute(request);
+                    res = response.StatusCode == HttpStatusCode.OK ? JsonConvert.DeserializeObject<ReservationDTO>(response.Content) : null;
                 }
 
                 return res;
-            }
-            catch
-            {
-                return null;
-            }
+
         }
         public ReservationDTO Update(ReservationDTO reservation)
         {
-            try
-            {
                 ReservationDTO res = null;
                 var client = new RestClient(_constring);
                 string json = JsonConvert.SerializeObject(reservation);
@@ -76,50 +61,33 @@ namespace RestaurantDesktopClient.Reservation
                 if (_authRepository.AddTokenToRequest(request))
                 {
 
-                    var response = client.Execute(request).Content;
-                    res = JsonConvert.DeserializeObject<ReservationDTO>(response);
+                    var response = client.Execute(request);
+                    res = response.StatusCode == HttpStatusCode.OK ? JsonConvert.DeserializeObject<ReservationDTO>(response.Content) : null;
                 }
                 return res;
-            }
-            catch
-            {
-                return null;
-            }
+
         }
         public HttpStatusCode Delete(ReservationDTO reservation)
         {
-            try
-            {
                 var client = new RestClient(_constring);
                 var request = new RestRequest("/reservation/{id}", Method.DELETE);
                 request.AddUrlSegment("id", reservation.Id);
                 _authRepository.AddTokenToRequest(request);
                 return client.Execute(request).StatusCode;
-            }
-            catch
-            {
-                return HttpStatusCode.BadRequest;
-            }
         }
         public IEnumerable<ReservationDTO> GetAll()
         {
-            try
-            {
                 List<ReservationDTO> res = null;
                 var client = new RestClient(_constring);
                 var request = new RestRequest("/reservation", Method.GET);
                 if (_authRepository.AddTokenToRequest(request))
                 {
-                    var content = client.Execute(request).Content;
-                    res = JsonConvert.DeserializeObject<List<ReservationDTO>>(content);
+                    var response = client.Execute(request);
+                    res = response.StatusCode == HttpStatusCode.OK ? 
+                        JsonConvert.DeserializeObject<List<ReservationDTO>>(response.Content) : new List<ReservationDTO>();
                 }
 
                 return res;
-            }
-            catch
-            {
-                return new List<ReservationDTO>();
-            }
         }
     }
 }

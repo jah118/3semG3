@@ -392,7 +392,8 @@ namespace RestaurantDesktopClient.Views.ManageReservation
                     else if (res == HttpStatusCode.MethodNotAllowed)
                     {
                         MessageBox.Show("Du har ikke tilladelse til at slette en reservation");
-                    }else if (res == HttpStatusCode.BadRequest)
+                    }
+                    else if (res == 0)
                     {
                         MessageBox.Show("Forbindelsen til serveren fejlede");
                     }
@@ -447,9 +448,12 @@ namespace RestaurantDesktopClient.Views.ManageReservation
             if (Validation.ReservationValidForCreate(SelectedReservation))
             {
                 res = _reservationRepository.Create(SelectedReservation);
-                if (res == null) MessageBox.Show("Fejl ved oprettelse af reservation");
-                UpdateSelectedReservation(res);
-                RaisePropertyChanged(() => ReservationSearchList);
+                if (res == null || res.Id == 0) MessageBox.Show("Fejl ved oprettelse af reservation");
+                else
+                {
+                    UpdateSelectedReservation(res);
+                    RaisePropertyChanged(() => ReservationSearchList);
+                }
             }
 
             return res;

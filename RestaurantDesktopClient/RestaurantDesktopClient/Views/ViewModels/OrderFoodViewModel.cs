@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Data;
 using System.Linq;
+using System.Windows;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.CommandWpf;
 using GalaSoft.MvvmLight.Messaging;
@@ -126,7 +127,7 @@ namespace RestaurantDesktopClient.Views.ViewModels
         }
         private void SaveClicked()
         {
-            _orderRepository.Create(new OrderDTO()
+            var createdOrder = _orderRepository.Create(new OrderDTO()
             {
                 EmployeeID = 2, //TODO change when login are ready
                 OrderLines = _ordersFood.ToList(),
@@ -134,7 +135,14 @@ namespace RestaurantDesktopClient.Views.ViewModels
                 ReservationID = _reservationId,
                 PaymentCondition = SelectedPaymentCondition.ToString(),
             });
-            MainWindow.ChangeFrame(new ManageReservationView());
+            if (createdOrder != null && createdOrder.OrderNo != 0)
+            {
+                MainWindow.ChangeFrame(new ManageReservationView());
+            }
+            else
+            {
+                MessageBox.Show("Noget gik galt under oprettelse af en order");
+            }
         }
         private void AddToSummary(FoodDTO obj)
         {
