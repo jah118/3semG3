@@ -23,11 +23,6 @@ namespace RestaurantWebApp.Service
             _authRepository = authRepository;
         }
 
-        //public CustomerService(string constring)
-        //{
-        //    _constring = constring;
-        //}
-
         public CustomerDTO GetById(int id)
         {
             var client = new RestClient(_constring);

@@ -1,25 +1,25 @@
-using RestaurantWebApp.DataTransferObject;
-using RestaurantWebApp.Model;
-using RestaurantWebApp.Service.Interfaces;
-using RestaurantWebApp.Util;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Web.Mvc;
+using RestaurantWebApp.DataTransferObject;
+using RestaurantWebApp.Model;
+using RestaurantWebApp.Service.Interfaces;
+using RestaurantWebApp.Util;
 
 namespace RestaurantWebApp.Controllers
 {
-    [Authorize]
+    [LoginRequired]
     public class BookingController : Controller
     {
+        private readonly IAuthService _authRepository;
         private readonly IFoodService _foodService;
         private readonly IOrderService _orderService;
 
         private readonly IReservationService _reservationService;
         private readonly ITableService _tableService;
-        private ControllerContext _context = new ControllerContext();
 
         public BookingController(IReservationService reservationService, ITableService tableService,
             IFoodService foodService, IOrderService orderService)
@@ -30,14 +30,29 @@ namespace RestaurantWebApp.Controllers
             _orderService = orderService;
         }
 
+        public BookingController(IReservationService reservationService, ITableService tableService,
+            IFoodService foodService, IOrderService orderService, IAuthService authRepository)
+        {
+            _reservationService = reservationService;
+            _tableService = tableService;
+            _foodService = foodService;
+            _orderService = orderService;
+            _authRepository = authRepository;
+        }
+
         // GET: Booking/Reservation
         [HttpGet]
         public ActionResult Reservation()
         {
             var tables = _tableService.GetAll();
             if (tables == null) return new HttpStatusCodeResult(HttpStatusCode.ServiceUnavailable);
-
+            var cus = (CustomerDTO)Session["Customer"];
             var reservation = new ReservationDTO();
+            if (cus != null)
+            {
+                reservation.Customer = cus;
+
+            }
             return View(reservation);
         }
 
@@ -46,6 +61,7 @@ namespace RestaurantWebApp.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Reservation(ReservationDTO reservation)
         {
+
             var date = Request.Form["ReservationTimeHid"];
             if (DateTime.TryParse(date, out var dt3))
                 reservation.ReservationTime = dt3;
@@ -80,7 +96,6 @@ namespace RestaurantWebApp.Controllers
 
             if (response != null && reservation.OrderingFood && response.Id > 0)
                 return RedirectToAction("OrderFood", response);
-
 
 
             return View(reservation);
@@ -157,7 +172,7 @@ namespace RestaurantWebApp.Controllers
 
                 var response = _orderService.Create(order);
 
-                if (response != null) return RedirectToAction("Index","Home");
+                if (response != null) return RedirectToAction("Index", "Home");
             }
             else
             {
@@ -172,6 +187,5 @@ namespace RestaurantWebApp.Controllers
 
             return View(cvm);
         }
-
     }
 }

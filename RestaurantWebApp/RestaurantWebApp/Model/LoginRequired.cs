@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+﻿using System.Web;
 using System.Web.Mvc;
-using RestSharp.Authenticators;
+using System.Web.Routing;
 
 namespace RestaurantWebApp.Model
 {
@@ -17,10 +14,15 @@ namespace RestaurantWebApp.Model
 
         protected override void HandleUnauthorizedRequest(AuthorizationContext filterContext)
         {
-            //base.HandleUnauthorizedRequest(filterContext);
-            //filterContext.Result = new HttpUnauthorizedResult();
-            //filterContext.Result = new RedirectResult("Account/Login");
-            filterContext.Result = new RedirectResult("Login");
+            var context = HttpContext.Current;
+            HttpContext.Current.Session["returnUrl"] = context.Request.Url.AbsoluteUri;
+
+            filterContext.Result = new RedirectToRouteResult(
+                new RouteValueDictionary
+                {
+                    {"action", "Login"},
+                    {"controller", "Account"}
+                });
         }
     }
 }
