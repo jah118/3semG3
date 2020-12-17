@@ -30,14 +30,6 @@ namespace RestaurantWebApp.Controllers
             _orderService = orderService;
         }
 
-        // GET: Booking
-        [HttpGet]
-        [AllowAnonymous]
-        public ActionResult Index()
-        {
-            return View();
-        }
-
         // GET: Booking/Reservation
         [HttpGet]
         public ActionResult Reservation()
@@ -84,7 +76,7 @@ namespace RestaurantWebApp.Controllers
             var response = _reservationService.Create(reservation);
 
             if (response != null && reservation.OrderingFood == false && response.Id > 0)
-                return RedirectToAction("Index");
+                return RedirectToAction("Index", "Home");
 
             if (response != null && reservation.OrderingFood && response.Id > 0)
                 return RedirectToAction("OrderFood", response);
@@ -165,7 +157,7 @@ namespace RestaurantWebApp.Controllers
 
                 var response = _orderService.Create(order);
 
-                if (response != null) return RedirectToAction("Index");
+                if (response != null) return RedirectToAction("Index","Home");
             }
             else
             {
@@ -181,10 +173,5 @@ namespace RestaurantWebApp.Controllers
             return View(cvm);
         }
 
-        [HttpGet]
-        public ActionResult About()
-        {
-            return View();
-        }
     }
 }
