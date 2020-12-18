@@ -68,11 +68,6 @@ namespace RestaurantWebApp.Controllers
                     return View(reservation);
                 }
 
-            //if (!ModelState.IsValid)
-            //{
-            //    return View(reservation);
-            //}
-
             var response = _reservationService.Create(reservation);
 
             if (response != null && reservation.OrderingFood == false && response.Id > 0)
