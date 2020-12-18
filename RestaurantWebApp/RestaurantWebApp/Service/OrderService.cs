@@ -12,13 +12,12 @@ namespace RestaurantWebApp.Service
     {
         private string _conString;
 
-        public OrderService(IOrderService configString)
-        {
-        }
+        private readonly IAuthService _authRepository;
 
-        public OrderService(string configString)
+        public OrderService(string constring, IAuthService authRepository)
         {
-            this._conString = configString;
+            _conString = constring;
+            _authRepository = authRepository;
         }
 
         public OrderDTO Create(OrderDTO obj)
@@ -27,6 +26,7 @@ namespace RestaurantWebApp.Service
             var request = new RestRequest("/Order", Method.POST);
             string json = JsonConvert.SerializeObject(obj);
             request.AddJsonBody(json);
+            //_authRepository.AddTokenToRequest(request);
             var response = client.Execute(request).Content;
             var res = JsonConvert.DeserializeObject<OrderDTO>(response);
             return res;

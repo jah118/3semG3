@@ -11,15 +11,16 @@ using System.Web.Mvc;
 
 namespace RestaurantWebApp.Controllers
 {
-    //[Authorize]
+    [LoginRequired]
     public class BookingController : Controller
     {
+        private readonly IAuthService _authRepository;
+        private readonly IService<CustomerDTO> _customerservice;
         private readonly IFoodService _foodService;
         private readonly IOrderService _orderService;
 
         private readonly IReservationService _reservationService;
         private readonly ITableService _tableService;
-        private ControllerContext _context = new ControllerContext();
 
         public BookingController(IReservationService reservationService, ITableService tableService,
             IFoodService foodService, IOrderService orderService)
@@ -30,14 +31,34 @@ namespace RestaurantWebApp.Controllers
             _orderService = orderService;
         }
 
+        public BookingController(IReservationService reservationService, ITableService tableService,
+            IFoodService foodService, IOrderService orderService, IAuthService authRepository,
+            IService<CustomerDTO> customerService)
+        {
+            _reservationService = reservationService;
+            _tableService = tableService;
+            _foodService = foodService;
+            _orderService = orderService;
+            _authRepository = authRepository;
+            _customerservice = customerService;
+        }
+
         // GET: Booking/Reservation
         [HttpGet]
         public ActionResult Reservation()
         {
-            var tables = _tableService.GetAll();
-            if (tables == null) return new HttpStatusCodeResult(HttpStatusCode.ServiceUnavailable);
-
             var reservation = new ReservationDTO();
+            if (Session["idUser"] != null)
+            {
+                var current = Session["idUser"];
+                //TODO add so takes current customer
+                var customer = _customerservice.GetById((int)current);
+                if (customer == null) return new HttpStatusCodeResult(HttpStatusCode.ServiceUnavailable);
+
+                reservation.Customer = customer;
+            }
+
+
             return View(reservation);
         }
 
@@ -75,8 +96,6 @@ namespace RestaurantWebApp.Controllers
 
             if (response != null && reservation.OrderingFood && response.Id > 0)
                 return RedirectToAction("OrderFood", response);
-
-
 
             return View(reservation);
         }
@@ -152,7 +171,7 @@ namespace RestaurantWebApp.Controllers
 
                 var response = _orderService.Create(order);
 
-                if (response != null) return RedirectToAction("Index","Home");
+                if (response != null) return RedirectToAction("Index", "Home");
             }
             else
             {
@@ -167,6 +186,5 @@ namespace RestaurantWebApp.Controllers
 
             return View(cvm);
         }
-
     }
 }
