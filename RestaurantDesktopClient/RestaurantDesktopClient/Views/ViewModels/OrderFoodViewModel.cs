@@ -1,5 +1,4 @@
-﻿using DataAccess.DataTransferObjects;
-using RestaurantDesktopClient.DataTransferObject;
+﻿using RestaurantDesktopClient.DataTransferObject;
 using RestaurantDesktopClient.Services.OrderService;
 using System;
 using System.Collections.Generic;
@@ -19,9 +18,13 @@ namespace RestaurantDesktopClient.Views.ViewModels
     public class OrderFoodViewModel : ViewModelBase
     {
         #region Fields
+
         private int _reservationId;
+
         private ObservableCollection<OrderLineDTO> _ordersFood;
+
         #endregion
+
         #region Properties
 
         public string SummaryPrice
@@ -37,15 +40,16 @@ namespace RestaurantDesktopClient.Views.ViewModels
                 return res + " kr.";
             }
         }
+
         public PaymentCondition SelectedPaymentCondition { get; set; }
+
         public ObservableCollection<OrderLineDTO> SummaryFoods
         {
-            get
-            {
-                return _ordersFood;
-            }
-            set { }
+            get { return _ordersFood; }
+
+            set => _ordersFood = value;
         }
+
         public List<FoodDTO> FoodSearchList
         {
             get
@@ -53,8 +57,8 @@ namespace RestaurantDesktopClient.Views.ViewModels
                 return _foodRepository.GetAll()
                     .Where(x => x.FoodCategoryName.Equals("Mad")).ToList();
             }
-            set { }
         }
+
         public List<FoodDTO> DrinkSearchList
         {
             get
@@ -62,35 +66,32 @@ namespace RestaurantDesktopClient.Views.ViewModels
                 return _foodRepository.GetAll()
                     .Where(x => x.FoodCategoryName.Equals("Drikkevare")).ToList();
             }
-            set { }
         }
+
         private readonly IRepository<FoodDTO> _foodRepository;
+
         private readonly IRepository<OrderDTO> _orderRepository;
+
         public FoodDTO SelectedFood
         {
             get { return null; }
-            set
-            {
-                AddToSummary(value);
-            }
+            set => AddToSummary(value);
         }
+
         public FoodDTO SelectedDrink
         {
             get { return null; }
-            set
-            {
-                AddToSummary(value);
-            }
+            set => AddToSummary(value);
         }
+
         public OrderLineDTO SelectedSummaryFood
         {
             get { return null; }
-            set
-            {
-                RemoveFromSummary(value);
-            }
+            set => RemoveFromSummary(value);
         }
+
         #endregion
+
         #region Relaycommand
         public RelayCommand BtnCancelClicked { get; set; }
         public RelayCommand BtnSaveClicked { get; set; }
@@ -109,6 +110,7 @@ namespace RestaurantDesktopClient.Views.ViewModels
         public void ChangeReservation(ReservationSelection message)
         {
             _reservationId = message.Selected;
+            //Gets order from order repository by reservationId, if multiplie order newest selected 
             var order = _orderRepository.GetAll()
                 .Where(x => x.ReservationID == _reservationId)
                 .OrderBy(x => x.OrderDate)
@@ -125,6 +127,7 @@ namespace RestaurantDesktopClient.Views.ViewModels
         {
             MainWindow.ChangeFrame(new ManageReservationView());
         }
+
         private void SaveClicked()
         {
             var createdOrder = _orderRepository.Create(new OrderDTO()
@@ -144,6 +147,7 @@ namespace RestaurantDesktopClient.Views.ViewModels
                 MessageBox.Show("Noget gik galt under oprettelse af en order");
             }
         }
+
         private void AddToSummary(FoodDTO obj)
         {
             var found = SummaryFoods.FirstOrDefault(x => x.Food.Id == obj.Id);
@@ -158,6 +162,7 @@ namespace RestaurantDesktopClient.Views.ViewModels
             }
             RaisePropertyChanged(() => SummaryPrice);
         }
+
         private void RemoveFromSummary(OrderLineDTO obj)
         {
             if (obj.Quantity > 1)

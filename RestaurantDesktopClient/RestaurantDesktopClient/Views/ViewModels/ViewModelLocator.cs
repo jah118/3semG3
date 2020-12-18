@@ -15,14 +15,14 @@
 using System;
 using System.Configuration;
 using CommonServiceLocator;
-using DataAccess.DataTransferObjects;
-using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Ioc;
-using RestaurantDesktopClient.Reservation;
+using RestaurantDesktopClient.DataTransferObject;
 using RestaurantDesktopClient.Services;
 using RestaurantDesktopClient.Services.AuthorizationService;
 using RestaurantDesktopClient.Services.CustomerService;
+using RestaurantDesktopClient.Services.FoodsService;
 using RestaurantDesktopClient.Services.OrderService;
+using RestaurantDesktopClient.Services.ReservationService;
 using RestaurantDesktopClient.Services.Table_Service;
 using RestaurantDesktopClient.Views.ManageReservation;
 

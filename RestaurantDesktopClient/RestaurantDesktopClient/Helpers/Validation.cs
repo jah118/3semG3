@@ -1,11 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using System.Windows;
-using DataAccess.DataTransferObjects;
+using RestaurantDesktopClient.DataTransferObject;
 using RestaurantDesktopClient.Services;
 
 namespace RestaurantDesktopClient.Helpers
@@ -16,7 +13,9 @@ namespace RestaurantDesktopClient.Helpers
         {
             string regexPattern = @"^[0-9]+$";
             bool res = Regex.IsMatch(input, regexPattern);
+
             if (!res && showMessage) MessageBox.Show("Skal være et nummer");
+
             return res;
         }
 
@@ -24,6 +23,7 @@ namespace RestaurantDesktopClient.Helpers
         {
             var res = value >= DateTime.Now;
             if (!res && showMessage) MessageBox.Show("Tidspunktet skal være efter nuværende tidspunkt");
+
             return res;
         }
 

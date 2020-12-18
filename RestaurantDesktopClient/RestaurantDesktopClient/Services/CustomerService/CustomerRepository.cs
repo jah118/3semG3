@@ -1,14 +1,9 @@
-﻿using DataAccess.DataTransferObjects;
-using Newtonsoft.Json;
-using RestaurantDesktopClient.Views.ViewModels;
+﻿using Newtonsoft.Json;
 using RestSharp;
 using System;
 using System.Collections.Generic;
-using System.Configuration;
-using System.Linq;
 using System.Net;
-using System.Text;
-using System.Threading.Tasks;
+using RestaurantDesktopClient.DataTransferObject;
 
 namespace RestaurantDesktopClient.Services.CustomerService
 {
@@ -39,6 +34,7 @@ namespace RestaurantDesktopClient.Services.CustomerService
                 var request = new RestRequest("/customer/{Id}", Method.GET);
                 request.AddUrlSegment("Id", customerId);
                 _authRepository.AddTokenToRequest(request);
+
                 var response = client.Execute(request);
 
                 return response.StatusCode == HttpStatusCode.OK

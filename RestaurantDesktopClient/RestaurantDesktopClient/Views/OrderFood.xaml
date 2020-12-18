@@ -3,8 +3,8 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-      xmlns:local="clr-namespace:DataAccess.DataTransferObjects"
       xmlns:sys="clr-namespace:System;assembly=mscorlib"
+      xmlns:dataTransferObject="clr-namespace:RestaurantDesktopClient.DataTransferObject"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
       Title="OrderFood"
@@ -12,7 +12,7 @@
     <Page.Resources>
         <ObjectDataProvider x:Key="EnumPaymentCondition" MethodName="GetValues" ObjectType="{x:Type sys:Enum}">
             <ObjectDataProvider.MethodParameters>
-                <x:Type TypeName="local:PaymentCondition"/>
+                <x:Type TypeName="dataTransferObject:PaymentCondition"/>
             </ObjectDataProvider.MethodParameters>
         </ObjectDataProvider>
     </Page.Resources>
@@ -44,8 +44,10 @@
 
         </Grid.RowDefinitions>
 
-        <TextBox x:Name="txtFoodSearch" Grid.Row="1" Grid.ColumnSpan="3" Height="20"/>
-        <Button x:Name="btnSearchFood" Content="Søg" Grid.Column="3" Grid.Row="1" Height="20"  />
+        <TextBox x:Name="txtFoodSearch" IsEnabled="False" Grid.Row="1" Grid.ColumnSpan="3" Height="20"/>
+
+        <Button x:Name="btnSearchFood" IsEnabled="False" Content="Søg" Grid.Column="3" Grid.Row="1" Height="20"  />
+
         <ListView x:Name="lvFoodSearchBox" ItemsSource="{Binding FoodSearchList}" SelectedItem="{Binding SelectedFood}" Grid.Row="2" Grid.ColumnSpan="5" Grid.RowSpan="3" Margin="0,0,15,15">
             <ListView.View>
                 <GridView>
@@ -56,9 +58,12 @@
             </ListView.View>
         </ListView>
 
-        <TextBox x:Name="txtDrinkSearch" Grid.Row="5" Grid.ColumnSpan="6" Height="20"/>
-        <Button x:Name="btnSearchDrink" Content="Søg" Grid.Column="8" Grid.Row="1" Height="20"  />
-        <ListView x:Name="lvDrinkSearchBox" ItemsSource="{Binding DrinkSearchList}" SelectedItem="{Binding SelectedDrink}" Grid.Row="2" Grid.ColumnSpan="5" Grid.Column="5" Grid.RowSpan="3" Margin="0,0,15,15">
+        <TextBox x:Name="txtDrinkSearch" IsEnabled="False" Grid.Row="5" Grid.ColumnSpan="6" Height="20"/>
+
+        <Button x:Name="btnSearchDrink" IsEnabled="False" Content="Søg" Grid.Column="8" Grid.Row="1" Height="20"  />
+
+        <ListView x:Name="lvDrinkSearchBox" ItemsSource="{Binding DrinkSearchList}" 
+                  SelectedItem="{Binding SelectedDrink}" Grid.Row="2" Grid.ColumnSpan="5" Grid.Column="5" Grid.RowSpan="3" Margin="0,0,15,15">
             <ListView.View>
                 <GridView>
                     <GridViewColumn DisplayMemberBinding="{Binding Path=Name}" Header="Navn" Width="Auto"/>
@@ -67,9 +72,13 @@
                 </GridView>
             </ListView.View>
         </ListView>
-        <TextBox x:Name="txtSummarySearch" Grid.Row="1" Grid.Column="5" Grid.ColumnSpan="3" Height="20"/>
-        <Button x:Name="btnSearchSummary" Content="Søg" Grid.Column="6" Grid.Row="5" Height="20"  />
-        <ListView x:Name="lvSummarySearchBox" ItemsSource="{Binding SummaryFoods}" SelectedItem="{Binding SelectedSummaryFood}" Grid.Row="6" Grid.RowSpan="3" Grid.ColumnSpan="10" Grid.Column="0" >
+
+        <TextBox x:Name="txtSummarySearch" IsEnabled="False" Grid.Row="1" Grid.Column="5" Grid.ColumnSpan="3" Height="20"/>
+
+        <Button x:Name="btnSearchSummary" IsEnabled="False" Content="Søg" Grid.Column="6" Grid.Row="5" Height="20"  />
+
+        <ListView x:Name="lvSummarySearchBox" ItemsSource="{Binding SummaryFoods}" 
+                  SelectedItem="{Binding SelectedSummaryFood}" Grid.Row="6" Grid.RowSpan="3" Grid.ColumnSpan="10" Grid.Column="0" >
             <ListView.View>
                 <GridView>
                     <GridViewColumn DisplayMemberBinding="{Binding Path=Food.Name}" Header="Navn" Width="Auto"/>
@@ -80,11 +89,18 @@
                 </GridView>
             </ListView.View>
         </ListView>
+
         <Label Name="lblTotalPrice" Content="Total pris:" Grid.Column="2" Grid.Row="9" VerticalAlignment="Center" HorizontalAlignment="Right"/>
+
         <TextBox Name="tbTotalPrice" Text="{Binding SummaryPrice, Mode=OneWay}" Grid.Column="3" Grid.Row="9" Height="20" />
+
         <ComboBox Name="cbbPaymentCondition" ItemsSource="{Binding Source={StaticResource EnumPaymentCondition}}"
                   SelectedItem="{Binding SelectedPaymentCondition, Mode=TwoWay}"  Grid.Column="0" Grid.Row="9" Height="20" />
-        <Button x:Name="btnCancel" Content="Tilbage" Command="{Binding BtnCancelClicked}" Grid.Column="8" Grid.Row="9" Margin="15" />
-        <Button x:Name="btnSave" Content="Gem" Command="{Binding BtnSaveClicked}" Grid.Column="9" Grid.Row="9" Margin="15" />
+
+        <Button x:Name="btnCancel" Content="Tilbage" Command="{Binding BtnCancelClicked}" Grid.Column="7" Grid.Row="9" Margin="15" />
+
+        <Button x:Name="btnUpdate" Content="Opdater" IsEnabled="False" Grid.Column="8" Grid.Row="9" Margin="15" />
+
+        <Button x:Name="btnSave" Content="Opret" Command="{Binding BtnSaveClicked}" Grid.Column="9" Grid.Row="9" Margin="15" />
     </Grid>
 </Page>

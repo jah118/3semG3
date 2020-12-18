@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using DataAccess.DataTransferObjects;
 using RestaurantDesktopClient.DataTransferObject;
 using RestaurantDesktopClient.Views.ViewModels;
 

@@ -1,16 +1,9 @@
-﻿using DataAccess.DataTransferObjects;
-using Newtonsoft.Json;
-using RestaurantDesktopClient.Views.ViewModels;
+﻿using Newtonsoft.Json;
 using RestSharp;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
-using System.Linq;
 using System.Net;
-using System.Text;
-using System.Threading.Tasks;
-using System.Web.UI.WebControls;
-using System.Windows;
 using RestaurantDesktopClient.DataTransferObject;
 
 namespace RestaurantDesktopClient.Services.Table_Service
@@ -25,7 +18,7 @@ namespace RestaurantDesktopClient.Services.Table_Service
             _authRepository = authRepository;
             this._constring = constring;
         }
-        //TODO not used
+
         public IEnumerable<TablesDTO> GetAll()
         {
                 var client = new RestClient(_constring);
@@ -38,7 +31,7 @@ namespace RestaurantDesktopClient.Services.Table_Service
                     JsonConvert.DeserializeObject<List<TablesDTO>>(response.Content) :
                     new List<TablesDTO>();
         }
-        //TODO not Used
+
         public TablesDTO Get(int number)
         {
                 var client = new RestClient(_constring);
@@ -55,6 +48,7 @@ namespace RestaurantDesktopClient.Services.Table_Service
         {
             throw new NotImplementedException();
         }
+
         public List<TablesDTO> GetFreeTables(DateTime date)
         {
                 var constring = ConfigurationManager.ConnectionStrings["ServiceConString"].ConnectionString;
