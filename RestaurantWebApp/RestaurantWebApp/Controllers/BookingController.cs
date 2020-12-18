@@ -11,7 +11,8 @@ using System.Web.Mvc;
 
 namespace RestaurantWebApp.Controllers
 {
-    [LoginRequired]
+    //TODO adding when login is comfirmed
+    //[LoginRequired]
     public class BookingController : Controller
     {
         private readonly IAuthService _authRepository;
