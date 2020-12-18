@@ -127,7 +127,13 @@ namespace RestaurantWebApp.Controllers
             return View(cvm);
         }
 
-        // POST: Booking/OrderFoods
+        
+        /// <summary>
+        ///  POST: Booking/OrderFoods takes custom model
+        /// 
+        /// </summary>
+        /// <param name="cvm"></param>
+        /// <returns></returns>
         [HttpPost]
         public ActionResult OrderFood(CustomViewModel cvm)
         {

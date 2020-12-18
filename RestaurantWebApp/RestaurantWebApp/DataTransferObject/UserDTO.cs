@@ -21,6 +21,5 @@ namespace RestaurantWebApp.DataTransferObject
         [Compare("Password")]
         public string ConfirmPassword { get; set; }
 
-        public string Token { get; set; }
     }
 }

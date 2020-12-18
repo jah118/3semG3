@@ -51,15 +51,9 @@
                                     <li><a class="nav-link" href="javascript:sessionStorage.removeItem('Token');$('#logoutForm').submit();">Log off<span class="sr-only">(current)</span></a></li>
                                 </ul>
                             }
-                            <!--<li class="nav-item active">-->
-                                @*<a class="nav-link" href="/Account/Login">Logout <span class="sr-only">(current)</span></a>*@
-                            <!--</li>-->
-                            @*<li class="nav-item">
-                                <a class="nav-link" href="#">Manage</a>
-                            </li>*@
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    Dropdown
+                                    Settings
                                 </a>
                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
                                     <a class="dropdown-item" href="/Manage/Index">Manage</a>
@@ -89,8 +83,6 @@
             </div>
         </div>
     </div>
-    <!-- /#page-content-wrapper -->
-    <!-- Menu Toggle Script -->
 
     @Scripts.Render("~/bundles/modernizr")
     @Scripts.Render("~/bundles/jquery")

@@ -67,23 +67,18 @@ namespace RestaurantWebApp.Controllers
 
         //POST: Register
         [HttpPost]
-        //[AllowAnonymous]
+        [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public ActionResult Register(UserDTO _user)
+        public ActionResult Register(UserDTO user)
         {
-            if (ModelState.IsValid) return RedirectToAction("Index", "Home");
-
-            //var response = ControllerContext.RequestContext.HttpContext.
-            //if (check == null)
-            //{
-            //    return RedirectToAction("Index");
-            //}
-            //else
-            //{
-            //    ViewBag.error = "Email already exists";
-            //    return View();
-            //}
-
+            if (ModelState.IsValid)
+            {
+                //TODO add create function 
+                // _authRepository.Create(user.Customer, user.Username, user.Password);
+                //if conflic  ViewBag.error = "Email already exists";
+                return RedirectToAction("Index", "Home");
+            }
+            
             return View();
         }
     }
