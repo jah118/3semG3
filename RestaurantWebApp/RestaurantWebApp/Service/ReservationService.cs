@@ -12,10 +12,14 @@ namespace RestaurantWebApp.Service
     {
         private readonly string _connectionString;
 
-        public ReservationService(string constring)
+        private readonly IAuthService _authRepository;
+
+        public ReservationService(string connectionString, IAuthService authRepository)
         {
-            _connectionString = constring;
+            _connectionString = connectionString;
+            _authRepository = authRepository;
         }
+
 
         public IEnumerable<ReservationDTO> GetAll()
         {
@@ -27,6 +31,7 @@ namespace RestaurantWebApp.Service
             var client = new RestClient(_connectionString);
             var request = new RestRequest("/Reservation/{id}", Method.GET);
             request.AddParameter("Id", id);
+            //_authRepository.AddTokenToRequest(request);
             var content = client.Execute(request).Content;
             var res = JsonConvert.DeserializeObject<ReservationDTO>(content);
             return res;
@@ -51,8 +56,8 @@ namespace RestaurantWebApp.Service
         {
             var client = new RestClient(_connectionString);
             var request = new RestRequest("/Reservation/{id}", Method.GET);
-
             request.AddParameter("Id", id);
+            //_authRepository.AddTokenToRequest(request);
             var content = (await client.ExecuteAsync(request)).Content;
             var res = JsonConvert.DeserializeObject<ReservationDTO>(content);
             return res;
@@ -63,6 +68,7 @@ namespace RestaurantWebApp.Service
             var client = new RestClient(_connectionString);
             var request = new RestRequest("/Reservation", Method.POST);
             request.AddJsonBody(obj);
+            //_authRepository.AddTokenToRequest(request);
             var response = await client.ExecuteAsync(request);
             return response;
         }
@@ -82,6 +88,7 @@ namespace RestaurantWebApp.Service
             var client = new RestClient(_connectionString);
             var request = new RestRequest("/Reservation/timeSlot/{date}", Method.GET);
             request.AddUrlSegment("date", date);
+            //_authRepository.AddTokenToRequest(request);
             var content = client.Execute(request).Content;
             var res = JsonConvert.DeserializeObject<AvailableTimesDTO>(content);
             return res;
@@ -93,6 +100,7 @@ namespace RestaurantWebApp.Service
             var request = new RestRequest("/Reservation", Method.POST);
             string json = JsonConvert.SerializeObject(obj);
             request.AddJsonBody(json);
+            //_authRepository.AddTokenToRequest(request);
             var content = client.Execute(request).Content;
             var res = JsonConvert.DeserializeObject<ReservationDTO>(content);
 

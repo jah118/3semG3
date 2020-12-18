@@ -1,15 +1,25 @@
-﻿using RestaurantWebApp.DataTransferObject;
-using System.Web.Mvc;
+﻿using System.Web.Mvc;
+using RestaurantWebApp.DataTransferObject;
+using RestaurantWebApp.Service.Interfaces;
 
 namespace RestaurantWebApp.Controllers
 {
     public class AccountController : Controller
     {
+        private readonly IAuthService _authRepository;
+        private readonly IService<CustomerDTO> _customerService;
+
+        public AccountController(IService<CustomerDTO> customerService, IAuthService authRepository)
+        {
+            _authRepository = authRepository;
+            _customerService = customerService;
+        }
+
         //GET: Login
         [AllowAnonymous]
         public ActionResult Login()
         {
-            UserDTO user = new UserDTO { AccountType = UserRoles.Customer };
+            var user = new UserDTO { AccountType = UserRoles.Customer };
             return View(user);
         }
 
@@ -18,48 +28,34 @@ namespace RestaurantWebApp.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Login(UserDTO user)
         {
-            var s = HttpContext.Response;
-            //var token = user.Token;
-            //var uname = user.Username;
+            //TODO when login is comfirm in api and setup for customer.
+            //Session["Token"] = _authRepository.Authenticate(user.Username, user.Password);
+            //var data = _customerService.GetById(1);
 
-            //if (ModelState.IsValid)
+            //if (data != null)
             //{
-            //    //var data = _db.Users.Where(s => s.Email.Equals(email) && s.Password.Equals(f_password)).ToList();
-            //    //var data = _bs.GetUser(ConfigurationManager.AppSettings["ServiceApi"]);
-            //    if (data.Count() > 0)
-            //    {
-            //        //add session
-            //        Session["FullName"] = data.FirstOrDefault().FirstName + " " + data.FirstOrDefault().LastName;
-            //        Session["Email"] = data.FirstOrDefault().Email;
-            //        Session["idUser"] = data.FirstOrDefault().idUser;
-            //        return RedirectToAction("Index");
-            //    }
-            //    else
-            //    {
-            //        ViewBag.error = "Login failed";
-            //        return RedirectToAction("Login");
-            //    }
+            //    //add session
+            //    Session["FullName"] = data.FirstName + " " + data.LastName;
+            //    Session["Email"] = data.Email;
+            //    Session["idUser"] = data.Id;
+            //    return RedirectToAction("Index", "Home");
             //}
-            return View();
+
+            //ViewBag.error = "Login failed";
+            return RedirectToAction("Login");
+
         }
 
-        //Logout
+        // POST: /Account/Logout
+        [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult Logout()
         {
-            //Session.Clear();//remove session
-            //ControllerContext.HttpContext.Cache.Remove()
+            Session.Clear(); //remove session
+            Session.Abandon();
             return RedirectToAction("Login");
         }
 
-        //
-        // POST: /Account/LogOff
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult LogOff()
-        {
-            //AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
-            return RedirectToAction("Index", "Booking");
-        }
 
         //GET: Register
         [AllowAnonymous]
@@ -73,24 +69,16 @@ namespace RestaurantWebApp.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public ActionResult Register(UserDTO _user)
+        public ActionResult Register(UserDTO user)
         {
             if (ModelState.IsValid)
             {
-                return RedirectToAction("Index");
+                //TODO add create function 
+                // _authRepository.Create(user.Customer, user.Username, user.Password);
+                //if conflic  ViewBag.error = "Email already exists";
+                return RedirectToAction("Index", "Home");
             }
-
-            //var response = ControllerContext.RequestContext.HttpContext.
-            //if (check == null)
-            //{
-            //    return RedirectToAction("Index");
-            //}
-            //else
-            //{
-            //    ViewBag.error = "Email already exists";
-            //    return View();
-            //}
-
+            
             return View();
         }
     }

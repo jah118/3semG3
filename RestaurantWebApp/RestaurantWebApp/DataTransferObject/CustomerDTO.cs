@@ -8,7 +8,7 @@ namespace RestaurantWebApp.DataTransferObject
         {
         }
 
-        public int Id { get; }
+        public int Id { get; set; }
 
         [Required]
         [Display(Name = "Tlf")]
