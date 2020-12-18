@@ -19,7 +19,7 @@ namespace RestaurantWebApp.Controllers
         [AllowAnonymous]
         public ActionResult Login()
         {
-            var user = new UserDTO {AccountType = UserRoles.Customer};
+            var user = new UserDTO { AccountType = UserRoles.Customer };
             return View(user);
         }
 
@@ -28,23 +28,21 @@ namespace RestaurantWebApp.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Login(UserDTO user)
         {
-  
-                Session["Token"] = _authRepository.Authenticate(user.Username, user.Password);
-                var data = _customerService.GetById(1);
+            Session["Token"] = _authRepository.Authenticate(user.Username, user.Password);
+            var data = _customerService.GetById(1);
 
-                if (data != null)
-                {
-                    //add session
-                    Session["FullName"] = data.FirstName + " " + data.LastName;
-                    Session["Email"] = data.Email;
-                    Session["idUser"] = data.Id;
-                    Session["Customer"] = data;
-                    return RedirectToAction("Index", "Home");
-                }
+            if (data != null)
+            {
+                //add session
+                Session["FullName"] = data.FirstName + " " + data.LastName;
+                Session["Email"] = data.Email;
+                Session["idUser"] = data.Id;
+                return RedirectToAction("Index", "Home");
+            }
 
-                ViewBag.error = "Login failed";
-                return RedirectToAction("Login");
-            
+            ViewBag.error = "Login failed";
+            return RedirectToAction("Login");
+
         }
 
         // POST: /Account/Logout
@@ -54,8 +52,6 @@ namespace RestaurantWebApp.Controllers
         {
             Session.Clear(); //remove session
             Session.Abandon();
-            //ControllerContext.HttpContext.Cache.Remove()
-            //ControllerContext.HttpContext.Session.
             return RedirectToAction("Login");
         }
 
