@@ -12,7 +12,7 @@ namespace RestaurantAPI.Controllers
     [ApiConventionType(typeof(DefaultApiConventions))]
     public class FoodController : ControllerBase
     {
-        private IRepository<FoodDTO> _foodRepository;
+        private readonly IRepository<FoodDTO> _foodRepository;
 
         public FoodController(IRepository<FoodDTO> foodRepository)
         {
