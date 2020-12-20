@@ -91,7 +91,7 @@ namespace RestaurantAPI.Controllers.Tests
             Assert.IsNotNull(value);
             Assert.AreEqual(obj.Id, value.Id);
             Assert.IsNotNull(actionResult);
-            Assert.AreEqual(okResult.StatusCode, (int) HttpStatusCode.OK); //TODO fix so type comapre match
+            Assert.AreEqual((int) HttpStatusCode.OK, okResult.StatusCode);
         }
 
         [TestMethod]
@@ -164,7 +164,7 @@ namespace RestaurantAPI.Controllers.Tests
             Assert.IsNotNull(value);
             Assert.IsTrue(value.Id == 41);
             Assert.IsNotNull(actionResult);
-            Assert.AreEqual(okResult.StatusCode, (int) HttpStatusCode.OK); //TODO fix so type comapre match
+            Assert.AreEqual((int) HttpStatusCode.OK, okResult.StatusCode);
         }
 
         [TestMethod]
