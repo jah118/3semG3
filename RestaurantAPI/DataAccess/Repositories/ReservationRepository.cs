@@ -109,7 +109,7 @@ namespace DataAccess.Repositories
                         //update order to cancel and remove tables
                         if (order != null)
                         {
-                            var or = new OrderRepository(_context); //TODO er det dumt er der en bedre måde ?
+                            var or = new OrderRepository(_context); //TODO kan dette gøre anderledes
                             if (or.cancelOrder(order.OrderNo))
                             {
                                 // remove tables
