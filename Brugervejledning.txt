@@ -1,0 +1,67 @@
+Bruger vejledning – API service:
+	1.	Åben RestaurantAPI solution i Visual Studio.
+	2.	Hvis test databasen findes, spring til trin 4.
+	3.	Kør projektet RestaurantUpdater, her bliver databasen generet og test data bliver tilføjet.
+	Et Konsol vindue kommer op, og viser **Success** når opsætning af database og data er færdig.
+	4.	Kør projektet RestaurantAPI, her åbner et browservindue, med fane titel Swagger UI.  
+	5.	Forsæt følgende trin hvis man kun ønsker at teste et API requiest.
+	6.	Klik på det API requiest man ønsker at teste.
+	7.	Klik på ”Try it out” og indset evt. nødvendige parameter.
+	8.	Klik Execute, Under Responses vises det pågældende respons fra API’en. Respone body er i Json format. BEMÆRK! Flere requiest kræver man er logget ind og kan derfor ikke testes fra Swagger
+
+Bruger vejledning – Webklient:
+	1.	Hvis Api’en ikke køre følg Bruger vejledning – API service inden næste punkt.
+	2.	Kør projektet RestaurantWebApp, en forside vil åbne i Browser vinduet.
+	3.	Klik ”bestil bord” i Menuen til venstre.
+	4.	Udfyld alle felter fra toppen.
+	5.	Afslut ved at klik Gem og afslut, og man vil blive sendt til forsiden. Bliver man ikke sendt til forside, ret de oplysninger der ikke var korrekte. Har man valgt at bestille mad og drikke vil man blive sendt til siden ”Madbestilling” og man kan følge guiden fra næste punkt.
+	6.	Klik på den ønsket ret eller drikkevare og til på den tilhørende Vælg knap, hvor efter det vil dukke op i listen forneden.
+	7.	Ønsker man at fjerne noget fra af det valgte klikker man på det ønsket element og klikker fjern ret
+	8.	Når den ønsket ordre er færdig, klik Gem mad og drikke. Hvorefter man vil blive ført til forsiden.
+
+Bruger vejledning – Desktopklient: 
+	1.	Hvis Api’en ikke køre følg Bruger vejledning – API service inden næste punkt.
+	2.	Er der oprettet en bruger, spring til trin 7
+	3.	Gå til browseren, med fane titel Swagger UI.
+	4.	Vælg under User, fanen ”Post /api/User/Post” 
+	5.	klik ”Try it out” inset Request body:
+	{
+	  "user": {
+		"username": "admin",
+		"employee": {
+		  "title": "string",
+		  "phone": "78977854",
+		  "email": "string",
+		  "firstName": "string",
+		  "lastName": "string",
+		  "address": "string",
+		  "zipCode": "1122",
+		  "city": "string"
+		},
+		"accountType": "Employee"
+	  },
+	  "username": "admin",
+	  "password": "123456",
+	  "role": "Employee"
+	}
+	6.	Klik Execute, Nu er et login oprette med brugernavn ”admin”, og password ”123456”, forsæt nu fra desktopklienten.
+	7.	Indset username og password klik Login.
+	8.	Vælg Administrere Reservationer.
+	9.	ønskes det at opdatere en reservation spring til punkt 17
+	10.	Kontroller at Reservations nummer er angivet til ”0”, eller tryk på ”Nulstil”
+	11.	indset oplysninger på reservationen.
+	12.	ønskes det at bestille mad klik på bestil mad eller afslut ved at klik ”Opret”, hvorefter reservation kommer i listen til venstre.
+	13.	Har man klikket Bestil mad, kommer man til et vindue hvor der er 3 felter, som indeholder retter, drikkevare og en ordrelist.
+	14.	klik på de retter/drikke man ønsker.
+	15.	Fortryder man et valg, skal man blot klikke på elementet i ordrelisten hvorefter det forsvinder. 
+	Priser og total priser står i og under ordrelisten.
+	16.	Vælg som det sidste en status på ordren i fold ud boksen i venstre nederste hjørne.
+	17.	Afslut med Opret, hvorefter man kommer til oversigten over reservationer.
+	18.	For at opdatere en reservation, klik på reservation i listen over reservation til venstre.
+	19.	Ret de oplysninger man ønsker
+	20.	klik derefter på ”Opdater” eller ”Slet” for at ændre eller fjerne reservationen.
+
+
+
+
+
