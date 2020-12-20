@@ -15,8 +15,6 @@ namespace DataAccess.DataTransferObjects.Converters
             };
         }
 
-
-        //TODO add a way to get to get the id from db by the string name. 
         public static PaymentCondition Convert(PaymentConditionDTO obj)
         {
             return new PaymentCondition

@@ -10,7 +10,7 @@ namespace DataAccess.Models
         {
             if (toValidate == null) return false;
             if (!Customer.Validate(toValidate.Customer)) return false;
-            //if (toValidate.ReservationTime <= DateTime.Today) return false; //todo BETTER CHECK THIS FAILS IF SAME DAÝ 
+           // if (toValidate.ReservationTime < DateTime.Now.AddDays(-1)) return false; //todo BETTER CHECK THIS FAILS IF SAME DAÝ 
             if (0>=(toValidate.NoOfPeople)) return false;
             if (toValidate.Tables.ToList().Count <= 0) return false;
             //TODO VALIDATION

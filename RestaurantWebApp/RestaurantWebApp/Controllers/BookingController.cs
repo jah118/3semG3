@@ -23,6 +23,7 @@ namespace RestaurantWebApp.Controllers
         private readonly IReservationService _reservationService;
         private readonly ITableService _tableService;
 
+        //This use as long there no login feature implemented 
         public BookingController(IReservationService reservationService, ITableService tableService,
             IFoodService foodService, IOrderService orderService)
         {
@@ -31,7 +32,7 @@ namespace RestaurantWebApp.Controllers
             _foodService = foodService;
             _orderService = orderService;
         }
-
+        //This constructor is used when a person is login
         public BookingController(IReservationService reservationService, ITableService tableService,
             IFoodService foodService, IOrderService orderService, IAuthService authRepository,
             IService<CustomerDTO> customerService)
@@ -49,25 +50,24 @@ namespace RestaurantWebApp.Controllers
         public ActionResult Reservation()
         {
             var reservation = new ReservationDTO();
-            if (Session["idUser"] != null)
+            if (Session["UserId"] != null)
             {
-                var current = Session["idUser"];
-                //TODO add so takes current customer
+                var current = Session["UserId"];
                 var customer = _customerservice.GetById((int)current);
                 if (customer == null) return new HttpStatusCodeResult(HttpStatusCode.ServiceUnavailable);
 
                 reservation.Customer = customer;
             }
-
-
             return View(reservation);
         }
 
         // POST: Booking/Reservation
+        //
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Reservation(ReservationDTO reservation)
         {
+            //takes a string from Request and tries to convert to datetime
             var date = Request.Form["ReservationTimeHid"];
             if (DateTime.TryParse(date, out var dt3))
                 reservation.ReservationTime = dt3;
@@ -107,11 +107,11 @@ namespace RestaurantWebApp.Controllers
             if (reservation == null || reservation.Id <= 0)
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest, "no valid reservaion");
 
-            var fdto = _foodService.GetAll();
-            if (fdto == null) return new HttpStatusCodeResult(HttpStatusCode.ServiceUnavailable);
+            var allFoodsFromService = _foodService.GetAll();
+            if (allFoodsFromService == null) return new HttpStatusCodeResult(HttpStatusCode.ServiceUnavailable);
             var foods = new List<FoodDTO>();
             var drinks = new List<FoodDTO>();
-            foreach (var item in fdto)
+            foreach (var item in allFoodsFromService)
                 if (item.FoodCategoryName.Equals("Mad"))
                     foods.Add(item);
                 else if (item.FoodCategoryName.Equals("Drikkevare")) drinks.Add(item);
@@ -127,10 +127,10 @@ namespace RestaurantWebApp.Controllers
             return View(cvm);
         }
 
-        
+
         /// <summary>
         ///  POST: Booking/OrderFoods takes custom model
-        /// 
+        /// post of a order, it runs through the Request to rebuild the custom view 
         /// </summary>
         /// <param name="cvm"></param>
         /// <returns></returns>

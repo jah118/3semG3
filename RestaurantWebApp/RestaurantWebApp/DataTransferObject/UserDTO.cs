@@ -12,7 +12,6 @@ namespace RestaurantWebApp.DataTransferObject
         public string Username { get; set; }
 
         public CustomerDTO Customer { get; set; }
-        public EmployeeDTO Employee { get; set; }
         public UserRoles AccountType { get; set; }
         [Required]
         [DataType(DataType.Password)]

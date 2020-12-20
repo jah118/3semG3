@@ -37,7 +37,7 @@ namespace RestaurantWebApp.Controllers
             //    //add session
             //    Session["FullName"] = data.FirstName + " " + data.LastName;
             //    Session["Email"] = data.Email;
-            //    Session["idUser"] = data.Id;
+            //    Session["UserId"] = data.Id;
             //    return RedirectToAction("Index", "Home");
             //}
 
@@ -73,7 +73,7 @@ namespace RestaurantWebApp.Controllers
         {
             if (ModelState.IsValid)
             {
-                //TODO add create function 
+                //TODO implemented create function in auth service as customer
                 // _authRepository.Create(user.Customer, user.Username, user.Password);
                 //if conflic  ViewBag.error = "Email already exists";
                 return RedirectToAction("Index", "Home");
