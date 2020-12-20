@@ -38,6 +38,12 @@ namespace DataAccess.Repositories
             {
                 employee.Person.Location.ZipCodeNavigation = zipResolution;
             }
+
+            var titleResolution = _context.EmployeeTitle.FirstOrDefault(title => title.Title == obj.Title);
+            if (titleResolution != null)
+            {
+                employee.Title = titleResolution;
+            }
             return _context.Add(employee);
         }
 
