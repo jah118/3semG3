@@ -109,7 +109,7 @@
             <Button x:Name="btnDelete" Margin="5,2,5,0" Content="Slet" Grid.Column="1" 
                     Command="{Binding RemoveReservationCommand}"/>
 
-            <Button x:Name="btnUpdate" Margin="5,2,0,0" Content="Updater" Grid.Column="2" 
+            <Button x:Name="btnUpdate" Margin="5,2,0,0" Content="Opdater" Grid.Column="2" 
                     Command="{Binding UpdateReservationCommand}"/>
         </Grid>
     </Grid>

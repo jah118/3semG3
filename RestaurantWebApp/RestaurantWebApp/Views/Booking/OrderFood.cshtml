@@ -39,7 +39,7 @@
         <div class="row">
             <hr />
             <div class="form-group">
-                <label class="col-md-5"> Valgt mad</label>
+                <label class="col-md-5"> Valgt mad/drikke</label>
                 <div class="col-md-10">
                     @Html.ListBoxFor(model => model.OrderSummary, new SelectList(Model.OrderSummary, "Id", "Name"), new { size = "20", style = "width:100%" })
                     <input id="RemoveFromSummaryList" type="button" value="Fjern ret/retter" />
