@@ -6,6 +6,7 @@ namespace DataAccess.DataTransferObjects.Converters
     {
         public static EmployeeDTO Convert(Employee employee)
         {
+            if (employee == null) return null;
             return new EmployeeDTO
             {
                 Id = employee.Id,

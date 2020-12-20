@@ -22,8 +22,7 @@ namespace RestaurantAPI.Authentication
         public string Authenticate(string username, string password, UserRoles role)
         {
             string token = null;
-            //if (_authRepo.AuthenticateUser(username, password, role))
-            if (true)
+            if (_authRepo.AuthenticateUser(username, password, role))
             {
                 var tokenHandler = new JwtSecurityTokenHandler();
                 var tokenKey = Encoding.ASCII.GetBytes(_signingKey);

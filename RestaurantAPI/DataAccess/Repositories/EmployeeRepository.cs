@@ -32,13 +32,13 @@ namespace DataAccess.Repositories
         internal EntityEntry<Employee> CreateEmployee(EmployeeDTO obj)
         {
             var employee = Converter.Convert(obj);
-            var zipresolution = _context.ZipId.FirstOrDefault(zip =>
-                zip.ZipCode.Equals(employee.Person.Location.ZipCodeNavigation.ZipCode));
-            if (zipresolution != null)
+            var zipResolution = _context.ZipId.FirstOrDefault(zip =>
+                zip.ZipCode == obj.ZipCode);
+            if (zipResolution != null)
             {
-                employee.Person.Location.ZipCodeNavigation = zipresolution;
+                employee.Person.Location.ZipCodeNavigation = zipResolution;
             }
-            return _context.Add(Converter.Convert(obj));
+            return _context.Add(employee);
         }
 
         public bool Delete(int id, bool transactionEndpoint = true)
