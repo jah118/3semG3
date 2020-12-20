@@ -70,18 +70,6 @@ namespace DataAccess.Repositories
             //if outside opening hours return null
             if (dateTime.TimeOfDay < startTime || dateTime.TimeOfDay > endTime) return null;
 
-            var startDateTime = dateTime;
-            var endDateTime = dateTime.AddHours(1).AddMinutes(30);
-
-            //TODO lige snakke den her over
-
-            //var reservedInTime = _context.Reservation
-            //    .Include(r => r.ReservationsTables)
-            //    .ThenInclude(r => r.RestaurantTables)
-            //    .Where(r =>
-            //        r.ReservationTime <= endDateTime &&
-            //        r.ReservationTime >= startDateTime).AsNoTracking();
-
             var reservedInTime = _context.Reservation
                 .Include(r => r.ReservationsTables)
                 .ThenInclude(r => r.RestaurantTables)
