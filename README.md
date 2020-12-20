@@ -10,6 +10,8 @@ To get the project up and runningfor development and testing purposes.
 ### Setup
 A step by step series that tells you what you need to do, to run the Wep-Api, desktop-client and web-client with a local database.
 
+For in-depth setup and usage see Brugervejledning.txt in danish
+
 ```
 1. Open up all 3 Visual Studio solutions
 2. In the RestaurantAPI-solution run the RestaurantUpdater project to create local db with test data,  
