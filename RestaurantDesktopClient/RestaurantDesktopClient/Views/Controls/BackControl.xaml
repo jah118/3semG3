@@ -3,22 +3,16 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:RestaurantDesktopClient.Views.Controls"
              mc:Ignorable="d" 
             d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="1*"/>
-
-
-
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-
             <RowDefinition Height="1*" />
-
-
         </Grid.RowDefinitions>
+
         <Button Name ="btnBack" Content="Back" HorizontalAlignment="Right" VerticalAlignment="Bottom" FontSize="14" />
 
     </Grid>

@@ -1,18 +1,10 @@
-﻿using DataAccess.DataTransferObjects;
-using Newtonsoft.Json;
-using RestaurantDesktopClient.Views.ViewModels;
-using RestSharp;
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Linq;
+﻿using System.Collections.Generic;
 using System.Net;
-using System.Text;
-using System.Threading.Tasks;
-using RestaurantDesktopClient.Services;
+using Newtonsoft.Json;
+using RestaurantDesktopClient.DataTransferObject;
+using RestSharp;
 
-namespace RestaurantDesktopClient.Reservation
+namespace RestaurantDesktopClient.Services.ReservationService
 {
     public class ReservationRepository : IRepository<ReservationDTO>
     {
@@ -27,96 +19,76 @@ namespace RestaurantDesktopClient.Reservation
 
         public ReservationDTO Create(ReservationDTO reservation)
         {
-            ReservationDTO res = null;
-            try
-            {
                 var client = new RestClient(_constring);
                 string json = JsonConvert.SerializeObject(reservation);
                 var request = new RestRequest("/reservation", Method.POST);
                 request.AddJsonBody(json);
-                var response = client.Execute(request).Content;
-                res = JsonConvert.DeserializeObject<ReservationDTO>(response);
-            }
-            catch
-            {
-            }
-            return res;
+                var response = client.Execute(request);
+
+                return response.StatusCode == HttpStatusCode.OK ? JsonConvert.DeserializeObject<ReservationDTO>(response.Content) : null;
         }
 
         public ReservationDTO Get(int id)
         {
-            ReservationDTO res = null;
-            try
-            {
+                ReservationDTO res = null;
                 var client = new RestClient(_constring);
                 var request = new RestRequest("/reservation/{Id}", Method.GET);
                 request.AddUrlSegment("Id", id);
+
                 if (_authRepository.AddTokenToRequest(request))
                 {
-                    var response = client.Execute(request).Content;
-                    res = JsonConvert.DeserializeObject<ReservationDTO>(response);
+                    var response = client.Execute(request);
+                    res = response.StatusCode == HttpStatusCode.OK ? JsonConvert.DeserializeObject<ReservationDTO>(response.Content) : null;
                 }
-            }
-            catch
-            {
-            }
-            return res;
+
+                return res;
+
         }
+
         public ReservationDTO Update(ReservationDTO reservation)
         {
-            ReservationDTO res = null;
-            try
-            {
+                ReservationDTO res = null;
                 var client = new RestClient(_constring);
                 string json = JsonConvert.SerializeObject(reservation);
                 var request = new RestRequest("/reservation/{id}", Method.PUT);
                 request.AddUrlSegment("id", reservation.Id);
                 request.AddJsonBody(json);
+
                 if (_authRepository.AddTokenToRequest(request))
                 {
 
-                    var response = client.Execute(request).Content;
-                    res = JsonConvert.DeserializeObject<ReservationDTO>(response);
+                    var response = client.Execute(request);
+                    res = response.StatusCode == HttpStatusCode.OK ? JsonConvert.DeserializeObject<ReservationDTO>(response.Content) : null;
                 }
-            }
-            catch
-            {
-            }
-            return res;
+
+                return res;
+
         }
+
         public HttpStatusCode Delete(ReservationDTO reservation)
         {
-            HttpStatusCode res = HttpStatusCode.Unused;
-            try
-            {
                 var client = new RestClient(_constring);
                 var request = new RestRequest("/reservation/{id}", Method.DELETE);
                 request.AddUrlSegment("id", reservation.Id);
                 _authRepository.AddTokenToRequest(request);
-                res = client.Execute(request).StatusCode;
-            }
-            catch
-            {
-            }
-            return res;
+
+                return client.Execute(request).StatusCode;
         }
+
         public IEnumerable<ReservationDTO> GetAll()
         {
-            List<ReservationDTO> res = null;
-            try
-            {
+                List<ReservationDTO> res = null;
                 var client = new RestClient(_constring);
                 var request = new RestRequest("/reservation", Method.GET);
+
                 if (_authRepository.AddTokenToRequest(request))
                 {
-                    var content = client.Execute(request).Content;
-                    res = JsonConvert.DeserializeObject<List<ReservationDTO>>(content);
+                    var response = client.Execute(request);
+                    res = response.StatusCode == HttpStatusCode.OK ? 
+                        JsonConvert.DeserializeObject<List<ReservationDTO>>(response.Content) : new List<ReservationDTO>();
                 }
-            }
-            catch
-            {
-            }
-            return res ?? new List<ReservationDTO>();
+
+                return res;
         }
     }
 }

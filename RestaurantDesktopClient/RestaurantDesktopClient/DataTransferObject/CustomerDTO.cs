@@ -1,6 +1,5 @@
-﻿using System.Collections.Generic;
-
-namespace DataAccess.DataTransferObjects
+﻿
+namespace RestaurantDesktopClient.DataTransferObject
 {
     public class CustomerDTO
     {

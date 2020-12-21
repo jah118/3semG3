@@ -1,11 +1,7 @@
 ﻿using DataAccess;
 using DataAccess.DataTransferObjects;
-using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -16,7 +12,7 @@ namespace RestaurantAPI.Controllers
     [ApiConventionType(typeof(DefaultApiConventions))]
     public class FoodController : ControllerBase
     {
-        private IRepository<FoodDTO> _foodRepository;
+        private readonly IRepository<FoodDTO> _foodRepository;
 
         public FoodController(IRepository<FoodDTO> foodRepository)
         {
@@ -28,7 +24,7 @@ namespace RestaurantAPI.Controllers
         public IActionResult Get()
         {
             var res = _foodRepository.GetAll();
-            return res != null? Ok(res) : NotFound();
+            return res != null ? Ok(res) : NotFound();
         }
 
         // GET api/<FoodController>/5

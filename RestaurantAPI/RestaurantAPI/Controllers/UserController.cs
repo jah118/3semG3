@@ -1,6 +1,4 @@
-﻿using System.Net;
-using DataAccess.DataTransferObjects;
-using DataAccess.Repositories.Interfaces;
+﻿using DataAccess.Repositories.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
@@ -45,7 +43,7 @@ namespace RestaurantAPI.Controllers
         {
             var resulting = _accountRepository.Create(
                 user.User, user.Password);
-            var token =_authManager.Authenticate(resulting.Username, user.Password, resulting.AccountType);
+            var token = _authManager.Authenticate(resulting.Username, user.Password, resulting.AccountType);
             return resulting != null ? Ok(token) : Conflict();
         }
 
@@ -58,6 +56,5 @@ namespace RestaurantAPI.Controllers
             var token = _authManager.Authenticate(login.Username, login.Password, login.Role);
             return token == null ? Unauthorized() : Ok(token);
         }
-
     }
 }

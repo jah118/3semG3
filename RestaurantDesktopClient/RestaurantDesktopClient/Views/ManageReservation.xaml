@@ -4,11 +4,11 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:controls="clr-namespace:RestaurantDesktopClient.Views.Controls"
-      xmlns:local="clr-namespace:RestaurantDesktopClient.Views.ManageReservation"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
       Title="ManageReservation"
-      DataContext="{Binding ManageReservation, Source={StaticResource Locator}}">
+      DataContext="{Binding ManageReservation,
+        Source={StaticResource Locator}}">
     
     <Grid>
         <Grid.ColumnDefinitions>

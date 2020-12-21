@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using DataAccess.DataTransferObjects;
+using RestaurantDesktopClient.DataTransferObject;
 using RestSharp;
 
 namespace RestaurantDesktopClient.Services

@@ -1,6 +1,4 @@
-﻿
-@model RestaurantWebApp.Model.CustomViewModel
-
+﻿@model RestaurantWebApp.Model.CustomViewModel
 
 @section Styles {
 }
@@ -36,15 +34,12 @@
                     </div>
                 </div>
             </div>
-
-
-
         </div>
 
         <div class="row">
             <hr />
             <div class="form-group">
-                <label class="col-md-5"> Valgt mad</label>
+                <label class="col-md-5"> Valgt mad/drikke</label>
                 <div class="col-md-10">
                     @Html.ListBoxFor(model => model.OrderSummary, new SelectList(Model.OrderSummary, "Id", "Name"), new { size = "20", style = "width:100%" })
                     <input id="RemoveFromSummaryList" type="button" value="Fjern ret/retter" />
@@ -63,14 +58,11 @@
     }
 </div>
 <div>
-    @Html.ActionLink("Gå til forside", "Index")
+    @Html.ActionLink("Gå til forside", "Index","Home")
 </div>
-
-
 
 @section Scripts {
     <script>
-
 
         function selectAllList() {
             selectAll('OrderSummary');
@@ -114,5 +106,5 @@
             });
         });
     </script>
-    
+
 }

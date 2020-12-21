@@ -91,7 +91,7 @@ namespace RestaurantAPI.Controllers.Tests
             Assert.IsNotNull(value);
             Assert.AreEqual(obj.Id, value.Id);
             Assert.IsNotNull(actionResult);
-            Assert.AreEqual(okResult.StatusCode, (int) HttpStatusCode.OK); //TODO fix so type comapre match
+            Assert.AreEqual((int) HttpStatusCode.OK, okResult.StatusCode);
         }
 
         [TestMethod]
@@ -115,11 +115,11 @@ namespace RestaurantAPI.Controllers.Tests
             // act
             var value = mock.Object.GetById(41);
             var actionResult = controller.Get(41);
-            var okResult = actionResult as NotFoundObjectResult;
+            var NotFound = actionResult as NotFoundObjectResult;
 
             // assert
             Assert.IsNull(value);
-            Assert.AreEqual(okResult.StatusCode, (int) HttpStatusCode.NotFound);
+            Assert.AreEqual(NotFound.StatusCode, (int) HttpStatusCode.NotFound);
         }
 
         #endregion Getter
@@ -164,7 +164,7 @@ namespace RestaurantAPI.Controllers.Tests
             Assert.IsNotNull(value);
             Assert.IsTrue(value.Id == 41);
             Assert.IsNotNull(actionResult);
-            Assert.AreEqual(okResult.StatusCode, (int) HttpStatusCode.OK); //TODO fix so type comapre match
+            Assert.AreEqual((int) HttpStatusCode.OK, okResult.StatusCode);
         }
 
         [TestMethod]

@@ -13,7 +13,8 @@ namespace RestaurantAPI.Controllers.Tests
         [TestMethod]
         public void GetByIDTest()
         {
-            // using (var mock = AutoMock.GetLoose())
+            //Arrange
+            
             var repository = new Mock<ICustomerRepository>();
 
             var customer = new CustomerDTO
@@ -31,10 +32,11 @@ namespace RestaurantAPI.Controllers.Tests
 
             repository.Setup(x => x.GetById(It.IsAny<int>())).Returns(customer);
             var controller = new CustomerController(repository.Object);
+            //Act
             var c = repository.Object.GetById(10);
             var result = controller.Get(10);
             var okResult = result as OkObjectResult;
-
+            //Assert
             Assert.IsNotNull(c);
             Assert.AreEqual(customer.Id, c.Id);
             Assert.IsNotNull(result);

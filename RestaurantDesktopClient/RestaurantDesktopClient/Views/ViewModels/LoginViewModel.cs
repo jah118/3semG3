@@ -18,6 +18,7 @@ namespace RestaurantDesktopClient.Views.ViewModels
         public RelayCommand<PasswordBox> LoginCommand { get; set; }
 
         public string Username { get; set; }
+
         public LoginViewModel(IAuthRepository authRepository)
         {
             _authRepository = authRepository;
@@ -28,7 +29,6 @@ namespace RestaurantDesktopClient.Views.ViewModels
         {
             LoginCommand = new RelayCommand<PasswordBox>(LoginPressed);
         }
-
 
 
         private void LoginPressed(PasswordBox passwordBox)

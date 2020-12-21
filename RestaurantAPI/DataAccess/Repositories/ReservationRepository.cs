@@ -27,17 +27,16 @@ namespace DataAccess.Repositories
                 if (transactionEndpoint) _context.Database.BeginTransaction(IsolationLevel.Serializable);
                 try
                 {
-                    var compareCount = _context.Reservation
+                    var tableIDs = obj.Tables.Select(t => t.Id);
+                    var compare = _context.Reservation
                         .Include(r => r.ReservationsTables)
                         .ThenInclude(r => r.RestaurantTables)
                         .Where(r =>
                             r.ReservationTime <= obj.ReservationTime.AddMinutes(90) &&
-                            r.ReservationTime.AddMinutes(90) >= obj.ReservationTime)
-                        .Select(r => r.ReservationsTables
-                            .Where(t => t.RestaurantTablesId
-                                .Equals(obj.Tables.Select(table => table.Id).Any()))).Count();
+                            r.ReservationTime.AddMinutes(90) >= obj.ReservationTime &&
+                            r.ReservationsTables.Any(i => tableIDs.Contains(i.RestaurantTablesId)));
 
-                    if (compareCount == 0)
+                    if (compare.Count() == 0)
                     {
                         var reservation = Converter.Convert(obj);
                         reservation.ReservationDate = DateTime.Now;
@@ -83,7 +82,6 @@ namespace DataAccess.Repositories
                     throw;
                 }
             }
-
             return null;
         }
 
@@ -111,7 +109,7 @@ namespace DataAccess.Repositories
                         //update order to cancel and remove tables
                         if (order != null)
                         {
-                            var or = new OrderRepository(_context); //TODO er det dumt er der en bedre måde ?
+                            var or = new OrderRepository(_context);
                             if (or.cancelOrder(order.OrderNo))
                             {
                                 // remove tables

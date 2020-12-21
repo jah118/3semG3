@@ -12,7 +12,6 @@ namespace DataAccess.Models
             if (0>=toValidate.EmployeeID) return false;
             if (string.IsNullOrEmpty(toValidate.PaymentCondition)) return false;
             if (toValidate.OrderLines.Count <= 0) return false;
-          //TODO VALIDATION
             return true;
         }
     }

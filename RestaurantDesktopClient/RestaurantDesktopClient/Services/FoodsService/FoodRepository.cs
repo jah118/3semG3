@@ -1,12 +1,10 @@
-﻿using DataAccess.DataTransferObjects;
-using Newtonsoft.Json;
-using RestSharp;
-using System.Collections.Generic;
-using System.Configuration;
-using RestaurantDesktopClient.Services;
+﻿using System.Collections.Generic;
 using System.Net;
+using Newtonsoft.Json;
+using RestaurantDesktopClient.DataTransferObject;
+using RestSharp;
 
-namespace RestaurantDesktopClient.Views.ViewModels
+namespace RestaurantDesktopClient.Services.FoodsService
 {
     internal class FoodRepository : IRepository<FoodDTO>
     {
@@ -36,18 +34,11 @@ namespace RestaurantDesktopClient.Views.ViewModels
 
         public IEnumerable<FoodDTO> GetAll()
         {
-            List<FoodDTO> res = null;
-            try
-            {
                 var client = new RestClient(_constring);
                 var request = new RestRequest("/Food", Method.GET);
-                var content = client.Execute(request).Content;
-                res = JsonConvert.DeserializeObject<List<FoodDTO>>(content);
-            }
-            catch
-            {
-            }
-            return res ?? new List<FoodDTO>();
+                var response = client.Execute(request);
+
+                return response.StatusCode == HttpStatusCode.OK ? JsonConvert.DeserializeObject<List<FoodDTO>>(response.Content) : new List<FoodDTO>();
         }
 
         public FoodDTO Update(FoodDTO t)

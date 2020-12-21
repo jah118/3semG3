@@ -20,17 +20,17 @@
                         <div class="form-group">
                             <label class="col-md-2 control-label" for="uname"><b>Username</b></label>
                             <div class="col-md-10">
-                                <input class="form-control" type="text" placeholder="Enter Username" name="uname" id="uname" required>
-                                @*@Html.LabelFor(m => m.Customer.Email)
-                            @Html.TextBoxFor(m => m.Customer.Email, "", new {@class = "form-control", @id = "Email", @placeholder = "Email"})*@
+                               @* <input class="form-control" type="text" placeholder="Enter Username" name="uname" id="uname" required>*@
+                                @*@Html.LabelFor(m => m.Username)*@
+                            @Html.TextBoxFor(m => m.Username, new {@class = "form-control"})
                             </div>
 
 
                             <label class="col-md-2 control-label" for="psw"><b>Password</b></label>
                             <div class="col-md-10">
-                                <input class="form-control" type="password" placeholder="Enter Password" name="psw" id="psw" required>
-                                @*@Html.LabelFor(m => m.Password)
-                            @Html.PasswordFor(m => m.Password, new {@class = "form-control", @id = "Password", @placeholder = "Password"})*@
+                               @* <input class="form-control" type="password" placeholder="Enter Password" name="psw" id="psw" required>*@
+                                @*@Html.LabelFor(m => m.Password)*@
+                            @Html.PasswordFor(m => m.Password, new {@class = "form-control"})
                             </div>
 
                         </div>
@@ -53,6 +53,9 @@
                 </div>
             </div>
         </section>
+    </div>
+    <div>
+        @Html.ActionLink("Gå til forside", "Index","Home")
     </div>
 </div>
 

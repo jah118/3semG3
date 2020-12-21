@@ -1,14 +1,9 @@
-﻿using DataAccess.DataTransferObjects;
-using Newtonsoft.Json;
-using RestaurantDesktopClient.Views.ViewModels;
+﻿using Newtonsoft.Json;
 using RestSharp;
 using System;
 using System.Collections.Generic;
-using System.Configuration;
-using System.Linq;
 using System.Net;
-using System.Text;
-using System.Threading.Tasks;
+using RestaurantDesktopClient.DataTransferObject;
 
 namespace RestaurantDesktopClient.Services.CustomerService
 {
@@ -35,16 +30,16 @@ namespace RestaurantDesktopClient.Services.CustomerService
 
         public CustomerDTO Get(int customerId)
         {
-            var client = new RestClient(_constring);
+                var client = new RestClient(_constring);
+                var request = new RestRequest("/customer/{Id}", Method.GET);
+                request.AddUrlSegment("Id", customerId);
+                _authRepository.AddTokenToRequest(request);
 
-            var request = new RestRequest("/customer/{Id}", Method.GET);
-            request.AddUrlSegment("Id", customerId);
-            _authRepository.AddTokenToRequest(request);
-            var response = client.Execute(request);
+                var response = client.Execute(request);
 
-            CustomerDTO res = response.StatusCode == HttpStatusCode.OK ? JsonConvert.DeserializeObject<CustomerDTO>(response.Content) : null;
-
-            return res;
+                return response.StatusCode == HttpStatusCode.OK
+                    ? JsonConvert.DeserializeObject<CustomerDTO>(response.Content)
+                    : null;
         }
 
         public IEnumerable<CustomerDTO> GetAll()
