@@ -4,7 +4,6 @@ using RestaurantWebApp.Service.Interfaces;
 using RestSharp;
 using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace RestaurantWebApp.Service
 {
@@ -22,17 +21,7 @@ namespace RestaurantWebApp.Service
             throw new NotImplementedException();
         }
 
-        public Task<IRestResponse> CreateAsync(FoodDTO obj)
-        {
-            throw new NotImplementedException();
-        }
-
         public bool Delete(FoodDTO obj)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<bool> DeleteAsync(FoodDTO obj)
         {
             throw new NotImplementedException();
         }
@@ -46,27 +35,12 @@ namespace RestaurantWebApp.Service
             return res;
         }
 
-        public Task<IEnumerable<FoodDTO>> GetAllAsync()
-        {
-            throw new NotImplementedException();
-        }
-
         public FoodDTO GetById(int id)
         {
             throw new NotImplementedException();
         }
 
-        public Task<FoodDTO> GetByIdAsync(int id)
-        {
-            throw new NotImplementedException();
-        }
-
         public FoodDTO Update(FoodDTO obj)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<FoodDTO> UpdateAsync(FoodDTO obj)
         {
             throw new NotImplementedException();
         }

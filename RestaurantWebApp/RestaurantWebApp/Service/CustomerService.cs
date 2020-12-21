@@ -1,21 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Threading.Tasks;
-using System.Web;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using RestaurantWebApp.DataTransferObject;
 using RestaurantWebApp.Service.Interfaces;
 using RestSharp;
+using System;
+using System.Collections.Generic;
+using System.Net;
 
 namespace RestaurantWebApp.Service
 {
     public class CustomerService : IService<CustomerDTO>
     {
+        private readonly IAuthService _authRepository;
 
         private readonly string _constring;
-        private readonly IAuthService _authRepository;
 
         public CustomerService(string constring, IAuthService authRepository)
         {
@@ -41,36 +38,6 @@ namespace RestaurantWebApp.Service
             throw new NotImplementedException();
         }
 
-        public HttpStatusCode Delete(CustomerDTO t)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<IEnumerable<CustomerDTO>> GetAllAsync()
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<CustomerDTO> GetByIdAsync(int id)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<IRestResponse> CreateAsync(CustomerDTO obj)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<CustomerDTO> UpdateAsync(CustomerDTO obj)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<bool> DeleteAsync(CustomerDTO obj)
-        {
-            throw new NotImplementedException();
-        }
-
         public IEnumerable<CustomerDTO> GetAll()
         {
             throw new NotImplementedException();
@@ -85,7 +52,10 @@ namespace RestaurantWebApp.Service
         {
             throw new NotImplementedException();
         }
+
+        public HttpStatusCode Delete(CustomerDTO t)
+        {
+            throw new NotImplementedException();
+        }
     }
-
-
 }

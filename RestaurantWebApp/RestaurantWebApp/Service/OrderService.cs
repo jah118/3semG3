@@ -4,15 +4,13 @@ using RestaurantWebApp.Service.Interfaces;
 using RestSharp;
 using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace RestaurantWebApp.Service
 {
     public class OrderService : IOrderService
     {
-        private string _conString;
-
         private readonly IAuthService _authRepository;
+        private readonly string _conString;
 
         public OrderService(string constring, IAuthService authRepository)
         {
@@ -24,7 +22,7 @@ namespace RestaurantWebApp.Service
         {
             var client = new RestClient(_conString);
             var request = new RestRequest("/Order", Method.POST);
-            string json = JsonConvert.SerializeObject(obj);
+            var json = JsonConvert.SerializeObject(obj);
             request.AddJsonBody(json);
             //_authRepository.AddTokenToRequest(request);
             var response = client.Execute(request).Content;
@@ -32,21 +30,7 @@ namespace RestaurantWebApp.Service
             return res;
         }
 
-        public async Task<IRestResponse> CreateAsync(OrderDTO obj)
-        {
-            var client = new RestClient(_conString);
-            var request = new RestRequest("/Order", Method.POST);
-            request.AddJsonBody(obj);
-            var response = (await client.ExecuteAsync(request));
-            return response;
-        }
-
         public bool Delete(OrderDTO obj)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<bool> DeleteAsync(OrderDTO obj)
         {
             throw new NotImplementedException();
         }
@@ -60,11 +44,6 @@ namespace RestaurantWebApp.Service
             return res;
         }
 
-        public Task<IEnumerable<OrderDTO>> GetAllAsync()
-        {
-            throw new NotImplementedException();
-        }
-
         public OrderDTO GetById(int id)
         {
             var client = new RestClient(_conString);
@@ -75,17 +54,7 @@ namespace RestaurantWebApp.Service
             return res;
         }
 
-        public Task<OrderDTO> GetByIdAsync(int id)
-        {
-            throw new NotImplementedException();
-        }
-
         public OrderDTO Update(OrderDTO obj)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<OrderDTO> UpdateAsync(OrderDTO obj)
         {
             throw new NotImplementedException();
         }

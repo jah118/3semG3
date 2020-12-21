@@ -1,6 +1,4 @@
-﻿using RestSharp;
-using System.Collections.Generic;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace RestaurantWebApp.Service.Interfaces
 {
@@ -15,15 +13,5 @@ namespace RestaurantWebApp.Service.Interfaces
         TEntity Update(TEntity obj);
 
         bool Delete(TEntity obj);
-
-        Task<IEnumerable<TEntity>> GetAllAsync();
-
-        Task<TEntity> GetByIdAsync(int id);
-
-        Task<IRestResponse> CreateAsync(TEntity obj);
-
-        Task<TEntity> UpdateAsync(TEntity obj);
-
-        Task<bool> DeleteAsync(TEntity obj);
     }
 }

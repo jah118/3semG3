@@ -1,20 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using RestaurantWebApp.DataTransferObject;
+﻿using RestaurantWebApp.DataTransferObject;
 using RestaurantWebApp.Service.Interfaces;
 using RestSharp;
+using System;
 using System.IdentityModel.Tokens.Jwt;
-
 
 namespace RestaurantWebApp.Service
 {
     public class AuthorizationService : IAuthService
     {
-
         private readonly string _constring;
         private string _token;
+
         public AuthorizationService(string constring)
         {
             _constring = constring;
@@ -28,7 +24,7 @@ namespace RestaurantWebApp.Service
             var response = client.Execute(request);
             if (response.IsSuccessful)
             {
-                //Set token field, substring is because the returned json is in quotes, 
+                //Set token field, substring is because the returned json is in quotes,
                 _token = response.Content.Substring(1, response.Content.Length - 2);
                 return _token;
             }

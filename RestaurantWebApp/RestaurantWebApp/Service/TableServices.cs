@@ -4,7 +4,6 @@ using RestaurantWebApp.Service.Interfaces;
 using RestSharp;
 using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace RestaurantWebApp.Service
 {
@@ -42,35 +41,6 @@ namespace RestaurantWebApp.Service
         }
 
         public bool Delete(RestaurantTablesDTO obj)
-        {
-            throw new NotImplementedException();
-        }
-
-        public async Task<IEnumerable<RestaurantTablesDTO>> GetAllAsync()
-        {
-            var client = new RestClient(_connectionString);
-            var request = new RestRequest("/Table", Method.GET);
-            var content = (await client.ExecuteAsync(request)).Content;
-            var res = JsonConvert.DeserializeObject<IEnumerable<RestaurantTablesDTO>>(content);
-            return res;
-        }
-
-        public Task<RestaurantTablesDTO> GetByIdAsync(int id)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<IRestResponse> CreateAsync(RestaurantTablesDTO obj)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<RestaurantTablesDTO> UpdateAsync(RestaurantTablesDTO obj)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<bool> DeleteAsync(RestaurantTablesDTO obj)
         {
             throw new NotImplementedException();
         }
