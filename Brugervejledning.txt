@@ -7,8 +7,8 @@ Bruger vejledning – API service:
 	5.	Forsæt følgende trin hvis man kun ønsker at teste et API requiest.
 	6.	Klik på det API requiest man ønsker at teste.
 	7.	Klik på ”Try it out” og indset evt. nødvendige parameter.
-	8.	Klik Execute, Under Responses vises det pågældende respons fra API’en. Respone body er i Json format. BEMÆRK! Flere requiest kræver man er logget ind og kan 	
-		derfor ikke testes fra Swagger
+	8.	Klik Execute, Under Responses vises det pågældende respons fra API’en. Respone body er i Json format. BEMÆRK! Flere requiest kræver man er logget ind og kan 
+		derfor ikke testes fra Swagger, før man er logget ind med authorize i toppen.
 
 Bruger vejledning – Webklient:
 	1.	Hvis Api’en ikke køre følg Bruger vejledning – API service inden næste punkt.
