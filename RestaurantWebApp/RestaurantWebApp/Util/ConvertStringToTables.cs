@@ -1,7 +1,7 @@
-﻿using System;
+﻿using RestaurantWebApp.DataTransferObject;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using RestaurantWebApp.DataTransferObject;
 
 namespace RestaurantWebApp.Util
 {
@@ -18,12 +18,11 @@ namespace RestaurantWebApp.Util
             {
                 if (int.TryParse(item, out var tempId))
                     tables.Add(new RestaurantTablesDTO(tempId, 0, 0));
-
                 else
                     throw new FormatException("Fail to add one item to list");
             }
 
-            if (tables.Count <=0)
+            if (tables.Count <= 0)
             {
                 throw new FormatException("Fail no tables selected or formated");
             }
@@ -31,8 +30,4 @@ namespace RestaurantWebApp.Util
             return tables;
         }
     }
-
-   
-
-
 }

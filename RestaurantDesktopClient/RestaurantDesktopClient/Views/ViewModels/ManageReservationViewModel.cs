@@ -1,20 +1,15 @@
-using DataAccess.DataTransferObjects;
-using RestaurantDesktopClient.Services.CustomerService;
 using RestaurantDesktopClient.Services.Table_Service;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.Linq;
 using System.Net;
-using System.Runtime.CompilerServices;
 using System.Windows;
-using RestaurantDesktopClient.DataTransferObject;
-using RestaurantDesktopClient.Reservation;
 using RestaurantDesktopClient.Services;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.CommandWpf;
 using GalaSoft.MvvmLight.Messaging;
+using RestaurantDesktopClient.DataTransferObject;
 using RestaurantDesktopClient.Helpers;
 using RestaurantDesktopClient.Messages;
 
@@ -24,14 +19,22 @@ namespace RestaurantDesktopClient.Views.ManageReservation
     {
         #region Fields
         private readonly IRepository<ReservationDTO> _reservationRepository;
+
         private readonly IRepository<OrderDTO> _orderRepository;
+
         private ITableRepository _tableRepository;
+
         private readonly IRepository<CustomerDTO> _customerRepository;
+
         private ObservableCollection<TablesDTO> _selectedReservationTables = new ObservableCollection<TablesDTO>();
+
         private List<ReservationDTO> _reservationSearchList;
+
         private static ReservationDTO _selectedReservation;
         #endregion
+
         #region Properties
+
         /// <summary>
         /// Selected table in current AvailableTables
         /// </summary>
@@ -43,14 +46,17 @@ namespace RestaurantDesktopClient.Views.ManageReservation
                 if (ReservationTables.Where(x => x.Id == value.Id).Count() < 1) ReservationTables.Add((value));
             }
         }
+
         /// <summary>
         /// Contains available tables of current settings
         /// </summary>
         public ObservableCollection<TablesDTO> AvailableTables { get; set; }
+
         /// <summary>
         /// Property for this modelview's headline
         /// </summary>
         public string Headline { get { return "Reservationer"; } }
+
         /// <summary>
         /// Property for SelectedReservation, if SelectedReservation == null new Reservation returned
         /// </summary>
@@ -59,22 +65,33 @@ namespace RestaurantDesktopClient.Views.ManageReservation
             get { return _selectedReservation ?? (_selectedReservation = new ReservationDTO()); }
             set { if (value != _selectedReservation && value != null) UpdateSelectedReservation(value); }
         }
+
         /// <summary>
         /// Property of SelectedReservation TimeDate
         /// </summary>
         public DateTime GetReservationTimeDate
         {
             get => SelectedReservation != null ? SelectedReservation.ReservationTime : DateTime.Now;
-            set { if (SelectedReservation != null) { SelectedReservation.ReservationTime = value + SelectedReservation.ReservationTime.TimeOfDay; }; }
+            set
+            {
+                if (SelectedReservation != null)
+                {
+                    SelectedReservation.ReservationTime = value + SelectedReservation.ReservationTime.TimeOfDay;
+                    ChangePropertyTime();
+                };
+            }
         }
+
         /// <summary>
         /// Property for SelectedReservation's reservationtime minuts
         /// </summary>
         public string GetReservationTimeMinuts { get => SelectedReservation != null ? TrimDateTime(SelectedReservation.ReservationTime).Minute + "" : "0"; set { } }
+
         /// <summary>
         /// Property for SelectedReservation's reservationtime hour
         /// </summary>
         public string GetReservationTimeHours { get => SelectedReservation != null ? SelectedReservation.ReservationTime.Hour + "" : "0"; set { } }
+
         /// <summary>
         /// Property for Selected table of lvTableNames
         /// </summary>
@@ -93,6 +110,7 @@ namespace RestaurantDesktopClient.Views.ManageReservation
 
             }
         }
+
         /// <summary>
         /// Property for SelectedReservation Comments
         /// </summary>
@@ -107,6 +125,7 @@ namespace RestaurantDesktopClient.Views.ManageReservation
                 }
             }
         }
+
         /// <summary>
         /// Property for SelectedReservation's reservation number
         /// </summary>
@@ -122,6 +141,7 @@ namespace RestaurantDesktopClient.Views.ManageReservation
                 }
             }
         }
+
         /// <summary>
         /// List for Selected tables
         /// </summary>
@@ -139,6 +159,7 @@ namespace RestaurantDesktopClient.Views.ManageReservation
                 }
             }
         }
+
         /// <summary>
         /// Property for selected reservations numberOfPeople
         /// </summary>
@@ -147,13 +168,13 @@ namespace RestaurantDesktopClient.Views.ManageReservation
             get { return SelectedReservation != null ? SelectedReservation.NoOfPeople + "" : ""; }
             set
             {
-                if (SelectedReservation != null)
+                if (value != null && Validation.IsNumber(value))
                 {
-                    int.TryParse(value, out int no);
-                    SelectedReservation.NoOfPeople = no;
+                    SelectedReservation.NoOfPeople = int.Parse(value);
                 }
             }
         }
+
         /// <summary>
         /// Property for selected reservations reservation date
         /// </summary>
@@ -168,6 +189,7 @@ namespace RestaurantDesktopClient.Views.ManageReservation
                 }
             }
         }
+
         /// <summary>
         /// Property for selected reservations reservation time
         /// </summary>
@@ -176,12 +198,13 @@ namespace RestaurantDesktopClient.Views.ManageReservation
             get { return SelectedReservation != null ? SelectedReservation.ReservationTime : DateTime.Now; }
             set
             {
-                if (SelectedReservation != null)
+                if (value != null && Validation.IsUpcomingDateTime(value))
                 {
                     SelectedReservation.ReservationTime = value;
                 }
             }
         }
+
         /// <summary>
         /// Property for selected reservations Deposit
         /// </summary>
@@ -196,6 +219,7 @@ namespace RestaurantDesktopClient.Views.ManageReservation
                 }
             }
         }
+
         /// <summary>
         /// Property for Customer id of selectedReservation, Set Customer by Id
         /// </summary>
@@ -222,6 +246,7 @@ namespace RestaurantDesktopClient.Views.ManageReservation
                 }
             }
         }
+
         /// <summary>
         /// Property for Search list of reservations
         /// </summary>
@@ -238,6 +263,7 @@ namespace RestaurantDesktopClient.Views.ManageReservation
         }
 
         #endregion
+
         #region relayCommands
         public RelayCommand CreateReservationCommand { get; set; }
         public RelayCommand RemoveReservationCommand { get; set; }
@@ -249,6 +275,7 @@ namespace RestaurantDesktopClient.Views.ManageReservation
         public RelayCommand ReservationTimeMinMinuts { get; set; }
         public RelayCommand ClearValuesCommand { get; set; }
         #endregion
+
         /// <summary>
         /// Constructor for ManageReservationViewModel
         /// </summary>
@@ -263,6 +290,8 @@ namespace RestaurantDesktopClient.Views.ManageReservation
             UpdateAvailableTables();
             ClearValues();
         }
+
+
         /// <summary>
         /// Method for initialise all RelayCommands for ManageReservationViewModel
         /// </summary>
@@ -278,7 +307,9 @@ namespace RestaurantDesktopClient.Views.ManageReservation
             OrderFoodCommand = new RelayCommand(OrderFood);
             ClearValuesCommand = new RelayCommand(ClearValues);
         }
+
         #region manageReservationControlBindings
+
         /// <summary>
         /// Updateing List off free tables and clearing current reservationtables
         /// </summary>
@@ -288,6 +319,7 @@ namespace RestaurantDesktopClient.Views.ManageReservation
             AvailableTables = new ObservableCollection<TablesDTO>(tempTables);
             RaisePropertyChanged(() => AvailableTables);
         }
+
         /// <summary>
         /// Subtract one hour from SelectedReservation reservation time
         /// </summary>
@@ -296,6 +328,7 @@ namespace RestaurantDesktopClient.Views.ManageReservation
             if (SelectedReservation != null) SelectedReservation.ReservationTime = TrimDateTime(SelectedReservation.ReservationTime.AddHours(-1));
             ChangePropertyTime();
         }
+
         /// <summary>
         /// Add one hour to SelectedReservation reservation time
         /// </summary>
@@ -305,6 +338,7 @@ namespace RestaurantDesktopClient.Views.ManageReservation
             ChangePropertyTime();
 
         }
+
         /// <summary>
         /// Add 15 minuts to SelectedReservation reservation time
         /// </summary>
@@ -313,6 +347,7 @@ namespace RestaurantDesktopClient.Views.ManageReservation
             if (SelectedReservation != null) SelectedReservation.ReservationTime = TrimDateTime(SelectedReservation.ReservationTime.AddMinutes(15));
             ChangePropertyTime();
         }
+
         /// <summary>
         /// Subtract 15 min from SelectedReservation's reservation time
         /// </summary>
@@ -321,6 +356,7 @@ namespace RestaurantDesktopClient.Views.ManageReservation
             if (SelectedReservation != null) SelectedReservation.ReservationTime = TrimDateTime(SelectedReservation.ReservationTime.AddMinutes(-15));
             ChangePropertyTime();
         }
+
         /// <summary>
         /// Executes RaisePropertyChanged on related properties and execute UpdateAvailableTables
         /// </summary>
@@ -336,6 +372,7 @@ namespace RestaurantDesktopClient.Views.ManageReservation
                 RaisePropertyChanged(() => ReservationTables);
             }
         }
+
         /// <summary>
         /// Trims DateTime to next quartar
         /// </summary>
@@ -347,6 +384,7 @@ namespace RestaurantDesktopClient.Views.ManageReservation
             var res = new DateTime((dt.Ticks + d.Ticks - 1) / d.Ticks * d.Ticks, dt.Kind);
             return res;
         }
+
         /// <summary>
         /// Updateing information on SelectedReservatio in datasource
         /// </summary>
@@ -363,6 +401,7 @@ namespace RestaurantDesktopClient.Views.ManageReservation
                 }
             }
         }
+
         /// <summary>
         /// Removes SelectedReservation from database
         /// </summary>
@@ -387,10 +426,15 @@ namespace RestaurantDesktopClient.Views.ManageReservation
                     {
                         MessageBox.Show("Du har ikke tilladelse til at slette en reservation");
                     }
+                    else if (res == 0)
+                    {
+                        MessageBox.Show("Forbindelsen til serveren fejlede");
+                    }
                 }
             }
 
         }
+
         /// <summary>
         /// Create Selectedreservation if not created, then opens view for orderfood
         /// </summary>
@@ -398,14 +442,15 @@ namespace RestaurantDesktopClient.Views.ManageReservation
         {
             if (SelectedReservation.Id == 0)
             {
-                ReservationDTO _reservation = CreateReservation();
-                if (_reservation == null || _reservation.Id == 0) return;
+                ReservationDTO reservation = CreateReservation();
+                if (reservation == null || reservation.Id == 0) return;
             }
             var orderFoodVieModel = new OrderFood();
             MainWindow.ChangeFrame(orderFoodVieModel);
-            var message = new ReservationSelection() { Selected = _selectedReservation.Id };
+            var message = new ReservationSelection { Selected = _selectedReservation.Id };
             Messenger.Default.Send(message);
         }
+
         /// <summary>
         /// Updateing SelectedReservation
         /// </summary>
@@ -416,9 +461,13 @@ namespace RestaurantDesktopClient.Views.ManageReservation
             _selectedReservation = reservation;
             Messenger.Default.Send(message);
             ChangePropertyReservation();
+
             ReservationTables = new ObservableCollection<TablesDTO>(reservation.Tables);
+
             RaisePropertyChanged(() => ReservationTables);
+            RaisePropertyChanged(() => SelectedReservation);
         }
+
         /// <summary>
         /// Create Reservation method without return type
         /// </summary>
@@ -426,6 +475,7 @@ namespace RestaurantDesktopClient.Views.ManageReservation
         {
             CreateReservation();
         }
+
         /// <summary>
         /// Method for create reservation, Calling IRepository's create method with selectedReservation as parameter
         /// </summary>
@@ -437,13 +487,17 @@ namespace RestaurantDesktopClient.Views.ManageReservation
             if (Validation.ReservationValidForCreate(SelectedReservation))
             {
                 res = _reservationRepository.Create(SelectedReservation);
-                if (res == null) MessageBox.Show("Fejl ved oprettelse af reservation");
-                UpdateSelectedReservation(res);
-                RaisePropertyChanged(() => ReservationSearchList);
+                if (res == null || res.Id == 0) MessageBox.Show("Fejl ved oprettelse af reservation");
+                else
+                {
+                    UpdateSelectedReservation(res);
+                    RaisePropertyChanged(() => ReservationSearchList);
+                }
             }
 
             return res;
         }
+
         /// <summary>
         /// Clear values from reservation controls
         /// </summary>

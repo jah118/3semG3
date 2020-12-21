@@ -1,28 +1,29 @@
+using RestaurantWebApp.DataTransferObject;
+using RestaurantWebApp.Model;
+using RestaurantWebApp.Service.Interfaces;
+using RestaurantWebApp.Util;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Net;
-using System.Threading.Tasks;
 using System.Web.Mvc;
-using Newtonsoft.Json;
-using RestaurantWebApp.DataTransferObject;
-using RestaurantWebApp.Model;
-using RestaurantWebApp.Service.Interfaces;
-using RestaurantWebApp.Util;
 
 namespace RestaurantWebApp.Controllers
 {
-    //[Authorize]
+    //TODO adding when login is comfirmed
+    //[LoginRequired]
     public class BookingController : Controller
     {
+        private readonly IAuthService _authRepository;
+        private readonly IService<CustomerDTO> _customerservice;
         private readonly IFoodService _foodService;
         private readonly IOrderService _orderService;
 
         private readonly IReservationService _reservationService;
         private readonly ITableService _tableService;
-        private ControllerContext _context = new ControllerContext();
 
+        //This use as long there no login feature implemented 
         public BookingController(IReservationService reservationService, ITableService tableService,
             IFoodService foodService, IOrderService orderService)
         {
@@ -31,31 +32,42 @@ namespace RestaurantWebApp.Controllers
             _foodService = foodService;
             _orderService = orderService;
         }
-
-        // GET: Booking
-        [HttpGet]
-        [AllowAnonymous]
-        public ActionResult Index()
+        //This constructor is used when a person is login
+        public BookingController(IReservationService reservationService, ITableService tableService,
+            IFoodService foodService, IOrderService orderService, IAuthService authRepository,
+            IService<CustomerDTO> customerService)
         {
-            return View();
+            _reservationService = reservationService;
+            _tableService = tableService;
+            _foodService = foodService;
+            _orderService = orderService;
+            _authRepository = authRepository;
+            _customerservice = customerService;
         }
 
         // GET: Booking/Reservation
         [HttpGet]
         public ActionResult Reservation()
         {
-            var tables = _tableService.GetAll();
-            if (tables == null) return new HttpStatusCodeResult(HttpStatusCode.ServiceUnavailable);
-
             var reservation = new ReservationDTO();
+            if (Session["UserId"] != null)
+            {
+                var current = Session["UserId"];
+                var customer = _customerservice.GetById((int)current);
+                if (customer == null) return new HttpStatusCodeResult(HttpStatusCode.ServiceUnavailable);
+
+                reservation.Customer = customer;
+            }
             return View(reservation);
         }
 
         // POST: Booking/Reservation
+        //
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Reservation(ReservationDTO reservation)
         {
+            //takes a string from Request and tries to convert to datetime
             var date = Request.Form["ReservationTimeHid"];
             if (DateTime.TryParse(date, out var dt3))
                 reservation.ReservationTime = dt3;
@@ -63,8 +75,8 @@ namespace RestaurantWebApp.Controllers
                 return View(reservation);
 
             var r = Request.Form["Tables"];
-            //var r = "6,7";
             if (!string.IsNullOrEmpty(r))
+            {
 
                 //dette tager tables som kommer som en lang string og laver dem om til en liste
                 try
@@ -79,19 +91,14 @@ namespace RestaurantWebApp.Controllers
                     return View(reservation);
                 }
 
-            //if (!ModelState.IsValid)
-            //{
-            //    return View(reservation);
-            //}
+                var response = _reservationService.Create(reservation);
 
-            var response = _reservationService.Create(reservation);
+                if (response != null && reservation.OrderingFood == false && response.Id > 0)
+                    return RedirectToAction("Index", "Home");
 
-            if (response != null && reservation.OrderingFood == false && response.Id > 0)
-                return RedirectToAction("Index");
-
-            if (response != null && reservation.OrderingFood && response.Id > 0)
-                return RedirectToAction("OrderFood", response);
-
+                if (response != null && reservation.OrderingFood && response.Id > 0)
+                    return RedirectToAction("OrderFood", response);
+            }
 
             return View(reservation);
         }
@@ -102,15 +109,14 @@ namespace RestaurantWebApp.Controllers
             if (reservation == null || reservation.Id <= 0)
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest, "no valid reservaion");
 
-            var fdto = _foodService.GetAll();
-            if (fdto == null) return new HttpStatusCodeResult(HttpStatusCode.ServiceUnavailable);
+            var allFoodsFromService = _foodService.GetAll();
+            if (allFoodsFromService == null) return new HttpStatusCodeResult(HttpStatusCode.ServiceUnavailable);
             var foods = new List<FoodDTO>();
             var drinks = new List<FoodDTO>();
-            foreach (var item in fdto)
+            foreach (var item in allFoodsFromService)
                 if (item.FoodCategoryName.Equals("Mad"))
                     foods.Add(item);
                 else if (item.FoodCategoryName.Equals("Drikkevare")) drinks.Add(item);
-
 
             var cvm = new CustomViewModel
             {
@@ -123,7 +129,13 @@ namespace RestaurantWebApp.Controllers
             return View(cvm);
         }
 
-        // POST: Booking/OrderFoods
+
+        /// <summary>
+        ///  POST: Booking/OrderFoods takes custom model
+        /// post of a order, it runs through the Request to rebuild the custom view 
+        /// </summary>
+        /// <param name="cvm"></param>
+        /// <returns></returns>
         [HttpPost]
         public ActionResult OrderFood(CustomViewModel cvm)
         {
@@ -157,7 +169,6 @@ namespace RestaurantWebApp.Controllers
                         .ListOfFoodsIdToOrderLines(orderSummaryListOfStrings, foodsListFromApi);
                 var r = new ReservationDTO(ReservationId);
 
-
                 var order = new OrderDTO
                 {
                     ReservationID = r.Id,
@@ -167,10 +178,9 @@ namespace RestaurantWebApp.Controllers
                     OrderLines = orderLineList
                 };
 
-
                 var response = _orderService.Create(order);
 
-                if (response != null) return RedirectToAction("Index");
+                if (response != null) return RedirectToAction("Index", "Home");
             }
             else
             {
@@ -183,17 +193,7 @@ namespace RestaurantWebApp.Controllers
                 return View(cvm);
             }
 
-            //TODO add so same view return on fail  with same reservaion id. maybe just give a reservation 
-
-
             return View(cvm);
-
-        }
-
-        [HttpGet]
-        public ActionResult About()
-        {
-            return View();
         }
     }
 }

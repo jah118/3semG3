@@ -15,14 +15,14 @@
 using System;
 using System.Configuration;
 using CommonServiceLocator;
-using DataAccess.DataTransferObjects;
-using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Ioc;
-using RestaurantDesktopClient.Reservation;
+using RestaurantDesktopClient.DataTransferObject;
 using RestaurantDesktopClient.Services;
 using RestaurantDesktopClient.Services.AuthorizationService;
 using RestaurantDesktopClient.Services.CustomerService;
+using RestaurantDesktopClient.Services.FoodsService;
 using RestaurantDesktopClient.Services.OrderService;
+using RestaurantDesktopClient.Services.ReservationService;
 using RestaurantDesktopClient.Services.Table_Service;
 using RestaurantDesktopClient.Views.ManageReservation;
 
@@ -43,16 +43,6 @@ namespace RestaurantDesktopClient.Views.ViewModels
             {
                 ServiceLocator.SetLocatorProvider(() => SimpleIoc.Default);
 
-                //if (ViewModelBase.IsInDesignModeStatic)
-                //{
-                //    // Create design time view services and models
-                //    SimpleIoc.Default.Register<IDataService, DesignDataService>();
-                //}
-                //else
-                //{
-                //    // Create run time view services and models
-                //    SimpleIoc.Default.Register<IDataService, DataService>();
-                //}
                 string constring = ConfigurationManager.ConnectionStrings["ServiceConString"].ConnectionString;
 
                 SimpleIoc.Default.Register<IAuthRepository>(() => new AuthorizationRepository(constring));
@@ -65,7 +55,6 @@ namespace RestaurantDesktopClient.Views.ViewModels
                 SimpleIoc.Default.Register<MainMenuViewModel>(true);
                 SimpleIoc.Default.Register<ManageReservationViewModel>(true);
                 SimpleIoc.Default.Register<OrderFoodViewModel>(true);
-                
             }
             catch (Exception e)
             {
@@ -83,7 +72,7 @@ namespace RestaurantDesktopClient.Views.ViewModels
 
         public static void Cleanup()
         {
-            
+
         }
     }
 }

@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
-using DataAccess.DataTransferObjects;
+using RestaurantDesktopClient.DataTransferObject;
 using RestaurantDesktopClient.Helpers;
 
 namespace RestaurantDesktopClient.Tests

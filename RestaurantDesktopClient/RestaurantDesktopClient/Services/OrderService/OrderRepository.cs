@@ -1,14 +1,9 @@
-﻿using DataAccess.DataTransferObjects;
-using Newtonsoft.Json;
-using RestaurantDesktopClient.Views.ViewModels;
+﻿using Newtonsoft.Json;
 using RestSharp;
 using System;
 using System.Collections.Generic;
-using System.Configuration;
-using System.Linq;
 using System.Net;
-using System.Text;
-using System.Threading.Tasks;
+using RestaurantDesktopClient.DataTransferObject;
 
 namespace RestaurantDesktopClient.Services.OrderService
 {
@@ -25,58 +20,43 @@ namespace RestaurantDesktopClient.Services.OrderService
 
         public OrderDTO Create(OrderDTO order)
         {
-            OrderDTO res = null;
-            try
-            {
-                var client = new RestClient(_constring);
-                string json = JsonConvert.SerializeObject(order);
-                var request = new RestRequest("/order", Method.POST);
-                request.AddJsonBody(json);
-                var response = client.Execute(request).Content;
-                res = JsonConvert.DeserializeObject<OrderDTO>(response);
-            }
-            catch
-            {}
-            return res;
+            var client = new RestClient(_constring);
+            string json = JsonConvert.SerializeObject(order);
+            var request = new RestRequest("/order", Method.POST);
+            request.AddJsonBody(json);
+            var response = client.Execute(request);
+            return response.StatusCode == HttpStatusCode.OK ? JsonConvert.DeserializeObject<OrderDTO>(response.Content) : null;
         }
 
         public IEnumerable<OrderDTO> GetAll()
         {
-            IEnumerable<OrderDTO> res = new List<OrderDTO>();
-            try
-            {
+                IEnumerable<OrderDTO> res = null;
                 var client = new RestClient(_constring);
                 var request = new RestRequest("/order", Method.GET);
+
                 if (_authRepository.AddTokenToRequest(request))
                 {
-                    var response = client.Execute(request).Content;
-                    res = JsonConvert.DeserializeObject<IEnumerable<OrderDTO>>(response);
+                    var response = client.Execute(request);
+                    res = response.StatusCode == HttpStatusCode.OK ? JsonConvert.DeserializeObject<IEnumerable<OrderDTO>>(response.Content) : new List<OrderDTO>();
                 }
-            }
-            catch
-            {
-            }
-            return res;
+
+                return res;
         }
 
         public OrderDTO Get(int id)
         {
-            OrderDTO res = null;
-            try
-            {
+                OrderDTO res = null;
                 var client = new RestClient(_constring);
                 var request = new RestRequest("/order/{Id}", Method.GET);
                 request.AddUrlSegment("Id", id);
+
                 if (_authRepository.AddTokenToRequest(request))
                 {
-                    var response = client.Execute(request).Content;
-                    res = JsonConvert.DeserializeObject<OrderDTO>(response);
+                    var response = client.Execute(request);
+                    res = response.StatusCode == HttpStatusCode.OK ? JsonConvert.DeserializeObject<OrderDTO>(response.Content) : null;
                 }
-            }
-            catch
-            {
-            }
-            return res;
+
+                return res;
         }
 
         public OrderDTO Update(OrderDTO t)

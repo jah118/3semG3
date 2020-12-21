@@ -1,5 +1,4 @@
-﻿using DataAccess.DataTransferObjects;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Net;
 using RestSharp;
 

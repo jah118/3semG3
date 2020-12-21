@@ -1,20 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using RestaurantWebApp.DataTransferObject;
 using RestaurantWebApp.Service.Interfaces;
 using RestSharp;
+using System;
+using System.Collections.Generic;
 
 namespace RestaurantWebApp.Service
 {
     public class ReservationService : IReservationService
     {
+        private readonly IAuthService _authRepository;
         private readonly string _connectionString;
 
-        public ReservationService(string constring)
+        public ReservationService(string connectionString, IAuthService authRepository)
         {
-            _connectionString = constring;
+            _connectionString = connectionString;
+            _authRepository = authRepository;
         }
 
         public IEnumerable<ReservationDTO> GetAll()
@@ -27,6 +28,7 @@ namespace RestaurantWebApp.Service
             var client = new RestClient(_connectionString);
             var request = new RestRequest("/Reservation/{id}", Method.GET);
             request.AddParameter("Id", id);
+            //_authRepository.AddTokenToRequest(request);
             var content = client.Execute(request).Content;
             var res = JsonConvert.DeserializeObject<ReservationDTO>(content);
             return res;
@@ -42,46 +44,12 @@ namespace RestaurantWebApp.Service
             throw new NotImplementedException();
         }
 
-        public Task<IEnumerable<ReservationDTO>> GetAllAsync()
-        {
-            throw new NotImplementedException();
-        }
-
-        public async Task<ReservationDTO> GetByIdAsync(int id)
-        {
-            var client = new RestClient(_connectionString);
-            var request = new RestRequest("/Reservation/{id}", Method.GET);
-
-            request.AddParameter("Id", id);
-            var content = (await client.ExecuteAsync(request)).Content;
-            var res = JsonConvert.DeserializeObject<ReservationDTO>(content);
-            return res;
-        }
-
-        public async Task<IRestResponse> CreateAsync(ReservationDTO obj)
-        {
-            var client = new RestClient(_connectionString);
-            var request = new RestRequest("/Reservation", Method.POST);
-            request.AddJsonBody(obj);
-            var response = await client.ExecuteAsync(request);
-            return response;
-        }
-
-        public Task<ReservationDTO> UpdateAsync(ReservationDTO obj)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<bool> DeleteAsync(ReservationDTO obj)
-        {
-            throw new NotImplementedException();
-        }
-
         public AvailableTimesDTO GetReservationTimeByDate(DateTime date)
         {
             var client = new RestClient(_connectionString);
             var request = new RestRequest("/Reservation/timeSlot/{date}", Method.GET);
             request.AddUrlSegment("date", date);
+            //_authRepository.AddTokenToRequest(request);
             var content = client.Execute(request).Content;
             var res = JsonConvert.DeserializeObject<AvailableTimesDTO>(content);
             return res;
@@ -91,8 +59,9 @@ namespace RestaurantWebApp.Service
         {
             var client = new RestClient(_connectionString);
             var request = new RestRequest("/Reservation", Method.POST);
-            string json = JsonConvert.SerializeObject(obj);
+            var json = JsonConvert.SerializeObject(obj);
             request.AddJsonBody(json);
+            //_authRepository.AddTokenToRequest(request);
             var content = client.Execute(request).Content;
             var res = JsonConvert.DeserializeObject<ReservationDTO>(content);
 

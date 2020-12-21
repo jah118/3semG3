@@ -8,6 +8,7 @@ namespace DataAccess.DataTransferObjects.Converters
     {
         public static CustomerDTO Convert(Customer c)
         {
+            if (c == null) return null;
             return new CustomerDTO
             {
                 Id = c.Id,

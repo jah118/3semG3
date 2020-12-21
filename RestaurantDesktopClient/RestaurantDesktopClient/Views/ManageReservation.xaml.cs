@@ -1,6 +1,4 @@
-﻿using RestaurantDesktopClient.Views.Controls;
-using RestaurantDesktopClient.Views.ManageReservation;
-using System.Windows.Controls;
+﻿using System.Windows.Controls;
 
 namespace RestaurantDesktopClient.Views
 {

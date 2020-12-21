@@ -7,7 +7,6 @@ namespace DataAccess.Models
         public static bool Validate(UserDTO toValidate)
         {
             if (toValidate == null) return false;
-            //TODO make sure all cases are covered
             if (string.IsNullOrEmpty(toValidate.Username)) return false;
             if (toValidate.Username == null) return false;
             switch (toValidate.AccountType)
