@@ -15,7 +15,6 @@ namespace DataAccess.Models
             if (string.IsNullOrEmpty(toValidate.City)) return false;
             if (string.IsNullOrEmpty(toValidate.Email)) return false;
             if (string.IsNullOrEmpty(toValidate.Title)) return false;
-            //TODO VALIDATION
             return true;
         }
     }

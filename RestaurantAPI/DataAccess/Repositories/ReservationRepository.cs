@@ -109,7 +109,7 @@ namespace DataAccess.Repositories
                         //update order to cancel and remove tables
                         if (order != null)
                         {
-                            var or = new OrderRepository(_context); //TODO kan dette gøre anderledes
+                            var or = new OrderRepository(_context);
                             if (or.cancelOrder(order.OrderNo))
                             {
                                 // remove tables

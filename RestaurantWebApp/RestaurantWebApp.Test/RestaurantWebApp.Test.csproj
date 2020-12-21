@@ -136,10 +136,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Controllers\BookingControllerTest.cs" />
-    <Compile Include="Service\BookingServicesTests.cs" />
-    <Compile Include="Service\OrderService.Moq.cs" />
-    <Compile Include="Service\TableServicesTests.cs" />
     <Compile Include="Util\ConvertStringToFoodListsTests.cs" />
     <Compile Include="Util\ConvertStringToOrderLinesTests.cs" />
     <Compile Include="Util\FormatStringToTablesTests.cs" />
@@ -148,24 +144,12 @@
   <ItemGroup>
     <None Include="app.config" />
     <None Include="packages.config" />
-    <None Include="Scripts\jquery-3.5.1.min.map" />
-    <None Include="Scripts\jquery-3.5.1.slim.min.map" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\RestaurantWebApp\RestaurantWebApp.csproj">
       <Project>{702064f0-5126-4195-a620-a74f0d2b86a7}</Project>
       <Name>RestaurantWebApp</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Scripts\jquery-3.5.1.intellisense.js" />
-    <Content Include="Scripts\jquery-3.5.1.js" />
-    <Content Include="Scripts\jquery-3.5.1.min.js" />
-    <Content Include="Scripts\jquery-3.5.1.slim.js" />
-    <Content Include="Scripts\jquery-3.5.1.slim.min.js" />
-    <Content Include="Scripts\jquery.validate-vsdoc.js" />
-    <Content Include="Scripts\jquery.validate.js" />
-    <Content Include="Scripts\jquery.validate.min.js" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />

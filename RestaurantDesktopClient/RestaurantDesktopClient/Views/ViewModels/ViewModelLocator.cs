@@ -43,16 +43,6 @@ namespace RestaurantDesktopClient.Views.ViewModels
             {
                 ServiceLocator.SetLocatorProvider(() => SimpleIoc.Default);
 
-                //if (ViewModelBase.IsInDesignModeStatic)
-                //{
-                //    // Create design time view services and models
-                //    SimpleIoc.Default.Register<IDataService, DesignDataService>();
-                //}
-                //else
-                //{
-                //    // Create run time view services and models
-                //    SimpleIoc.Default.Register<IDataService, DataService>();
-                //}
                 string constring = ConfigurationManager.ConnectionStrings["ServiceConString"].ConnectionString;
 
                 SimpleIoc.Default.Register<IAuthRepository>(() => new AuthorizationRepository(constring));
@@ -65,7 +55,6 @@ namespace RestaurantDesktopClient.Views.ViewModels
                 SimpleIoc.Default.Register<MainMenuViewModel>(true);
                 SimpleIoc.Default.Register<ManageReservationViewModel>(true);
                 SimpleIoc.Default.Register<OrderFoodViewModel>(true);
-                
             }
             catch (Exception e)
             {
@@ -83,7 +72,7 @@ namespace RestaurantDesktopClient.Views.ViewModels
 
         public static void Cleanup()
         {
-            
+
         }
     }
 }

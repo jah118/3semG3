@@ -124,7 +124,7 @@ namespace DataAccess.Repositories
             throw new NotImplementedException();
         }
 
-        //Denne her er kun til at update PaymentCondition og  employee
+        //Denne her er kun til at update PaymentCondition og employee, indtil videre
         //TODO add so it handles change in food (update food).
         public OrderDTO Update(OrderDTO obj, bool transactionEndpoint = true)
         {

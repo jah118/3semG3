@@ -76,6 +76,7 @@ namespace RestaurantWebApp.Controllers
 
             var r = Request.Form["Tables"];
             if (!string.IsNullOrEmpty(r))
+            {
 
                 //dette tager tables som kommer som en lang string og laver dem om til en liste
                 try
@@ -90,13 +91,14 @@ namespace RestaurantWebApp.Controllers
                     return View(reservation);
                 }
 
-            var response = _reservationService.Create(reservation);
+                var response = _reservationService.Create(reservation);
 
-            if (response != null && reservation.OrderingFood == false && response.Id > 0)
-                return RedirectToAction("Index", "Home");
+                if (response != null && reservation.OrderingFood == false && response.Id > 0)
+                    return RedirectToAction("Index", "Home");
 
-            if (response != null && reservation.OrderingFood && response.Id > 0)
-                return RedirectToAction("OrderFood", response);
+                if (response != null && reservation.OrderingFood && response.Id > 0)
+                    return RedirectToAction("OrderFood", response);
+            }
 
             return View(reservation);
         }
