@@ -51,10 +51,6 @@ namespace RestaurantAPI
             var allowedOrigins = Configuration.GetValue<string>("AllowedOrigins")?.Split(",") ?? new string[0];
             services.AddCors(options =>
             {
-                //options.AddPolicy("mvcLoginPolicy",
-                //    builder => builder.WithOrigins(allowedOrigins).AllowAnyHeader().AllowAnyMethod());
-                //options.AddPolicy("PublicApi1",
-                //    builder => builder.AllowAnyOrigin().WithMethods("Post").WithExposedHeaders("Content-Type")); 
                 options.AddPolicy("PublicApi",
                     builder => builder.WithOrigins("https://localhost:44325").WithMethods("Get","Post"));
                 options.AddPolicy("MyAllowJWTCredentialsPolicy",

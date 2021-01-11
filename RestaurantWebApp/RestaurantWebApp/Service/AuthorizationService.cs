@@ -1,4 +1,5 @@
-﻿using RestaurantWebApp.DataTransferObject;
+﻿using Newtonsoft.Json;
+using RestaurantWebApp.DataTransferObject;
 using RestaurantWebApp.Service.Interfaces;
 using RestSharp;
 using System;
@@ -8,17 +9,17 @@ namespace RestaurantWebApp.Service
 {
     public class AuthorizationService : IAuthService
     {
-        private readonly string _constring;
+        private readonly string _conString;
         private string _token;
 
         public AuthorizationService(string constring)
         {
-            _constring = constring;
+            _conString = constring;
         }
 
         public string Authenticate(string username, string password)
         {
-            var client = new RestClient(_constring);
+            var client = new RestClient(_conString);
             var request = new RestRequest("/User/Authenticate", Method.POST);
             request.AddJsonBody(new { Username = username, Password = password, Role = "Customer" });
             var response = client.Execute(request);
@@ -33,7 +34,7 @@ namespace RestaurantWebApp.Service
 
         public bool Create(CustomerDTO customer, string username, string password)
         {
-            var client = new RestClient(_constring);
+            var client = new RestClient(_conString);
 
             var request = new RestRequest("/user/post", Method.POST);
             request.AddJsonBody(new
@@ -65,6 +66,21 @@ namespace RestaurantWebApp.Service
             if (token.ValidTo.ToUniversalTime() < DateTime.UtcNow) return false;
             request.AddHeader("Authorization", "Bearer " + _token);
             return true;
+        }
+
+        public UserDTO GetUser(string username)
+        {
+            UserDTO res = null;
+            var client = new RestClient(_conString);
+            var request = new RestRequest("/User/info/{username}", Method.GET);
+            request.AddUrlSegment("username", username);
+            if (AddTokenToRequest(request))
+            {
+                var content = client.Execute(request).Content;
+                res = JsonConvert.DeserializeObject<UserDTO>(content);
+            }
+
+            return res;
         }
     }
 }

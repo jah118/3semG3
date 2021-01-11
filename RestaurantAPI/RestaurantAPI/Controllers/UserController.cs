@@ -29,6 +29,15 @@ namespace RestaurantAPI.Controllers
             var res = _accountRepository.GetById(id);
             return res != null ? Ok(res) : NotFound(id);
         }
+        
+
+        [HttpGet("info/{userName}")]
+        public IActionResult Get(string userName)
+        {
+            var res = _accountRepository.GetByUserName(userName);
+            return res != null ? Ok(res) : NotFound(userName);
+        }
+
 
         [HttpGet("Testbearer"), Authorize(Roles = "Customer,Employee")]
         public IActionResult Test()
@@ -43,7 +52,7 @@ namespace RestaurantAPI.Controllers
         {
             var resulting = _accountRepository.Create(
                 user.User, user.Password);
-            var token = _authManager.Authenticate(resulting.Username, user.Password, resulting.AccountType);
+                var token = _authManager.Authenticate(resulting.Username, user.Password, resulting.AccountType);
             return resulting != null ? Ok(token) : Conflict();
         }
 

@@ -6,12 +6,12 @@ namespace RestaurantWebApp.Controllers
 {
     public class AccountController : Controller
     {
-        private readonly IAuthService _authRepository;
+        private readonly IAuthService _authService;
         private readonly IService<CustomerDTO> _customerService;
 
         public AccountController(IService<CustomerDTO> customerService, IAuthService authRepository)
         {
-            _authRepository = authRepository;
+            _authService = authRepository;
             _customerService = customerService;
         }
 
@@ -29,19 +29,25 @@ namespace RestaurantWebApp.Controllers
         public ActionResult Login(UserDTO user)
         {
             //TODO when login is comfirm in api and setup for customer.
-            //Session["Token"] = _authRepository.Authenticate(user.Username, user.Password);
-            //var data = _customerService.GetById(1);
+            string token = _authService.Authenticate(user.Username, user.Password);
 
-            //if (data != null)
-            //{
-            //    //add session
-            //    Session["FullName"] = data.FirstName + " " + data.LastName;
-            //    Session["Email"] = data.Email;
-            //    Session["UserId"] = data.Id;
-            //    return RedirectToAction("Index", "Home");
-            //}
+            if (token.Length > 6)
+            {
+                Session["Token"] = token;
+                //var data = _customerService.GetById(1);
+                var data = _authService.GetUser(user.Username);
 
-            //ViewBag.error = "Login failed";
+                if (data != null)
+                {
+                    //add session
+                    Session["FullName"] = data.Customer.FirstName + " " + data.Customer.LastName;
+                    Session["Email"] = data.Customer.Email;
+                    Session["UserId"] = data.Id;
+                    return RedirectToAction("Index", "Home");
+                }
+            }
+
+            ViewBag.error = "Login failed";
             return RedirectToAction("Login");
 
         }
@@ -78,7 +84,7 @@ namespace RestaurantWebApp.Controllers
                 //if conflic  ViewBag.error = "Email already exists";
                 return RedirectToAction("Index", "Home");
             }
-            
+
             return View();
         }
     }

@@ -14,8 +14,8 @@ namespace RestaurantWebApp
         {
             var builder = new ContainerBuilder();
             builder.RegisterControllers(typeof(MvcApplication).Assembly);
-            //builder.RegisterType<AuthorizationService>().As<IAuthService>().SingleInstance();
-            //builder.RegisterType<UserDTO>().SingleInstance();
+            builder.RegisterType<AuthorizationService>().As<IAuthService>().SingleInstance();
+            builder.RegisterType<UserDTO>().SingleInstance();
             builder.RegisterType<ReservationService>().As<IReservationService>().SingleInstance();
             builder.RegisterType<TableServices>().As<ITableService>().SingleInstance();
             builder.RegisterType<FoodService>().As<IFoodService>().SingleInstance();
