@@ -217,6 +217,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Service\AuthorizationService.cs" />
     <Compile Include="Service\CustomerService.cs" />
+    <Compile Include="Service\Interfaces\IUserService.cs" />
     <Compile Include="Service\Interfaces\IAuthService.cs" />
     <Compile Include="Service\ReservationService.cs" />
     <Compile Include="Service\FoodService.cs" />
@@ -227,6 +228,7 @@
     <Compile Include="Service\Interfaces\IReservationService.cs" />
     <Compile Include="Service\Interfaces\IService.cs" />
     <Compile Include="Service\Interfaces\ITableService.cs" />
+    <Compile Include="Service\UserService.cs" />
     <Compile Include="Util\ConvertStringToFoodLists.cs" />
     <Compile Include="Util\ConvertStringToOrderLines.cs" />
     <Compile Include="Util\ConvertStringToTables.cs" />
@@ -426,6 +428,8 @@
     <Content Include="Views\Account\Register.cshtml" />
     <Content Include="Views\Home\About.cshtml" />
     <Content Include="Views\Manage\Index.cshtml" />
+    <Content Include="Views\Manage\Info.cshtml" />
+    <Content Include="Views\Manage\Reservations.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

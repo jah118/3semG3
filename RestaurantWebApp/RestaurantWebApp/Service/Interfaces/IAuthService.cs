@@ -11,6 +11,5 @@ namespace RestaurantWebApp.Service.Interfaces
 
         bool AddTokenToRequest(RestRequest request);
 
-        UserDTO GetUser(string username);
     }
 }

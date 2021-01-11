@@ -9,13 +9,13 @@ namespace RestaurantWebApp.Service
 {
     public class ReservationService : IReservationService
     {
-        private readonly IAuthService _authRepository;
+        private readonly IAuthService _authService;
         private readonly string _connectionString;
 
         public ReservationService(string connectionString, IAuthService authRepository)
         {
             _connectionString = connectionString;
-            _authRepository = authRepository;
+            _authService = authRepository;
         }
 
         public IEnumerable<ReservationDTO> GetAll()
@@ -65,6 +65,20 @@ namespace RestaurantWebApp.Service
             var content = client.Execute(request).Content;
             var res = JsonConvert.DeserializeObject<ReservationDTO>(content);
 
+            return res;
+        }
+
+        public IEnumerable<ReservationDTO> GetReservationByCustomerId(int id)
+        {
+            IEnumerable<ReservationDTO> res = new List<ReservationDTO>();
+            var client = new RestClient(_connectionString);
+            var request = new RestRequest("/Reservation/customerReservations/{id}", Method.GET);
+            request.AddUrlSegment("id", id);
+            if (_authService.AddTokenToRequest(request))
+            {
+                var content = client.Execute(request).Content;
+                res = JsonConvert.DeserializeObject<IEnumerable<ReservationDTO>>(content);
+            }
             return res;
         }
     }

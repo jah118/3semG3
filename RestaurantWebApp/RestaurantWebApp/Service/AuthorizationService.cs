@@ -67,20 +67,5 @@ namespace RestaurantWebApp.Service
             request.AddHeader("Authorization", "Bearer " + _token);
             return true;
         }
-
-        public UserDTO GetUser(string username)
-        {
-            UserDTO res = null;
-            var client = new RestClient(_conString);
-            var request = new RestRequest("/User/info/{username}", Method.GET);
-            request.AddUrlSegment("username", username);
-            if (AddTokenToRequest(request))
-            {
-                var content = client.Execute(request).Content;
-                res = JsonConvert.DeserializeObject<UserDTO>(content);
-            }
-
-            return res;
-        }
     }
 }

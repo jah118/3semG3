@@ -33,6 +33,14 @@ namespace RestaurantAPI.Controllers
             return res != null ? (IActionResult)Ok(res) : NotFound(id);
         }
 
+        [Authorize]
+        [HttpGet("customerReservations/{customerId}")]
+        public IActionResult GetCustomerReservation(int customerId)
+        {
+            var res = _reservationRepository.ReservationsByCustomerId(customerId);
+            return res != null ? (IActionResult)Ok(res) : NotFound(customerId);
+        }
+
         [HttpPost]
         public IActionResult Post([FromBody] ReservationDTO value)
         {

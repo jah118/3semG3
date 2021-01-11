@@ -50,9 +50,9 @@ namespace RestaurantWebApp.Controllers
         public ActionResult Reservation()
         {
             var reservation = new ReservationDTO();
-            if (Session["UserId"] != null)
+            if (Session["CustomerId"] != null)
             {
-                var current = Session["UserId"];
+                var current = Session["CustomerId"];
                 var customer = _customerservice.GetById((int)current);
                 if (customer == null) return new HttpStatusCodeResult(HttpStatusCode.ServiceUnavailable);
 
@@ -136,6 +136,8 @@ namespace RestaurantWebApp.Controllers
         /// </summary>
         /// <param name="cvm"></param>
         /// <returns></returns>
+        /// 
+        [ValidateAntiForgeryToken]
         [HttpPost]
         public ActionResult OrderFood(CustomViewModel cvm)
         {

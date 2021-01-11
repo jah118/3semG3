@@ -45,6 +45,15 @@ namespace DataAccess.DataTransferObjects.Converters
             return list;
         }
 
+        public static IEnumerable<Reservation> Convert(IEnumerable<ReservationDTO> obj)
+        {
+            var list = new List<Reservation>();
+            foreach (var t in obj)
+            {
+                list.Add(Convert(t));
+            }
+            return list;
+        }
 
     }
 }

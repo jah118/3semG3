@@ -1,4 +1,5 @@
-﻿using System.Web.Mvc;
+﻿using System.Web;
+using System.Web.Mvc;
 using RestaurantWebApp.DataTransferObject;
 using RestaurantWebApp.Service.Interfaces;
 
@@ -7,12 +8,14 @@ namespace RestaurantWebApp.Controllers
     public class AccountController : Controller
     {
         private readonly IAuthService _authService;
+        private readonly IUserService _userService;
         private readonly IService<CustomerDTO> _customerService;
 
-        public AccountController(IService<CustomerDTO> customerService, IAuthService authRepository)
+        public AccountController(IService<CustomerDTO> customerService, IAuthService authRepository, IUserService userService)
         {
             _authService = authRepository;
             _customerService = customerService;
+            _userService = userService;
         }
 
         //GET: Login
@@ -28,6 +31,7 @@ namespace RestaurantWebApp.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Login(UserDTO user)
         {
+
             //TODO when login is comfirm in api and setup for customer.
             string token = _authService.Authenticate(user.Username, user.Password);
 
@@ -35,7 +39,7 @@ namespace RestaurantWebApp.Controllers
             {
                 Session["Token"] = token;
                 //var data = _customerService.GetById(1);
-                var data = _authService.GetUser(user.Username);
+                var data = _userService.GetUserByUsername(user.Username);
 
                 if (data != null)
                 {
@@ -43,6 +47,7 @@ namespace RestaurantWebApp.Controllers
                     Session["FullName"] = data.Customer.FirstName + " " + data.Customer.LastName;
                     Session["Email"] = data.Customer.Email;
                     Session["UserId"] = data.Id;
+                    Session["CustomerId"] = data.Customer.Id;
                     return RedirectToAction("Index", "Home");
                 }
             }
@@ -53,8 +58,8 @@ namespace RestaurantWebApp.Controllers
         }
 
         // POST: /Account/Logout
-        [HttpPost]
-        [ValidateAntiForgeryToken]
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
         public ActionResult Logout()
         {
             Session.Clear(); //remove session
