@@ -15,36 +15,17 @@ namespace RestaurantWebApp.Controllers
     //[LoginRequired]
     public class BookingController : Controller
     {
-        private readonly IAuthService _authRepository;
-        private readonly IService<CustomerDTO> _customerservice;
         private readonly IFoodService _foodService;
         private readonly IOrderService _orderService;
         private readonly IUserService _userService;
-
-
         private readonly IReservationService _reservationService;
-        private readonly ITableService _tableService;
 
-        //This use as long there no login feature implemented 
-        public BookingController(IReservationService reservationService, ITableService tableService,
-            IFoodService foodService, IOrderService orderService)
+        public BookingController(IReservationService reservationService,
+            IFoodService foodService, IOrderService orderService, IUserService userService)
         {
             _reservationService = reservationService;
-            _tableService = tableService;
             _foodService = foodService;
             _orderService = orderService;
-        }
-        //This constructor is used when a person is login
-        public BookingController(IReservationService reservationService, ITableService tableService,
-            IFoodService foodService, IOrderService orderService, IAuthService authRepository,
-            IService<CustomerDTO> customerService, IUserService userService)
-        {
-            _reservationService = reservationService;
-            _tableService = tableService;
-            _foodService = foodService;
-            _orderService = orderService;
-            _authRepository = authRepository;
-            _customerservice = customerService;
             _userService = userService;
         }
 
@@ -53,7 +34,7 @@ namespace RestaurantWebApp.Controllers
         public ActionResult Reservation()
         {
             var reservation = new ReservationDTO();
-            reservation.ReservationDate =  DateTime.Now;
+            reservation.ReservationDate = DateTime.Now;
             reservation.OrderingFood = false;
 
 
