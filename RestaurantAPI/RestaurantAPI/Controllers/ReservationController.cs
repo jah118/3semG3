@@ -2,6 +2,7 @@
 using DataAccess.Repositories.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace RestaurantAPI.Controllers
 {
@@ -31,6 +32,16 @@ namespace RestaurantAPI.Controllers
         {
             var res = _reservationRepository.GetById(id);
             return res != null ? (IActionResult)Ok(res) : NotFound(id);
+        }
+
+        [Authorize]
+        [HttpGet("CustomerReservations")]
+        public IActionResult GetCustomerReservation()
+        {
+            string tokenUserName = User.FindFirst(ClaimTypes.Name).Value;
+
+            var res = _reservationRepository.ReservationsByCustomerUsername(tokenUserName);
+            return res != null ? (IActionResult)Ok(res) : NotFound(tokenUserName);
         }
 
         [HttpPost]

@@ -176,7 +176,7 @@ namespace DataAccess.Repositories
                 .Include(rt => rt.ReservationsTables)
                 .ThenInclude(t => t.RestaurantTables)
                 .AsNoTracking()
-                .FirstOrDefault();
+                .SingleOrDefault();
             if (reservation != null) res = Converter.Convert(reservation);
             return res;
         }
@@ -289,6 +289,29 @@ namespace DataAccess.Repositories
             timeSlots.TableOpenings = availabilityList;
 
             return timeSlots;
+        }
+
+        public IEnumerable<ReservationDTO> ReservationsByCustomerUsername(string tokenUserName)
+        {
+            IEnumerable<ReservationDTO> res = null;
+            UserRepository repository = new UserRepository(_context);
+            var user = repository.GetUserWithToken(tokenUserName);
+            if (user.Customer != null)
+            {
+                var reservation = _context.Reservation
+                    .Where(r => r.CustomerId == user.Customer.Id)
+                    .Include(c => c.Customer)
+                    .ThenInclude(c => c.Person)
+                    .ThenInclude(c => c.Location)
+                    .ThenInclude(c => c.ZipCodeNavigation)
+                    .Include(rt => rt.ReservationsTables)
+                    .ThenInclude(t => t.RestaurantTables)
+                    .AsNoTracking()
+                    .ToList();
+                if (reservation.Count > 0) res = Converter.Convert(reservation);
+            }
+      
+            return res;
         }
     }
 }

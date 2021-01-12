@@ -1,0 +1,65 @@
+﻿@model IEnumerable<RestaurantWebApp.DataTransferObject.ReservationDTO>
+
+@{
+    ViewBag.Title = "Reservations";
+}
+
+<h2>Reservations</h2>
+
+@Html.AntiForgeryToken()
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.ReservationDate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ReservationTime)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.NoOfPeople)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Deposit)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Note)
+        </th>
+
+        <th></th>
+    </tr>
+    @if (Model != null)
+    {
+
+        foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ReservationDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ReservationTime)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.NoOfPeople)
+                </td>
+                <td>
+                    @if (item.Deposit)
+                    {
+                        <p>Betalt</p>
+                    }
+                    else
+                    {
+                        <p>Ikke betalt</p>
+                    }
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Note)
+                </td>
+            </tr>
+        }
+    }
+</table>
+
+<div>
+    @Html.ActionLink("Gå til forside", "Index", "Home")
+</div>

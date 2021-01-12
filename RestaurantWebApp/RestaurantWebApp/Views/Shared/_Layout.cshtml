@@ -17,6 +17,7 @@
     @RenderSection("styles", required: false)
 </head>
 <body>
+    @Html.AntiForgeryToken()
     <div class="d-flex" id="wrapper">
         <!-- Sidebar -->
         <div class="bg-light border-right" id="sidebar-wrapper">
@@ -45,10 +46,10 @@
                                 <ul class="nav navbar-nav navbar-right">
                                     <li>
                                         <b class="nav-link"> Hello @Session["FullName"]!<span class="sr-only">(current)</span></b>
-                                       
-                                         @*@Html.ActionLink("Hello " + Session["FullName"] + "!", "Index", "Manage", routeValues: new { area = "" }, htmlAttributes: new { title = "Manage" })*@
+
+                                        @*@Html.ActionLink("Hello " + Session["FullName"] + "!", "Index", "Manage", routeValues: new { area = "" }, htmlAttributes: new { title = "Manage" })*@
                                     </li>
-                                    <li><a class="nav-link" href="javascript:sessionStorage.removeItem('Token');$('#logoutForm').submit();">Log off<span class="sr-only">(current)</span></a></li>
+                                    <li><a class="nav-link" href="Account/Logout">Log off<span class="sr-only">(current)</span></a></li>
                                 </ul>
                             }
                             <li class="nav-item dropdown">
@@ -56,8 +57,8 @@
                                     Settings
                                 </a>
                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                                    <a class="dropdown-item" href="/Manage/Index">Manage</a>
-                                    <a class="dropdown-item" href="/Manage/Index">Mine reservationer</a>
+                                    <a class="dropdown-item" href="/Manage/Info">Manage</a>
+                                    <a class="dropdown-item" href="/Manage/Reservations">Mine reservationer</a>
                                     <div class="dropdown-divider"></div>
                                     @*<a class="dropdown-item" href="#">Something else here</a>*@
                                 </div>

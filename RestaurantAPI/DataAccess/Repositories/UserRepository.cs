@@ -53,7 +53,7 @@ namespace DataAccess.Repositories
                     _context.Add(toAddUser);
                     _context.SaveChanges();
                     _context.Entry(toAddUser).GetDatabaseValues();
-                    if (transactionEndpoint)_context.Database.CommitTransaction();
+                    if (transactionEndpoint) _context.Database.CommitTransaction();
                     return GetById(toAddUser.Id);
                 }
             }
@@ -85,7 +85,21 @@ namespace DataAccess.Repositories
                 .AsNoTracking()
                 .FirstOrDefault();
 
+            return Converter.Convert(user);
+        }
 
+        public UserDTO GetUserWithToken(string username)
+        {
+            var user = _context.User
+                .Where(u => u.Username == username)
+                .Include(u => u.Person)
+                .ThenInclude(c => c.Customer)
+                .Include(e => e.Person.Employee)
+                .ThenInclude(e => e.Title)
+                .Include(p => p.Person.Location)
+                    .ThenInclude(c => c.ZipCodeNavigation)
+                .AsNoTracking()
+                .FirstOrDefault();
             return Converter.Convert(user);
         }
 
