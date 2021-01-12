@@ -1,4 +1,5 @@
-﻿using DataAccess.Repositories.Interfaces;
+﻿using System.Security.Claims;
+using DataAccess.Repositories.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
@@ -31,11 +32,12 @@ namespace RestaurantAPI.Controllers
         }
         
 
-        [HttpGet("info/{userName}")]
-        public IActionResult Get(string userName)
+        [HttpGet("Info")]
+        public IActionResult Get()
         {
-            var res = _accountRepository.GetByUserName(userName);
-            return res != null ? Ok(res) : NotFound(userName);
+            string tokenUserName = User.FindFirst(ClaimTypes.Name).Value;
+            var res = _accountRepository.GetUserWithToken(tokenUserName);
+            return res != null ? Ok(res) : NotFound(tokenUserName);
         }
 
 

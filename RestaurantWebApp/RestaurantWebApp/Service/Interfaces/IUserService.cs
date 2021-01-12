@@ -4,7 +4,7 @@ namespace RestaurantWebApp.Service.Interfaces
 {
     public interface IUserService
     {
-        UserDTO GetUserByUsername(string username);
+        UserDTO GetUserByToken();
         UserDTO GetUserById(int id);
 
     }

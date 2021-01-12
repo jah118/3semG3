@@ -31,7 +31,7 @@ namespace RestaurantWebApp.Controllers
 
         public ActionResult Reservations()
         {
-            var data = _reservationService.GetReservationByCustomerId((int)Session["CustomerId"]);
+            var data = _reservationService.GetReservationByCustomerId();
             return View(data);
         }
     }

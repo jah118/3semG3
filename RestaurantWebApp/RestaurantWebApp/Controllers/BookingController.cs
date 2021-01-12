@@ -19,6 +19,8 @@ namespace RestaurantWebApp.Controllers
         private readonly IService<CustomerDTO> _customerservice;
         private readonly IFoodService _foodService;
         private readonly IOrderService _orderService;
+        private readonly IUserService _userService;
+
 
         private readonly IReservationService _reservationService;
         private readonly ITableService _tableService;
@@ -35,7 +37,7 @@ namespace RestaurantWebApp.Controllers
         //This constructor is used when a person is login
         public BookingController(IReservationService reservationService, ITableService tableService,
             IFoodService foodService, IOrderService orderService, IAuthService authRepository,
-            IService<CustomerDTO> customerService)
+            IService<CustomerDTO> customerService, IUserService userService)
         {
             _reservationService = reservationService;
             _tableService = tableService;
@@ -43,6 +45,7 @@ namespace RestaurantWebApp.Controllers
             _orderService = orderService;
             _authRepository = authRepository;
             _customerservice = customerService;
+            _userService = userService;
         }
 
         // GET: Booking/Reservation
@@ -54,13 +57,13 @@ namespace RestaurantWebApp.Controllers
             reservation.OrderingFood = false;
 
 
-            if (Session["CustomerId"] != null)
+            if (Session["UserId"] != null)
             {
-                var current = Session["CustomerId"];
-                var customer = _customerservice.GetById((int)current);
-                if (customer == null) return new HttpStatusCodeResult(HttpStatusCode.ServiceUnavailable);
+                var current = Session["UserId"];
+                var user = _userService.GetUserById((int)current);
+                if (user == null) return new HttpStatusCodeResult(HttpStatusCode.ServiceUnavailable);
 
-                reservation.Customer = customer;
+                reservation.Customer = user.Customer;
             }
             return View(reservation);
         }

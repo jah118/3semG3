@@ -16,13 +16,11 @@ namespace RestaurantWebApp.Service
             _authService = authService;
         }
 
-        public UserDTO GetUserByUsername(string username)
+        public UserDTO GetUserByToken()
         {
             UserDTO res = null;
             var client = new RestClient(_conString);
-            var request = new RestRequest("/User/info/{username}", Method.GET);
-            request.AddUrlSegment("username", username);
-
+            var request = new RestRequest("/User/Info", Method.GET);
             if (_authService.AddTokenToRequest(request))
             {
                 var content = client.Execute(request).Content;

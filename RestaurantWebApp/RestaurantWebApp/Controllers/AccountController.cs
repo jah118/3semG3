@@ -31,23 +31,20 @@ namespace RestaurantWebApp.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Login(UserDTO user)
         {
-
-            //TODO when login is comfirm in api and setup for customer.
             string token = _authService.Authenticate(user.Username, user.Password);
 
-            if (token.Length > 6)
+            if (token != null)
             {
                 Session["Token"] = token;
                 //var data = _customerService.GetById(1);
-                var data = _userService.GetUserByUsername(user.Username);
+                var data = _userService.GetUserByToken();
 
                 if (data != null)
                 {
                     //add session
                     Session["FullName"] = data.Customer.FirstName + " " + data.Customer.LastName;
-                    Session["Email"] = data.Customer.Email;
+                    Session["Username"] = data.Customer;
                     Session["UserId"] = data.Id;
-                    Session["CustomerId"] = data.Customer.Id;
                     return RedirectToAction("Index", "Home");
                 }
             }

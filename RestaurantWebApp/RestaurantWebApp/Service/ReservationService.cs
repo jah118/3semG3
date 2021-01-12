@@ -68,12 +68,12 @@ namespace RestaurantWebApp.Service
             return res;
         }
 
-        public IEnumerable<ReservationDTO> GetReservationByCustomerId(int id)
+        public IEnumerable<ReservationDTO> GetReservationByCustomerId()
         {
             IEnumerable<ReservationDTO> res = new List<ReservationDTO>();
             var client = new RestClient(_connectionString);
-            var request = new RestRequest("/Reservation/customerReservations/{id}", Method.GET);
-            request.AddUrlSegment("id", id);
+            var request = new RestRequest("/Reservation/CustomerReservations", Method.GET);
+            //request.AddUrlSegment("id", id);
             if (_authService.AddTokenToRequest(request))
             {
                 var content = client.Execute(request).Content;

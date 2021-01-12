@@ -88,7 +88,7 @@ namespace DataAccess.Repositories
             return Converter.Convert(user);
         }
 
-        public UserDTO GetByUserName(string username)
+        public UserDTO GetUserWithToken(string username)
         {
             var user = _context.User
                 .Where(u => u.Username == username)
