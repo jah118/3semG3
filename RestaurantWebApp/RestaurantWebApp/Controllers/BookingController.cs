@@ -50,6 +50,10 @@ namespace RestaurantWebApp.Controllers
         public ActionResult Reservation()
         {
             var reservation = new ReservationDTO();
+            reservation.ReservationDate =  DateTime.Now;
+            reservation.OrderingFood = false;
+
+
             if (Session["CustomerId"] != null)
             {
                 var current = Session["CustomerId"];
