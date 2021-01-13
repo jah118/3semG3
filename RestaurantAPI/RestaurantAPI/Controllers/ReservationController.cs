@@ -41,7 +41,7 @@ namespace RestaurantAPI.Controllers
             string tokenUserName = User.FindFirst(ClaimTypes.Name).Value;
 
             var res = _reservationRepository.ReservationsByCustomerUsername(tokenUserName);
-            return res != null ? (IActionResult)Ok(res) : NotFound(tokenUserName);
+            return res != null ? (IActionResult)Ok(res) : NotFound();
         }
 
         [HttpPost]
