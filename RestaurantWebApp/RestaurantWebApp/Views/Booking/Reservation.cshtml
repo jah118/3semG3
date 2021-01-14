@@ -1,10 +1,9 @@
 ﻿@model RestaurantWebApp.DataTransferObject.ReservationDTO
-
 @{
     ViewBag.Title = "Reservation";
 }
 <h2>Bordbestilling</h2>
-<hr />
+<hr/>
 
 @section Styles {
     @Styles.Render("~/Content/createView")
@@ -19,25 +18,24 @@
         <div class="row">
             <div class="col">
                 <div class="form-group">
-                    @Html.LabelFor(model => model.ReservationTime, new { @class = "control-label col-md-5" })
+                    @Html.LabelFor(model => model.ReservationTime, new {@class = "control-label col-md-5"})
                     <div class="col-md-10">
-                        @Html.TextBoxFor(model => model.ReservationTime, new { @class = "form-control" })
-                        @*@Html.ValidationMessageFor(model => model.ReservationTime, "", new { @class = "text-danger" })*@
-                        <input class="timepicker form-control" id="timepicker" name="timepicker" autocomplete="false" />
-                        <input type="hidden" id="ReservationTimeHid" name="ReservationTimeHid" />
+                        @Html.TextBoxFor(model => model.ReservationTime, new {@class = "form-control"})
+                        <input class="timepicker form-control" id="timepicker" name="timepicker" autocomplete="false"/>
+                        <input type="hidden" id="ReservationTimeHid" name="ReservationTimeHid"/>
                     </div>
                 </div>
 
                 <div class="form-group">
-                    @Html.LabelFor(model => model.NoOfPeople, new { @class = "control-label col-md-5" })
+                    @Html.LabelFor(model => model.NoOfPeople, new {@class = "control-label col-md-5"})
                     <div class="col-md-10">
-                        @Html.EditorFor(model => model.NoOfPeople, new { htmlAttributes = new { @class = "form-control" } })
-                        @Html.ValidationMessageFor(model => model.NoOfPeople, "", new { @class = "text-danger" })
+                        @Html.EditorFor(model => model.NoOfPeople, new {htmlAttributes = new {@class = "form-control"}})
+                        @Html.ValidationMessageFor(model => model.NoOfPeople, "", new {@class = "text-danger"})
                     </div>
                 </div>
 
                 <div class="form-group">
-                    @Html.LabelFor(model => model.Tables, new { @class = "control-label col-md-2" })
+                    @Html.LabelFor(model => model.Tables, new {@class = "control-label col-md-2"})
                     <div class="col-md-10">
                         <select name="Tables" id="Tables2" class="form-control" multiple>
                             @if (Model.Tables != null)
@@ -51,89 +49,79 @@
                     </div>
                 </div>
 
-                @*<div class="form-group">
-                    @Html.LabelFor(model => model.Deposit, "Depositum", new { @class = "control-label col-md-2" })
-                    <div class="col-md-10">
-                        <div class="checkbox">
-                            @Html.EditorFor(model => model.Deposit)
-                            @Html.ValidationMessageFor(model => model.Deposit, "", new { @class = "text-danger" })
-                        </div>
-                    </div>
-                </div>*@
-
                 <div class="form-group">
-                    @Html.LabelFor(model => model.Note, new { @class = "control-label col-md-5" })
+                    @Html.LabelFor(model => model.Note, new {@class = "control-label col-md-5"})
                     <div class="col-md-10">
-                        @Html.TextAreaFor(model => model.Note, new { htmlAttributes = new { @class = "form-control" } })
-                        @Html.ValidationMessageFor(model => model.Note, "", new { @class = "text-danger" })
+                        @Html.TextAreaFor(model => model.Note, new {htmlAttributes = new {@class = "form-control"}})
+                        @Html.ValidationMessageFor(model => model.Note, "", new {@class = "text-danger"})
                     </div>
 
-                    @Html.LabelFor(model => model.OrderingFood, "Vil du bestille mad med til din reservation?", new { @class = "control-label col-md-5" })
+                    @Html.LabelFor(model => model.OrderingFood, "Vil du bestille mad med til din reservation?", new {@class = "control-label col-md-5"})
                     <div class="col-md-10">
                         <div class="checkbox">
-                            @Html.CheckBoxFor(model => model.OrderingFood, new { @class = "form-control", id = "check", onclick = "myFunction()" })
+                            @Html.CheckBoxFor(model => model.OrderingFood, new {@class = "form-control", id = "check", onclick = "myFunction()"})
                             <p id="checkText" style="display: none">Der er valgt der skal bestilles mad</p>
-                            @Html.ValidationMessageFor(model => model.OrderingFood, "", new { @class = "text-danger" })
+                            @Html.ValidationMessageFor(model => model.OrderingFood, "", new {@class = "text-danger"})
                         </div>
                     </div>
                 </div>
             </div>
 
             <div class="col">
-                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                @Html.ValidationSummary(true, "", new {@class = "text-danger"})
                 <div class="form-group">
-                    @Html.LabelFor(model => model.Customer.Phone, new { @class = "control-label col-md-2" })
+                    @Html.LabelFor(model => model.Customer.Phone, new {@class = "control-label col-md-2"})
                     <div class="col-md-10">
-                        @Html.EditorFor(model => model.Customer.Phone, new { htmlAttributes = new { @class = "form-control" } })
-                        @Html.ValidationMessageFor(model => model.Customer.Phone, "", new { @class = "text-danger" })
+                        @Html.EditorFor(model => model.Customer.Phone, new {htmlAttributes = new {@class = "form-control"}})
+                        @Html.ValidationMessageFor(model => model.Customer.Phone, "", new {@class = "text-danger"})
                     </div>
                 </div>
 
                 <div class="form-group">
-                    @Html.LabelFor(model => model.Customer.Email, new { @class = "control-label col-md-2" })
+                    @Html.LabelFor(model => model.Customer.Email, new {@class = "control-label col-md-2"})
                     <div class="col-md-10">
-                        @Html.EditorFor(model => model.Customer.Email, new { htmlAttributes = new { @class = "form-control" } })
-                        @Html.ValidationMessageFor(model => model.Customer.Email, "", new { @class = "text-danger" })
+                        @Html.EditorFor(model => model.Customer.Email, new {htmlAttributes = new {@class = "form-control"}})
+                        @Html.ValidationMessageFor(model => model.Customer.Email, "", new {@class = "text-danger"})
                     </div>
                 </div>
 
                 <div class="form-group">
-                    @Html.LabelFor(model => model.Customer.FirstName, new { @class = "control-label col-md-2" })
+                    @Html.LabelFor(model => model.Customer.FirstName, new {@class = "control-label col-md-2"})
                     <div class="col-md-10">
-                        @Html.EditorFor(model => model.Customer.FirstName, new { htmlAttributes = new { @class = "form-control" } })
-                        @Html.ValidationMessageFor(model => model.Customer.FirstName, "", new { @class = "text-danger" })
+                        @Html.EditorFor(model => model.Customer.FirstName, new {htmlAttributes = new {@class = "form-control"}})
+                        @Html.ValidationMessageFor(model => model.Customer.FirstName, "", new {@class = "text-danger"})
                     </div>
                 </div>
 
                 <div class="form-group">
-                    @Html.LabelFor(model => model.Customer.LastName, new { @class = "control-label col-md-2" })
+                    @Html.LabelFor(model => model.Customer.LastName, new {@class = "control-label col-md-2"})
                     <div class="col-md-10">
-                        @Html.EditorFor(model => model.Customer.LastName, new { htmlAttributes = new { @class = "form-control" } })
-                        @Html.ValidationMessageFor(model => model.Customer.LastName, "", new { @class = "text-danger" })
+                        @Html.EditorFor(model => model.Customer.LastName, new {htmlAttributes = new {@class = "form-control"}})
+                        @Html.ValidationMessageFor(model => model.Customer.LastName, "", new {@class = "text-danger"})
                     </div>
                 </div>
 
                 <div class="form-group">
-                    @Html.LabelFor(model => model.Customer.Address, new { @class = "control-label col-md-2" })
+                    @Html.LabelFor(model => model.Customer.Address, new {@class = "control-label col-md-2"})
                     <div class="col-md-10">
-                        @Html.EditorFor(model => model.Customer.Address, new { htmlAttributes = new { @class = "form-control" } })
-                        @Html.ValidationMessageFor(model => model.Customer.Address, "", new { @class = "text-danger" })
+                        @Html.EditorFor(model => model.Customer.Address, new {htmlAttributes = new {@class = "form-control"}})
+                        @Html.ValidationMessageFor(model => model.Customer.Address, "", new {@class = "text-danger"})
                     </div>
                 </div>
 
                 <div class="form-group">
-                    @Html.LabelFor(model => model.Customer.ZipCode, new { @class = "control-label col-md-2" })
+                    @Html.LabelFor(model => model.Customer.ZipCode, new {@class = "control-label col-md-2"})
                     <div class="col-md-10">
-                        @Html.EditorFor(model => model.Customer.ZipCode, new { htmlAttributes = new { @class = "form-control" } })
-                        @Html.ValidationMessageFor(model => model.Customer.ZipCode, "", new { @class = "text-danger" })
+                        @Html.EditorFor(model => model.Customer.ZipCode, new {htmlAttributes = new {@class = "form-control"}})
+                        @Html.ValidationMessageFor(model => model.Customer.ZipCode, "", new {@class = "text-danger"})
                     </div>
                 </div>
 
                 <div class="form-group">
-                    @Html.LabelFor(model => model.Customer.City, new { @class = "control-label col-md-2" })
+                    @Html.LabelFor(model => model.Customer.City, new {@class = "control-label col-md-2"})
                     <div class="col-md-10">
-                        @Html.EditorFor(model => model.Customer.City, new { htmlAttributes = new { @class = "form-control" } })
-                        @Html.ValidationMessageFor(model => model.Customer.City, "", new { @class = "text-danger" })
+                        @Html.EditorFor(model => model.Customer.City, new {htmlAttributes = new {@class = "form-control"}})
+                        @Html.ValidationMessageFor(model => model.Customer.City, "", new {@class = "text-danger"})
                     </div>
                 </div>
             </div>
@@ -142,7 +130,7 @@
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Gem og afslut" class="btn btn-primary" />
+                <input type="submit" value="Gem og afslut" class="btn btn-primary"/>
             </div>
         </div>
 
@@ -163,7 +151,7 @@
 
     <script>
         //setup for timepicker and uses its change event to
-        $(document).ready(function () {
+        $(document).ready(function() {
             $('input.timepicker').timepicker({
                 timeFormat: 'HH:mm',
                 interval: 15,
@@ -172,7 +160,7 @@
                 dynamic: false,
                 dropdown: true,
                 scrollbar: true,
-                change: function () {
+                change: function() {
                     $('#Tables2').empty();
                     const time1 = document.getElementById("timepicker").value;
                     const date = document.getElementById("ReservationTime").value;
@@ -187,7 +175,7 @@
         });
 
         //sets up  datepicker and clears table and time each time a new date is selected
-        $(document).ready(function () {
+        $(document).ready(function() {
             $("#ReservationTime").val("klik for at vælge tidspunkt");
             $("#ReservationTime").datepicker({
                 autoHide: true,
@@ -196,7 +184,7 @@
                 language: '',
                 maxDate: '+3m +15d',
                 minDate: 0,
-                onSelect: function (dateText) {
+                onSelect: function(dateText) {
                     $('#Tables2').empty();
                     $("#timepicker").val("klik for at vælge tidspunkt");
                 }
@@ -215,10 +203,10 @@
         function getTablesByDateTime(datetime) {
             const url = `https://localhost:44386/api/Table/OpenTables/${datetime}`;
             const get = $.getJSON(url,
-                function (data) {
+                function(data) {
                     //  console.log(typeof data);
                 });
-            get.done(function (data) {
+            get.done(function(data) {
                 // console.log(typeof data);
                 ChangeTablesList(data);
                 //console.log(JSON.stringify(obj));

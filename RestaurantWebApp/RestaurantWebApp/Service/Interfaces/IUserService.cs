@@ -6,6 +6,5 @@ namespace RestaurantWebApp.Service.Interfaces
     {
         UserDTO GetUserByToken();
         UserDTO GetUserById(int id);
-
     }
 }

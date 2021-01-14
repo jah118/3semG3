@@ -1,9 +1,8 @@
-﻿using Newtonsoft.Json;
+﻿using System;
+using System.IdentityModel.Tokens.Jwt;
 using RestaurantWebApp.DataTransferObject;
 using RestaurantWebApp.Service.Interfaces;
 using RestSharp;
-using System;
-using System.IdentityModel.Tokens.Jwt;
 
 namespace RestaurantWebApp.Service
 {
@@ -21,7 +20,7 @@ namespace RestaurantWebApp.Service
         {
             var client = new RestClient(_conString);
             var request = new RestRequest("/User/Authenticate", Method.POST);
-            request.AddJsonBody(new { Username = username, Password = password, Role = "Customer" });
+            request.AddJsonBody(new {Username = username, Password = password, Role = "Customer"});
             var response = client.Execute(request);
             if (response.IsSuccessful)
             {
@@ -29,6 +28,7 @@ namespace RestaurantWebApp.Service
                 _token = response.Content.Substring(1, response.Content.Length - 2);
                 return _token;
             }
+
             return null;
         }
 
@@ -41,11 +41,11 @@ namespace RestaurantWebApp.Service
             {
                 Username = username,
                 Password = password,
-                User = new UserDTO()
+                User = new UserDTO
                 {
                     AccountType = UserRoles.Customer,
                     Customer = customer,
-                    Username = username,
+                    Username = username
                 }
             });
             var response = client.Execute(request);

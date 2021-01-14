@@ -6,7 +6,6 @@
 <div class="container">
     <h2>Madbestilling</h2>
     <hr />
-    @*@using (Html.BeginForm("OrderFood", "Booking", FormMethod.Post))*@
     @using (Html.BeginForm())
     {
         @Html.AntiForgeryToken()
@@ -19,7 +18,6 @@
                     <label class="col-md-5">Retter</label>
                     <div class="col-md-10">
                         @Html.ListBoxFor(model => model.ListFood, new SelectList(Model.ListFood, "Id", "Name"), new { size = "20" })
-                        @*@Html.ListBoxFor(m => m.Slf,Model.Slf, new { size = "20" })*@
                         <input id="AddFoodsBtn" type="button" value="Vælg Madvarer" />
                     </div>
                 </div>
@@ -58,7 +56,7 @@
     }
 </div>
 <div>
-    @Html.ActionLink("Gå til forside", "Index","Home")
+    @Html.ActionLink("Gå til forside", "Index", "Home")
 </div>
 
 @section Scripts {

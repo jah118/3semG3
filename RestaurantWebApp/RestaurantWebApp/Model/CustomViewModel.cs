@@ -1,5 +1,5 @@
-﻿using RestaurantWebApp.DataTransferObject;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using RestaurantWebApp.DataTransferObject;
 
 namespace RestaurantWebApp.Model
 {

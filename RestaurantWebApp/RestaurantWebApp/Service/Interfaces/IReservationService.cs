@@ -1,6 +1,6 @@
-﻿using RestaurantWebApp.DataTransferObject;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using RestaurantWebApp.DataTransferObject;
 
 namespace RestaurantWebApp.Service.Interfaces
 {
@@ -8,6 +8,5 @@ namespace RestaurantWebApp.Service.Interfaces
     {
         AvailableTimesDTO GetReservationTimeByDate(DateTime dateTime);
         IEnumerable<ReservationDTO> GetReservationByCustomerId();
-
     }
 }

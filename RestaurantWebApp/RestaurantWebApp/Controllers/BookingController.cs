@@ -1,24 +1,25 @@
-using RestaurantWebApp.DataTransferObject;
-using RestaurantWebApp.Model;
-using RestaurantWebApp.Service.Interfaces;
-using RestaurantWebApp.Util;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Web.Mvc;
+using RestaurantWebApp.DataTransferObject;
+using RestaurantWebApp.Model;
+using RestaurantWebApp.Service.Interfaces;
+using RestaurantWebApp.Util;
 
 namespace RestaurantWebApp.Controllers
 {
-    //TODO adding when login is comfirmed
-    //[LoginRequired]
+    /// <summary>
+    /// this class handels booking things as a reservation and add food to a reservation. 
+    /// </summary>
     public class BookingController : Controller
     {
         private readonly IFoodService _foodService;
         private readonly IOrderService _orderService;
-        private readonly IUserService _userService;
         private readonly IReservationService _reservationService;
+        private readonly IUserService _userService;
 
         public BookingController(IReservationService reservationService,
             IFoodService foodService, IOrderService orderService, IUserService userService)

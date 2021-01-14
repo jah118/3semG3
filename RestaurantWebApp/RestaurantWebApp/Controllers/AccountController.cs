@@ -1,5 +1,4 @@
-﻿using System.Web;
-using System.Web.Mvc;
+﻿using System.Web.Mvc;
 using RestaurantWebApp.DataTransferObject;
 using RestaurantWebApp.Service.Interfaces;
 
@@ -9,12 +8,10 @@ namespace RestaurantWebApp.Controllers
     {
         private readonly IAuthService _authService;
         private readonly IUserService _userService;
-        private readonly IService<CustomerDTO> _customerService;
 
-        public AccountController(IService<CustomerDTO> customerService, IAuthService authRepository, IUserService userService)
+        public AccountController(IAuthService authRepository, IUserService userService)
         {
             _authService = authRepository;
-            _customerService = customerService;
             _userService = userService;
         }
 
@@ -22,7 +19,7 @@ namespace RestaurantWebApp.Controllers
         [AllowAnonymous]
         public ActionResult Login()
         {
-            var user = new UserDTO { AccountType = UserRoles.Customer };
+            var user = new UserDTO {AccountType = UserRoles.Customer};
             return View(user);
         }
 
@@ -31,17 +28,16 @@ namespace RestaurantWebApp.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Login(UserDTO user)
         {
-            string token = _authService.Authenticate(user.Username, user.Password);
+            var token = _authService.Authenticate(user.Username, user.Password);
 
             if (token != null)
             {
                 Session["Token"] = token;
-                //var data = _customerService.GetById(1);
                 var data = _userService.GetUserByToken();
 
                 if (data != null)
                 {
-                    //add session
+                    //add sessions
                     Session["FullName"] = data.Customer.FirstName + " " + data.Customer.LastName;
                     Session["Username"] = data.Customer;
                     Session["UserId"] = data.Id;
@@ -51,17 +47,14 @@ namespace RestaurantWebApp.Controllers
 
             ViewBag.error = "Login failed";
             return RedirectToAction("Login");
-
         }
 
         // POST: /Account/Logout
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
         public ActionResult Logout()
         {
             Session.Clear(); //remove session
             Session.Abandon();
-            return RedirectToAction("Login");
+            return RedirectToAction("Index", "Home");
         }
 
 
@@ -73,6 +66,7 @@ namespace RestaurantWebApp.Controllers
             return View(user);
         }
 
+        //TODO service needs validation for creation a customer, so not in use for now
         //POST: Register
         [HttpPost]
         [AllowAnonymous]
@@ -80,12 +74,10 @@ namespace RestaurantWebApp.Controllers
         public ActionResult Register(UserDTO user)
         {
             if (ModelState.IsValid)
-            {
                 //TODO implemented create function in auth service as customer
                 // _authRepository.Create(user.Customer, user.Username, user.Password);
                 //if conflic  ViewBag.error = "Email already exists";
                 return RedirectToAction("Index", "Home");
-            }
 
             return View();
         }

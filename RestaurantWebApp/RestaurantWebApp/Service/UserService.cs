@@ -7,8 +7,8 @@ namespace RestaurantWebApp.Service
 {
     public class UserService : IUserService
     {
-        private readonly string _conString;
         private readonly IAuthService _authService;
+        private readonly string _conString;
 
         public UserService(string constring, IAuthService authService)
         {
@@ -42,6 +42,7 @@ namespace RestaurantWebApp.Service
                 var content = client.Execute(request).Content;
                 res = JsonConvert.DeserializeObject<UserDTO>(content);
             }
+
             return res;
         }
     }

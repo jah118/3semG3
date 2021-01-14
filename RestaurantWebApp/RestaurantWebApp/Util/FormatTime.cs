@@ -11,10 +11,7 @@ namespace RestaurantWebApp.Util
         {
             var timeSplit = timeStamp.Split(' ');
 
-            if (date.Length < 5)
-            {
-                throw new FormatException("No date, cant format without a date");
-            }
+            if (date.Length < 5) throw new FormatException("No date, cant format without a date");
             //[1]
             if (date.Contains(" "))
             {

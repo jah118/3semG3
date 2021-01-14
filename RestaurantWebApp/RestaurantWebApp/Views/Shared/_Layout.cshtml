@@ -35,21 +35,15 @@
                     @if (Session["Token"] != null)
                     {
                         <ul class="navbar-nav ml-auto mt-2 mt-lg-0">
-                            <li>
-                                @* @Html.ActionLink("Hello " + User.Identity.Name + "!", "Index", "Manage", routeValues: null, htmlAttributes: new { title = "Manage" })*@
-                            </li>
-
-                            @using (Html.BeginForm("Logout", "Account", new { area = "" }, FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
+                            @using (Html.BeginForm("Logout", "Account", new { area = "" }, FormMethod.Get, new { id = "logoutForm", @class = "navbar-right" }))
                             {
                                 @Html.AntiForgeryToken()
 
                                 <ul class="nav navbar-nav navbar-right">
                                     <li>
                                         <b class="nav-link"> Hello @Session["FullName"]!<span class="sr-only">(current)</span></b>
-
-                                        @*@Html.ActionLink("Hello " + Session["FullName"] + "!", "Index", "Manage", routeValues: new { area = "" }, htmlAttributes: new { title = "Manage" })*@
                                     </li>
-                                    <li><a class="nav-link" href="Account/Logout">Log off<span class="sr-only">(current)</span></a></li>
+                                    @Html.ActionLink("Log out","Logout","Account", new { area = "" }, new {@class = "nav-link" })
                                 </ul>
                             }
                             <li class="nav-item dropdown">
@@ -60,7 +54,6 @@
                                     <a class="dropdown-item" href="/Manage/Info">Manage</a>
                                     <a class="dropdown-item" href="/Manage/Reservations">Mine reservationer</a>
                                     <div class="dropdown-divider"></div>
-                                    @*<a class="dropdown-item" href="#">Something else here</a>*@
                                 </div>
                             </li>
                         </ul>

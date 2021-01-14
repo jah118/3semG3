@@ -2,6 +2,9 @@
 
 namespace RestaurantWebApp.Controllers
 {
+    /// <summary>
+    ///     This class handel the front page
+    /// </summary>
     public class HomeController : Controller
     {
         // GET: Booking

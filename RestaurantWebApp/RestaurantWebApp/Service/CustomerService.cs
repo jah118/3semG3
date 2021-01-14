@@ -1,10 +1,10 @@
-﻿using Newtonsoft.Json;
+﻿using System;
+using System.Collections.Generic;
+using System.Net;
+using Newtonsoft.Json;
 using RestaurantWebApp.DataTransferObject;
 using RestaurantWebApp.Service.Interfaces;
 using RestSharp;
-using System;
-using System.Collections.Generic;
-using System.Net;
 
 namespace RestaurantWebApp.Service
 {

@@ -201,7 +201,6 @@
     <Compile Include="DataTransferObject\AvailableTimesDTO.cs" />
     <Compile Include="DataTransferObject\UserRoles.cs" />
     <Compile Include="DataTransferObject\CustomerDTO.cs" />
-    <Compile Include="DataTransferObject\FoodCategoryDTO.cs" />
     <Compile Include="DataTransferObject\FoodDTO.cs" />
     <Compile Include="DataTransferObject\OrderDTO.cs" />
     <Compile Include="DataTransferObject\OrderLineDTO.cs" />
