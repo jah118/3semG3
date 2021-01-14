@@ -19,9 +19,6 @@
             @Html.DisplayNameFor(model => model.NoOfPeople)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Deposit)
-        </th>
-        <th>
             @Html.DisplayNameFor(model => model.Note)
         </th>
 
@@ -41,16 +38,6 @@
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.NoOfPeople)
-                </td>
-                <td>
-                    @if (item.Deposit)
-                    {
-                        <p>Betalt</p>
-                    }
-                    else
-                    {
-                        <p>Ikke betalt</p>
-                    }
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Note)
