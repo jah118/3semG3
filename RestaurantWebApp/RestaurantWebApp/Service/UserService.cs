@@ -39,8 +39,9 @@ namespace RestaurantWebApp.Service
 
             if (_authService.AddTokenToRequest(request))
             {
-                var content = client.Execute(request).Content;
-                res = JsonConvert.DeserializeObject<UserDTO>(content);
+                var content = client.Execute(request);
+                var code = content.StatusCode;
+                res = JsonConvert.DeserializeObject<UserDTO>(content.Content);
             }
 
             return res;

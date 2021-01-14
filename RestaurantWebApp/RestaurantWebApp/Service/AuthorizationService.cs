@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IdentityModel.Tokens.Jwt;
+using System.Web;
 using RestaurantWebApp.DataTransferObject;
 using RestaurantWebApp.Service.Interfaces;
 using RestSharp;
@@ -26,6 +27,8 @@ namespace RestaurantWebApp.Service
             {
                 //Set token field, substring is because the returned json is in quotes,
                 _token = response.Content.Substring(1, response.Content.Length - 2);
+                HttpContext.Current.Session.Add("APIToken", _token);
+
                 return _token;
             }
 
@@ -60,11 +63,12 @@ namespace RestaurantWebApp.Service
 
         public bool AddTokenToRequest(RestRequest request)
         {
-            if (_token == null) return false;
+           string apiToken = HttpContext.Current.Session["APIToken"] + "";
+            if (apiToken == null) return false;
             var handler = new JwtSecurityTokenHandler();
-            var token = handler.ReadJwtToken(_token);
+            var token = handler.ReadJwtToken(apiToken);
             if (token.ValidTo.ToUniversalTime() < DateTime.UtcNow) return false;
-            request.AddHeader("Authorization", "Bearer " + _token);
+            request.AddHeader("Authorization", "Bearer " + apiToken);
             return true;
         }
     }
