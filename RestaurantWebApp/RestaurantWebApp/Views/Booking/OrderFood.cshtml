@@ -76,25 +76,17 @@
             }
         }
 
-        $(document).ready(function () {
-            $('#AddDrinksBtn').click(function () {
-                var txt = $("#ListDrink option:selected").text();
-                var vale = $("#ListDrink").val();
-                $.each(vale,
-                    function (key, val) {
-                        $('#OrderSummary').append($("<option></option>").attr("value", val).text(txt));
-                    });
+        $('#AddDrinksBtn').click(function () {
+            $('#ListDrink option:selected').clone().appendTo('#OrderSummary');
+            $('#OrderSummary option').map(function () {
+                return [[this.value, $(this).text()]];
             });
         });
 
-        $(document).ready(function () {
-            $('#AddFoodsBtn').click(function () {
-                var txt = $("#ListFood option:selected").text();
-                var vale = $("#ListFood").val();
-                $.each(vale,
-                    function (key, val) {
-                        $('#OrderSummary').append($("<option></option>").attr("value", val).text(txt));
-                    });
+        $('#AddFoodsBtn').click(function () {
+            $('#ListFood option:selected').clone().appendTo('#OrderSummary');
+            $('#OrderSummary option').map(function () {
+                return [[this.value, $(this).text()]];
             });
         });
 
